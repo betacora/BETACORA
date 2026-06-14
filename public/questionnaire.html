@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeTacora — Tu Perfil Viajero</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #2D7B7B;
+  --teal-dark: #1e5c5c;
+  --teal-light: #3a9494;
+  --coral: #E8634A;
+  --coral-light: #f0876f;
+  --cream: #F5EFE6;
+  --cream-dark: #EDE4D6;
+  --white: #ffffff;
+  --ink: #1a1a1a;
+  --fog: #8a9ba8;
+  --shadow: rgba(45,123,123,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+.header { background: var(--teal-dark); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(30,92,92,0.4); }
+.logo { font-size: 1.6rem; font-weight: 700; }
+.logo-be { color: var(--white); }
+.logo-tacora { color: var(--coral); }
+.header-tag { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.lang-switch { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.08); padding: 0.2rem; border-radius: 100px; }
+.lang-btn { border: none; background: transparent; color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 0.68rem; font-weight: 600; padding: 0.35rem 0.65rem; border-radius: 100px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+.lang-btn:hover { color: rgba(255,255,255,0.85); }
+.lang-btn.active { background: var(--coral); color: white; }
+
+.progress-wrap { background: var(--cream-dark); padding: 0.6rem 2rem; border-bottom: 1px solid rgba(45,123,123,0.15); display: flex; align-items: center; gap: 1rem; }
+.progress-track { flex: 1; height: 4px; background: rgba(45,123,123,0.15); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--coral)); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+.progress-label { font-size: 0.72rem; color: var(--fog); white-space: nowrap; font-weight: 500; }
+
+.container { max-width: 700px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+
+.section { margin-bottom: 2rem; }
+.section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--coral); }
+.section-num { background: var(--coral); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; letter-spacing: 0.05em; }
+.section-title { font-size: 1.1rem; font-weight: 600; color: var(--teal-dark); }
+.section-sub { font-size: 0.75rem; color: var(--fog); font-style: italic; margin-top: 0.15rem; }
+
+.qblock { background: var(--white); border-radius: 14px; padding: 1.4rem; margin-bottom: 1.2rem; box-shadow: 0 2px 12px var(--shadow); border: 1.5px solid transparent; transition: border-color 0.2s; }
+.qblock:focus-within { border-color: rgba(45,123,123,0.25); }
+.qlabel { font-size: 0.98rem; font-weight: 600; color: var(--teal-dark); margin-bottom: 0.25rem; line-height: 1.4; }
+.qhint { font-size: 0.72rem; color: var(--fog); margin-bottom: 0.9rem; font-style: italic; }
+.multi-badge { display: inline-block; font-size: 0.65rem; font-weight: 600; color: var(--coral); background: rgba(232,99,74,0.08); border: 1px solid rgba(232,99,74,0.25); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.75rem; }
+.max-badge { display: inline-block; font-size: 0.65rem; font-weight: 600; color: var(--teal); background: rgba(45,123,123,0.08); border: 1px solid rgba(45,123,123,0.2); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.75rem; margin-left: 0.4rem; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+.grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.45rem; }
+@media(max-width:520px) { .grid3,.grid4 { grid-template-columns: 1fr 1fr; } }
+
+.opt { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; padding: 0.7rem 0.4rem; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; cursor: pointer; text-align: center; font-size: 0.75rem; color: var(--ink); transition: all 0.18s; position: relative; line-height: 1.3; font-family: 'DM Sans', sans-serif; }
+.opt .em { font-size: 1.25rem; display: block; margin-bottom: 0.1rem; }
+.opt small { font-size: 0.62rem; color: var(--fog); display: block; }
+.opt:hover { border-color: var(--coral); background: rgba(232,99,74,0.05); }
+.opt.sel { border-color: var(--teal); background: rgba(45,123,123,0.08); color: var(--teal-dark); font-weight: 600; }
+.opt.sel::after { content: '✓'; position: absolute; top: 3px; right: 6px; font-size: 0.6rem; color: var(--teal); font-weight: 700; }
+.opt.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
+.opt-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.opt-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; cursor: pointer; font-size: 0.82rem; transition: all 0.18s; }
+.opt-row:hover { border-color: var(--teal); background: rgba(45,123,123,0.04); }
+.opt-row.sel { border-color: var(--teal); background: rgba(45,123,123,0.08); color: var(--teal-dark); font-weight: 600; }
+.opt-row .em2 { font-size: 1.1rem; flex-shrink: 0; }
+.opt-row .txt { flex: 1; }
+.opt-row .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--cream-dark); flex-shrink: 0; transition: all 0.18s; }
+.opt-row.sel .dot { border-color: var(--teal); background: var(--teal); }
+
+.slider-wrap { padding: 0.4rem 0; }
+.slider-ends { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--fog); margin-bottom: 0.5rem; }
+input[type=range] { width: 100%; -webkit-appearance: none; height: 5px; background: var(--cream-dark); border-radius: 3px; outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--teal); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 8px rgba(45,123,123,0.4); }
+.slider-val { text-align: center; font-size: 1rem; font-weight: 700; color: var(--teal); margin-top: 0.5rem; }
+
+/* SEARCH */
+.search-wrap { position: relative; }
+.search-input-wrap { display: flex; align-items: center; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; padding: 0 1rem; transition: border-color 0.2s; }
+.search-input-wrap:focus-within { border-color: var(--teal); }
+.search-icon { color: var(--teal); font-size: 1rem; flex-shrink: 0; margin-right: 0.5rem; }
+.search-input-wrap input { flex: 1; border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--ink); outline: none; padding: 0.75rem 0; }
+.search-input-wrap input::placeholder { color: var(--fog); font-style: italic; }
+.search-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1.5px solid var(--cream-dark); border-top: none; border-radius: 0 0 10px 10px; max-height: 220px; overflow-y: auto; display: none; z-index: 50; box-shadow: 0 8px 24px var(--shadow); }
+.search-dropdown.show { display: block; }
+.search-item { padding: 0.6rem 1rem; cursor: pointer; font-size: 0.82rem; display: flex; align-items: center; gap: 0.6rem; border-bottom: 1px solid var(--cream); }
+.search-item:hover { background: rgba(45,123,123,0.05); color: var(--teal-dark); }
+.search-item .flag { font-size: 1.1rem; }
+.search-item .city-name { font-weight: 500; }
+.search-item .country-name { font-size: 0.72rem; color: var(--fog); }
+.tags-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+.city-tag { background: rgba(45,123,123,0.08); border: 1px solid rgba(45,123,123,0.2); color: var(--teal-dark); padding: 0.25rem 0.65rem; border-radius: 100px; font-size: 0.72rem; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; }
+.city-tag.country-tag { background: rgba(232,99,74,0.08); border-color: rgba(232,99,74,0.3); color: var(--coral); }
+.city-tag .remove { cursor: pointer; color: var(--coral); font-weight: 700; margin-left: 0.2rem; }
+.city-tag .remove:hover { color: var(--coral-light); }
+.search-section-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fog); padding: 0.55rem 1rem 0.2rem; background: var(--cream); border-bottom: 1px solid var(--cream-dark); }
+.search-item.is-country .city-name { font-weight: 600; color: var(--coral); }
+.search-item.is-country .country-name::before { content: '🌍 País · '; }
+
+/* CALENDAR */
+.calendar-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+.date-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.date-label { font-size: 0.7rem; color: var(--fog); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+.date-input { padding: 0.65rem 1rem; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--ink); outline: none; transition: border-color 0.2s; width: 100%; cursor: pointer; }
+.date-input:focus { border-color: var(--teal); }
+.date-format-hint { font-size: 0.65rem; color: var(--fog); margin: -0.35rem 0 0.75rem; text-align: center; letter-spacing: 0.02em; }
+.duration-pill { text-align: center; font-size: 0.85rem; color: var(--teal-dark); font-weight: 600; background: rgba(45,123,123,0.08); border: 1px solid rgba(45,123,123,0.2); border-radius: 8px; padding: 0.5rem; display: none; margin-bottom: 0.75rem; }
+.duration-pill.show { display: block; }
+
+/* BUDGET */
+.budget-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+.currency-select { padding: 0.65rem 0.75rem; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--ink); outline: none; cursor: pointer; transition: border-color 0.2s; }
+.currency-select:focus { border-color: var(--teal); }
+.amount-box { display: flex; align-items: center; gap: 0.5rem; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; padding: 0.65rem 1rem; flex: 1; transition: border-color 0.2s; }
+.amount-box:focus-within { border-color: var(--teal); }
+.currency-sym { font-size: 0.9rem; color: var(--teal); font-weight: 700; }
+.amount-box input { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--ink); outline: none; width: 100%; }
+
+/* PROFILE */
+.profile-card { display: none; margin-top: 2rem; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 40px rgba(45,123,123,0.2); }
+.profile-card.show { display: block; }
+.profile-top { background: var(--teal-dark); padding: 2rem; color: white; position: relative; overflow: hidden; }
+.profile-top::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(232,99,74,0.12); }
+.profile-top::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+.profile-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--coral-light); margin-bottom: 0.4rem; position: relative; z-index: 1; }
+.profile-name { font-size: 1.9rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; position: relative; z-index: 1; }
+.profile-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; position: relative; z-index: 1; }
+.ptag { background: rgba(232,99,74,0.2); border: 1px solid rgba(232,99,74,0.35); color: rgba(255,255,255,0.9); padding: 0.2rem 0.65rem; border-radius: 100px; font-size: 0.7rem; font-weight: 500; }
+.profile-quote { font-size: 0.9rem; font-style: italic; color: rgba(255,255,255,0.75); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; position: relative; z-index: 1; }
+.profile-bottom { background: var(--cream-dark); padding: 1.5rem 2rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.profile-stat { text-align: center; }
+.stat-val { font-size: 1rem; font-weight: 700; color: var(--teal-dark); }
+.stat-label { font-size: 0.62rem; color: var(--fog); text-transform: uppercase; letter-spacing: 0.05em; }
+.share-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--coral); color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.share-btn:hover { background: var(--coral-light); transform: translateY(-1px); }
+
+/* SHAREABLE CARD */
+.shareable-wrap { display: none; margin-top: 2rem; text-align: center; }
+.shareable-wrap.show { display: block; animation: shareableFadeIn 0.65s ease forwards; }
+@keyframes shareableFadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.shareable-card-outer { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+.shareable-card {
+  width: 400px; height: 500px; max-width: 100%;
+  background: #1e3a5f; border-radius: 20px; overflow: hidden;
+  position: relative; display: flex; flex-direction: column;
+  box-shadow: 0 16px 48px rgba(30,58,95,0.45);
+  font-family: 'DM Sans', sans-serif;
+}
+.sc-compass {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 260px; opacity: 0.05; pointer-events: none; user-select: none; line-height: 1;
+}
+.sc-logo { position: relative; z-index: 1; padding: 1.25rem 1.35rem 0; text-align: left; font-size: 0.95rem; font-weight: 700; }
+.sc-be { color: #fff; }
+.sc-tacora { color: var(--coral); }
+.sc-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 1.5rem; position: relative; z-index: 1; }
+.sc-type { font-size: 1.35rem; font-weight: 700; color: #fff; text-align: center; line-height: 1.25; margin-bottom: 0.65rem; max-width: 340px; }
+.sc-icon { font-size: 3.25rem; line-height: 1; margin-bottom: 1rem; }
+.sc-stats { display: flex; gap: 0.45rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; width: 100%; }
+.sc-pill {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.92); padding: 0.35rem 0.55rem; border-radius: 100px;
+  font-size: 0.58rem; font-weight: 600; line-height: 1.3; max-width: 120px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sc-quote {
+  font-size: 0.78rem; font-style: italic; color: var(--coral-light); text-align: center;
+  line-height: 1.55; max-width: 320px; padding: 0 0.25rem;
+}
+.sc-footer {
+  background: var(--coral); color: #fff; text-align: center; padding: 0.75rem 1rem;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em; position: relative; z-index: 1;
+}
+.shareable-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.sc-action-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--teal-dark); color: white; border: none;
+  padding: 0.75rem 1.35rem; border-radius: 100px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(45,123,123,0.3);
+}
+.sc-action-btn:hover { background: var(--teal); transform: translateY(-1px); }
+.sc-action-btn.secondary { background: var(--coral); box-shadow: 0 4px 16px rgba(232,99,74,0.3); }
+.sc-action-btn.secondary:hover { background: var(--coral-light); }
+@media(max-width:440px) {
+  .shareable-card { width: 100%; height: auto; min-height: 480px; aspect-ratio: 4/5; }
+}
+
+.submit-wrap { margin-top: 2.5rem; text-align: center; }
+.submit-btn { display: inline-flex; align-items: center; gap: 0.75rem; background: var(--teal-dark); color: white; border: none; padding: 1rem 2.5rem; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 20px rgba(45,123,123,0.35); }
+.submit-btn:hover { background: var(--teal); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(45,123,123,0.4); }
+.submit-btn:disabled { opacity: 0.7; cursor: wait; transform: none; }
+.submit-note { font-size: 0.7rem; color: var(--fog); margin-top: 0.75rem; }
+
+.itinerary-section { display: none; margin-top: 2rem; background: var(--cream); border-radius: 20px; border: 2px solid rgba(45,123,123,0.12); box-shadow: 0 8px 40px rgba(45,123,123,0.1); overflow: hidden; }
+.itinerary-section.show { display: block; }
+.bitacora-header { background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%); padding: 1.75rem 1.5rem; color: white; text-align: center; }
+.bitacora-header-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--coral-light); margin-bottom: 0.4rem; }
+.bitacora-header-title { font-size: clamp(1.25rem, 3.5vw, 1.6rem); font-weight: 700; }
+.bitacora-article { padding: 1.5rem 1.25rem 2rem; max-width: 720px; margin: 0 auto; }
+.bitacora-article .section-card { background: var(--white); border-radius: 16px; padding: 1.5rem 1.35rem; margin-bottom: 1.25rem; box-shadow: 0 3px 16px rgba(45,123,123,0.08); border: 1px solid rgba(45,123,123,0.08); }
+.bitacora-article .section-card:last-child { margin-bottom: 0; }
+.bitacora-article h2 { font-size: clamp(1.35rem, 4vw, 1.65rem); font-weight: 700; color: var(--teal); line-height: 1.25; margin: 0 0 1rem; padding-bottom: 0.65rem; border-bottom: 2px solid rgba(45,123,123,0.15); }
+.bitacora-article h3 { font-size: 1.05rem; font-weight: 700; color: var(--coral); line-height: 1.35; margin: 1.25rem 0 0.65rem; }
+.bitacora-article h3:first-child { margin-top: 0; }
+.bitacora-article p { font-size: 0.95rem; line-height: 1.8; color: var(--ink); margin: 0 0 0.85rem; }
+.bitacora-article p:last-child { margin-bottom: 0; }
+.bitacora-article ul { list-style: none; padding: 0; margin: 0.5rem 0 1rem; }
+.bitacora-article li { font-size: 0.93rem; line-height: 1.75; color: var(--ink); padding: 0.3rem 0 0.3rem 1.25rem; position: relative; }
+.bitacora-article li::before { content: ''; position: absolute; left: 0; top: 0.72em; width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
+.bitacora-article li:last-child { margin-bottom: 0; }
+.itinerary-error { background: rgba(232,99,74,0.08); border: 1.5px solid rgba(232,99,74,0.35); border-radius: 14px; padding: 1.25rem 1.5rem; color: var(--teal-dark); font-size: 0.9rem; line-height: 1.6; text-align: center; margin: 1.5rem; }
+.itinerary-error strong { display: block; color: var(--coral); margin-bottom: 0.4rem; font-size: 1rem; }
+@media(max-width:520px) {
+  .bitacora-article { padding: 1rem 0.85rem 1.5rem; }
+  .bitacora-article .section-card { padding: 1.15rem 1rem; }
+  .bitacora-header { padding: 1.35rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo"><span class="logo-be">Be</span><span class="logo-tacora">Tacora</span></div>
+  <div class="header-right">
+    <div class="header-tag" id="headerTag">Tu Perfil Viajero</div>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn active" data-lang="es">🇪🇸 ES</button>
+      <button type="button" class="lang-btn" data-lang="en">🇬🇧 EN</button>
+      <button type="button" class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+    </div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+  <span class="progress-label" id="pLabel">Comenzando...</span>
+</div>
+
+<div class="container">
+
+  <!-- I -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">I</span>
+      <div><div class="section-title">Tu Ritmo de Viaje</div><div class="section-sub">Cómo vives el tiempo cuando viajas</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿A qué hora despiertas en un viaje ideal?</div>
+      <div class="qhint">Sin alarmas — tu hora natural</div>
+      <div class="grid4">
+        <button class="opt" data-q="wake" data-v="alba" onclick="sel(this)"><span class="em">🌅</span>Antes 6h<small>Madrugador</small></button>
+        <button class="opt" data-q="wake" data-v="manana" onclick="sel(this)"><span class="em">☀️</span>6h – 8h<small>Matutino</small></button>
+        <button class="opt" data-q="wake" data-v="media" onclick="sel(this)"><span class="em">🌤️</span>8h – 10h<small>Tranquilo</small></button>
+        <button class="opt" data-q="wake" data-v="tarde" onclick="sel(this)"><span class="em">🌙</span>Después 10h<small>Noctámbulo</small></button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Cómo prefieres estructurar tus días?</div>
+      <span class="max-badge">✦ Máx. 2 opciones</span>
+      <div class="opt-list">
+        <div class="opt-row" data-q="pace" data-v="packed" onclick="selMax(this,2)"><span class="em2">⚡</span><span class="txt">Cada hora planificada — quiero verlo todo</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="pace" data-v="balanced" onclick="selMax(this,2)"><span class="em2">⚖️</span><span class="txt">Mañanas activas, tardes libres para improvisar</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="pace" data-v="slow" onclick="selMax(this,2)"><span class="em2">🍃</span><span class="txt">Pocas cosas pero vividas con profundidad</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="pace" data-v="zero" onclick="selMax(this,2)"><span class="em2">🌊</span><span class="txt">Sin plan — me dejo llevar por el momento</span><span class="dot"></span></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">Nivel de energía física para actividades</div>
+      <div class="slider-wrap">
+        <div class="slider-ends"><span>🛋️ Máximo descanso</span><span>⛰️ Explorador extremo</span></div>
+        <input type="range" min="1" max="5" value="3" id="energySlider" oninput="updateSlider()">
+        <div class="slider-val" id="energyVal">Equilibrado</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- II -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">II</span>
+      <div><div class="section-title">El Alma del Viaje</div><div class="section-sub">Lo que buscas cuando escapas</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Cuál es tu motivación profunda para viajar?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid3">
+        <button class="opt" data-q="motiv" data-v="desconectar" onclick="toggle(this)"><span class="em">🔌</span>Desconectar del mundo</button>
+        <button class="opt" data-q="motiv" data-v="culturas" onclick="toggle(this)"><span class="em">🌍</span>Conocer culturas</button>
+        <button class="opt" data-q="motiv" data-v="aventura" onclick="toggle(this)"><span class="em">🧗</span>Aventura</button>
+        <button class="opt" data-q="motiv" data-v="gastronomia" onclick="toggle(this)"><span class="em">🍜</span>Gastronomía</button>
+        <button class="opt" data-q="motiv" data-v="historia" onclick="toggle(this)"><span class="em">🏛️</span>Historia y arte</button>
+        <button class="opt" data-q="motiv" data-v="naturaleza" onclick="toggle(this)"><span class="em">🌿</span>Naturaleza</button>
+        <button class="opt" data-q="motiv" data-v="espiritual" onclick="toggle(this)"><span class="em">🕌</span>Espiritualidad</button>
+        <button class="opt" data-q="motiv" data-v="lujo" onclick="toggle(this)"><span class="em">✨</span>Lujo y bienestar</button>
+        <button class="opt" data-q="motiv" data-v="unico" onclick="toggle(this)"><span class="em">🗺️</span>Experiencias únicas</button>
+        <button class="opt" data-q="motiv" data-v="social" onclick="toggle(this)"><span class="em">🤝</span>Conocer gente</button>
+        <button class="opt" data-q="motiv" data-v="foto" onclick="toggle(this)"><span class="em">📸</span>Fotografía</button>
+        <button class="opt" data-q="motiv" data-v="nomad" onclick="toggle(this)"><span class="em">💻</span>Trabajar viajando</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Qué experiencias te generan más satisfacción?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid2">
+        <button class="opt" data-q="exp" data-v="nadie" onclick="toggle(this)"><span class="em">🔍</span>Lugares que casi nadie conoce</button>
+        <button class="opt" data-q="exp" data-v="local" onclick="toggle(this)"><span class="em">🏘️</span>Vivir como un local</button>
+        <button class="opt" data-q="exp" data-v="icono" onclick="toggle(this)"><span class="em">🏆</span>Los imprescindibles icónicos</button>
+        <button class="opt" data-q="exp" data-v="nat_ext" onclick="toggle(this)"><span class="em">🌋</span>Naturaleza extrema</button>
+        <button class="opt" data-q="exp" data-v="arte" onclick="toggle(this)"><span class="em">🎨</span>Arte y creatividad</button>
+        <button class="opt" data-q="exp" data-v="gente" onclick="toggle(this)"><span class="em">💬</span>Conexiones humanas</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Te interesaría tener un guía o contacto local?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid2">
+        <button class="opt" data-q="guide" data-v="presencial" onclick="toggle(this)"><span class="em">🤝</span>Sí, presencial</button>
+        <button class="opt" data-q="guide" data-v="digital" onclick="toggle(this)"><span class="em">📱</span>Sí, digital / chat</button>
+        <button class="opt" data-q="guide" data-v="ocasional" onclick="toggle(this)"><span class="em">🗺️</span>Solo para actividades</button>
+        <button class="opt" data-q="guide" data-v="no" onclick="toggle(this)"><span class="em">🦅</span>Total independencia</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- III -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">III</span>
+      <div><div class="section-title">El Refugio</div><div class="section-sub">Dónde descansa tu cuerpo y tu mente</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Qué estilos de alojamiento te atraen?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid3">
+        <button class="opt" data-q="accom" data-v="hotel5" onclick="toggle(this)"><span class="em">🏨</span>Hotel 5★<small>Servicio total</small></button>
+        <button class="opt" data-q="accom" data-v="hotel3" onclick="toggle(this)"><span class="em">🏩</span>Hotel 3-4★<small>Confort bueno</small></button>
+        <button class="opt" data-q="accom" data-v="boutique" onclick="toggle(this)"><span class="em">🏡</span>Boutique<small>Con personalidad</small></button>
+        <button class="opt" data-q="accom" data-v="aparto" onclick="toggle(this)"><span class="em">🔑</span>Apartamento<small>Casa propia</small></button>
+        <button class="opt" data-q="accom" data-v="villa" onclick="toggle(this)"><span class="em">🏖️</span>Villa<small>Privacidad total</small></button>
+        <button class="opt" data-q="accom" data-v="hostel" onclick="toggle(this)"><span class="em">🎒</span>Hostal<small>Social</small></button>
+        <button class="opt" data-q="accom" data-v="glamping" onclick="toggle(this)"><span class="em">⛺</span>Glamping<small>Naturaleza + confort</small></button>
+        <button class="opt" data-q="accom" data-v="tradicional" onclick="toggle(this)"><span class="em">🏯</span>Tradicional<small>Riad, ryokan...</small></button>
+        <button class="opt" data-q="accom" data-v="barco" onclick="toggle(this)"><span class="em">⛵</span>Barco<small>En el agua</small></button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Qué es innegociable en tu alojamiento?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid4">
+        <button class="opt" data-q="amenity" data-v="wifi" onclick="toggle(this)"><span class="em">📶</span>WiFi rápido</button>
+        <button class="opt" data-q="amenity" data-v="piscina" onclick="toggle(this)"><span class="em">🏊</span>Piscina</button>
+        <button class="opt" data-q="amenity" data-v="gym" onclick="toggle(this)"><span class="em">💪</span>Gimnasio</button>
+        <button class="opt" data-q="amenity" data-v="spa" onclick="toggle(this)"><span class="em">🧖</span>Spa</button>
+        <button class="opt" data-q="amenity" data-v="cocina" onclick="toggle(this)"><span class="em">🍳</span>Cocina propia</button>
+        <button class="opt" data-q="amenity" data-v="vista" onclick="toggle(this)"><span class="em">🌅</span>Vista especial</button>
+        <button class="opt" data-q="amenity" data-v="desayuno" onclick="toggle(this)"><span class="em">🥐</span>Desayuno</button>
+        <button class="opt" data-q="amenity" data-v="nada" onclick="toggle(this)"><span class="em">🎯</span>Solo dormir bien</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IV -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">IV</span>
+      <div><div class="section-title">La Mesa del Capitán</div><div class="section-sub">Tus rituales con la comida</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Dónde prefieres comer cuando viajas?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid2">
+        <button class="opt" data-q="food" data-v="calle" onclick="toggle(this)"><span class="em">🌮</span>Comida callejera</button>
+        <button class="opt" data-q="food" data-v="mercado" onclick="toggle(this)"><span class="em">🛒</span>Mercados gastronómicos</button>
+        <button class="opt" data-q="food" data-v="local" onclick="toggle(this)"><span class="em">🍽️</span>Restaurantes locales auténticos</button>
+        <button class="opt" data-q="food" data-v="gourmet" onclick="toggle(this)"><span class="em">⭐</span>Restaurantes gastronómicos</button>
+        <button class="opt" data-q="food" data-v="rooftop" onclick="toggle(this)"><span class="em">🌆</span>Rooftops y bares con vista</button>
+        <button class="opt" data-q="food" data-v="casas" onclick="toggle(this)"><span class="em">🏠</span>Cenas en casas de locales</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Tienes restricciones alimentarias?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid4">
+        <button class="opt" data-q="diet" data-v="ninguna" onclick="toggle(this)"><span class="em">🍖</span>Ninguna</button>
+        <button class="opt" data-q="diet" data-v="vegeta" onclick="toggle(this)"><span class="em">🥗</span>Vegetariano</button>
+        <button class="opt" data-q="diet" data-v="vegano" onclick="toggle(this)"><span class="em">🌱</span>Vegano</button>
+        <button class="opt" data-q="diet" data-v="halal" onclick="toggle(this)"><span class="em">☪️</span>Halal</button>
+        <button class="opt" data-q="diet" data-v="gluten" onclick="toggle(this)"><span class="em">🌾</span>Sin gluten</button>
+        <button class="opt" data-q="diet" data-v="lactosa" onclick="toggle(this)"><span class="em">🥛</span>Sin lactosa</button>
+        <button class="opt" data-q="diet" data-v="alergias" onclick="toggle(this)"><span class="em">⚠️</span>Alergias</button>
+        <button class="opt" data-q="diet" data-v="picante" onclick="toggle(this)"><span class="em">🌶️</span>Sin picante</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- V -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">V</span>
+      <div><div class="section-title">Cultura y Actividades</div><div class="section-sub">Lo que despierta tu curiosidad</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Qué lugares culturales te atraen?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid4">
+        <button class="opt" data-q="cultura" data-v="museos" onclick="toggle(this)"><span class="em">🖼️</span>Museos</button>
+        <button class="opt" data-q="cultura" data-v="historia" onclick="toggle(this)"><span class="em">🏛️</span>Sitios históricos</button>
+        <button class="opt" data-q="cultura" data-v="templos" onclick="toggle(this)"><span class="em">⛩️</span>Templos e iglesias</button>
+        <button class="opt" data-q="cultura" data-v="arqueologia" onclick="toggle(this)"><span class="em">🗿</span>Arqueología</button>
+        <button class="opt" data-q="cultura" data-v="teatro" onclick="toggle(this)"><span class="em">🎭</span>Teatro y shows</button>
+        <button class="opt" data-q="cultura" data-v="musica" onclick="toggle(this)"><span class="em">🎶</span>Música en vivo</button>
+        <button class="opt" data-q="cultura" data-v="arte_u" onclick="toggle(this)"><span class="em">🎨</span>Arte urbano</button>
+        <button class="opt" data-q="cultura" data-v="tiendas" onclick="toggle(this)"><span class="em">🛍️</span>Tiendas locales</button>
+        <button class="opt" data-q="cultura" data-v="mercados" onclick="toggle(this)"><span class="em">🪆</span>Mercados artesanales</button>
+        <button class="opt" data-q="cultura" data-v="idioma" onclick="toggle(this)"><span class="em">💬</span>Aprender el idioma</button>
+        <button class="opt" data-q="cultura" data-v="festivales" onclick="toggle(this)"><span class="em">🎪</span>Festivales</button>
+        <button class="opt" data-q="cultura" data-v="improv" onclick="toggle(this)"><span class="em">🧭</span>Improviso al llegar</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Qué actividades te interesan?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid4">
+        <button class="opt" data-q="act" data-v="trekking" onclick="toggle(this)"><span class="em">🥾</span>Trekking</button>
+        <button class="opt" data-q="act" data-v="buceo" onclick="toggle(this)"><span class="em">🤿</span>Buceo</button>
+        <button class="opt" data-q="act" data-v="surf" onclick="toggle(this)"><span class="em">🏄</span>Surf</button>
+        <button class="opt" data-q="act" data-v="escalada" onclick="toggle(this)"><span class="em">🧗</span>Escalada</button>
+        <button class="opt" data-q="act" data-v="ciclismo" onclick="toggle(this)"><span class="em">🚴</span>Ciclismo</button>
+        <button class="opt" data-q="act" data-v="kayak" onclick="toggle(this)"><span class="em">🛶</span>Kayak</button>
+        <button class="opt" data-q="act" data-v="yoga" onclick="toggle(this)"><span class="em">🧘</span>Yoga</button>
+        <button class="opt" data-q="act" data-v="safari" onclick="toggle(this)"><span class="em">🦁</span>Safari</button>
+        <button class="opt" data-q="act" data-v="esqui" onclick="toggle(this)"><span class="em">⛷️</span>Esquí</button>
+        <button class="opt" data-q="act" data-v="parapente" onclick="toggle(this)"><span class="em">🪂</span>Parapente</button>
+        <button class="opt" data-q="act" data-v="playa" onclick="toggle(this)"><span class="em">🏖️</span>Playa</button>
+        <button class="opt" data-q="act" data-v="globo" onclick="toggle(this)"><span class="em">🎈</span>Globo aerostático</button>
+        <button class="opt" data-q="act" data-v="caballo" onclick="toggle(this)"><span class="em">🐴</span>A caballo</button>
+        <button class="opt" data-q="act" data-v="foto_t" onclick="toggle(this)"><span class="em">📷</span>Tours fotográficos</button>
+        <button class="opt" data-q="act" data-v="cocina_c" onclick="toggle(this)"><span class="em">👨‍🍳</span>Clases de cocina</button>
+        <button class="opt" data-q="act" data-v="urbano" onclick="toggle(this)"><span class="em">🏙️</span>Urbanas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">VI</span>
+      <div><div class="section-title">Tripulación y Presupuesto</div><div class="section-sub">Con quién viajas y cómo inviertes</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Cómo sueles viajar?</div>
+      <div class="grid4">
+        <button class="opt" data-q="social" data-v="solo" onclick="sel(this)"><span class="em">🦅</span>Solo</button>
+        <button class="opt" data-q="social" data-v="pareja" onclick="sel(this)"><span class="em">💑</span>En pareja</button>
+        <button class="opt" data-q="social" data-v="amigos" onclick="sel(this)"><span class="em">👯</span>Con amigos</button>
+        <button class="opt" data-q="social" data-v="familia" onclick="sel(this)"><span class="em">👨‍👩‍👧</span>Con familia</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">Tu energía social en un viaje</div>
+      <div class="opt-list">
+        <div class="opt-row" data-q="social_e" data-v="intro" onclick="selRow(this)"><span class="em2">🎧</span><span class="txt">Introvertido — el viaje es tiempo para mí</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="social_e" data-v="ambiv" onclick="selRow(this)"><span class="em2">🌓</span><span class="txt">Ambivertido — disfruto conocer gente pero necesito tiempo solo</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="social_e" data-v="extro" onclick="selRow(this)"><span class="em2">🎉</span><span class="txt">Extrovertido — los mejores recuerdos son las personas que conocí</span><span class="dot"></span></div>
+      </div>
+    </div>
+
+    <div class="qblock" id="budgetBlock">
+      <div class="qlabel" id="budgetLabelTotal">Presupuesto máximo para este viaje</div>
+      <div class="qlabel" id="budgetLabelMonthly" style="display:none">¿Cuánto tienes de presupuesto por mes?</div>
+      <div class="qhint" id="budgetHintTotal">Por persona incluyendo vuelo y alojamiento</div>
+      <div class="budget-row">
+        <select class="currency-select" id="currencySelect" onchange="updateCurrency()">
+          <option value="USD">🇺🇸 USD — Dólar</option>
+          <option value="EUR">🇪🇺 EUR — Euro</option>
+          <option value="GBP">🇬🇧 GBP — Libra</option>
+          <option value="MXN">🇲🇽 MXN — Peso Mx</option>
+          <option value="ARS">🇦🇷 ARS — Peso Ar</option>
+          <option value="COP">🇨🇴 COP — Peso Co</option>
+          <option value="BRL">🇧🇷 BRL — Real</option>
+          <option value="CLP">🇨🇱 CLP — Peso Ch</option>
+          <option value="PEN">🇵🇪 PEN — Sol</option>
+          <option value="CHF">🇨🇭 CHF — Franco</option>
+          <option value="JPY">🇯🇵 JPY — Yen</option>
+          <option value="CAD">🇨🇦 CAD — Dólar Ca</option>
+          <option value="AUD">🇦🇺 AUD — Dólar Au</option>
+          <option value="AED">🇦🇪 AED — Dírham</option>
+          <option value="THB">🇹🇭 THB — Baht</option>
+        </select>
+        <div class="amount-box">
+          <span class="currency-sym" id="currSym">$</span>
+          <input type="number" placeholder="Ej: 3000" id="budgetMax" oninput="updateProgress()">
+        </div>
+      </div>
+      <div class="grid4" id="budgetOptsTotal">
+        <button class="opt" data-q="budget_r" data-v="low" onclick="sel(this)"><span class="em">💰</span>Económico</button>
+        <button class="opt" data-q="budget_r" data-v="mid" onclick="sel(this)"><span class="em">💳</span>Medio</button>
+        <button class="opt" data-q="budget_r" data-v="high" onclick="sel(this)"><span class="em">💎</span>Premium</button>
+        <button class="opt" data-q="budget_r" data-v="ilim" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
+      </div>
+      <div class="grid3" id="budgetOptsMonthly" style="display:none;margin-top:0.5rem">
+        <button class="opt" data-q="budget_monthly_r" data-v="under1000" onclick="sel(this)"><span class="em">💰</span>Menos de 1.000/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="1000-2000" onclick="sel(this)"><span class="em">🎒</span>1.000–2.000/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="2000-3500" onclick="sel(this)"><span class="em">✈️</span>2.000–3.500/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="over3500" onclick="sel(this)"><span class="em">💎</span>+3.500/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="ilim" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿En qué gastas sin mirar el precio?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid3">
+        <button class="opt" data-q="splurge" data-v="hotel" onclick="toggle(this)"><span class="em">🏨</span>Alojamiento</button>
+        <button class="opt" data-q="splurge" data-v="comida" onclick="toggle(this)"><span class="em">🍽️</span>Gastronomía</button>
+        <button class="opt" data-q="splurge" data-v="exp" onclick="toggle(this)"><span class="em">🎯</span>Experiencias</button>
+        <button class="opt" data-q="splurge" data-v="vuelo" onclick="toggle(this)"><span class="em">✈️</span>El vuelo</button>
+        <button class="opt" data-q="splurge" data-v="compras" onclick="toggle(this)"><span class="em">🛍️</span>Compras</button>
+        <button class="opt" data-q="splurge" data-v="optimizo" onclick="toggle(this)"><span class="em">🧩</span>Optimizo todo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VII -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">VII</span>
+      <div><div class="section-title">Tu Próximo Viaje</div><div class="section-sub">Los datos para trazar tu ruta</div></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Desde qué ciudad sales?</div>
+      <div class="qhint">Busca tu ciudad de origen</div>
+      <div class="search-wrap">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="originSearch" placeholder="Escribe tu ciudad — Madrid, Ciudad de México, Buenos Aires..." oninput="searchCity(this.value,'originResults','originTags','origin')" autocomplete="off">
+        </div>
+        <div class="search-dropdown" id="originResults"></div>
+      </div>
+      <div class="tags-wrap" id="originTags"></div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Cómo es tu próximo viaje?</div>
+      <div class="opt-list" style="margin-bottom:0.75rem">
+        <div class="opt-row" data-q="trip_type" data-v="destino" onclick="selTripType(this)"><span class="em2">🎯</span><span class="txt">Destino concreto</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="trip_type" data-v="zona" onclick="selTripType(this)"><span class="em2">🌍</span><span class="txt">Zona o región</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="trip_type" data-v="nomada" onclick="selTripType(this)"><span class="em2">♾️</span><span class="txt">Viaje largo</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="trip_type" data-v="sorpresa" onclick="selTripType(this)"><span class="em2">🎁</span><span class="txt">Sorpréndeme</span><span class="dot"></span></div>
+      </div>
+
+      <div id="sorpresaMessage" style="display:none;margin-top:1rem;padding:1.25rem 1.5rem;background:var(--white);border-radius:14px;border:1.5px solid rgba(45,123,123,0.2);text-align:center;font-size:0.95rem;color:var(--teal-dark);line-height:1.65;box-shadow:0 2px 12px var(--shadow)">
+        Perfecto — BeTacora diseñará tu viaje ideal basándose en tu perfil viajero 🧭
+      </div>
+
+      <div id="tripStep2" style="display:none;margin-top:0.75rem">
+        <div id="zonaGridWrap" style="margin-bottom:1.25rem">
+          <div class="qlabel" style="margin-bottom:0.5rem">¿A qué zona o zonas del mundo?</div>
+          <span class="multi-badge" style="margin-bottom:0.75rem">✦ Selección libre</span>
+          <div id="zonaGrid">
+            <div class="grid3">
+              <button class="opt" data-q="zona" data-v="europa" onclick="toggle(this)"><span class="em">🇪🇺</span>Europa</button>
+              <button class="opt" data-q="zona" data-v="asia" onclick="toggle(this)"><span class="em">🌏</span>Asia</button>
+              <button class="opt" data-q="zona" data-v="latam" onclick="toggle(this)"><span class="em">🌎</span>Latinoamérica</button>
+              <button class="opt" data-q="zona" data-v="africa" onclick="toggle(this)"><span class="em">🌍</span>África</button>
+              <button class="opt" data-q="zona" data-v="oceania" onclick="toggle(this)"><span class="em">🦘</span>Oceanía</button>
+              <button class="opt" data-q="zona" data-v="me" onclick="toggle(this)"><span class="em">🕌</span>Medio Oriente</button>
+              <button class="opt" data-q="zona" data-v="na" onclick="toggle(this)"><span class="em">🗽</span>Norteamérica</button>
+              <button class="opt" data-q="zona" data-v="caribe" onclick="toggle(this)"><span class="em">🏝️</span>Caribe</button>
+              <button class="opt" data-q="zona" data-v="polar" onclick="toggle(this)"><span class="em">🧊</span>Polar</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="destCitySearch">
+          <div class="qlabel" style="margin-bottom:0.5rem">¿Tienes algún país o ciudad en mente? (opcional)</div>
+          <div class="search-wrap">
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="destSearch" placeholder="Busca ciudad o país de destino..." oninput="searchCity(this.value,'destResults','destTags','dest')" autocomplete="off">
+            </div>
+            <div class="search-dropdown" id="destResults"></div>
+          </div>
+          <div class="tags-wrap" id="destTags"></div>
+          <div class="qhint" style="margin-top:0.75rem">Busca un país para explorar todo el país, o una ciudad para ir a un destino concreto</div>
+        </div>
+      </div>
+
+      <div id="nomadaDuration" style="display:none;margin-top:1.25rem">
+        <div class="qlabel" style="margin-bottom:0.5rem">¿Cuánto tiempo tienes para tu ruta de vida?</div>
+        <div class="grid4">
+          <button class="opt" data-q="nomada_dur" data-v="1-3" onclick="sel(this)"><span class="em">📅</span>1–3 meses</button>
+          <button class="opt" data-q="nomada_dur" data-v="3-6" onclick="sel(this)"><span class="em">🗓️</span>3–6 meses</button>
+          <button class="opt" data-q="nomada_dur" data-v="6plus" onclick="sel(this)"><span class="em">🌍</span>+6 meses</button>
+          <button class="opt" data-q="nomada_dur" data-v="ilimitado" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Cuándo quieres viajar?</div>
+      <div class="qhint">Selecciona las fechas o elige una duración aproximada</div>
+      <div class="calendar-wrap">
+        <div class="date-field">
+          <label class="date-label" for="dateFrom">📅 Fecha de salida</label>
+          <input type="date" class="date-input" id="dateFrom" lang="es-ES" onchange="calcDuration()">
+        </div>
+        <div class="date-field">
+          <label class="date-label" for="dateTo">🏠 Fecha de vuelta</label>
+          <input type="date" class="date-input" id="dateTo" lang="es-ES" onchange="calcDuration()">
+        </div>
+      </div>
+      <div class="date-format-hint" id="dateFormatHint">DD/MM/AAAA</div>
+      <div class="duration-pill" id="durationPill"></div>
+      <div class="grid4">
+        <button class="opt" data-q="dur" data-v="finde" onclick="sel(this)"><span class="em">🏃</span>3-4 días</button>
+        <button class="opt" data-q="dur" data-v="semana" onclick="sel(this)"><span class="em">📅</span>1 semana</button>
+        <button class="opt" data-q="dur" data-v="dos" onclick="sel(this)"><span class="em">🗓️</span>2 semanas</button>
+        <button class="opt" data-q="dur" data-v="mas" onclick="sel(this)"><span class="em">🌍</span>+3 semanas</button>
+        <button class="opt" data-q="dur" data-v="nomad" onclick="sel(this)"><span class="em">♾️</span>Sin fecha vuelta</button>
+        <button class="opt" data-q="dur" data-v="flex" onclick="sel(this)"><span class="em">🎲</span>Flexible</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Algo más que BeTacora deba saber?</div>
+      <div class="qhint">La pregunta que ninguna app te ha hecho antes</div>
+      <textarea class="txt-input" rows="3" id="extra" placeholder="Experiencias pasadas, sueños de viaje, miedos, condiciones especiales..." oninput="updateProgress()" style="width:100%;padding:0.75rem 1rem;background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;resize:none;color:var(--ink);transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--cream-dark)'"></textarea>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="profile-card" id="profileCard">
+    <div class="profile-top">
+      <div class="profile-eyebrow">✦ Tu Bitácora Viajera</div>
+      <div class="profile-name" id="pName">El Explorador Auténtico</div>
+      <div class="profile-tags" id="pTags"></div>
+      <div class="profile-quote" id="pQuote"></div>
+    </div>
+    <div class="profile-bottom">
+      <div style="display:flex;gap:2rem;flex-wrap:wrap">
+        <div class="profile-stat"><div class="stat-val" id="pMotiv">—</div><div class="stat-label" id="statMotiv">Motivación</div></div>
+        <div class="profile-stat"><div class="stat-val" id="pEnergy">—</div><div class="stat-label" id="statEnergy">Energía</div></div>
+        <div class="profile-stat"><div class="stat-val" id="pStyle">—</div><div class="stat-label" id="statPace">Ritmo</div></div>
+      </div>
+      <button class="share-btn" onclick="shareProfile()">📤 Compartir mi perfil</button>
+    </div>
+  </div>
+
+  <!-- SHAREABLE CARD -->
+  <div class="shareable-wrap" id="shareableCard">
+    <div class="shareable-card-outer">
+      <div class="shareable-card" id="shareableCardInner">
+        <div class="sc-compass" aria-hidden="true">🧭</div>
+        <div class="sc-logo"><span class="sc-be">Be</span><span class="sc-tacora">Tacora</span></div>
+        <div class="sc-body">
+          <div class="sc-type" id="scType">El Explorador de Fronteras</div>
+          <div class="sc-icon" id="scIcon">🧗</div>
+          <div class="sc-stats">
+            <div class="sc-pill" id="scEnergy">⚡ Activo</div>
+            <div class="sc-pill" id="scSocial">🦅 Solo</div>
+            <div class="sc-pill" id="scPace">Equilibrado</div>
+          </div>
+          <div class="sc-quote" id="scQuote"></div>
+        </div>
+        <div class="sc-footer" id="scFooter">betacora.app · Tu bitácora inteligente</div>
+      </div>
+    </div>
+    <div class="shareable-actions">
+      <button type="button" class="sc-action-btn" id="scDownload" onclick="downloadShareableCard()">📥 Descargar mi tarjeta</button>
+      <button type="button" class="sc-action-btn secondary" id="scShare" onclick="shareShareableCard()">📤 Compartir</button>
+    </div>
+  </div>
+
+  <div class="itinerary-section" id="itinerarySection"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submitBtn" onclick="handleGenerate()">🧭 Generar mi Bitácora Inteligente</button>
+    <div class="submit-note">BeTacora diseñará tu viaje personalizado · betacora.app</div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="questionnaire-i18n.js"></script>
+<script>
+window.addEventListener('error', (e) => {
+  console.error('BeTacora caught error:', e.message, e.filename, e.lineno);
+  e.preventDefault();
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('BeTacora unhandled rejection:', e.reason);
+  e.preventDefault();
+});
+
+// ─── SIMPLE LANGUAGE SYSTEM ───────────────────────────────────────
+const LANG = {
+  current: (() => {
+    const saved = localStorage.getItem('bt_lang');
+    if (saved === 'es' || saved === 'en' || saved === 'fr') return saved;
+    const nav = (navigator.language || 'es').toLowerCase();
+    if (nav.startsWith('fr')) return 'fr';
+    if (nav.startsWith('en')) return 'en';
+    return 'es';
+  })(),
+
+  set(lang) {
+    if (lang !== 'es' && lang !== 'en' && lang !== 'fr') return;
+    if (this.current === lang) return;
+    console.log('[BeTacora] LANG.set →', lang);
+    this.current = lang;
+    localStorage.setItem('bt_lang', lang);
+    this.apply();
+    answers['ui_lang'] = lang;
+    energyLabels = I18N[lang].energyLabels;
+    if (document.getElementById('profileCard')?.classList.contains('show')) generateProfile();
+    if (document.getElementById('shareableCard')?.classList.contains('show')) updateShareableCard();
+    updateProgress();
+  },
+
+  apply() {
+    try {
+    const locale = I18N[this.current];
+    const tr = translations[this.current];
+    if (!locale || !tr) return;
+    console.log('[BeTacora] LANG.apply →', this.current);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (tr[key]) el.textContent = tr[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (tr[key]) el.placeholder = tr[key];
+    });
+    document.querySelectorAll('input[type=date]').forEach(el => {
+      el.lang = this.current === 'en' ? 'en-US' : this.current === 'fr' ? 'fr-FR' : 'es-ES';
+    });
+    document.documentElement.lang = this.current;
+    document.title = locale.ui.pageTitle;
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === this.current);
+    });
+
+    const el = id => document.getElementById(id);
+    if (el('headerTag')) el('headerTag').textContent = locale.ui.headerTag;
+    if (el('pLabel') && el('pLabel').dataset.i18nState !== 'progress') el('pLabel').textContent = locale.ui.progress.starting;
+
+    document.querySelectorAll('.multi-badge').forEach(n => { n.textContent = locale.ui.badges.multi; });
+    document.querySelectorAll('.max-badge').forEach(n => { n.textContent = locale.ui.badges.max2; });
+
+    document.querySelectorAll('.container > .section').forEach((sec, i) => {
+      const s = locale.ui.sections[i];
+      if (!s) return;
+      const title = sec.querySelector('.section-title');
+      const sub = sec.querySelector('.section-sub');
+      if (title) title.textContent = s.title;
+      if (sub) sub.textContent = s.sub;
+    });
+
+    const qKeys = [
+      ['ui.questions.wake.label','ui.questions.wake.hint'], ['ui.questions.pace.label',null], ['ui.questions.energy.label',null],
+      ['ui.questions.motiv.label',null], ['ui.questions.exp.label',null], ['ui.questions.guide.label',null],
+      ['ui.questions.accom.label',null], ['ui.questions.amenity.label',null], ['ui.questions.food.label',null],
+      ['ui.questions.diet.label',null], ['ui.questions.cultura.label',null], ['ui.questions.act.label',null],
+      ['ui.questions.social.label',null], ['ui.questions.social_e.label',null],
+      [null,null], ['ui.questions.splurge.label',null], ['ui.questions.origin.label','ui.questions.origin.hint'],
+      ['ui.questions.tripType.label',null], ['ui.questions.dates.label','ui.questions.dates.hint'], ['ui.questions.extra.label','ui.questions.extra.hint']
+    ];
+    document.querySelectorAll('.container > .section .qblock').forEach((qb, idx) => {
+      if (qb.id === 'budgetBlock') {
+        if (el('budgetLabelTotal')) el('budgetLabelTotal').textContent = locale.ui.questions.budgetTotal.label;
+        if (el('budgetLabelMonthly')) el('budgetLabelMonthly').textContent = locale.ui.questions.budgetMonthly.label;
+        if (el('budgetHintTotal')) el('budgetHintTotal').textContent = locale.ui.questions.budgetTotal.hint;
+        return;
+      }
+      const [lk, hk] = qKeys[idx] || [];
+      const label = qb.querySelector('.qlabel:not([id])');
+      const hint = qb.querySelector('.qhint');
+      if (label && lk) label.textContent = lk.split('.').reduce((o,k)=>o?.[k], locale);
+      if (hint && hk) hint.textContent = hk.split('.').reduce((o,k)=>o?.[k], locale);
+    });
+
+    const zonaLabel = document.querySelector('#zonaGridWrap .qlabel');
+    if (zonaLabel) zonaLabel.textContent = locale.ui.questions.zona.label;
+    const destLabel = document.querySelector('#destCitySearch .qlabel');
+    if (destLabel) destLabel.textContent = locale.ui.questions.destSearch.label;
+    const destHint = document.querySelector('#destCitySearch .qhint');
+    if (destHint) destHint.textContent = locale.ui.questions.destSearch.hint;
+    const nomadaLabel = document.querySelector('#nomadaDuration .qlabel');
+    if (nomadaLabel) nomadaLabel.textContent = locale.ui.questions.nomadaDur.label;
+
+    if (el('budgetHintTotal')) el('budgetHintTotal').textContent = locale.ui.questions.budgetTotal.hint;
+    if (el('budgetMax')) {
+      const isNomada = el('budgetLabelMonthly')?.style.display !== 'none';
+      el('budgetMax').placeholder = isNomada ? locale.ui.budget.placeholderMonthly : locale.ui.budget.placeholderTotal;
+    }
+    const currencySelect = el('currencySelect');
+    if (currencySelect) {
+      [...currencySelect.options].forEach(opt => {
+        if (locale.ui.currency[opt.value]) opt.textContent = locale.ui.currency[opt.value];
+      });
+    }
+
+    const sliderEnds = document.querySelectorAll('.slider-ends span');
+    if (sliderEnds.length >= 2) {
+      sliderEnds[0].textContent = locale.ui.sliderEnds.low;
+      sliderEnds[1].textContent = locale.ui.sliderEnds.high;
+    }
+    const energySlider = el('energySlider');
+    if (energySlider && el('energyVal')) {
+      el('energyVal').textContent = locale.energyLabels[parseInt(energySlider.value, 10) - 1];
+    }
+
+    document.querySelectorAll('button.opt[data-q][data-v]').forEach(btn => {
+      const entry = locale.opt[btn.dataset.q]?.[btn.dataset.v];
+      if (!entry) return;
+      const em = btn.querySelector('.em');
+      const emoji = em ? em.outerHTML : '';
+      btn.innerHTML = emoji + entry.label + (entry.sub ? `<small>${entry.sub}</small>` : '');
+    });
+    document.querySelectorAll('.opt-row[data-q][data-v]').forEach(row => {
+      const txt = row.querySelector('.txt');
+      const label = locale.row[row.dataset.q]?.[row.dataset.v];
+      if (txt && label) txt.textContent = label;
+    });
+
+    if (el('originSearch')) el('originSearch').placeholder = locale.ui.search.originPlaceholder;
+    if (el('destSearch')) el('destSearch').placeholder = locale.ui.search.destPlaceholder;
+    if (el('sorpresaMessage')) el('sorpresaMessage').textContent = locale.ui.sorpresaMessage;
+
+    const dateLabels = document.querySelectorAll('.date-label');
+    if (dateLabels.length >= 2) {
+      dateLabels[0].textContent = locale.ui.questions.dates.from;
+      dateLabels[1].textContent = locale.ui.questions.dates.to;
+    }
+    if (el('dateFormatHint')) el('dateFormatHint').textContent = locale.ui.dateFormatHint;
+    if (el('extra')) el('extra').placeholder = locale.ui.questions.extra.placeholder;
+
+    const profileEyebrow = document.querySelector('.profile-eyebrow');
+    if (profileEyebrow) profileEyebrow.textContent = locale.ui.profile.eyebrow;
+    ['statMotiv','statEnergy','statPace'].forEach((id, i) => {
+      const key = ['statMotiv','statEnergy','statPace'][i];
+      if (el(id)) el(id).textContent = locale.ui.profile[key];
+    });
+    const shareBtn = document.querySelector('.share-btn');
+    if (shareBtn) shareBtn.textContent = locale.ui.profile.shareBtn;
+    if (el('submitBtn') && !el('submitBtn').disabled) el('submitBtn').textContent = locale.ui.submit.btn;
+    const submitNote = document.querySelector('.submit-note');
+    if (submitNote) submitNote.textContent = locale.ui.submit.note;
+    if (el('scDownload')) el('scDownload').textContent = locale.ui.shareableCard.download;
+    if (el('scShare')) el('scShare').textContent = locale.ui.shareableCard.share;
+    if (el('scFooter')) el('scFooter').textContent = 'betacora.app · ' + locale.ui.shareableCard.tagline;
+
+    refreshDurationPill();
+    } catch (e) {
+      console.error('BeTacora LANG.apply error:', e);
+    }
+  }
+};
+
+function t(key, vars) {
+  let text = translations[LANG.current][key] ?? translations.es[key] ?? '';
+  if (vars && text) Object.entries(vars).forEach(([k, v]) => { text = text.replace('{' + k + '}', String(v)); });
+  return text;
+}
+
+function formatDuration(days) {
+  const d = I18N[LANG.current].ui.duration;
+  const fill = (tpl, n) => tpl.replace('{n}', String(n));
+  let label = fill(days === 1 ? d.day : d.days, days);
+  const weeks = Math.floor(days / 7);
+  const rem = days % 7;
+  if (weeks > 0) {
+    label += fill(weeks === 1 ? d.week : d.weeks, weeks);
+    if (rem > 0) label += ' ' + fill(rem === 1 ? d.andDay : d.andDays, rem);
+  }
+  return label;
+}
+
+const MOTIV_ICONS = {
+  aventura: '🏔️', culturas: '🏛️', gastronomia: '🍽️', lujo: '✨', espiritual: '🧘',
+  unico: '💎', naturaleza: '🌿', historia: '📜', desconectar: '🌊', social: '🤝',
+  foto: '📸', nomad: '💻',
+};
+
+function L() { return I18N[LANG.current]; }
+
+function getProgressLabel(pct) {
+  const p = L().ui.progress;
+  if (pct >= 100) return p.ready;
+  if (pct === 0) return p.starting;
+  return p.percent.replace('{n}', String(pct));
+}
+
+function updateBudgetPlaceholders(isNomada) {
+  const b = L().ui.budget;
+  document.getElementById('budgetMax').placeholder = isNomada ? b.placeholderMonthly : b.placeholderTotal;
+}
+
+function refreshDurationPill() {
+  const from = document.getElementById('dateFrom')?.value;
+  const to = document.getElementById('dateTo')?.value;
+  const pill = document.getElementById('durationPill');
+  if (!pill || !from || !to) return;
+  const d1 = new Date(from), d2 = new Date(to);
+  if (d2 > d1) {
+    const days = Math.round((d2 - d1) / 86400000);
+    pill.textContent = formatDuration(days);
+    pill.classList.add('show');
+  }
+}
+
+const answers = {};
+let energyLabels = I18N[LANG.current].energyLabels;
+const selectedOrigin = [];
+const selectedDest = [];
+
+const currencySymbols = { USD:'$', EUR:'€', GBP:'£', MXN:'$', ARS:'$', COP:'$', BRL:'R$', CLP:'$', PEN:'S/', CHF:'Fr', JPY:'¥', CAD:'$', AUD:'$', AED:'د.إ', THB:'฿' };
+
+function updateCurrency() {
+  const cur = document.getElementById('currencySelect').value;
+  document.getElementById('currSym').textContent = currencySymbols[cur] || '$';
+  answers['currency'] = cur;
+}
+
+const cities = [
+  {city:'Madrid',country:'España',flag:'🇪🇸'},{city:'Barcelona',country:'España',flag:'🇪🇸'},{city:'Sevilla',country:'España',flag:'🇪🇸'},{city:'Valencia',country:'España',flag:'🇪🇸'},{city:'Bilbao',country:'España',flag:'🇪🇸'},
+  {city:'Ciudad de México',country:'México',flag:'🇲🇽'},{city:'Cancún',country:'México',flag:'🇲🇽'},{city:'Guadalajara',country:'México',flag:'🇲🇽'},{city:'Monterrey',country:'México',flag:'🇲🇽'},{city:'Oaxaca',country:'México',flag:'🇲🇽'},
+  {city:'Buenos Aires',country:'Argentina',flag:'🇦🇷'},{city:'Córdoba',country:'Argentina',flag:'🇦🇷'},{city:'Mendoza',country:'Argentina',flag:'🇦🇷'},{city:'Bariloche',country:'Argentina',flag:'🇦🇷'},
+  {city:'Bogotá',country:'Colombia',flag:'🇨🇴'},{city:'Medellín',country:'Colombia',flag:'🇨🇴'},{city:'Cartagena',country:'Colombia',flag:'🇨🇴'},{city:'Cali',country:'Colombia',flag:'🇨🇴'},
+  {city:'Lima',country:'Perú',flag:'🇵🇪'},{city:'Cusco',country:'Perú',flag:'🇵🇪'},{city:'Arequipa',country:'Perú',flag:'🇵🇪'},{city:'Machu Picchu',country:'Perú',flag:'🇵🇪'},
+  {city:'São Paulo',country:'Brasil',flag:'🇧🇷'},{city:'Río de Janeiro',country:'Brasil',flag:'🇧🇷'},{city:'Salvador',country:'Brasil',flag:'🇧🇷'},{city:'Florianópolis',country:'Brasil',flag:'🇧🇷'},
+  {city:'Santiago',country:'Chile',flag:'🇨🇱'},{city:'Valparaíso',country:'Chile',flag:'🇨🇱'},{city:'Atacama',country:'Chile',flag:'🇨🇱'},
+  {city:'París',country:'Francia',flag:'🇫🇷'},{city:'Lyon',country:'Francia',flag:'🇫🇷'},{city:'Niza',country:'Francia',flag:'🇫🇷'},{city:'Marsella',country:'Francia',flag:'🇫🇷'},
+  {city:'Londres',country:'Reino Unido',flag:'🇬🇧'},{city:'Edimburgo',country:'Reino Unido',flag:'🇬🇧'},{city:'Manchester',country:'Reino Unido',flag:'🇬🇧'},
+  {city:'Roma',country:'Italia',flag:'🇮🇹'},{city:'Milán',country:'Italia',flag:'🇮🇹'},{city:'Venecia',country:'Italia',flag:'🇮🇹'},{city:'Florencia',country:'Italia',flag:'🇮🇹'},{city:'Nápoles',country:'Italia',flag:'🇮🇹'},
+  {city:'Berlín',country:'Alemania',flag:'🇩🇪'},{city:'Múnich',country:'Alemania',flag:'🇩🇪'},{city:'Hamburgo',country:'Alemania',flag:'🇩🇪'},{city:'Frankfurt',country:'Alemania',flag:'🇩🇪'},
+  {city:'Ámsterdam',country:'Países Bajos',flag:'🇳🇱'},{city:'Róterdam',country:'Países Bajos',flag:'🇳🇱'},
+  {city:'Lisboa',country:'Portugal',flag:'🇵🇹'},{city:'Oporto',country:'Portugal',flag:'🇵🇹'},{city:'Algarve',country:'Portugal',flag:'🇵🇹'},
+  {city:'Tokio',country:'Japón',flag:'🇯🇵'},{city:'Kioto',country:'Japón',flag:'🇯🇵'},{city:'Osaka',country:'Japón',flag:'🇯🇵'},{city:'Hiroshima',country:'Japón',flag:'🇯🇵'},{city:'Sapporo',country:'Japón',flag:'🇯🇵'},
+  {city:'Bangkok',country:'Tailandia',flag:'🇹🇭'},{city:'Chiang Mai',country:'Tailandia',flag:'🇹🇭'},{city:'Phuket',country:'Tailandia',flag:'🇹🇭'},{city:'Koh Samui',country:'Tailandia',flag:'🇹🇭'},
+  {city:'Bali',country:'Indonesia',flag:'🇮🇩'},{city:'Yakarta',country:'Indonesia',flag:'🇮🇩'},{city:'Yogyakarta',country:'Indonesia',flag:'🇮🇩'},
+  {city:'Nueva York',country:'EE.UU.',flag:'🇺🇸'},{city:'Los Ángeles',country:'EE.UU.',flag:'🇺🇸'},{city:'Miami',country:'EE.UU.',flag:'🇺🇸'},{city:'Chicago',country:'EE.UU.',flag:'🇺🇸'},{city:'San Francisco',country:'EE.UU.',flag:'🇺🇸'},{city:'Las Vegas',country:'EE.UU.',flag:'🇺🇸'},{city:'Nueva Orleans',country:'EE.UU.',flag:'🇺🇸'},
+  {city:'Dubái',country:'Emiratos Árabes',flag:'🇦🇪'},{city:'Abu Dabi',country:'Emiratos Árabes',flag:'🇦🇪'},
+  {city:'Marrakech',country:'Marruecos',flag:'🇲🇦'},{city:'Fez',country:'Marruecos',flag:'🇲🇦'},{city:'Casablanca',country:'Marruecos',flag:'🇲🇦'},
+  {city:'El Cairo',country:'Egipto',flag:'🇪🇬'},{city:'Luxor',country:'Egipto',flag:'🇪🇬'},{city:'Asuán',country:'Egipto',flag:'🇪🇬'},{city:'Sharm el-Sheij',country:'Egipto',flag:'🇪🇬'},
+  {city:'Nairobi',country:'Kenia',flag:'🇰🇪'},{city:'Mombasa',country:'Kenia',flag:'🇰🇪'},
+  {city:'Ciudad del Cabo',country:'Sudáfrica',flag:'🇿🇦'},{city:'Johannesburgo',country:'Sudáfrica',flag:'🇿🇦'},{city:'Safari Kruger',country:'Sudáfrica',flag:'🇿🇦'},
+  {city:'Sídney',country:'Australia',flag:'🇦🇺'},{city:'Melbourne',country:'Australia',flag:'🇦🇺'},{city:'Brisbane',country:'Australia',flag:'🇦🇺'},{city:'Cairns',country:'Australia',flag:'🇦🇺'},
+  {city:'Singapur',country:'Singapur',flag:'🇸🇬'},
+  {city:'Hong Kong',country:'Hong Kong',flag:'🇭🇰'},
+  {city:'Seúl',country:'Corea del Sur',flag:'🇰🇷'},{city:'Busan',country:'Corea del Sur',flag:'🇰🇷'},
+  {city:'Pekín',country:'China',flag:'🇨🇳'},{city:'Shanghái',country:'China',flag:'🇨🇳'},{city:'Guangzhou',country:'China',flag:'🇨🇳'},
+  {city:'Mumbai',country:'India',flag:'🇮🇳'},{city:'Nueva Delhi',country:'India',flag:'🇮🇳'},{city:'Jaipur',country:'India',flag:'🇮🇳'},{city:'Goa',country:'India',flag:'🇮🇳'},
+  {city:'Reikiavik',country:'Islandia',flag:'🇮🇸'},
+  {city:'Oslo',country:'Noruega',flag:'🇳🇴'},{city:'Bergen',country:'Noruega',flag:'🇳🇴'},
+  {city:'Estocolmo',country:'Suecia',flag:'🇸🇪'},{city:'Gotemburgo',country:'Suecia',flag:'🇸🇪'},
+  {city:'Copenhague',country:'Dinamarca',flag:'🇩🇰'},
+  {city:'Helsinki',country:'Finlandia',flag:'🇫🇮'},
+  {city:'Praga',country:'República Checa',flag:'🇨🇿'},
+  {city:'Viena',country:'Austria',flag:'🇦🇹'},{city:'Salzburgo',country:'Austria',flag:'🇦🇹'},
+  {city:'Zúrich',country:'Suiza',flag:'🇨🇭'},{city:'Ginebra',country:'Suiza',flag:'🇨🇭'},
+  {city:'Bruselas',country:'Bélgica',flag:'🇧🇪'},{city:'Brujas',country:'Bélgica',flag:'🇧🇪'},
+  {city:'Atenas',country:'Grecia',flag:'🇬🇷'},{city:'Santorini',country:'Grecia',flag:'🇬🇷'},{city:'Mykonos',country:'Grecia',flag:'🇬🇷'},{city:'Creta',country:'Grecia',flag:'🇬🇷'},
+  {city:'Estambul',country:'Turquía',flag:'🇹🇷'},{city:'Capadocia',country:'Turquía',flag:'🇹🇷'},{city:'Antalya',country:'Turquía',flag:'🇹🇷'},
+  {city:'Cracovia',country:'Polonia',flag:'🇵🇱'},{city:'Varsovia',country:'Polonia',flag:'🇵🇱'},
+  {city:'Budapest',country:'Hungría',flag:'🇭🇺'},
+  {city:'La Habana',country:'Cuba',flag:'🇨🇺'},{city:'Trinidad',country:'Cuba',flag:'🇨🇺'},
+  {city:'Santo Domingo',country:'R. Dominicana',flag:'🇩🇴'},{city:'Punta Cana',country:'R. Dominicana',flag:'🇩🇴'},
+  {city:'San José',country:'Costa Rica',flag:'🇨🇷'},{city:'Tamarindo',country:'Costa Rica',flag:'🇨🇷'},
+  {city:'Ciudad de Panamá',country:'Panamá',flag:'🇵🇦'},
+  {city:'Quito',country:'Ecuador',flag:'🇪🇨'},{city:'Galápagos',country:'Ecuador',flag:'🇪🇨'},{city:'Cuenca',country:'Ecuador',flag:'🇪🇨'},
+  {city:'La Paz',country:'Bolivia',flag:'🇧🇴'},{city:'Uyuni',country:'Bolivia',flag:'🇧🇴'},
+  {city:'Montevideo',country:'Uruguay',flag:'🇺🇾'},{city:'Punta del Este',country:'Uruguay',flag:'🇺🇾'},
+  {city:'Asunción',country:'Paraguay',flag:'🇵🇾'},
+  {city:'Katmandú',country:'Nepal',flag:'🇳🇵'},
+  {city:'Hanói',country:'Vietnam',flag:'🇻🇳'},{city:'Ciudad Ho Chi Minh',country:'Vietnam',flag:'🇻🇳'},{city:'Hoi An',country:'Vietnam',flag:'🇻🇳'},
+  {city:'Siem Riep',country:'Camboya',flag:'🇰🇭'},{city:'Phnom Penh',country:'Camboya',flag:'🇰🇭'},
+  {city:'Rangún',country:'Myanmar',flag:'🇲🇲'},{city:'Bagan',country:'Myanmar',flag:'🇲🇲'},
+  {city:'Kuala Lumpur',country:'Malasia',flag:'🇲🇾'},{city:'Langkawi',country:'Malasia',flag:'🇲🇾'},
+  {city:'Manila',country:'Filipinas',flag:'🇵🇭'},{city:'Boracay',country:'Filipinas',flag:'🇵🇭'},{city:'Palawan',country:'Filipinas',flag:'🇵🇭'},
+  {city:'Colombo',country:'Sri Lanka',flag:'🇱🇰'},{city:'Kandy',country:'Sri Lanka',flag:'🇱🇰'},
+  {city:'Tel Aviv',country:'Israel',flag:'🇮🇱'},{city:'Jerusalén',country:'Israel',flag:'🇮🇱'},
+  {city:'Ammán',country:'Jordania',flag:'🇯🇴'},{city:'Petra',country:'Jordania',flag:'🇯🇴'},{city:'Wadi Rum',country:'Jordania',flag:'🇯🇴'},
+  {city:'Toronto',country:'Canadá',flag:'🇨🇦'},{city:'Vancouver',country:'Canadá',flag:'🇨🇦'},{city:'Montreal',country:'Canadá',flag:'🇨🇦'},
+  {city:'Auckland',country:'Nueva Zelanda',flag:'🇳🇿'},{city:'Queenstown',country:'Nueva Zelanda',flag:'🇳🇿'},
+  {city:'Moscú',country:'Rusia',flag:'🇷🇺'},{city:'San Petersburgo',country:'Rusia',flag:'🇷🇺'}
+];
+
+const countries = [...new Map(cities.map(c => [c.country, { name: c.country, flag: c.flag }])).values()]
+  .sort((a, b) => a.name.localeCompare(b.name, 'es'));
+
+const searchResultCache = {};
+
+function slugify(str) {
+  return str.replace(/\s/g, '_').replace(/[^\w\-]/g, '');
+}
+
+function syncDestAnswers() {
+  answers['destinations'] = selectedDest.map(x =>
+    x.kind === 'country'
+      ? { tipo: 'pais', nombre: x.country, flag: x.flag }
+      : { tipo: 'ciudad', ciudad: x.city, pais: x.country, flag: x.flag }
+  );
+}
+
+function searchCity(val, resultsId, tagsId, type) {
+  const res = document.getElementById(resultsId);
+  if (!val || val.length < 1) { res.classList.remove('show'); return; }
+  const q = val.toLowerCase();
+  const cache = [];
+  let html = '';
+
+  if (type === 'dest') {
+    const matchedCountries = countries.filter(c => c.name.toLowerCase().includes(q)).slice(0, 5);
+    if (matchedCountries.length) {
+      html += `<div class="search-section-label">${L().ui.search.countries}</div>`;
+      matchedCountries.forEach(c => {
+        cache.push({ kind: 'country', country: c.name, flag: c.flag });
+        const idx = cache.length - 1;
+        html += `<div class="search-item is-country" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
+          <span class="flag">${c.flag}</span>
+          <span class="city-name">${c.name}</span>
+          <span class="country-name">${L().ui.search.exploreCountry}</span>
+        </div>`;
+      });
+    }
+  }
+
+  const matchedCities = cities.filter(c =>
+    c.city.toLowerCase().includes(q) || c.country.toLowerCase().includes(q)
+  ).slice(0, 8);
+
+  if (matchedCities.length) {
+    if (html) html += `<div class="search-section-label">${L().ui.search.cities}</div>`;
+    matchedCities.forEach(c => {
+      cache.push({ kind: 'city', city: c.city, country: c.country, flag: c.flag });
+      const idx = cache.length - 1;
+      html += `<div class="search-item" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
+        <span class="flag">${c.flag}</span>
+        <span class="city-name">${c.city}</span>
+        <span class="country-name">${c.country}</span>
+      </div>`;
+    });
+  }
+
+  if (!html) { res.classList.remove('show'); return; }
+  searchResultCache[resultsId] = cache;
+  res.innerHTML = html;
+  res.classList.add('show');
+}
+
+function selectSearchResult(index, resultsId, tagsId, type) {
+  const item = searchResultCache[resultsId][index];
+  if (!item) return;
+  if (item.kind === 'country') addCountry(item.country, item.flag, resultsId, tagsId, type);
+  else addCity(item.city, item.country, item.flag, resultsId, tagsId, type);
+}
+
+function addCountry(country, flag, resultsId, tagsId, type) {
+  if (type !== 'dest') return;
+  if (selectedDest.find(x => x.kind === 'country' && x.country === country)) return;
+  selectedDest.push({ kind: 'country', country, flag });
+  syncDestAnswers();
+  const container = document.getElementById(tagsId);
+  const tag = document.createElement('div');
+  tag.className = 'city-tag country-tag';
+  tag.id = `tag-${type}-country-${slugify(country)}`;
+  tag.innerHTML = `${L().ui.search.countryItemPrefix}${flag} ${country} <span class="remove" onclick="removePlace('country-${slugify(country)}','${type}')">✕</span>`;
+  container.appendChild(tag);
+  document.getElementById('destSearch').value = '';
+  document.getElementById(resultsId).classList.remove('show');
+  updateProgress();
+}
+
+function addCity(city, country, flag, resultsId, tagsId, type) {
+  const arr = type === 'origin' ? selectedOrigin : selectedDest;
+  const key = type === 'origin' ? 'origin' : 'destinations';
+  if (arr.find(x => x.kind === 'city' && x.city === city)) return;
+  if (type === 'dest') {
+    arr.push({ kind: 'city', city, country, flag });
+    syncDestAnswers();
+  } else {
+    arr.push({ city, country, flag });
+    answers[key] = arr.map(x => x.city);
+  }
+  const container = document.getElementById(tagsId);
+  const tag = document.createElement('div');
+  tag.className = 'city-tag';
+  tag.id = `tag-${type}-city-${slugify(city)}`;
+  tag.innerHTML = `${flag} ${city} <span class="remove" onclick="removePlace('city-${slugify(city)}','${type}')">✕</span>`;
+  container.appendChild(tag);
+  const inputId = type === 'origin' ? 'originSearch' : 'destSearch';
+  document.getElementById(inputId).value = '';
+  document.getElementById(resultsId).classList.remove('show');
+  updateProgress();
+}
+
+function removePlace(slug, type) {
+  const arr = type === 'origin' ? selectedOrigin : selectedDest;
+  const isCountry = slug.startsWith('country-');
+  const slugName = slug.replace(/^(city|country)-/, '');
+
+  if (type === 'origin') {
+    const name = slugName.replace(/_/g, ' ');
+    const idx = arr.findIndex(x => x.city === name);
+    if (idx > -1) arr.splice(idx, 1);
+    answers['origin'] = arr.map(x => x.city);
+  } else {
+    const idx = arr.findIndex(x =>
+      isCountry
+        ? x.kind === 'country' && slugify(x.country) === slugName
+        : x.kind === 'city' && x.city === slugName.replace(/_/g, ' ')
+    );
+    if (idx > -1) arr.splice(idx, 1);
+    syncDestAnswers();
+  }
+  const tag = document.getElementById(`tag-${type}-${slug}`);
+  if (tag) tag.remove();
+  updateProgress();
+}
+
+function removeCity(city, type) {
+  removePlace('city-' + slugify(city), type);
+}
+
+function selTripType(row) {
+  selRow(row);
+  showTripType(row.dataset.v);
+}
+
+function updateBudgetMode(isNomada) {
+  document.getElementById('budgetLabelTotal').style.display = isNomada ? 'none' : 'block';
+  document.getElementById('budgetLabelMonthly').style.display = isNomada ? 'block' : 'none';
+  document.getElementById('budgetHintTotal').style.display = isNomada ? 'none' : 'block';
+  document.getElementById('budgetOptsTotal').style.display = isNomada ? 'none' : 'grid';
+  document.getElementById('budgetOptsMonthly').style.display = isNomada ? 'grid' : 'none';
+  updateBudgetPlaceholders(isNomada);
+}
+
+function showTripType(mode) {
+  const isSorpresa = mode === 'sorpresa';
+  const isNomada = mode === 'nomada';
+  const showStep2 = mode && !isSorpresa;
+
+  document.getElementById('sorpresaMessage').style.display = isSorpresa ? 'block' : 'none';
+  document.getElementById('tripStep2').style.display = showStep2 ? 'block' : 'none';
+  document.getElementById('nomadaDuration').style.display = isNomada ? 'block' : 'none';
+  updateBudgetMode(isNomada);
+}
+
+function showDest(mode) {
+  showTripType(mode === 'tengo' ? 'destino' : mode);
+}
+
+function sel(btn) {
+  const q = btn.dataset.q;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  answers[q] = btn.dataset.v;
+  updateProgress();
+}
+
+function selRow(row) {
+  const q = row.dataset.q;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
+  row.classList.add('sel');
+  answers[q] = row.dataset.v;
+  updateProgress();
+}
+
+function toggle(btn) {
+  const q = btn.dataset.q;
+  btn.classList.toggle('sel');
+  const vals = [];
+  document.querySelectorAll(`[data-q="${q}"].sel`).forEach(b => vals.push(b.dataset.v));
+  answers[q] = vals;
+  updateProgress();
+}
+
+function selMax(row, max) {
+  const q = row.dataset.q;
+  const allRows = document.querySelectorAll(`[data-q="${q}"]`);
+  const selected = document.querySelectorAll(`[data-q="${q}"].sel`);
+  if (row.classList.contains('sel')) {
+    row.classList.remove('sel');
+    allRows.forEach(r => r.classList.remove('disabled'));
+  } else {
+    if (selected.length < max) {
+      row.classList.add('sel');
+      if (document.querySelectorAll(`[data-q="${q}"].sel`).length >= max) {
+        allRows.forEach(r => { if (!r.classList.contains('sel')) r.classList.add('disabled'); });
+      }
+    }
+  }
+  const vals = [];
+  document.querySelectorAll(`[data-q="${q}"].sel`).forEach(r => vals.push(r.dataset.v));
+  answers[q] = vals;
+  updateProgress();
+}
+
+function updateSlider() {
+  const v = parseInt(document.getElementById('energySlider').value);
+  energyLabels = L().energyLabels;
+  document.getElementById('energyVal').textContent = energyLabels[v-1];
+  answers['energy'] = v;
+  updateProgress();
+}
+
+function calcDuration() {
+  const from = document.getElementById('dateFrom').value;
+  const to = document.getElementById('dateTo').value;
+  const pill = document.getElementById('durationPill');
+  if (from && to) {
+    const d1 = new Date(from), d2 = new Date(to);
+    if (d2 > d1) {
+      const days = Math.round((d2-d1)/(1000*60*60*24));
+      pill.textContent = formatDuration(days);
+      pill.classList.add('show');
+      answers['dateFrom'] = from;
+      answers['dateTo'] = to;
+      answers['duration_days'] = days;
+      updateProgress();
+    }
+  }
+  const minTo = document.getElementById('dateFrom').value || new Date().toISOString().split('T')[0];
+  document.getElementById('dateTo').min = minTo;
+}
+
+function updateProgress() {
+  const filled = Object.keys(answers).filter(k => {
+    const v = answers[k];
+    if (Array.isArray(v)) return v.length > 0;
+    return v !== undefined && v !== '' && v !== null;
+  }).length;
+  const pct = Math.min(100, Math.round((filled/20)*100));
+  document.getElementById('pFill').style.width = pct+'%';
+  const pLabel = document.getElementById('pLabel');
+  pLabel.textContent = getProgressLabel(pct);
+  pLabel.dataset.i18nState = pct < 100 ? 'progress' : 'ready';
+}
+
+function generateProfile() {
+  const lang = L();
+  const vibeMap = lang.profiles;
+  const quotes = lang.quotes;
+  const wakeTags = lang.wakeTags;
+  const energyTags = lang.energyTags;
+  const socialTags = lang.socialTags;
+  const accomMap = lang.accomTags;
+  const paceMap = lang.paceLabels;
+  const motivLabels = lang.motivLabels;
+
+  const motiv = answers['motiv'];
+  const primary = Array.isArray(motiv) && motiv.length > 0 ? motiv[0] : 'unico';
+  const name = vibeMap[primary] || vibeMap.unico;
+  const quote = quotes[primary] || quotes.unico;
+
+  const energy = answers['energy'] || 3;
+  const tags = [];
+  if (answers['wake']) tags.push(wakeTags[answers['wake']]);
+  tags.push(energyTags[energy]);
+  if (answers['social']) tags.push(socialTags[answers['social']]);
+  const accom = answers['accom'];
+  if (accom && accom.length > 0) {
+    tags.push(accomMap[accom[0]] || accomMap.default);
+  }
+  const dest = selectedDest;
+  if (dest && dest.length > 0) {
+    const first = dest[0];
+    if (first.kind === 'country') tags.push(`${first.flag} ${lang.ui.search.countryTagPrefix} ${first.country}`);
+    else tags.push(`${first.flag} ${first.city}`);
+  }
+
+  document.getElementById('pName').textContent = name;
+  document.getElementById('pQuote').textContent = quote;
+  document.getElementById('pTags').innerHTML = tags.filter(Boolean).map(t=>`<span class="ptag">${t}</span>`).join('');
+
+  const pace = answers['pace'];
+  document.getElementById('pMotiv').textContent = motivLabels[primary] || primary;
+  document.getElementById('pEnergy').textContent = lang.energyLabels[energy-1];
+  document.getElementById('pStyle').textContent = Array.isArray(pace) && pace.length > 0 ? paceMap[pace[0]] || '—' : '—';
+
+  const card = document.getElementById('profileCard');
+  card.classList.add('show');
+  updateShareableCard(primary, name, quote, energy, pace);
+  setTimeout(() => {
+    try { card.scrollIntoView({behavior:'smooth',block:'center'}); } catch (e) { console.error('BeTacora scroll error:', e); }
+  }, 100);
+}
+
+function stripQuoteMarks(text) {
+  if (!text) return '';
+  return String(text).replace(/^["'«""]+|["'»""]+$/g, '').trim();
+}
+
+function updateShareableCard(primary, name, quote, energy, pace) {
+  const motiv = answers['motiv'];
+  const motivKey = primary || (Array.isArray(motiv) && motiv.length > 0 ? motiv[0] : 'unico');
+  const lang = L();
+  const vibeMap = lang.profiles;
+  const quotes = lang.quotes;
+  const energyTags = lang.energyTags;
+  const socialTags = lang.socialTags;
+  const paceMap = lang.paceLabels;
+  const card = lang.ui.shareableCard;
+
+  const typeName = name || vibeMap[motivKey] || vibeMap.unico;
+  const typeQuote = stripQuoteMarks(quote || quotes[motivKey] || quotes.unico);
+  const energyLevel = energy || answers['energy'] || 3;
+  const paceArr = pace || answers['pace'];
+  const paceKey = Array.isArray(paceArr) && paceArr.length > 0 ? paceArr[0] : null;
+
+  document.getElementById('scType').textContent = typeName;
+  document.getElementById('scIcon').textContent = MOTIV_ICONS[motivKey] || MOTIV_ICONS.unico;
+  document.getElementById('scEnergy').textContent = energyTags[energyLevel] || energyTags[3];
+  document.getElementById('scSocial').textContent = answers['social'] ? (socialTags[answers['social']] || '—') : '—';
+  document.getElementById('scPace').textContent = paceKey ? (paceMap[paceKey] || '—') : '—';
+  document.getElementById('scQuote').textContent = typeQuote;
+  document.getElementById('scFooter').textContent = 'betacora.app · ' + card.tagline;
+  document.getElementById('scDownload').textContent = card.download;
+  document.getElementById('scShare').textContent = card.share;
+
+  const wrap = document.getElementById('shareableCard');
+  wrap.classList.add('show');
+}
+
+async function captureShareableCard() {
+  const el = document.getElementById('shareableCardInner');
+  if (typeof html2canvas === 'undefined') {
+    throw new Error('html2canvas not loaded');
+  }
+  return html2canvas(el, {
+    scale: 2,
+    backgroundColor: '#1e3a5f',
+    useCORS: true,
+    logging: false,
+  });
+}
+
+async function downloadShareableCard() {
+  try {
+    const canvas = await captureShareableCard();
+    const link = document.createElement('a');
+    link.download = 'betacora-perfil.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch (e) {
+    console.error(e);
+    alert(L().ui.errors.network);
+  }
+}
+
+async function shareShareableCard() {
+  try {
+    const canvas = await captureShareableCard();
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) throw new Error('Failed to create image');
+
+    const file = new File([blob], 'betacora-perfil.png', { type: 'image/png' });
+    const shareData = {
+      title: L().ui.share.title,
+      text: L().ui.shareableCard.tagline + ' — betacora.app',
+      url: 'https://betacora.app',
+    };
+
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ ...shareData, files: [file] });
+      return;
+    }
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+    await navigator.clipboard.writeText('https://betacora.app');
+    alert(L().ui.share.linkCopied);
+  } catch (e) {
+    if (e.name !== 'AbortError') {
+      try {
+        await navigator.clipboard.writeText('https://betacora.app');
+        alert(L().ui.share.linkCopied);
+      } catch {
+        console.error(e);
+      }
+    }
+  }
+}
+
+function collectAllAnswers() {
+  const budgetVal = document.getElementById('budgetMax').value;
+  if (answers['trip_type'] === 'nomada') {
+    if (budgetVal) answers['budgetMonthly'] = budgetVal;
+    delete answers['budgetMax'];
+    delete answers['budget_r'];
+  } else {
+    if (budgetVal) answers['budgetMax'] = budgetVal;
+    delete answers['budgetMonthly'];
+    delete answers['budget_monthly_r'];
+  }
+  const extra = document.getElementById('extra').value.trim();
+  if (extra) answers['extra'] = extra;
+  answers['currency'] = document.getElementById('currencySelect').value;
+  answers['ui_lang'] = LANG.current;
+  return { ...answers };
+}
+
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderItineraryHtml(html) {
+  const section = document.getElementById('itinerarySection');
+  const header = L().ui.bitacora;
+  section.innerHTML = `
+    <div class="bitacora-header">
+      <div class="bitacora-header-eyebrow">${header.eyebrow}</div>
+      <div class="bitacora-header-title">${header.title}</div>
+    </div>
+    <div class="bitacora-article">${html}</div>`;
+  section.classList.add('show');
+  setTimeout(() => {
+    try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
+  }, 200);
+}
+
+function showItineraryError(message) {
+  const section = document.getElementById('itinerarySection');
+  const err = L().ui.errors;
+  section.innerHTML = `<div class="itinerary-error"><strong>${err.title}</strong>${escapeHtml(message)}</div>`;
+  section.classList.add('show');
+  setTimeout(() => {
+    try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
+  }, 200);
+}
+
+async function handleGenerate() {
+  const btn = document.getElementById('submitBtn');
+  const section = document.getElementById('itinerarySection');
+
+  collectAllAnswers();
+  btn.disabled = true;
+  btn.textContent = L().ui.submit.btnLoading;
+  section.innerHTML = '';
+  section.classList.remove('show');
+
+  generateProfile();
+
+  const err = L().ui.errors;
+
+  try {
+    const res = await fetch('/api/generate-itinerary', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(collectAllAnswers()),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      showItineraryError(data.error || err.generate);
+      return;
+    }
+    if (!data.html || typeof data.html !== 'string') {
+      showItineraryError(err.invalid);
+      return;
+    }
+    renderItineraryHtml(data.html);
+  } catch (errCaught) {
+    showItineraryError(err.network);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = L().ui.submit.btn;
+  }
+}
+
+function shareProfile() {
+  const name = document.getElementById('pName').textContent;
+  const text = L().ui.share.text.replace('{name}', name);
+  if (navigator.share) {
+    navigator.share({title: L().ui.share.title, text, url:'https://betacora.app'}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>alert(L().ui.share.copied));
+  }
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', e => {
+  try {
+    if (!e.target.closest('.search-wrap')) {
+      document.querySelectorAll('.search-dropdown').forEach(d => d.classList.remove('show'));
+    }
+  } catch (err) {
+    console.error('BeTacora click handler error:', err);
+  }
+});
+
+// ─── Page init (runs once on load) ───────────────────────────────
+try {
+  const dateFrom = document.getElementById('dateFrom');
+  if (dateFrom) dateFrom.min = new Date().toISOString().split('T')[0];
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      try { LANG.set(btn.dataset.lang); } catch (err) { console.error('BeTacora lang switch error:', err); }
+    });
+  });
+
+  if (!localStorage.getItem('bt_lang')) {
+    localStorage.setItem('bt_lang', LANG.current);
+  }
+  answers['ui_lang'] = LANG.current;
+  LANG.apply();
+  updateSlider();
+  updateProgress();
+} catch (e) {
+  console.error('BeTacora init error:', e);
+}
+</script>
+</body>
+</html>

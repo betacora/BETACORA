@@ -56,7 +56,23 @@ body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
 .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.45rem; }
+.grid-dur { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+@media(min-width:640px) { .grid-dur { grid-template-columns: repeat(4, 1fr); } }
 @media(max-width:520px) { .grid3,.grid4 { grid-template-columns: 1fr 1fr; } }
+.mision-sport-group { margin-top: 1rem; }
+.mision-sport-group:first-child { margin-top: 0.75rem; }
+.sport-group-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--fog); margin-bottom: 0.45rem;
+}
+.mision-event-wrap { margin-top: 0.85rem; display: none; }
+.mision-event-wrap.show { display: block; }
+.section-divider {
+  margin: 2rem 0 1.75rem; padding: 1rem 0 0.25rem;
+  border-top: 2px dashed rgba(45,123,123,0.28);
+  text-align: center; font-size: 0.88rem; font-weight: 600;
+  color: var(--teal-dark); font-style: italic; line-height: 1.45;
+}
 
 .opt { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; padding: 0.7rem 0.4rem; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 10px; cursor: pointer; text-align: center; font-size: 0.75rem; color: var(--ink); transition: all 0.18s; position: relative; line-height: 1.3; font-family: 'DM Sans', sans-serif; }
 .opt .em { font-size: 1.25rem; display: block; margin-bottom: 0.1rem; }
@@ -163,20 +179,28 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px;
 .sc-logo { position: relative; z-index: 1; padding: 1.25rem 1.35rem 0; text-align: left; font-size: 0.95rem; font-weight: 700; }
 .sc-be { color: #fff; }
 .sc-tacora { color: var(--coral); }
-.sc-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 1.5rem; position: relative; z-index: 1; }
-.sc-type { font-size: 1.35rem; font-weight: 700; color: #fff; text-align: center; line-height: 1.25; margin-bottom: 0.65rem; max-width: 340px; }
-.sc-icon { font-size: 3.25rem; line-height: 1; margin-bottom: 1rem; }
-.sc-stats { display: flex; gap: 0.45rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; width: 100%; }
-.sc-pill {
-  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
-  color: rgba(255,255,255,0.92); padding: 0.35rem 0.55rem; border-radius: 100px;
-  font-size: 0.58rem; font-weight: 600; line-height: 1.3; max-width: 120px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.sc-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.5rem 1.25rem 0.25rem; position: relative; z-index: 1; overflow: hidden; }
+.sc-type { font-size: 1.4rem; font-weight: 800; color: #fff; text-align: center; line-height: 1.15; margin-bottom: 0.45rem; max-width: 340px; letter-spacing: -0.01em; }
+.sc-essence {
+  font-size: 0.62rem; color: rgba(255,255,255,0.82); text-align: center; line-height: 1.45;
+  max-width: 340px; margin-bottom: 0.45rem;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
 }
 .sc-quote {
-  font-size: 0.78rem; font-style: italic; color: var(--coral-light); text-align: center;
-  line-height: 1.55; max-width: 320px; padding: 0 0.25rem;
+  font-size: 0.72rem; font-style: italic; color: var(--coral-light); text-align: center;
+  line-height: 1.4; max-width: 320px; margin-bottom: 0.4rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
+.sc-animal {
+  font-size: 0.58rem; color: rgba(255,255,255,0.7); text-align: center; line-height: 1.35;
+  max-width: 340px; margin-bottom: 0.5rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sc-stats-bars { width: 100%; max-width: 300px; margin-top: 0.15rem; }
+.sc-stat-row { margin-bottom: 0.32rem; }
+.sc-stat-label { display: flex; justify-content: space-between; font-size: 0.52rem; font-weight: 600; color: rgba(255,255,255,0.75); margin-bottom: 0.12rem; letter-spacing: 0.02em; }
+.sc-stat-bar { height: 4px; background: rgba(255,255,255,0.12); border-radius: 2px; overflow: hidden; }
+.sc-stat-fill { height: 100%; background: linear-gradient(90deg, var(--coral) 0%, var(--coral-light) 100%); border-radius: 2px; transition: width 0.4s ease; }
 .sc-footer {
   background: var(--coral); color: #fff; text-align: center; padding: 0.75rem 1rem;
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em; position: relative; z-index: 1;
@@ -465,89 +489,90 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px;
     </div>
   </div>
 
-  <!-- VI -->
-  <div class="section">
+  <!-- VI — Misión del Viaje -->
+  <div class="section" id="misionSection">
     <div class="section-header">
       <span class="section-num">VI</span>
-      <div><div class="section-title">Tripulación y Presupuesto</div><div class="section-sub">Con quién viajas y cómo inviertes</div></div>
+      <div><div class="section-title">Misión del Viaje</div><div class="section-sub">El foco concreto de esta aventura</div></div>
     </div>
 
-    <div class="qblock">
-      <div class="qlabel">¿Cómo sueles viajar?</div>
+    <div class="qblock" id="misionFocusBlock">
+      <div class="qlabel">¿Cuál es el foco principal de este viaje?</div>
+      <span class="multi-badge">✦ Selección libre</span>
       <div class="grid4">
-        <button class="opt" data-q="social" data-v="solo" onclick="sel(this)"><span class="em">🦅</span>Solo</button>
-        <button class="opt" data-q="social" data-v="pareja" onclick="sel(this)"><span class="em">💑</span>En pareja</button>
-        <button class="opt" data-q="social" data-v="amigos" onclick="sel(this)"><span class="em">👯</span>Con amigos</button>
-        <button class="opt" data-q="social" data-v="familia" onclick="sel(this)"><span class="em">👨‍👩‍👧</span>Con familia</button>
+        <button class="opt" data-q="mision_focus" data-v="urbano" onclick="toggleMisionFocus(this)"><span class="em">🏙️</span>Ciudades y vida urbana</button>
+        <button class="opt" data-q="mision_focus" data-v="naturaleza" onclick="toggleMisionFocus(this)"><span class="em">🏔️</span>Naturaleza y paisajes</button>
+        <button class="opt" data-q="mision_focus" data-v="cultura" onclick="toggleMisionFocus(this)"><span class="em">🎨</span>Cultura, museos e historia</button>
+        <button class="opt" data-q="mision_focus" data-v="gastro" onclick="toggleMisionFocus(this)"><span class="em">🍽️</span>Gastronomía a fondo</button>
+        <button class="opt" data-q="mision_focus" data-v="playa" onclick="toggleMisionFocus(this)"><span class="em">🏖️</span>Playa y desconexión</button>
+        <button class="opt" data-q="mision_focus" data-v="social" onclick="toggleMisionFocus(this)"><span class="em">🎉</span>Vida social y nocturna</button>
+        <button class="opt" data-q="mision_focus" data-v="compras" onclick="toggleMisionFocus(this)"><span class="em">🛍️</span>Compras y tiendas locales</button>
+        <button class="opt" data-q="mision_focus" data-v="unico" onclick="toggleMisionFocus(this)"><span class="em">✨</span>Experiencias únicas</button>
       </div>
     </div>
 
-    <div class="qblock">
-      <div class="qlabel">Tu energía social en un viaje</div>
-      <div class="opt-list">
-        <div class="opt-row" data-q="social_e" data-v="intro" onclick="selRow(this)"><span class="em2">🎧</span><span class="txt">Introvertido — el viaje es tiempo para mí</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="social_e" data-v="ambiv" onclick="selRow(this)"><span class="em2">🌓</span><span class="txt">Ambivertido — disfruto conocer gente pero necesito tiempo solo</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="social_e" data-v="extro" onclick="selRow(this)"><span class="em2">🎉</span><span class="txt">Extrovertido — los mejores recuerdos son las personas que conocí</span><span class="dot"></span></div>
+    <div class="qblock" id="misionSportBlock">
+      <div class="qlabel">¿Quieres centrar este viaje en algún deporte o actividad específica?</div>
+      <div class="opt-list" style="margin-bottom:0.5rem">
+        <div class="opt-row" data-q="mision_sport" data-v="no" onclick="selMisionSport(this)"><span class="em2">🚫</span><span class="txt">No, actividades ocasionales está bien</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_sport" data-v="yes" onclick="selMisionSport(this)"><span class="em2">🎯</span><span class="txt">Sí, quiero centrar el viaje en algo concreto</span><span class="dot"></span></div>
       </div>
-    </div>
 
-    <div class="qblock" id="budgetBlock">
-      <div class="qlabel" id="budgetLabelTotal">Presupuesto máximo para este viaje</div>
-      <div class="qlabel" id="budgetLabelMonthly" style="display:none">¿Cuánto tienes de presupuesto por mes?</div>
-      <div class="qhint" id="budgetHintTotal">Por persona incluyendo vuelo y alojamiento</div>
-      <div class="budget-row">
-        <select class="currency-select" id="currencySelect" onchange="updateCurrency()">
-          <option value="USD">🇺🇸 USD — Dólar</option>
-          <option value="EUR">🇪🇺 EUR — Euro</option>
-          <option value="GBP">🇬🇧 GBP — Libra</option>
-          <option value="MXN">🇲🇽 MXN — Peso Mx</option>
-          <option value="ARS">🇦🇷 ARS — Peso Ar</option>
-          <option value="COP">🇨🇴 COP — Peso Co</option>
-          <option value="BRL">🇧🇷 BRL — Real</option>
-          <option value="CLP">🇨🇱 CLP — Peso Ch</option>
-          <option value="PEN">🇵🇪 PEN — Sol</option>
-          <option value="CHF">🇨🇭 CHF — Franco</option>
-          <option value="JPY">🇯🇵 JPY — Yen</option>
-          <option value="CAD">🇨🇦 CAD — Dólar Ca</option>
-          <option value="AUD">🇦🇺 AUD — Dólar Au</option>
-          <option value="AED">🇦🇪 AED — Dírham</option>
-          <option value="THB">🇹🇭 THB — Baht</option>
-        </select>
-        <div class="amount-box">
-          <span class="currency-sym" id="currSym">$</span>
-          <input type="number" placeholder="Ej: 3000" id="budgetMax" oninput="updateProgress()">
+      <div id="misionSportDetail" style="display:none">
+        <div class="mision-sport-group">
+          <div class="sport-group-label" id="sportGroupWater">Deportes de agua</div>
+          <div class="grid4">
+            <button class="opt" data-q="mision_sports" data-v="surf" onclick="toggleMisionSport(this)"><span class="em">🏄</span>Surf</button>
+            <button class="opt" data-q="mision_sports" data-v="kitesurf" onclick="toggleMisionSport(this)"><span class="em">🪁</span>Kitesurf</button>
+            <button class="opt" data-q="mision_sports" data-v="buceo" onclick="toggleMisionSport(this)"><span class="em">🤿</span>Buceo</button>
+            <button class="opt" data-q="mision_sports" data-v="kayak" onclick="toggleMisionSport(this)"><span class="em">🚣</span>Kayak/Rafting</button>
+          </div>
+        </div>
+        <div class="mision-sport-group">
+          <div class="sport-group-label" id="sportGroupMountain">Montaña</div>
+          <div class="grid4">
+            <button class="opt" data-q="mision_sports" data-v="trekking" onclick="toggleMisionSport(this)"><span class="em">🥾</span>Trekking</button>
+            <button class="opt" data-q="mision_sports" data-v="escalada" onclick="toggleMisionSport(this)"><span class="em">🧗</span>Escalada</button>
+            <button class="opt" data-q="mision_sports" data-v="esqui" onclick="toggleMisionSport(this)"><span class="em">⛷️</span>Esquí/Snowboard</button>
+            <button class="opt" data-q="mision_sports" data-v="ultra_trail" onclick="toggleMisionSport(this)"><span class="em">🏃</span>Ultra trail/Trail running</button>
+          </div>
+        </div>
+        <div class="mision-sport-group">
+          <div class="sport-group-label" id="sportGroupOther">Otros</div>
+          <div class="grid4">
+            <button class="opt" data-q="mision_sports" data-v="ciclismo" onclick="toggleMisionSport(this)"><span class="em">🚴</span>Ciclismo</button>
+            <button class="opt" data-q="mision_sports" data-v="parapente" onclick="toggleMisionSport(this)"><span class="em">🪂</span>Parapente</button>
+            <button class="opt" data-q="mision_sports" data-v="yoga_wellness" onclick="toggleMisionSport(this)"><span class="em">🧘</span>Retiro yoga/wellness</button>
+          </div>
         </div>
       </div>
-      <div class="grid4" id="budgetOptsTotal">
-        <button class="opt" data-q="budget_r" data-v="low" onclick="sel(this)"><span class="em">💰</span>Económico</button>
-        <button class="opt" data-q="budget_r" data-v="mid" onclick="sel(this)"><span class="em">💳</span>Medio</button>
-        <button class="opt" data-q="budget_r" data-v="high" onclick="sel(this)"><span class="em">💎</span>Premium</button>
-        <button class="opt" data-q="budget_r" data-v="ilim" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
-      </div>
-      <div class="grid3" id="budgetOptsMonthly" style="display:none;margin-top:0.5rem">
-        <button class="opt" data-q="budget_monthly_r" data-v="under1000" onclick="sel(this)"><span class="em">💰</span>Menos de 1.000/mes</button>
-        <button class="opt" data-q="budget_monthly_r" data-v="1000-2000" onclick="sel(this)"><span class="em">🎒</span>1.000–2.000/mes</button>
-        <button class="opt" data-q="budget_monthly_r" data-v="2000-3500" onclick="sel(this)"><span class="em">✈️</span>2.000–3.500/mes</button>
-        <button class="opt" data-q="budget_monthly_r" data-v="over3500" onclick="sel(this)"><span class="em">💎</span>+3.500/mes</button>
-        <button class="opt" data-q="budget_monthly_r" data-v="ilim" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
+
+      <div id="misionSportIntentBlock" style="display:none;margin-top:1rem">
+        <div class="qlabel" style="margin-bottom:0.5rem">¿Es para una competición o evento concreto, o para disfrutarlo a tu ritmo?</div>
+        <div class="opt-list">
+          <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Tengo una carrera o evento</span><span class="dot"></span></div>
+          <div class="opt-row" data-q="mision_sport_intent" data-v="centrar" onclick="selMisionSportIntent(this)"><span class="em2">🎯</span><span class="txt">Quiero centrar el viaje en esto, sin competir</span><span class="dot"></span></div>
+          <div class="opt-row" data-q="mision_sport_intent" data-v="casual" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Es una actividad más, sin obsesionarme</span><span class="dot"></span></div>
+        </div>
+        <div class="mision-event-wrap" id="misionEventDateWrap">
+          <label class="date-label" for="misionEventDate">📅 Fecha del evento o carrera</label>
+          <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
+        </div>
       </div>
     </div>
 
-    <div class="qblock">
-      <div class="qlabel">¿En qué gastas sin mirar el precio?</div>
-      <span class="multi-badge">✦ Selección libre</span>
-      <div class="grid3">
-        <button class="opt" data-q="splurge" data-v="hotel" onclick="toggle(this)"><span class="em">🏨</span>Alojamiento</button>
-        <button class="opt" data-q="splurge" data-v="comida" onclick="toggle(this)"><span class="em">🍽️</span>Gastronomía</button>
-        <button class="opt" data-q="splurge" data-v="exp" onclick="toggle(this)"><span class="em">🎯</span>Experiencias</button>
-        <button class="opt" data-q="splurge" data-v="vuelo" onclick="toggle(this)"><span class="em">✈️</span>El vuelo</button>
-        <button class="opt" data-q="splurge" data-v="compras" onclick="toggle(this)"><span class="em">🛍️</span>Compras</button>
-        <button class="opt" data-q="splurge" data-v="optimizo" onclick="toggle(this)"><span class="em">🧩</span>Optimizo todo</button>
+    <div class="qblock" id="misionLuxuryBlock" style="display:none">
+      <div class="qlabel">¿Cómo te gustaría vivir el lujo o confort en este viaje?</div>
+      <div class="opt-list">
+        <div class="opt-row" data-q="mision_luxury" data-v="comodidad" onclick="selMisionLuxury(this)"><span class="em2">🛏️</span><span class="txt">Comodidad sin complicaciones</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_luxury" data-v="discretas" onclick="selMisionLuxury(this)"><span class="em2">🍷</span><span class="txt">Experiencias de calidad, discretas</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_luxury" data-v="reconocidos" onclick="selMisionLuxury(this)"><span class="em2">📸</span><span class="txt">Sitios reconocidos</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_luxury" data-v="mix" onclick="selMisionLuxury(this)"><span class="em2">⚖️</span><span class="txt">Mezcla de todo</span><span class="dot"></span></div>
       </div>
     </div>
   </div>
 
-  <!-- VII -->
+  <!-- VII — Tu Próximo Viaje (destino → fechas → tripulación/presupuesto) -->
   <div class="section">
     <div class="section-header">
       <span class="section-num">VII</span>
@@ -624,28 +649,105 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px;
       </div>
     </div>
 
-    <div class="qblock">
+    <div class="qblock" id="datesBlock">
       <div class="qlabel">¿Cuándo quieres viajar?</div>
       <div class="qhint">Selecciona las fechas o elige una duración aproximada</div>
       <div class="calendar-wrap">
         <div class="date-field">
           <label class="date-label" for="dateFrom">📅 Fecha de salida</label>
-          <input type="date" class="date-input" id="dateFrom" lang="es-ES" onchange="calcDuration()">
+          <input type="date" class="date-input" id="dateFrom" lang="es-ES" onchange="onDateChange()">
         </div>
         <div class="date-field">
           <label class="date-label" for="dateTo">🏠 Fecha de vuelta</label>
-          <input type="date" class="date-input" id="dateTo" lang="es-ES" onchange="calcDuration()">
+          <input type="date" class="date-input" id="dateTo" lang="es-ES" onchange="onDateChange()">
         </div>
       </div>
       <div class="date-format-hint" id="dateFormatHint">DD/MM/AAAA</div>
       <div class="duration-pill" id="durationPill"></div>
+      <div class="grid-dur" id="durQuickGrid">
+        <button class="opt" data-q="dur" data-v="finde" onclick="selDur(this)"><span class="em">🏖️</span>Finde (2-3 días)</button>
+        <button class="opt" data-q="dur" data-v="finde_largo" onclick="selDur(this)"><span class="em">🌴</span>Finde largo (3-4 días)</button>
+        <button class="opt" data-q="dur" data-v="semana" onclick="selDur(this)"><span class="em">📅</span>1 semana</button>
+        <button class="opt" data-q="dur" data-v="dos" onclick="selDur(this)"><span class="em">🗓️</span>2 semanas</button>
+        <button class="opt" data-q="dur" data-v="tres" onclick="selDur(this)"><span class="em">🌍</span>3 semanas</button>
+        <button class="opt" data-q="dur" data-v="nomad" onclick="selDur(this)"><span class="em">♾️</span>Sin fecha vuelta</button>
+        <button class="opt" data-q="dur" data-v="flex" onclick="selDur(this)"><span class="em">🎲</span>Flexible</button>
+      </div>
+    </div>
+
+    <div class="section-divider" id="crewDivider">Ahora, hablemos de tu tripulación y presupuesto</div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Cómo sueles viajar?</div>
       <div class="grid4">
-        <button class="opt" data-q="dur" data-v="finde" onclick="sel(this)"><span class="em">🏃</span>3-4 días</button>
-        <button class="opt" data-q="dur" data-v="semana" onclick="sel(this)"><span class="em">📅</span>1 semana</button>
-        <button class="opt" data-q="dur" data-v="dos" onclick="sel(this)"><span class="em">🗓️</span>2 semanas</button>
-        <button class="opt" data-q="dur" data-v="mas" onclick="sel(this)"><span class="em">🌍</span>+3 semanas</button>
-        <button class="opt" data-q="dur" data-v="nomad" onclick="sel(this)"><span class="em">♾️</span>Sin fecha vuelta</button>
-        <button class="opt" data-q="dur" data-v="flex" onclick="sel(this)"><span class="em">🎲</span>Flexible</button>
+        <button class="opt" data-q="social" data-v="solo" onclick="sel(this)"><span class="em">🦅</span>Solo</button>
+        <button class="opt" data-q="social" data-v="pareja" onclick="sel(this)"><span class="em">💑</span>En pareja</button>
+        <button class="opt" data-q="social" data-v="amigos" onclick="sel(this)"><span class="em">👯</span>Con amigos</button>
+        <button class="opt" data-q="social" data-v="familia" onclick="sel(this)"><span class="em">👨‍👩‍👧</span>Con familia</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">Tu energía social en un viaje</div>
+      <div class="opt-list">
+        <div class="opt-row" data-q="social_e" data-v="intro" onclick="selRow(this)"><span class="em2">🎧</span><span class="txt">Introvertido — el viaje es tiempo para mí</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="social_e" data-v="ambiv" onclick="selRow(this)"><span class="em2">🌓</span><span class="txt">Ambivertido — disfruto conocer gente pero necesito tiempo solo</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="social_e" data-v="extro" onclick="selRow(this)"><span class="em2">🎉</span><span class="txt">Extrovertido — los mejores recuerdos son las personas que conocí</span><span class="dot"></span></div>
+      </div>
+    </div>
+
+    <div class="qblock" id="budgetBlock">
+      <div class="qlabel" id="budgetLabelTotal">Presupuesto máximo para este viaje</div>
+      <div class="qlabel" id="budgetLabelMonthly" style="display:none">¿Cuánto tienes de presupuesto por mes?</div>
+      <div class="qhint" id="budgetHintTotal">Por persona incluyendo vuelo y alojamiento</div>
+      <div class="budget-row">
+        <select class="currency-select" id="currencySelect" onchange="updateCurrency()">
+          <option value="USD">🇺🇸 USD — Dólar</option>
+          <option value="EUR">🇪🇺 EUR — Euro</option>
+          <option value="GBP">🇬🇧 GBP — Libra</option>
+          <option value="MXN">🇲🇽 MXN — Peso Mx</option>
+          <option value="ARS">🇦🇷 ARS — Peso Ar</option>
+          <option value="COP">🇨🇴 COP — Peso Co</option>
+          <option value="BRL">🇧🇷 BRL — Real</option>
+          <option value="CLP">🇨🇱 CLP — Peso Ch</option>
+          <option value="PEN">🇵🇪 PEN — Sol</option>
+          <option value="CHF">🇨🇭 CHF — Franco</option>
+          <option value="JPY">🇯🇵 JPY — Yen</option>
+          <option value="CAD">🇨🇦 CAD — Dólar Ca</option>
+          <option value="AUD">🇦🇺 AUD — Dólar Au</option>
+          <option value="AED">🇦🇪 AED — Dírham</option>
+          <option value="THB">🇹🇭 THB — Baht</option>
+        </select>
+        <div class="amount-box">
+          <span class="currency-sym" id="currSym">$</span>
+          <input type="number" placeholder="Ej: 3000" id="budgetMax" oninput="updateProgress()">
+        </div>
+      </div>
+      <div class="grid4" id="budgetOptsTotal">
+        <button class="opt" data-q="budget_r" data-v="low" onclick="sel(this)"><span class="em">💰</span>Económico</button>
+        <button class="opt" data-q="budget_r" data-v="mid" onclick="sel(this)"><span class="em">💳</span>Medio</button>
+        <button class="opt" data-q="budget_r" data-v="high" onclick="sel(this)"><span class="em">💎</span>Premium</button>
+        <button class="opt" data-q="budget_r" data-v="ilim" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
+      </div>
+      <div class="grid3" id="budgetOptsMonthly" style="display:none;margin-top:0.5rem">
+        <button class="opt" data-q="budget_monthly_r" data-v="under1000" onclick="sel(this)"><span class="em">💰</span>Menos de 1.000/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="1000-2000" onclick="sel(this)"><span class="em">🎒</span>1.000–2.000/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="2000-3500" onclick="sel(this)"><span class="em">✈️</span>2.000–3.500/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="over3500" onclick="sel(this)"><span class="em">💎</span>+3.500/mes</button>
+        <button class="opt" data-q="budget_monthly_r" data-v="ilim" onclick="sel(this)"><span class="em">♾️</span>Sin límite</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿En qué gastas sin mirar el precio?</div>
+      <span class="multi-badge">✦ Selección libre</span>
+      <div class="grid3">
+        <button class="opt" data-q="splurge" data-v="hotel" onclick="toggle(this)"><span class="em">🏨</span>Alojamiento</button>
+        <button class="opt" data-q="splurge" data-v="comida" onclick="toggle(this)"><span class="em">🍽️</span>Gastronomía</button>
+        <button class="opt" data-q="splurge" data-v="exp" onclick="toggle(this)"><span class="em">🎯</span>Experiencias</button>
+        <button class="opt" data-q="splurge" data-v="vuelo" onclick="toggle(this)"><span class="em">✈️</span>El vuelo</button>
+        <button class="opt" data-q="splurge" data-v="compras" onclick="toggle(this)"><span class="em">🛍️</span>Compras</button>
+        <button class="opt" data-q="splurge" data-v="optimizo" onclick="toggle(this)"><span class="em">🧩</span>Optimizo todo</button>
       </div>
     </div>
 
@@ -682,13 +784,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px;
         <div class="sc-logo"><span class="sc-be">Be</span><span class="sc-tacora">Tacora</span></div>
         <div class="sc-body">
           <div class="sc-type" id="scType">El Explorador de Fronteras</div>
-          <div class="sc-icon" id="scIcon">🧗</div>
-          <div class="sc-stats">
-            <div class="sc-pill" id="scEnergy">⚡ Activo</div>
-            <div class="sc-pill" id="scSocial">🦅 Solo</div>
-            <div class="sc-pill" id="scPace">Equilibrado</div>
-          </div>
+          <div class="sc-essence" id="scEssence"></div>
           <div class="sc-quote" id="scQuote"></div>
+          <div class="sc-animal" id="scAnimal"></div>
+          <div class="sc-stats-bars" id="scStatsBars"></div>
         </div>
         <div class="sc-footer" id="scFooter">betacora.app · Tu bitácora inteligente</div>
       </div>
@@ -741,7 +840,7 @@ const LANG = {
     answers['ui_lang'] = lang;
     energyLabels = I18N[lang].energyLabels;
     if (document.getElementById('profileCard')?.classList.contains('show')) generateProfile();
-    if (document.getElementById('shareableCard')?.classList.contains('show')) updateShareableCard();
+    if (document.getElementById('shareableCard')?.classList.contains('show') && aiProfile) renderShareableCard(aiProfile);
     updateProgress();
   },
 
@@ -790,10 +889,16 @@ const LANG = {
       ['ui.questions.wake.label','ui.questions.wake.hint'], ['ui.questions.pace.label',null], ['ui.questions.energy.label',null],
       ['ui.questions.motiv.label',null], ['ui.questions.exp.label',null], ['ui.questions.guide.label',null],
       ['ui.questions.accom.label',null], ['ui.questions.amenity.label',null], ['ui.questions.food.label',null],
-      ['ui.questions.diet.label',null], ['ui.questions.cultura.label',null], ['ui.questions.act.label',null],
+      ['ui.questions.diet.label',null],       ['ui.questions.cultura.label',null], ['ui.questions.act.label',null],
+      ['ui.questions.misionFocus.label',null],
+      ['ui.questions.misionSport.label',null],
+      ['ui.questions.misionLuxury.label',null],
+      ['ui.questions.origin.label','ui.questions.origin.hint'],
+      ['ui.questions.tripType.label',null],
+      ['ui.questions.dates.label','ui.questions.dates.hint'],
       ['ui.questions.social.label',null], ['ui.questions.social_e.label',null],
-      [null,null], ['ui.questions.splurge.label',null], ['ui.questions.origin.label','ui.questions.origin.hint'],
-      ['ui.questions.tripType.label',null], ['ui.questions.dates.label','ui.questions.dates.hint'], ['ui.questions.extra.label','ui.questions.extra.hint']
+      [null,null], ['ui.questions.splurge.label',null],
+      ['ui.questions.extra.label','ui.questions.extra.hint']
     ];
     document.querySelectorAll('.container > .section .qblock').forEach((qb, idx) => {
       if (qb.id === 'budgetBlock') {
@@ -817,6 +922,14 @@ const LANG = {
     if (destHint) destHint.textContent = locale.ui.questions.destSearch.hint;
     const nomadaLabel = document.querySelector('#nomadaDuration .qlabel');
     if (nomadaLabel) nomadaLabel.textContent = locale.ui.questions.nomadaDur.label;
+
+    if (el('sportGroupWater')) el('sportGroupWater').textContent = locale.ui.misionSportGroups.water;
+    if (el('sportGroupMountain')) el('sportGroupMountain').textContent = locale.ui.misionSportGroups.mountain;
+    if (el('sportGroupOther')) el('sportGroupOther').textContent = locale.ui.misionSportGroups.other;
+    const misionIntentLabel = document.querySelector('#misionSportIntentBlock .qlabel');
+    if (misionIntentLabel) misionIntentLabel.textContent = locale.ui.questions.misionSportIntent.label;
+    const misionEventLabel = document.querySelector('label[for="misionEventDate"]');
+    if (misionEventLabel) misionEventLabel.textContent = locale.ui.questions.misionEventDate;
 
     if (el('budgetHintTotal')) el('budgetHintTotal').textContent = locale.ui.questions.budgetTotal.hint;
     if (el('budgetMax')) {
@@ -863,6 +976,7 @@ const LANG = {
       dateLabels[1].textContent = locale.ui.questions.dates.to;
     }
     if (el('dateFormatHint')) el('dateFormatHint').textContent = locale.ui.dateFormatHint;
+    if (el('crewDivider')) el('crewDivider').textContent = locale.ui.crewDivider;
     if (el('extra')) el('extra').placeholder = locale.ui.questions.extra.placeholder;
 
     const profileEyebrow = document.querySelector('.profile-eyebrow');
@@ -906,12 +1020,6 @@ function formatDuration(days) {
   return label;
 }
 
-const MOTIV_ICONS = {
-  aventura: '🏔️', culturas: '🏛️', gastronomia: '🍽️', lujo: '✨', espiritual: '🧘',
-  unico: '💎', naturaleza: '🌿', historia: '📜', desconectar: '🌊', social: '🤝',
-  foto: '📸', nomad: '💻',
-};
-
 function L() { return I18N[LANG.current]; }
 
 function getProgressLabel(pct) {
@@ -936,11 +1044,59 @@ function refreshDurationPill() {
     const days = Math.round((d2 - d1) / 86400000);
     pill.textContent = formatDuration(days);
     pill.classList.add('show');
+    highlightDurFromDays(days);
   }
+}
+
+function durCategoryForDays(days) {
+  if (days >= 2 && days <= 3) return 'finde';
+  if (days === 4) return 'finde_largo';
+  if (days >= 5 && days <= 9) return 'semana';
+  if (days >= 10 && days <= 16) return 'dos';
+  if (days >= 17 && days <= 25) return 'tres';
+  return null;
+}
+
+function highlightDurFromDays(days) {
+  if (durManualPick) return;
+  document.querySelectorAll('[data-q="dur"]').forEach(b => b.classList.remove('sel'));
+  const cat = durCategoryForDays(days);
+  if (cat) {
+    const btn = document.querySelector(`[data-q="dur"][data-v="${cat}"]`);
+    if (btn) {
+      btn.classList.add('sel');
+      answers['dur'] = cat;
+    }
+  } else {
+    delete answers['dur'];
+  }
+}
+
+function onDateChange() {
+  durManualPick = false;
+  calcDuration();
+}
+
+function selDur(btn) {
+  durManualPick = true;
+  sel(btn);
 }
 
 const answers = {};
 let energyLabels = I18N[LANG.current].energyLabels;
+let aiProfile = null;
+let durManualPick = false;
+
+const misionViaje = {
+  focus: [],
+  sport_mode: null,
+  sports: [],
+  sport_intent: null,
+  sport_event_date: null,
+  luxury_style: null,
+};
+
+const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ultra_trail', 'ciclismo']);
 const selectedOrigin = [];
 const selectedDest = [];
 
@@ -1187,7 +1343,97 @@ function sel(btn) {
   document.querySelectorAll(`[data-q="${q}"]`).forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
   answers[q] = btn.dataset.v;
+  if (q === 'budget_r') updateMisionLuxuryVisibility();
   updateProgress();
+}
+
+function toggleMisionFocus(btn) {
+  btn.classList.toggle('sel');
+  misionViaje.focus = [...document.querySelectorAll('[data-q="mision_focus"].sel')].map(b => b.dataset.v);
+  updateProgress();
+}
+
+function selMisionSport(row) {
+  const q = row.dataset.q;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
+  row.classList.add('sel');
+  misionViaje.sport_mode = row.dataset.v;
+  const showDetail = row.dataset.v === 'yes';
+  document.getElementById('misionSportDetail').style.display = showDetail ? 'block' : 'none';
+  if (!showDetail) {
+    document.querySelectorAll('[data-q="mision_sports"]').forEach(b => b.classList.remove('sel'));
+    misionViaje.sports = [];
+    misionViaje.sport_intent = null;
+    misionViaje.sport_event_date = null;
+    document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
+    document.getElementById('misionEventDate').value = '';
+  }
+  updateMisionSportIntentVisibility();
+  updateProgress();
+}
+
+function toggleMisionSport(btn) {
+  btn.classList.toggle('sel');
+  misionViaje.sports = [...document.querySelectorAll('[data-q="mision_sports"].sel')].map(b => b.dataset.v);
+  updateMisionSportIntentVisibility();
+  updateProgress();
+}
+
+function updateMisionSportIntentVisibility() {
+  const hasComp = misionViaje.sports.some(s => COMPETITION_SPORTS.has(s));
+  const show = misionViaje.sport_mode === 'yes' && hasComp;
+  const block = document.getElementById('misionSportIntentBlock');
+  block.style.display = show ? 'block' : 'none';
+  if (!show) {
+    misionViaje.sport_intent = null;
+    misionViaje.sport_event_date = null;
+    document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
+    document.getElementById('misionEventDateWrap').classList.remove('show');
+    document.getElementById('misionEventDate').value = '';
+  }
+}
+
+function selMisionSportIntent(row) {
+  const q = row.dataset.q;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
+  row.classList.add('sel');
+  misionViaje.sport_intent = row.dataset.v;
+  const wrap = document.getElementById('misionEventDateWrap');
+  if (row.dataset.v === 'competir') {
+    wrap.classList.add('show');
+  } else {
+    wrap.classList.remove('show');
+    misionViaje.sport_event_date = null;
+    document.getElementById('misionEventDate').value = '';
+  }
+  updateProgress();
+}
+
+function onMisionEventDate() {
+  misionViaje.sport_event_date = document.getElementById('misionEventDate').value || null;
+  updateProgress();
+}
+
+function selMisionLuxury(row) {
+  const q = row.dataset.q;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
+  row.classList.add('sel');
+  misionViaje.luxury_style = row.dataset.v;
+  updateProgress();
+}
+
+function updateMisionLuxuryVisibility() {
+  const br = answers['budget_r'];
+  const show = br === 'high' || br === 'ilim';
+  const block = document.getElementById('misionLuxuryBlock');
+  if (!block) return;
+  block.style.display = show ? 'block' : 'none';
+  if (!show) {
+    misionViaje.luxury_style = null;
+    document.querySelectorAll('[data-q="mision_luxury"]').forEach(r => r.classList.remove('sel'));
+  } else {
+    try { block.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) { /* ignore */ }
+  }
 }
 
 function selRow(row) {
@@ -1249,8 +1495,13 @@ function calcDuration() {
       answers['dateFrom'] = from;
       answers['dateTo'] = to;
       answers['duration_days'] = days;
+      highlightDurFromDays(days);
       updateProgress();
+    } else {
+      pill.classList.remove('show');
     }
+  } else {
+    pill.classList.remove('show');
   }
   const minTo = document.getElementById('dateFrom').value || new Date().toISOString().split('T')[0];
   document.getElementById('dateTo').min = minTo;
@@ -1312,7 +1563,6 @@ function generateProfile() {
 
   const card = document.getElementById('profileCard');
   card.classList.add('show');
-  updateShareableCard(primary, name, quote, energy, pace);
   setTimeout(() => {
     try { card.scrollIntoView({behavior:'smooth',block:'center'}); } catch (e) { console.error('BeTacora scroll error:', e); }
   }, 100);
@@ -1323,35 +1573,95 @@ function stripQuoteMarks(text) {
   return String(text).replace(/^["'«""]+|["'»""]+$/g, '').trim();
 }
 
-function updateShareableCard(primary, name, quote, energy, pace) {
-  const motiv = answers['motiv'];
-  const motivKey = primary || (Array.isArray(motiv) && motiv.length > 0 ? motiv[0] : 'unico');
-  const lang = L();
-  const vibeMap = lang.profiles;
-  const quotes = lang.quotes;
-  const energyTags = lang.energyTags;
-  const socialTags = lang.socialTags;
-  const paceMap = lang.paceLabels;
-  const card = lang.ui.shareableCard;
+function parseStatValue(text) {
+  const m = String(text).match(/(\d{1,3})\s*$/);
+  if (m) return Math.min(100, Math.max(0, parseInt(m[1], 10)));
+  const m2 = String(text).match(/(\d{1,3})/);
+  return m2 ? Math.min(100, Math.max(0, parseInt(m2[1], 10))) : 50;
+}
 
-  const typeName = name || vibeMap[motivKey] || vibeMap.unico;
-  const typeQuote = stripQuoteMarks(quote || quotes[motivKey] || quotes.unico);
-  const energyLevel = energy || answers['energy'] || 3;
-  const paceArr = pace || answers['pace'];
-  const paceKey = Array.isArray(paceArr) && paceArr.length > 0 ? paceArr[0] : null;
+function parseProfileFromHtml(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const root = doc.querySelector('.profile-result');
+  if (!root) return null;
 
-  document.getElementById('scType').textContent = typeName;
-  document.getElementById('scIcon').textContent = MOTIV_ICONS[motivKey] || MOTIV_ICONS.unico;
-  document.getElementById('scEnergy').textContent = energyTags[energyLevel] || energyTags[3];
-  document.getElementById('scSocial').textContent = answers['social'] ? (socialTags[answers['social']] || '—') : '—';
-  document.getElementById('scPace').textContent = paceKey ? (paceMap[paceKey] || '—') : '—';
-  document.getElementById('scQuote').textContent = typeQuote;
+  const type = root.querySelector('h2')?.textContent?.trim() || '';
+  const essence = root.querySelector('.profile-essence')?.textContent?.trim() || '';
+  const quote = stripQuoteMarks(root.querySelector('.profile-quote')?.textContent?.trim() || '');
+
+  let superpower = '';
+  let animal = '';
+  root.querySelectorAll('p').forEach(p => {
+    const t = p.textContent.trim();
+    if (p.classList.contains('profile-essence') || p.classList.contains('profile-quote')) return;
+    if (/superpoder|superpower|super-pouvoir/i.test(t)) {
+      superpower = t.replace(/^[^:]+:\s*/i, '').trim();
+    } else if (/fueras un animal|you were an animal|étiez un animal/i.test(t)) {
+      animal = t.replace(/^[^:]+:\s*/i, '').trim();
+    }
+  });
+
+  const stats = [];
+  const statsRoot = root.querySelector('.profile-stats');
+  if (statsRoot) {
+    const statEls = statsRoot.querySelectorAll('p, li, span');
+    const nodes = statEls.length ? statEls : [statsRoot];
+    nodes.forEach(el => {
+      if (el === statsRoot && el.children.length) return;
+      const strong = el.querySelector('strong');
+      if (strong) {
+        const label = strong.textContent.replace(/:$/, '').trim();
+        const value = parseStatValue(el.textContent.replace(strong.textContent, '').trim());
+        if (label) stats.push({ label, value });
+        return;
+      }
+      const parts = el.textContent.split(':');
+      if (parts.length >= 2) {
+        const label = parts[0].trim();
+        const value = parseStatValue(parts.slice(1).join(':'));
+        if (label && !/^\d+$/.test(label)) stats.push({ label, value });
+      }
+    });
+  }
+
+  return { type, essence, superpower, quote, animal, stats };
+}
+
+function splitResponseHtml(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const profileEl = doc.querySelector('.profile-result');
+  if (!profileEl) return { profile: null, itineraryHtml: html };
+
+  const profile = parseProfileFromHtml(profileEl.outerHTML);
+  profileEl.remove();
+  const itineraryHtml = doc.body.innerHTML.trim();
+  return { profile, itineraryHtml };
+}
+
+function renderShareableCard(profile) {
+  if (!profile) return;
+  aiProfile = profile;
+
+  document.getElementById('scType').textContent = profile.type || '—';
+  document.getElementById('scEssence').textContent = profile.essence || '';
+  document.getElementById('scQuote').textContent = profile.quote ? `"${profile.quote}"` : '';
+  document.getElementById('scAnimal').textContent = profile.animal
+    ? `🐾 ${profile.animal}` : '';
+
+  const statsEl = document.getElementById('scStatsBars');
+  const topStats = (profile.stats || []).slice(0, 4);
+  statsEl.innerHTML = topStats.map(s => `
+    <div class="sc-stat-row">
+      <div class="sc-stat-label"><span>${escapeHtml(s.label)}</span><span>${s.value}</span></div>
+      <div class="sc-stat-bar"><div class="sc-stat-fill" style="width:${s.value}%"></div></div>
+    </div>`).join('');
+
+  const card = L().ui.shareableCard;
   document.getElementById('scFooter').textContent = 'betacora.app · ' + card.tagline;
   document.getElementById('scDownload').textContent = card.download;
   document.getElementById('scShare').textContent = card.share;
 
-  const wrap = document.getElementById('shareableCard');
-  wrap.classList.add('show');
+  document.getElementById('shareableCard').classList.add('show');
 }
 
 function loadHtml2Canvas() {
@@ -1398,7 +1708,7 @@ async function shareShareableCard() {
     const file = new File([blob], 'betacora-perfil.png', { type: 'image/png' });
     const shareData = {
       title: L().ui.share.title,
-      text: L().ui.shareableCard.tagline + ' — betacora.app',
+      text: (aiProfile?.quote || L().ui.shareableCard.tagline) + ' — betacora.app',
       url: 'https://betacora.app',
     };
 
@@ -1439,7 +1749,14 @@ function collectAllAnswers() {
   if (extra) answers['extra'] = extra;
   answers['currency'] = document.getElementById('currencySelect').value;
   answers['ui_lang'] = LANG.current;
-  return { ...answers };
+  const mv = {};
+  if (misionViaje.focus.length) mv.focus = misionViaje.focus;
+  if (misionViaje.sport_mode) mv.sport_mode = misionViaje.sport_mode;
+  if (misionViaje.sports.length) mv.sports = misionViaje.sports;
+  if (misionViaje.sport_intent) mv.sport_intent = misionViaje.sport_intent;
+  if (misionViaje.sport_event_date) mv.sport_event_date = misionViaje.sport_event_date;
+  if (misionViaje.luxury_style) mv.luxury_style = misionViaje.luxury_style;
+  return { ...answers, mision_viaje: mv };
 }
 
 function escapeHtml(str) {
@@ -1448,6 +1765,35 @@ function escapeHtml(str) {
 }
 
 function renderItineraryHtml(html) {
+  const { profile, itineraryHtml } = splitResponseHtml(html);
+
+  if (profile) {
+    renderShareableCard(profile);
+    document.getElementById('pName').textContent = profile.type || '—';
+    document.getElementById('pQuote').textContent = profile.quote ? `"${profile.quote}"` : '';
+    if (profile.superpower) {
+      document.getElementById('pTags').innerHTML = `<span class="ptag">⚡ ${escapeHtml(profile.superpower)}</span>`;
+    } else if (profile.animal) {
+      document.getElementById('pTags').innerHTML = `<span class="ptag">🐾 ${escapeHtml(profile.animal)}</span>`;
+    }
+    const dnaStats = (profile.stats || []).slice(0, 3);
+    if (dnaStats[0]) {
+      document.getElementById('pMotiv').textContent = dnaStats[0].value;
+      document.getElementById('statMotiv').textContent = dnaStats[0].label;
+    }
+    if (dnaStats[1]) {
+      document.getElementById('pEnergy').textContent = dnaStats[1].value;
+      document.getElementById('statEnergy').textContent = dnaStats[1].label;
+    }
+    if (dnaStats[2]) {
+      document.getElementById('pStyle').textContent = dnaStats[2].value;
+      document.getElementById('statPace').textContent = dnaStats[2].label;
+    }
+    setTimeout(() => {
+      try { document.getElementById('shareableCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { console.error('BeTacora scroll error:', e); }
+    }, 300);
+  }
+
   const section = document.getElementById('itinerarySection');
   const header = L().ui.bitacora;
   section.innerHTML = `
@@ -1455,11 +1801,11 @@ function renderItineraryHtml(html) {
       <div class="bitacora-header-eyebrow">${header.eyebrow}</div>
       <div class="bitacora-header-title">${header.title}</div>
     </div>
-    <div class="bitacora-article">${html}</div>`;
+    <div class="bitacora-article">${itineraryHtml}</div>`;
   section.classList.add('show');
   setTimeout(() => {
     try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
-  }, 200);
+  }, 600);
 }
 
 function showItineraryError(message) {
@@ -1481,6 +1827,8 @@ async function handleGenerate() {
   btn.textContent = L().ui.submit.btnLoading;
   section.innerHTML = '';
   section.classList.remove('show');
+  document.getElementById('shareableCard').classList.remove('show');
+  aiProfile = null;
 
   generateProfile();
 
@@ -1511,7 +1859,7 @@ async function handleGenerate() {
 }
 
 function shareProfile() {
-  const name = document.getElementById('pName').textContent;
+  const name = aiProfile?.type || document.getElementById('pName').textContent;
   const text = L().ui.share.text.replace('{name}', name);
   if (navigator.share) {
     navigator.share({title: L().ui.share.title, text, url:'https://betacora.app'}).catch(()=>{});

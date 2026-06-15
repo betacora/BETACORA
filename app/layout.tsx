@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     title: "BeTacora",
   },
   icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
     apple: "/icon-192.png",
   },
 };
@@ -30,6 +34,7 @@ export default function RootLayout({
     <html lang="es" className="h-full antialiased">
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="BeTacora" />

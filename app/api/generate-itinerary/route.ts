@@ -160,6 +160,26 @@ PERFIL PSICOLÓGICO DEL VIAJERO:
 
 Además del itinerario, genera un perfil de personalidad viajera único para ESTE viajero concreto.
 
+INSTRUCCIÓN CRÍTICA DE VARIACIÓN:
+
+El perfil psicológico generado debe basarse en TODAS las respuestas específicas del cuestionario, no solo en la motivación principal o energía.
+
+Usa ACTIVAMENTE estos datos específicos para diferenciar el perfil:
+- La actividad o deporte específico elegido (si hay uno) — mision_viaje.sports, sport_intent, act
+- El tipo exacto de alojamiento elegido (accom)
+- Las preferencias de comida específicas (food, diet)
+- El destino real y sus características únicas
+- La combinación específica de "experiencias que generan satisfacción" (exp)
+- El nivel de energía social exacto (social_e, social)
+- Cualquier dato del campo "algo más que debas saber" (extra)
+- mision_viaje (focus, luxury_style, etc.)
+
+Dos personas con la misma motivación principal DEBEN recibir perfiles DIFERENTES si difieren en otros datos.
+
+Antes de escribir nombre y esencia, identifica 2-3 detalles ESPECÍFICOS y MENOS COMUNES (no solo motivación) y construye el perfil ALREDEDOR de esos detalles.
+
+EVITA: empezar siempre con "Eres alguien que...", estructuras repetidas, animales obvios por categoría (águila/aventura, delfín/agua).
+
 EJEMPLOS DE REFERENCIA DE ESTILO (no copiar, solo inspirarse en el tono y estructura):
 
 EJEMPLO 1 - El Descubridor de Horizontes:
@@ -194,25 +214,31 @@ Si fuera un animal: "Fénix..."
 
 INSTRUCCIONES DE GENERACIÓN:
 
-Para CADA viajero, genera un perfil 100% único basado en SUS respuestas reales del cuestionario y SU destino real. NUNCA reutilices nombres, frases o animales de los ejemplos — son solo referencia de tono y nivel de profundidad.
+Para CADA viajero, genera un perfil 100% único basado en TODAS sus respuestas reales del cuestionario y SU destino real. NUNCA reutilices nombres, frases o animales de los ejemplos — son solo referencia de tono y nivel de profundidad.
+
+Fuentes de diferenciación (pondera TODAS por igual, no solo motiv y energy):
+- Principales: motiv, energy, ritmo, destino
+- Alta diferenciación (prioriza activamente): exp, accom, food, diet, social_e, social, act, mision_viaje, extra
+
+No construyas el perfil solo a partir de motivación y energía. Si dos viajeros comparten motiv y energy pero difieren en exp, accom, food, act o extra, sus perfiles deben ser claramente distintos en nombre, esencia, frase insignia y animal.
 
 El perfil debe incluir:
 
-1. NOMBRE DEL TIPO — Original, evocador, en formato "El/La [Adjetivo] de [Concepto]" o similar. Debe sentirse específico, no genérico.
+1. NOMBRE DEL TIPO — Original, evocador, en formato "El/La [Adjetivo] de [Concepto]" o similar. Debe sentirse específico, no genérico. Ancla el nombre en 1-2 detalles concretos del cuestionario (exp, act, accom, food, mision_viaje, extra), no solo en la motivación general.
 
-2. ESENCIA — Un párrafo de 80-120 palabras que describa la personalidad viajera de esta persona basándose en SUS respuestas reales (energía, motivación, ritmo, social, destino elegido). Tono: cálido, perspicaz, que la persona sienta "me han entendido" — NUNCA adulador o genérico. Usa detalles específicos de su perfil.
+2. ESENCIA — Un párrafo de 80-120 palabras que describa la personalidad viajera de esta persona basándose en SUS respuestas reales: exp, accom, food, diet, social_e, social, act, mision_viaje, extra, además de energía, motivación, ritmo y destino elegido. Tono: cálido, perspicaz, que la persona sienta "me han entendido" — NUNCA adulador o genérico. Teje al menos 2-3 detalles concretos poco obvios del cuestionario (no solo motiv/energy). Varía la estructura del párrafo — no empieces siempre con "Eres alguien que...".
 
 3. SUPERPODER — Una frase corta (10-15 palabras) sobre su fortaleza única como viajero.
 
 4. FRASE INSIGNIA — Una frase memorable y compartible (10-20 palabras) que resuma su esencia viajera. Debe sonar como algo que querrías poner en una bio de Instagram.
 
-5. SI FUERAS UN ANIMAL — Un animal con 2-3 razones específicas conectadas a su perfil real, no genéricas.
+5. SI FUERAS UN ANIMAL — Un animal con 2-3 razones específicas conectadas a detalles concretos y poco comunes de su perfil (exp, act, accom, food, extra, mision_viaje, destino), no a clichés de categoría (evita águila/delfín/león solo porque la motivación es aventura/agua/naturaleza). El animal debe sorprender un poco y tener sentido solo para ESTE viajero.
 
-6. ESTADÍSTICAS TRAVEL DNA — 5-6 estadísticas del 0-100 basadas en sus respuestas reales del cuestionario (ej: si seleccionó mucha aventura, ese score es alto; si su ritmo es "packed", planificación es alta, etc.). Calcula estos valores de forma coherente con sus respuestas reales, no inventes números aleatorios.
+6. ESTADÍSTICAS TRAVEL DNA — 5-6 estadísticas del 0-100 derivadas de un conjunto diverso de campos del cuestionario: exp, accom, food, diet, social_e, social, act, mision_viaje, extra, energy, motiv, ritmo — no calcules todo solo desde energy y motiv. Cada stat debe reflejar una dimensión distinta (ej: aventura desde exp/act, gastronomía desde food/diet, social desde social_e/social, comodidad desde accom/luxury_style, planificación desde ritmo, etc.). Calcula valores coherentes con las respuestas reales, no números aleatorios.
 
 REGLAS DE TONO:
 - Positivo pero NUNCA adulador (evita "eres increíble", "eres especial")
-- Específico, no genérico (usa detalles de SU perfil real)
+- Específico, no genérico (usa detalles de SU perfil real, especialmente exp, accom, food, act, extra)
 - Que la persona se sienta COMPRENDIDA, no halagada
 - Evita clichés de viaje ("alma libre", "espíritu aventurero" como frases hechas)
 - El lenguaje debe sentirse como si un amigo muy perceptivo te describiera, no un horóscopo

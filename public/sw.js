@@ -1,4 +1,4 @@
-const CACHE_NAME = "betacora-v3";
+const CACHE_NAME = "betacora-v4";
 // Do not precache HTML — stale/empty shells caused blank iframe after SW activation
 const PRECACHE_URLS = [];
 
@@ -31,6 +31,18 @@ function isHtmlRequest(request) {
   }
 }
 
+function isIconOrManifestRequest(request) {
+  try {
+    const path = new URL(request.url).pathname;
+    return (
+      path === "/manifest.json" ||
+      /^\/icon-(192|512)\.png$/.test(path)
+    );
+  } catch {
+    return false;
+  }
+}
+
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
@@ -46,6 +58,21 @@ self.addEventListener("fetch", (event) => {
             if (text.length > 500) {
               caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
             }
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Network-first for PWA icons/manifest so ?v= cache busting always reaches the network
+  if (isIconOrManifestRequest(event.request)) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
           }
           return response;
         })

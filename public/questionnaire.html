@@ -227,6 +227,27 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px;
 .submit-btn:disabled { opacity: 0.7; cursor: wait; transform: none; }
 .submit-note { font-size: 0.7rem; color: var(--fog); margin-top: 0.75rem; }
 
+.limit-banner, .save-banner {
+  display: none; max-width: 520px; margin: 0 auto 1.25rem; padding: 1.1rem 1.35rem;
+  border-radius: 14px; font-size: 0.92rem; line-height: 1.55; text-align: center;
+}
+.limit-banner.show, .save-banner.show { display: block; }
+.limit-banner {
+  background: rgba(232,99,74,0.1); border: 1.5px solid rgba(232,99,74,0.35); color: var(--ink);
+}
+.save-banner.prompt {
+  background: rgba(45,123,123,0.08); border: 1.5px solid rgba(45,123,123,0.25); color: var(--ink);
+}
+.save-banner.saved {
+  background: rgba(45,123,123,0.12); border: 1.5px solid var(--teal); color: var(--teal-dark); font-weight: 600;
+}
+.auth-banner-btn {
+  display: inline-block; margin-top: 0.75rem; padding: 0.65rem 1.35rem; border-radius: 100px;
+  background: var(--coral); color: #fff; font-weight: 600; font-size: 0.88rem; text-decoration: none;
+  border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+.auth-banner-btn:hover { background: var(--coral-light); }
+
 .itinerary-section { display: none; margin-top: 2rem; background: var(--cream); border-radius: 20px; border: 2px solid rgba(45,123,123,0.12); box-shadow: 0 8px 40px rgba(45,123,123,0.1); overflow: hidden; }
 .itinerary-section.show { display: block; }
 .bitacora-header { background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%); padding: 1.75rem 1.5rem; color: white; text-align: center; }
@@ -800,13 +821,17 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px;
 
   <div class="itinerary-section" id="itinerarySection"></div>
 
+  <div class="save-banner" id="saveBanner"></div>
+
   <div class="submit-wrap">
+    <div class="limit-banner" id="limitBanner"></div>
     <button class="submit-btn" id="submitBtn" onclick="handleGenerate()">🧭 Generar mi Bitácora Inteligente</button>
     <div class="submit-note">BeTacora diseñará tu viaje personalizado · betacora.app</div>
   </div>
 
 </div>
 
+<script src="bt-auth.js"></script>
 <script src="questionnaire-i18n.js"></script>
 <script>
 window.addEventListener('error', (e) => {
@@ -1818,9 +1843,75 @@ function showItineraryError(message) {
   }, 200);
 }
 
+function hideLimitBanner() {
+  const el = document.getElementById('limitBanner');
+  if (el) { el.classList.remove('show'); el.innerHTML = ''; }
+}
+
+function hideSaveBanner() {
+  const el = document.getElementById('saveBanner');
+  if (el) { el.classList.remove('show', 'prompt', 'saved'); el.innerHTML = ''; }
+}
+
+function showLimitBanner(reason) {
+  const el = document.getElementById('limitBanner');
+  if (!el) return;
+  if (reason === 'not_logged_in') {
+    el.innerHTML = 'Regístrate gratis para guardar tu bitácora y generar más itinerarios<br><a class="auth-banner-btn" href="/auth">Crear cuenta</a>';
+  } else {
+    el.innerHTML = 'Has alcanzado tu límite gratuito. Próximamente planes premium disponibles.';
+  }
+  el.classList.add('show');
+  setTimeout(() => {
+    try { el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) { /* ignore */ }
+  }, 100);
+}
+
+function showSaveBanner(type) {
+  const el = document.getElementById('saveBanner');
+  if (!el) return;
+  el.classList.remove('prompt', 'saved');
+  if (type === 'saved') {
+    el.textContent = '✓ Viaje guardado en tu bitácora';
+    el.classList.add('show', 'saved');
+  } else {
+    el.innerHTML = '¿Quieres guardar este viaje? Crea tu cuenta gratis — tarda 30 segundos<br><a class="auth-banner-btn" href="/auth">Crear cuenta</a>';
+    el.classList.add('show', 'prompt');
+  }
+}
+
+function getDestinationForSave() {
+  if (selectedDest.length > 0) {
+    const d = selectedDest[0];
+    if (d.kind === 'country') return d.country;
+    return `${d.city}, ${d.country}`;
+  }
+  const zonas = answers['zona'];
+  if (Array.isArray(zonas) && zonas.length) return zonas.join(', ');
+  if (answers['trip_type'] === 'sorpresa') return 'Sorpresa';
+  if (answers['trip_type'] === 'nomada') return 'Viaje nómada';
+  return null;
+}
+
 async function handleGenerate() {
   const btn = document.getElementById('submitBtn');
   const section = document.getElementById('itinerarySection');
+
+  hideLimitBanner();
+  hideSaveBanner();
+
+  if (window.btAuth) {
+    try {
+      await window.btAuth.init();
+      const limit = await window.btAuth.checkLimit();
+      if (!limit.allowed) {
+        showLimitBanner(limit.reason);
+        return;
+      }
+    } catch (e) {
+      console.warn('[BeTacora] limit check skipped:', e);
+    }
+  }
 
   collectAllAnswers();
   btn.disabled = true;
@@ -1850,6 +1941,27 @@ async function handleGenerate() {
       return;
     }
     renderItineraryHtml(data.html);
+
+    if (window.btAuth) {
+      try {
+        await window.btAuth.incrementCount();
+        const user = await window.btAuth.getUser();
+        if (user) {
+          await window.btAuth.saveItinerary({
+            destination: getDestinationForSave(),
+            profile_type: aiProfile?.type ?? null,
+            profile_essence: aiProfile?.essence ?? null,
+            questionnaire_answers: collectAllAnswers(),
+            itinerary_html: data.html,
+          });
+          showSaveBanner('saved');
+        } else {
+          showSaveBanner('prompt');
+        }
+      } catch (e) {
+        console.warn('[BeTacora] post-generation save skipped:', e);
+      }
+    }
   } catch (errCaught) {
     showItineraryError(err.network);
   } finally {

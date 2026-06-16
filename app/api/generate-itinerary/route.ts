@@ -1,5 +1,13 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import {
+  buildArchetypeProfilePrompt,
+  getDurationDays,
+  getMaxTokens,
+  getModifiers,
+  getWebSearchInstruction,
+  selectArchetype,
+} from "@/lib/archetypes";
 
 type TripMode = "short" | "medium" | "long";
 
@@ -158,108 +166,7 @@ REGLAS DE DISTRIBUCIÓN DE TIEMPO:
 
 PERFIL PSICOLÓGICO DEL VIAJERO:
 
-Además del itinerario, genera un perfil de personalidad viajera único para ESTE viajero concreto.
-
-INSTRUCCIÓN CRÍTICA DE VARIACIÓN:
-
-El perfil psicológico generado debe basarse en TODAS las respuestas específicas del cuestionario, no solo en la motivación principal o energía.
-
-Usa ACTIVAMENTE estos datos específicos para diferenciar el perfil:
-- La actividad o deporte específico elegido (si hay uno) — mision_viaje.sports, sport_intent, act
-- El tipo exacto de alojamiento elegido (accom)
-- Las preferencias de comida específicas (food, diet)
-- El destino real y sus características únicas
-- La combinación específica de "experiencias que generan satisfacción" (exp)
-- El nivel de energía social exacto (social_e, social)
-- Cualquier dato del campo "algo más que debas saber" (extra)
-- mision_viaje (focus, luxury_style, etc.)
-
-Dos personas con la misma motivación principal DEBEN recibir perfiles DIFERENTES si difieren en otros datos.
-
-Antes de escribir nombre y esencia, identifica 2-3 detalles ESPECÍFICOS y MENOS COMUNES (no solo motivación) y construye el perfil ALREDEDOR de esos detalles.
-
-EVITA: empezar siempre con "Eres alguien que...", estructuras repetidas, animales obvios por categoría (águila/aventura, delfín/agua).
-
-EJEMPLOS DE REFERENCIA DE ESTILO (no copiar, solo inspirarse en el tono y estructura):
-
-EJEMPLO 1 - El Descubridor de Horizontes:
-Esencia: "Eres alguien que nace con una brújula invisible en el pecho..."
-Frase insignia: "No coleccionas países. Coleccionas versiones de ti mismo."
-Si fuera un animal: "Águila. Te lanzas desde grandes alturas..."
-
-EJEMPLO 2 - El Aventurero:
-Esencia: "Tu pulso se acelera ante lo imposible..."
-Frase insignia: "La mejor aventura es la que no sabías que necesitabas."
-Si fuera un animal: "León de montaña..."
-
-EJEMPLO 3 - El Nómada Libre:
-Esencia: "No tienes una dirección fija..."
-Frase insignia: "Tu verdadero equipaje es lo que llevas en el corazón."
-Si fuera un animal: "Gato salvaje..."
-
-EJEMPLO 4 - El Explorador Salvaje:
-Esencia: "Te llama el lado agreste de la naturaleza..."
-Frase insignia: "La verdadera libertad se encuentra donde termina la civilización."
-Si fuera un animal: "Oso pardo..."
-
-EJEMPLO 5 - El Cazador de Islas:
-Esencia: "Existe algo mágico en los lugares rodeados de agua..."
-Frase insignia: "Un océano, mil islas. Cada una te enseña algo que no sabías de ti mismo."
-Si fuera un animal: "Delfín..."
-
-EJEMPLO 6 - El Perseguidor de Volcanes:
-Esencia: "Te fascina la energía bruta del planeta..."
-Frase insignia: "El fuego del planeta te recuerda que estás vivo."
-Si fuera un animal: "Fénix..."
-
-INSTRUCCIONES DE GENERACIÓN:
-
-Para CADA viajero, genera un perfil 100% único basado en TODAS sus respuestas reales del cuestionario y SU destino real. NUNCA reutilices nombres, frases o animales de los ejemplos — son solo referencia de tono y nivel de profundidad.
-
-Fuentes de diferenciación (pondera TODAS por igual, no solo motiv y energy):
-- Principales: motiv, energy, ritmo, destino
-- Alta diferenciación (prioriza activamente): exp, accom, food, diet, social_e, social, act, mision_viaje, extra
-
-No construyas el perfil solo a partir de motivación y energía. Si dos viajeros comparten motiv y energy pero difieren en exp, accom, food, act o extra, sus perfiles deben ser claramente distintos en nombre, esencia, frase insignia y animal.
-
-El perfil debe incluir:
-
-1. NOMBRE DEL TIPO — Original, evocador, en formato "El/La [Adjetivo] de [Concepto]" o similar. Debe sentirse específico, no genérico. Ancla el nombre en 1-2 detalles concretos del cuestionario (exp, act, accom, food, mision_viaje, extra), no solo en la motivación general.
-
-2. ESENCIA — Un párrafo de 80-120 palabras que describa la personalidad viajera de esta persona basándose en SUS respuestas reales: exp, accom, food, diet, social_e, social, act, mision_viaje, extra, además de energía, motivación, ritmo y destino elegido. Tono: cálido, perspicaz, que la persona sienta "me han entendido" — NUNCA adulador o genérico. Teje al menos 2-3 detalles concretos poco obvios del cuestionario (no solo motiv/energy). Varía la estructura del párrafo — no empieces siempre con "Eres alguien que...".
-
-3. SUPERPODER — Una frase corta (10-15 palabras) sobre su fortaleza única como viajero.
-
-4. FRASE INSIGNIA — Una frase memorable y compartible (10-20 palabras) que resuma su esencia viajera. Debe sonar como algo que querrías poner en una bio de Instagram.
-
-5. SI FUERAS UN ANIMAL — Un animal con 2-3 razones específicas conectadas a detalles concretos y poco comunes de su perfil (exp, act, accom, food, extra, mision_viaje, destino), no a clichés de categoría (evita águila/delfín/león solo porque la motivación es aventura/agua/naturaleza). El animal debe sorprender un poco y tener sentido solo para ESTE viajero.
-
-6. ESTADÍSTICAS TRAVEL DNA — 5-6 estadísticas del 0-100 derivadas de un conjunto diverso de campos del cuestionario: exp, accom, food, diet, social_e, social, act, mision_viaje, extra, energy, motiv, ritmo — no calcules todo solo desde energy y motiv. Cada stat debe reflejar una dimensión distinta (ej: aventura desde exp/act, gastronomía desde food/diet, social desde social_e/social, comodidad desde accom/luxury_style, planificación desde ritmo, etc.). Calcula valores coherentes con las respuestas reales, no números aleatorios.
-
-REGLAS DE TONO:
-- Positivo pero NUNCA adulador (evita "eres increíble", "eres especial")
-- Específico, no genérico (usa detalles de SU perfil real, especialmente exp, accom, food, act, extra)
-- Que la persona se sienta COMPRENDIDA, no halagada
-- Evita clichés de viaje ("alma libre", "espíritu aventurero" como frases hechas)
-- El lenguaje debe sentirse como si un amigo muy perceptivo te describiera, no un horóscopo
-
-FORMATO DE SALIDA DEL PERFIL:
-Devuelve este perfil ANTES del itinerario, en HTML limpio:
-
-<div class="profile-result">
-<h2>[Nombre del tipo]</h2>
-<p class="profile-essence">[Esencia]</p>
-<p><strong>Tu superpoder:</strong> [superpoder]</p>
-<p class="profile-quote">"[Frase insignia]"</p>
-<p><strong>Si fueras un animal:</strong> [animal y razones]</p>
-<div class="profile-stats">
-<p><strong>[Stat 1]:</strong> [0-100]</p>
-<p><strong>[Stat 2]:</strong> [0-100]</p>
-(5-6 stats total)
-</div>
-</div>
-
-Luego continúa con el HTML del itinerario habitual.
+Genera un bloque <div class="profile-result"> ANTES del itinerario. El arquetipo base y los modificadores de tono se proporcionan en cada solicitud (sección ARQUETIPO ASIGNADO) — úsalos como ADN, no como texto a copiar. Personaliza con datos reales del cuestionario.
 
 MISIÓN DEL VIAJE (campo mision_viaje — específico de ESTE viaje, no del perfil permanente):
 
@@ -424,6 +331,15 @@ export async function POST(request: Request) {
     const tripType = (profile.trip_type as string) || "destino";
     const tripTypeInstruction =
       TRIP_TYPE_INSTRUCTIONS[tripType] ?? TRIP_TYPE_INSTRUCTIONS.destino;
+
+    const archetype = selectArchetype(profile);
+    const modifiers = getModifiers(profile);
+    const archetypePrompt = buildArchetypeProfilePrompt(archetype, modifiers);
+
+    const durationDays = getDurationDays(profile);
+    const maxTokens = getMaxTokens(durationDays);
+    const webSearchInstruction = getWebSearchInstruction(durationDays);
+
     const uiLang = ["es", "en", "fr"].includes(profile.ui_lang as string)
       ? (profile.ui_lang as string)
       : "es";
@@ -432,13 +348,13 @@ export async function POST(request: Request) {
       en: "Write the psychological profile and entire itinerary in English with natural cultural localization — travel-community tone, not a translation.",
       fr: "Rédige le profil psychologique et tout l'itinéraire en français avec une localisation culturelle naturelle — ton de magazine de voyage, pas une traduction.",
     };
-    const systemPrompt = `${SYSTEM_PROMPT}\n\n${tripTypeInstruction}\n\n${MODE_INSTRUCTIONS[mode]}`;
+    const systemPrompt = `${SYSTEM_PROMPT}\n\n${archetypePrompt}\n\n${tripTypeInstruction}\n\n${MODE_INSTRUCTIONS[mode]}`;
 
     const anthropic = new Anthropic({ apiKey });
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 8000,
+      max_tokens: maxTokens,
       system: systemPrompt,
       tools: [
         {
@@ -449,7 +365,7 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "user",
-          content: `Idioma de respuesta: ${uiLang}\n${langInstruction[uiLang]}\n\nPerfil del viajero:\n${JSON.stringify(profile, null, 2)}\n\nGenera PRIMERO el perfil psicológico del viajero en <div class="profile-result"> (según PERFIL PSICOLÓGICO DEL VIAJERO), y DESPUÉS el itinerario en HTML limpio siguiendo las instrucciones del tipo de viaje (${tripType}, modo ${mode}).\n\nOBLIGATORIO en el itinerario: incluye exactamente 2-3 explicaciones en <em> conectando recomendaciones clave con datos reales del perfil (transparencia, no venta) — esto aplica también si trip_type es sorpresa.\n\nUsa web_search para datos actuales. Responde solo con HTML, sin markdown ni JSON.`,
+          content: `Idioma de respuesta: ${uiLang}\n${langInstruction[uiLang]}\n\nPerfil del viajero:\n${JSON.stringify(profile, null, 2)}\n\nArquetipo seleccionado por el sistema: ${archetype.nombre} (id ${archetype.id})\nDuración estimada: ${durationDays ?? "desconocida"} días\n\nGenera PRIMERO el perfil psicológico en <div class="profile-result"> siguiendo el ARQUETIPO ASIGNADO y modificadores del system prompt, y DESPUÉS el itinerario en HTML limpio (${tripType}, modo ${mode}).\n\nOBLIGATORIO en el itinerario: incluye exactamente 2-3 explicaciones en <em> conectando recomendaciones clave con datos reales del perfil (transparencia, no venta).\n\n${webSearchInstruction} Responde solo con HTML, sin markdown ni JSON.`,
         },
       ],
     });
@@ -463,7 +379,12 @@ export async function POST(request: Request) {
     }
 
     const html = extractHtml(text);
-    return NextResponse.json({ html, mode });
+    return NextResponse.json({
+      html,
+      mode,
+      archetype: { id: archetype.id, nombre: archetype.nombre },
+      max_tokens: maxTokens,
+    });
   } catch (error) {
     console.error("Error generating itinerary:", error);
     return NextResponse.json(

@@ -189,52 +189,6 @@ export const MOTIVATION_MATRIX: Record<string, number[]> = {
   "lujo/experiencias-disenadas": [12, 23, 18],
 };
 
-const MOTIV_TO_CATEGORIES: Record<string, string[]> = {
-  aventura: ["aventura"],
-  desconectar: ["introspeccion/relax"],
-  espiritual: ["introspeccion/relax"],
-  culturas: ["cultura/historia"],
-  historia: ["cultura/historia"],
-  gastronomia: ["gastronomia"],
-  naturaleza: ["naturaleza"],
-  lujo: ["lujo/experiencias-disenadas"],
-  unico: ["descubrir/explorar", "lujo/experiencias-disenadas"],
-  social: ["social/conectar"],
-  foto: ["fotografia/visual"],
-  nomad: ["libertad/sin-destino"],
-};
-
-const PACE_AFFINITY: Record<number, string[]> = {
-  2: ["packed"],
-  21: ["packed"],
-  22: ["packed", "balanced"],
-  4: ["slow", "zero"],
-  17: ["slow", "zero"],
-  7: ["slow", "balanced"],
-  3: ["slow", "zero", "balanced"],
-  12: ["balanced", "slow"],
-  20: ["balanced", "slow"],
-};
-
-const SOCIAL_AFFINITY: Record<number, string[]> = {
-  5: ["solo"],
-  7: ["solo"],
-  17: ["solo"],
-  4: ["solo", "pareja"],
-  6: ["amigos", "familia"],
-  18: ["amigos", "familia", "pareja"],
-  22: ["amigos", "familia"],
-};
-
-const BUDGET_AFFINITY: Record<number, string[]> = {
-  12: ["high", "ilim"],
-  23: ["high", "ilim", "mid"],
-  18: ["high", "ilim", "mid"],
-  3: ["low", "mid"],
-  25: ["low", "mid"],
-  22: ["low", "mid"],
-};
-
 function asStringArray(value: unknown): string[] {
   if (Array.isArray(value)) return value.map(String);
   if (typeof value === "string" && value) return [value];
@@ -268,69 +222,171 @@ function getSocialEnergy(profile: TravelerProfileInput): string {
   return typeof profile.social_e === "string" ? profile.social_e : "";
 }
 
-function collectCandidateIds(profile: TravelerProfileInput): number[] {
-  const motivs = asStringArray(profile.motiv);
-  const counts = new Map<number, number>();
-
-  for (const motiv of motivs) {
-    const categories = MOTIV_TO_CATEGORIES[motiv] ?? ["descubrir/explorar"];
-    for (const cat of categories) {
-      const ids = MOTIVATION_MATRIX[cat] ?? [1];
-      for (const rawId of ids) {
-        const id = resolveArchetypeId(rawId);
-        counts.set(id, (counts.get(id) ?? 0) + 1);
-      }
-    }
-  }
-
-  if (getSocial(profile) === "solo") {
-    for (const id of MOTIVATION_MATRIX["solo/soledad"]) {
-      const resolved = resolveArchetypeId(id);
-      counts.set(resolved, (counts.get(resolved) ?? 0) + 1);
-    }
-  }
-
-  if (counts.size === 0) {
-    return MOTIVATION_MATRIX["descubrir/explorar"].map(resolveArchetypeId);
-  }
-
-  const maxCount = Math.max(...counts.values());
-  return [...counts.entries()]
-    .filter(([, c]) => c === maxCount)
-    .map(([id]) => id);
+function findArchetype(id: number): Archetype {
+  return getArchetypeById(id);
 }
 
-function tiebreakCandidates(
-  candidates: number[],
-  profile: TravelerProfileInput
-): number {
-  if (candidates.length === 1) return candidates[0];
+/** True if any questionnaire motiv value matches (supports culturas/historia → cultura). */
+function motivHas(motiv: string[], key: string): boolean {
+  if (key === "cultura") {
+    return motiv.some(
+      (m) => m === "culturas" || m === "historia" || m.includes("cultura")
+    );
+  }
+  return motiv.includes(key);
+}
 
+/**
+ * Pure deterministic archetype selection — explicit decision tree only.
+ * No scoring, no randomness, no AI. First matching motivation branch wins.
+ */
+export function selectArchetype(profile: TravelerProfileInput): Archetype {
+  const motiv = asStringArray(profile.motiv);
   const pace = getPrimaryPace(profile);
   const social = getSocial(profile);
   const budget = getBudget(profile);
 
-  let best = candidates[0];
-  let bestScore = -1;
-
-  for (const id of candidates) {
-    let score = 0;
-    if (PACE_AFFINITY[id]?.includes(pace)) score += 3;
-    if (social && SOCIAL_AFFINITY[id]?.includes(social)) score += 3;
-    if (budget && BUDGET_AFFINITY[id]?.includes(budget)) score += 2;
-    if (score > bestScore) {
-      bestScore = score;
-      best = id;
+  if (motivHas(motiv, "aventura")) {
+    if (pace === "packed" && social === "solo") {
+      return findArchetype(21);
     }
+    if (pace === "slow" || pace === "zero") {
+      return findArchetype(25);
+    }
+    if (budget === "low") {
+      return findArchetype(25);
+    }
+    return findArchetype(2);
   }
 
-  return best;
-}
+  if (motivHas(motiv, "cultura")) {
+    if (social === "solo") {
+      return findArchetype(9);
+    }
+    if (budget === "low") {
+      return findArchetype(10);
+    }
+    if (pace === "slow" || pace === "zero") {
+      return findArchetype(9);
+    }
+    return findArchetype(16);
+  }
 
-export function selectArchetype(profile: TravelerProfileInput): Archetype {
-  const candidates = collectCandidateIds(profile);
-  const selectedId = tiebreakCandidates(candidates, profile);
-  return getArchetypeById(selectedId);
+  if (motiv.includes("nomad")) {
+    if (budget === "low") {
+      return findArchetype(3);
+    }
+    if (profile.trip_type === "nomada" || pace === "balanced") {
+      return findArchetype(20);
+    }
+    if (pace === "packed") {
+      return findArchetype(1);
+    }
+    return findArchetype(3);
+  }
+
+  if (motiv.includes("desconectar") || motiv.includes("espiritual")) {
+    if (pace === "slow" || pace === "zero") {
+      return findArchetype(4);
+    }
+    if (social === "solo") {
+      return findArchetype(17);
+    }
+    if (getSocialEnergy(profile) === "intro") {
+      return findArchetype(17);
+    }
+    return findArchetype(4);
+  }
+
+  if (social === "solo") {
+    if (pace === "slow" || pace === "zero") {
+      return findArchetype(7);
+    }
+    if (getSocialEnergy(profile) === "intro") {
+      return findArchetype(17);
+    }
+    if (pace === "packed") {
+      return findArchetype(5);
+    }
+    return findArchetype(5);
+  }
+
+  if (motiv.includes("social")) {
+    if (budget === "high" || budget === "ilim") {
+      return findArchetype(18);
+    }
+    if (pace === "packed") {
+      return findArchetype(22);
+    }
+    if (social === "amigos" || social === "familia") {
+      return findArchetype(6);
+    }
+    return findArchetype(6);
+  }
+
+  if (motiv.includes("gastronomia")) {
+    if (budget === "high" || budget === "ilim") {
+      return findArchetype(12);
+    }
+    if (budget === "low" || pace === "slow") {
+      return findArchetype(10);
+    }
+    if (social === "solo") {
+      return findArchetype(11);
+    }
+    return findArchetype(11);
+  }
+
+  if (motiv.includes("naturaleza")) {
+    if (pace === "packed") {
+      return findArchetype(1);
+    }
+    if (budget === "low") {
+      return findArchetype(25);
+    }
+    if (pace === "slow" || pace === "zero") {
+      return findArchetype(15);
+    }
+    return findArchetype(15);
+  }
+
+  if (motiv.includes("foto")) {
+    if (budget === "high" || budget === "ilim" || budget === "mid") {
+      return findArchetype(23);
+    }
+    if (pace === "slow" && social === "solo") {
+      return findArchetype(7);
+    }
+    if (social === "solo") {
+      return findArchetype(7);
+    }
+    return findArchetype(23);
+  }
+
+  if (motiv.includes("lujo")) {
+    if (budget === "high" || budget === "ilim") {
+      return findArchetype(12);
+    }
+    if (social === "amigos" || social === "familia" || social === "pareja") {
+      return findArchetype(18);
+    }
+    if (pace === "slow" || pace === "zero") {
+      return findArchetype(23);
+    }
+    return findArchetype(12);
+  }
+
+  if (motiv.includes("unico")) {
+    if (pace === "packed") {
+      return findArchetype(22);
+    }
+    if (budget === "low") {
+      return findArchetype(25);
+    }
+    return findArchetype(1);
+  }
+
+  return findArchetype(1);
 }
 
 const PACE_MODIFIERS: Record<string, string> = {

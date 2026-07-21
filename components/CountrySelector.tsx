@@ -1,13 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { countries, searchCountries, type CountryEntry } from "@/lib/geo";
+import {
+  countries,
+  localized,
+  searchCountries,
+  type CountryEntry,
+  type Lang,
+} from "@/lib/geo";
 
 type CountrySelectorProps = {
   value: string;
   onChange: (countryName: string) => void;
   placeholder?: string;
   required?: boolean;
+  lang?: Lang;
 };
 
 export function CountrySelector({
@@ -15,6 +22,7 @@ export function CountrySelector({
   onChange,
   placeholder = "Busca tu país...",
   required,
+  lang = "es",
 }: CountrySelectorProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -23,7 +31,12 @@ export function CountrySelector({
 
   useEffect(() => {
     if (value) {
-      const match = countries.find((c) => c.name === value);
+      const match = countries.find(
+        (c) =>
+          c.name.es === value ||
+          c.name.en === value ||
+          c.name.fr === value
+      );
       if (match) setSelected(match);
     } else {
       setSelected(null);
@@ -40,11 +53,11 @@ export function CountrySelector({
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
-  const results = searchCountries(query || (selected?.name ?? ""), 8);
+  const results = searchCountries(query, 8, lang);
 
   function pick(country: CountryEntry) {
     setSelected(country);
-    onChange(country.name);
+    onChange(country.name.es);
     setQuery("");
     setOpen(false);
   }
@@ -58,17 +71,17 @@ export function CountrySelector({
   return (
     <div ref={wrapRef} className="relative">
       {selected ? (
-        <div
-          className="flex items-center justify-between rounded-xl px-4 py-3 border bg-[#FAFAF8]"
-          style={{ borderColor: "rgba(45,123,123,0.25)" }}
-        >
-          <span className="text-base">
-            {selected.flag} {selected.name}
+        <div className="flex items-center justify-between rounded-[7px] px-4 py-3 border border-[#E5E2DC] bg-white">
+          <span className="text-base text-[#1A1A1A]">
+            <span className="mr-2 text-sm" aria-hidden="true">
+              {selected.flag}
+            </span>
+            {localized(selected.name, lang)}
           </span>
           <button
             type="button"
             onClick={clear}
-            className="text-sm text-[#E8634A] bg-transparent border-0 cursor-pointer font-semibold"
+            className="text-sm text-[#E8634A] bg-transparent border-0 cursor-pointer font-medium"
             aria-label="Quitar país"
           >
             ✕
@@ -77,14 +90,30 @@ export function CountrySelector({
       ) : (
         <>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2D7B7B]">
-              🔍
+            <span
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#2D7B7B] pointer-events-none"
+              aria-hidden="true"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
             </span>
             <input
               type="text"
               value={query}
               placeholder={placeholder}
               autoComplete="off"
+              required={required}
               onChange={(e) => {
                 setQuery(e.target.value);
                 setOpen(true);
@@ -94,19 +123,18 @@ export function CountrySelector({
             />
           </div>
           {open && results.length > 0 && (
-            <ul
-              className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-xl border bg-white shadow-lg list-none p-1 m-0"
-              style={{ borderColor: "rgba(45,123,123,0.2)" }}
-            >
+            <ul className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-[7px] border border-[#E5E2DC] bg-white list-none p-1 m-0">
               {results.map((c) => (
-                <li key={c.name}>
+                <li key={c.name.es}>
                   <button
                     type="button"
                     onClick={() => pick(c)}
-                    className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#F5EFE6] border-0 bg-transparent cursor-pointer text-base"
+                    className="w-full text-left px-3 py-2.5 rounded-[6px] hover:bg-[#FFF5F2] border-0 bg-transparent cursor-pointer text-base text-[#1A1A1A]"
                   >
-                    <span className="mr-2">{c.flag}</span>
-                    {c.name}
+                    <span className="mr-2 text-sm" aria-hidden="true">
+                      {c.flag}
+                    </span>
+                    {localized(c.name, lang)}
                   </button>
                 </li>
               ))}
@@ -119,4 +147,4 @@ export function CountrySelector({
 }
 
 const inputClass =
-  "w-full rounded-xl px-4 py-3 text-base border outline-none transition-colors focus:border-[#2D7B7B] border-gray-200 bg-[#FAFAF8]";
+  "w-full rounded-[7px] px-4 py-3 text-base border border-[#E5E2DC] outline-none transition-colors focus:border-[#2D7B7B] bg-white text-[#1A1A1A] placeholder:text-[#9a9590]";

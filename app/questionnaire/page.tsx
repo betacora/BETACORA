@@ -3,7 +3,7 @@
 export default function QuestionnairePage() {
   return (
     <main
-      className="bg-[#FAFAF8]"
+      className="bg-[#FAF8F4]"
       style={{ position: "fixed", inset: 0, margin: 0, padding: 0 }}
     >
       <iframe

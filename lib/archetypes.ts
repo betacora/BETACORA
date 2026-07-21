@@ -533,10 +533,11 @@ export function getDurationDays(profile: TravelerProfileInput): number | null {
 }
 
 export function getMaxTokens(durationDays: number | null): number {
-  if (durationDays === null) return 6000;
-  if (durationDays <= 7) return 4000;
-  if (durationDays <= 21) return 6000;
-  return 8000;
+  if (durationDays === null) return 7000;
+  // Extra headroom for the trailing bt-places JSON map block
+  if (durationDays <= 7) return 5500;
+  if (durationDays <= 21) return 7000;
+  return 9000;
 }
 
 export function getWebSearchInstruction(durationDays: number | null): string {

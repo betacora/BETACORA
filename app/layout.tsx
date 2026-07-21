@@ -46,7 +46,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="BeTacora" />
         <link rel="apple-touch-icon" href="/icon-192.png?v=2" />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[#F5EFE6]">
+      <body className="min-h-full flex flex-col font-sans bg-[#FAF8F4]">
         <SplashScreen />
         <SwRegister />
         {children}

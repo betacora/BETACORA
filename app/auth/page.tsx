@@ -64,7 +64,9 @@ export default function AuthPage() {
       setError(resendError.message);
       return;
     }
-    setInfo("Te hemos reenviado el email de confirmación. Revisa tu bandeja de entrada.");
+    setInfo(
+      "Te hemos reenviado el email de confirmación. Revisa tu bandeja de entrada."
+    );
   }
 
   function validateRegistration(): boolean {
@@ -73,7 +75,9 @@ export default function AuthPage() {
     const trimmedNationality = nationality.trim();
 
     if (!trimmedName) {
-      console.error("[auth validation] BLOCKED: name — empty or whitespace only");
+      console.error(
+        "[auth validation] BLOCKED: name — empty or whitespace only"
+      );
       setError("Introduce tu nombre.");
       return false;
     }
@@ -85,7 +89,10 @@ export default function AuthPage() {
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      console.error("[auth validation] BLOCKED: email — invalid format", trimmedEmail);
+      console.error(
+        "[auth validation] BLOCKED: email — invalid format",
+        trimmedEmail
+      );
       setError("Introduce un email válido.");
       return false;
     }
@@ -121,7 +128,9 @@ export default function AuthPage() {
     }
 
     if (!privacy) {
-      console.error("[auth validation] BLOCKED: privacy — checkbox not checked");
+      console.error(
+        "[auth validation] BLOCKED: privacy — checkbox not checked"
+      );
       setError("Debes aceptar la política de privacidad.");
       return false;
     }
@@ -193,17 +202,21 @@ export default function AuthPage() {
     }
 
     setLoading(true);
-    const { data, error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
+    const { data, error: signInError } = await supabase.auth.signInWithPassword(
+      {
+        email: email.trim(),
+        password,
+      }
+    );
 
     setLoading(false);
 
     if (signInError) {
       if (isEmailNotConfirmedError(signInError.message)) {
         setPendingEmail(email.trim());
-        setError("Tu email aún no está confirmado. Revisa tu bandeja de entrada.");
+        setError(
+          "Tu email aún no está confirmado. Revisa tu bandeja de entrada."
+        );
         return;
       }
       setError(signInError.message);
@@ -225,38 +238,35 @@ export default function AuthPage() {
     (info !== null && info.includes("confirma tu cuenta"));
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 py-10"
-      style={{ background: "#F5EFE6" }}
-    >
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FAF8F4] text-[#1A1A1A]">
       <div className="w-full max-w-md">
         <Link
           href="/"
-          className="inline-block mb-6 text-[#2D7B7B] font-semibold no-underline hover:underline"
+          className="inline-flex items-center gap-1.5 mb-8 text-[#6B6B6B] text-sm font-normal no-underline hover:text-[#1A1A1A] transition-colors"
         >
           ← Volver
         </Link>
 
-        <div
-          className="rounded-2xl p-8 shadow-lg border"
-          style={{ background: "#fff", borderColor: "rgba(45,123,123,0.15)" }}
-        >
-          <div className="flex justify-center mb-4">
+        <div className="rounded-[8px] p-7 sm:p-8 border border-[#E5E2DC] bg-white">
+          <div className="flex flex-col items-center mb-6">
             <img
-              src="/icon-512.png"
+              src="/icon-512.png?v=2"
               alt="BeTacora"
               width={56}
               height={56}
-              className="h-14 w-14 object-contain"
+              className="h-14 w-14 rounded-[8px] object-contain"
             />
+            <p className="mt-3 text-lg font-medium tracking-tight">
+              Be<span className="text-[#E8634A]">Tacora</span>
+            </p>
+            <p className="text-[#6B6B6B] text-center text-sm mt-2 leading-relaxed max-w-[280px]">
+              {mode === "login"
+                ? "Inicia sesión para guardar tus itinerarios"
+                : "Crea tu cuenta y desbloquea más generaciones"}
+            </p>
           </div>
-          <p className="text-gray-500 text-center text-sm mb-6">
-            {mode === "login"
-              ? "Inicia sesión para guardar tus itinerarios"
-              : "Crea tu cuenta y desbloquea más generaciones"}
-          </p>
 
-          <div className="flex rounded-xl overflow-hidden mb-6 border border-gray-200">
+          <div className="flex rounded-[7px] overflow-hidden mb-6 border border-[#E5E2DC]">
             <button
               type="button"
               onClick={() => {
@@ -265,10 +275,10 @@ export default function AuthPage() {
                 setInfo(null);
                 setPendingEmail(null);
               }}
-              className={`flex-1 py-2.5 text-sm font-semibold border-0 cursor-pointer transition-colors ${
+              className={`flex-1 py-2.5 text-sm font-medium border-0 cursor-pointer transition-colors ${
                 mode === "login"
-                  ? "bg-[#2D7B7B] text-white"
-                  : "bg-white text-gray-600"
+                  ? "bg-[#E8634A] text-white"
+                  : "bg-white text-[#6B6B6B] hover:text-[#1A1A1A]"
               }`}
             >
               Entrar
@@ -281,10 +291,10 @@ export default function AuthPage() {
                 setInfo(null);
                 setPendingEmail(null);
               }}
-              className={`flex-1 py-2.5 text-sm font-semibold border-0 cursor-pointer transition-colors ${
+              className={`flex-1 py-2.5 text-sm font-medium border-0 cursor-pointer transition-colors ${
                 mode === "register"
-                  ? "bg-[#2D7B7B] text-white"
-                  : "bg-white text-gray-600"
+                  ? "bg-[#E8634A] text-white"
+                  : "bg-white text-[#6B6B6B] hover:text-[#1A1A1A]"
               }`}
             >
               Registrarse
@@ -295,7 +305,7 @@ export default function AuthPage() {
             {mode === "register" && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
                     Nombre
                   </label>
                   <input
@@ -308,7 +318,7 @@ export default function AuthPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
                     Nacionalidad
                   </label>
                   <CountrySelector
@@ -321,7 +331,7 @@ export default function AuthPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
                 Email
               </label>
               <input
@@ -335,7 +345,7 @@ export default function AuthPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
                 Contraseña
               </label>
               <input
@@ -347,15 +357,13 @@ export default function AuthPage() {
                 }
                 className={inputClass}
                 placeholder={
-                  mode === "register"
-                    ? "Mínimo 8 caracteres"
-                    : "Tu contraseña"
+                  mode === "register" ? "Mínimo 8 caracteres" : "Tu contraseña"
                 }
               />
             </div>
 
             {mode === "register" && (
-              <div className="space-y-2.5">
+              <div className="space-y-2.5 pt-1">
                 <LegalCheckbox
                   checked={terms}
                   onChange={setTerms}
@@ -375,19 +383,13 @@ export default function AuthPage() {
             )}
 
             {error && (
-              <p
-                className="text-sm rounded-lg px-3 py-2"
-                style={{ background: "rgba(232,99,74,0.1)", color: "#c0392b" }}
-              >
+              <p className="text-sm rounded-[7px] px-3 py-2.5 bg-[#FFF5F2] text-[#E8634A] border border-[rgba(232,99,74,0.25)]">
                 {error}
               </p>
             )}
 
             {info && (
-              <p
-                className="text-sm rounded-lg px-3 py-2"
-                style={{ background: "rgba(45,123,123,0.1)", color: "#2D7B7B" }}
-              >
+              <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#2D7B7B] border border-[#E5E2DC]">
                 {info}
               </p>
             )}
@@ -397,7 +399,7 @@ export default function AuthPage() {
                 type="button"
                 onClick={handleResendConfirmation}
                 disabled={resending}
-                className="w-full py-2.5 rounded-xl text-sm font-semibold border-2 border-[#2D7B7B] text-[#2D7B7B] bg-transparent cursor-pointer disabled:opacity-60"
+                className="w-full py-2.5 rounded-[7px] text-sm font-medium border border-[#2D7B7B] text-[#2D7B7B] bg-transparent cursor-pointer disabled:opacity-60"
               >
                 {resending ? "Enviando…" : "Reenviar email de confirmación"}
               </button>
@@ -405,9 +407,11 @@ export default function AuthPage() {
 
             <button
               type="submit"
-              disabled={loading || (info !== null && info.includes("confirma tu cuenta"))}
-              className="w-full py-3 rounded-xl font-bold text-white border-0 cursor-pointer disabled:opacity-60 transition-opacity"
-              style={{ background: "#E8634A" }}
+              disabled={
+                loading ||
+                (info !== null && info.includes("confirma tu cuenta"))
+              }
+              className="w-full py-3 rounded-[7px] font-medium text-white border-0 cursor-pointer disabled:opacity-60 transition-opacity bg-[#E8634A]"
             >
               {loading
                 ? "…"
@@ -419,7 +423,7 @@ export default function AuthPage() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-gray-400 mt-6">
+          <p className="text-center text-xs text-[#6B6B6B] mt-6 leading-relaxed">
             Sin cuenta: 1 itinerario · Con cuenta: 2 por mes
           </p>
         </div>
@@ -438,7 +442,7 @@ function LegalCheckbox({
   label: string;
 }) {
   return (
-    <label className="flex items-start gap-2.5 cursor-pointer text-sm text-gray-600">
+    <label className="flex items-start gap-2.5 cursor-pointer text-sm text-[#6B6B6B]">
       <input
         type="checkbox"
         checked={checked}
@@ -451,4 +455,4 @@ function LegalCheckbox({
 }
 
 const inputClass =
-  "w-full rounded-xl px-4 py-3 text-base border outline-none transition-colors focus:border-[#2D7B7B] border-gray-200 bg-[#FAFAF8]";
+  "w-full rounded-[7px] px-4 py-3 text-base border border-[#E5E2DC] outline-none transition-colors focus:border-[#2D7B7B] bg-white text-[#1A1A1A] placeholder:text-[#9a9590]";

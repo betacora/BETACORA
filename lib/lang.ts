@@ -27,18 +27,21 @@ export function persistLang(lang: AppLang): void {
 
 export const LANDING_COPY: Record<
   AppLang,
-  { tagline: string; cta: string }
+  { tagline: string; sub: string; cta: string }
 > = {
   es: {
     tagline: "Tu bitácora inteligente de viajes",
+    sub: "Descubre tu perfil viajero y genera itinerarios hechos a tu medida.",
     cta: "Descubre tu perfil viajero",
   },
   en: {
     tagline: "Your smart travel logbook",
+    sub: "Discover your traveler profile and get itineraries made for you.",
     cta: "Discover your traveler profile",
   },
   fr: {
     tagline: "Votre carnet de voyage intelligent",
+    sub: "Découvrez votre profil voyageur et des itinéraires sur mesure.",
     cta: "Découvrez votre profil voyageur",
   },
 };

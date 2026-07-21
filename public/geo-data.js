@@ -1,20 +1,5 @@
-export type LocalizedName = { es: string; en: string; fr: string };
-
-export type CityEntry = {
-  city: LocalizedName;
-  country: LocalizedName;
-  flag: string;
-};
-
-export type CountryEntry = {
-  name: LocalizedName;
-  flag: string;
-};
-
-export type Lang = keyof LocalizedName;
-
-/** Localized city/country data (same as public/geo-data.js) */
-export const cities: CityEntry[] = [
+/** Multilingual city/country data for questionnaire search (es/en/fr) */
+window.GEO_CITIES = [
   {
     "flag": "🇪🇸",
     "city": {
@@ -2148,46 +2133,3 @@ export const cities: CityEntry[] = [
     }
   }
 ];
-
-const countryMap = new Map<string, CountryEntry>();
-for (const c of cities) {
-  const key = c.country.es;
-  if (!countryMap.has(key)) {
-    countryMap.set(key, { name: c.country, flag: c.flag });
-  }
-}
-
-export const countries: CountryEntry[] = [...countryMap.values()].sort((a, b) =>
-  a.name.es.localeCompare(b.name.es, "es")
-);
-
-export function localized(name: LocalizedName, lang: Lang = "es"): string {
-  return name[lang] || name.es;
-}
-
-export function searchCountries(query: string, limit = 8, lang: Lang = "es"): CountryEntry[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return countries.slice(0, limit);
-  return countries
-    .filter((c) =>
-      c.name.es.toLowerCase().includes(q) ||
-      c.name.en.toLowerCase().includes(q) ||
-      c.name.fr.toLowerCase().includes(q)
-    )
-    .slice(0, limit);
-}
-
-export function searchCities(query: string, limit = 8, lang: Lang = "es"): CityEntry[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return cities.slice(0, limit);
-  return cities
-    .filter((c) =>
-      c.city.es.toLowerCase().includes(q) ||
-      c.city.en.toLowerCase().includes(q) ||
-      c.city.fr.toLowerCase().includes(q) ||
-      c.country.es.toLowerCase().includes(q) ||
-      c.country.en.toLowerCase().includes(q) ||
-      c.country.fr.toLowerCase().includes(q)
-    )
-    .slice(0, limit);
-}

@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 
 export function SplashScreen() {
   const [visible, setVisible] = useState(true);
+  const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    const hide = () => setVisible(false);
+    const hide = () => {
+      setFading(true);
+      setTimeout(() => setVisible(false), 320);
+    };
     if (document.readyState === "complete") {
       requestAnimationFrame(hide);
     } else {
@@ -25,15 +29,19 @@ export function SplashScreen() {
     <div
       id="app-splash"
       aria-hidden="true"
-      className="fixed inset-0 z-[9999] flex items-center justify-center transition-opacity duration-300"
-      style={{ background: "#2D7B7B" }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      style={{
+        background: "#2D7B7B",
+        opacity: fading ? 0 : 1,
+        transition: "opacity 0.3s ease",
+      }}
     >
       <img
         src="/icon-512.png?v=2"
         alt="BeTacora"
         width={160}
         height={160}
-        className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 drop-shadow-lg"
+        className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-[8px] object-contain"
       />
     </div>
   );

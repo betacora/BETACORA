@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BeTacora — Tu Perfil Viajero</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>window.BTLeaflet = window.L;</script>
 <style>
 :root {
   --teal: #2D7B7B;
@@ -22,7 +25,8 @@
 body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; font-weight: 400; -webkit-font-smoothing: antialiased; }
 
 .header { background: var(--bg); padding: 1.1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); }
-.logo { font-size: 1.35rem; font-weight: 500; letter-spacing: -0.02em; }
+.logo { display: inline-flex; align-items: center; gap: 0.55rem; font-size: 1.35rem; font-weight: 500; letter-spacing: -0.02em; text-decoration: none; color: inherit; }
+.logo-mark { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; flex-shrink: 0; }
 .logo-be { color: var(--ink); }
 .logo-tacora { color: var(--coral); }
 .header-tag { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 400; }
@@ -168,7 +172,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .profile-stat { text-align: center; }
 .stat-val { font-size: 1rem; font-weight: 500; color: var(--ink); }
 .stat-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; }
-.share-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--coral); color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+.share-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--coral); color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
 .share-btn:hover { opacity: 0.9; transform: none; }
 
 /* SHAREABLE CARD */
@@ -238,8 +242,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .submit-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.85rem; font-weight: 400; }
 
 .limit-banner, .save-banner {
-  display: none; max-width: 520px; margin: 0 auto 1.25rem; padding: 1.1rem 1.35rem;
-  border-radius: 7px; font-size: 0.92rem; line-height: 1.55; text-align: center; font-weight: 400;
+  display: none; max-width: 520px; margin: 0 auto 1.25rem; padding: 1.15rem 1.4rem;
+  border-radius: 7px; font-size: 0.9rem; line-height: 1.55; text-align: center; font-weight: 400;
 }
 .limit-banner.show, .save-banner.show { display: block; }
 .limit-banner {
@@ -251,9 +255,15 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .save-banner.saved {
   background: var(--white); border: 1px solid var(--teal); color: var(--ink); font-weight: 500;
 }
+.save-banner.saved.show {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.save-banner.saved.show::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0;
+}
 .auth-banner-btn {
-  display: inline-block; margin-top: 0.75rem; padding: 0.65rem 1.35rem; border-radius: 7px;
-  background: var(--coral); color: #fff; font-weight: 600; font-size: 0.88rem; text-decoration: none;
+  display: inline-block; margin-top: 0.85rem; padding: 0.7rem 1.4rem; border-radius: 7px;
+  background: var(--coral); color: #fff; font-weight: 500; font-size: 0.88rem; text-decoration: none;
   border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
 }
 .auth-banner-btn:hover { opacity: 0.92; }
@@ -263,38 +273,62 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .bitacora-header { background: var(--ink); padding: 1.75rem 1.5rem; color: white; text-align: center; }
 .bitacora-header-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.4rem; font-weight: 400; }
 .bitacora-header-title { font-size: clamp(1.25rem, 3.5vw, 1.6rem); font-weight: 500; }
+.bt-itinerary-map-wrap { padding: 1rem 1rem 0; }
+.bt-itinerary-map {
+  width: 100%; height: 320px; border-radius: 8px; border: 1px solid var(--border);
+  overflow: hidden; background: #e8e6e1; z-index: 0;
+}
+@media (min-width: 768px) {
+  .bt-itinerary-map { height: 420px; }
+  .bt-itinerary-map-wrap { padding: 1.25rem 1.25rem 0; }
+}
+.bt-map-marker { background: transparent !important; border: none !important; }
+.bt-map-marker span {
+  display: block; width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+.bt-map-popup { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; line-height: 1.35; }
+.bt-map-popup strong { display: block; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
+.bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; }
 .bitacora-article { padding: 1.5rem 1.25rem 2rem; max-width: 720px; margin: 0 auto; }
 .bitacora-article .section-card { background: var(--white); border-radius: 7px; padding: 1.5rem 1.35rem; margin-bottom: 1.25rem; box-shadow: none; border: 1px solid var(--border); }
 .bitacora-article .section-card:last-child { margin-bottom: 0; }
 .bitacora-article h2 { font-size: clamp(1.35rem, 4vw, 1.65rem); font-weight: 500; color: var(--ink); line-height: 1.25; margin: 0 0 1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
-.bitacora-article h3 { font-size: 1.05rem; font-weight: 500; color: var(--coral); line-height: 1.35; margin: 1.25rem 0 0.65rem; }
+.bitacora-article h3 { font-size: 1.05rem; font-weight: 500; color: var(--teal); line-height: 1.35; margin: 1.25rem 0 0.65rem; }
 .bitacora-article h3:first-child { margin-top: 0; }
 .bitacora-article p { font-size: 0.95rem; line-height: 1.8; color: var(--ink); margin: 0 0 0.85rem; font-weight: 400; }
 .bitacora-article p:last-child { margin-bottom: 0; }
 .bitacora-article ul { list-style: none; padding: 0; margin: 0.5rem 0 1rem; }
 .bitacora-article li { font-size: 0.93rem; line-height: 1.75; color: var(--ink); padding: 0.3rem 0 0.3rem 1.25rem; position: relative; font-weight: 400; }
-.bitacora-article li::before { content: ''; position: absolute; left: 0; top: 0.72em; width: 5px; height: 5px; border-radius: 50%; background: var(--coral); }
+.bitacora-article li::before { content: ''; position: absolute; left: 0; top: 0.72em; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
 .itinerary-error { background: var(--coral-tint); border: 1px solid rgba(232,99,74,0.25); border-radius: 7px; padding: 1.25rem 1.5rem; color: var(--ink); font-size: 0.9rem; line-height: 1.6; text-align: center; margin: 1.5rem; font-weight: 400; }
 .itinerary-error strong { display: block; color: var(--coral); margin-bottom: 0.4rem; font-size: 1rem; font-weight: 500; }
 @media(max-width:520px) {
   .bitacora-article { padding: 1rem 0.85rem 1.5rem; }
   .bitacora-article .section-card { padding: 1.15rem 1rem; }
   .bitacora-header { padding: 1.35rem 1rem; }
-  .header { padding: 1rem 1.25rem; }
-  .progress-wrap { padding: 0.65rem 1.25rem; }
+  .header { padding: 0.9rem 1rem; gap: 0.75rem; }
+  .header-tag { display: none; }
+  .logo { font-size: 1.15rem; gap: 0.45rem; }
+  .logo-mark { width: 24px; height: 24px; }
+  .progress-wrap { padding: 0.65rem 1rem; }
+  .header-right { gap: 0.5rem; }
 }
 </style>
 </head>
 <body>
 
 <header class="header">
-  <div class="logo"><span class="logo-be">Be</span><span class="logo-tacora">Tacora</span></div>
+  <a class="logo" href="/" aria-label="BeTacora">
+    <img class="logo-mark" src="/icon-512.png?v=2" alt="" width="28" height="28" />
+    <span><span class="logo-be">Be</span><span class="logo-tacora">Tacora</span></span>
+  </a>
   <div class="header-right">
     <div class="header-tag" id="headerTag">Tu Perfil Viajero</div>
     <div class="lang-switch" role="group" aria-label="Language">
-      <button type="button" class="lang-btn active" data-lang="es">🇪🇸 ES</button>
-      <button type="button" class="lang-btn" data-lang="en">🇬🇧 EN</button>
-      <button type="button" class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+      <button type="button" class="lang-btn active" data-lang="es">ES</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="fr">FR</button>
     </div>
   </div>
 </header>
@@ -521,93 +555,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
     </div>
   </div>
 
-  <!-- VI — Misión del Viaje -->
-  <div class="section" id="misionSection">
-    <div class="section-header">
-      <span class="section-num">VI</span>
-      <div><div class="section-title">Misión del Viaje</div><div class="section-sub">El foco concreto de esta aventura</div></div>
-    </div>
-
-    <div class="qblock" id="misionFocusBlock">
-      <div class="qlabel">¿Cuál es el foco principal de este viaje?</div>
-      <span class="multi-badge">Selección libre</span>
-      <div class="grid4">
-        <button class="opt" data-q="mision_focus" data-v="urbano" onclick="toggleMisionFocus(this)"><span class="em">🏙️</span>Ciudades y vida urbana</button>
-        <button class="opt" data-q="mision_focus" data-v="naturaleza" onclick="toggleMisionFocus(this)"><span class="em">🏔️</span>Naturaleza y paisajes</button>
-        <button class="opt" data-q="mision_focus" data-v="cultura" onclick="toggleMisionFocus(this)"><span class="em">🎨</span>Cultura, museos e historia</button>
-        <button class="opt" data-q="mision_focus" data-v="gastro" onclick="toggleMisionFocus(this)"><span class="em">🍽️</span>Gastronomía a fondo</button>
-        <button class="opt" data-q="mision_focus" data-v="playa" onclick="toggleMisionFocus(this)"><span class="em">🏖️</span>Playa y desconexión</button>
-        <button class="opt" data-q="mision_focus" data-v="social" onclick="toggleMisionFocus(this)"><span class="em">🎉</span>Vida social y nocturna</button>
-        <button class="opt" data-q="mision_focus" data-v="compras" onclick="toggleMisionFocus(this)"><span class="em">🛍️</span>Compras y tiendas locales</button>
-        <button class="opt" data-q="mision_focus" data-v="unico" onclick="toggleMisionFocus(this)"><span class="em">✨</span>Experiencias únicas</button>
-      </div>
-    </div>
-
-    <div class="qblock" id="misionSportBlock">
-      <div class="qlabel">¿Quieres centrar este viaje en algún deporte o actividad específica?</div>
-      <div class="opt-list" style="margin-bottom:0.5rem">
-        <div class="opt-row" data-q="mision_sport" data-v="no" onclick="selMisionSport(this)"><span class="em2">🚫</span><span class="txt">No, actividades ocasionales está bien</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_sport" data-v="yes" onclick="selMisionSport(this)"><span class="em2">🎯</span><span class="txt">Sí, quiero centrar el viaje en algo concreto</span><span class="dot"></span></div>
-      </div>
-
-      <div id="misionSportDetail" style="display:none">
-        <div class="mision-sport-group">
-          <div class="sport-group-label" id="sportGroupWater">Deportes de agua</div>
-          <div class="grid4">
-            <button class="opt" data-q="mision_sports" data-v="surf" onclick="toggleMisionSport(this)"><span class="em">🏄</span>Surf</button>
-            <button class="opt" data-q="mision_sports" data-v="kitesurf" onclick="toggleMisionSport(this)"><span class="em">🪁</span>Kitesurf</button>
-            <button class="opt" data-q="mision_sports" data-v="buceo" onclick="toggleMisionSport(this)"><span class="em">🤿</span>Buceo</button>
-            <button class="opt" data-q="mision_sports" data-v="kayak" onclick="toggleMisionSport(this)"><span class="em">🚣</span>Kayak/Rafting</button>
-          </div>
-        </div>
-        <div class="mision-sport-group">
-          <div class="sport-group-label" id="sportGroupMountain">Montaña</div>
-          <div class="grid4">
-            <button class="opt" data-q="mision_sports" data-v="trekking" onclick="toggleMisionSport(this)"><span class="em">🥾</span>Trekking</button>
-            <button class="opt" data-q="mision_sports" data-v="escalada" onclick="toggleMisionSport(this)"><span class="em">🧗</span>Escalada</button>
-            <button class="opt" data-q="mision_sports" data-v="esqui" onclick="toggleMisionSport(this)"><span class="em">⛷️</span>Esquí/Snowboard</button>
-            <button class="opt" data-q="mision_sports" data-v="ultra_trail" onclick="toggleMisionSport(this)"><span class="em">🏃</span>Ultra trail/Trail running</button>
-          </div>
-        </div>
-        <div class="mision-sport-group">
-          <div class="sport-group-label" id="sportGroupOther">Otros</div>
-          <div class="grid4">
-            <button class="opt" data-q="mision_sports" data-v="ciclismo" onclick="toggleMisionSport(this)"><span class="em">🚴</span>Ciclismo</button>
-            <button class="opt" data-q="mision_sports" data-v="parapente" onclick="toggleMisionSport(this)"><span class="em">🪂</span>Parapente</button>
-            <button class="opt" data-q="mision_sports" data-v="yoga_wellness" onclick="toggleMisionSport(this)"><span class="em">🧘</span>Retiro yoga/wellness</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="misionSportIntentBlock" style="display:none;margin-top:1rem">
-        <div class="qlabel" style="margin-bottom:0.5rem">¿Es para una competición o evento concreto, o para disfrutarlo a tu ritmo?</div>
-        <div class="opt-list">
-          <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Tengo una carrera o evento</span><span class="dot"></span></div>
-          <div class="opt-row" data-q="mision_sport_intent" data-v="centrar" onclick="selMisionSportIntent(this)"><span class="em2">🎯</span><span class="txt">Quiero centrar el viaje en esto, sin competir</span><span class="dot"></span></div>
-          <div class="opt-row" data-q="mision_sport_intent" data-v="casual" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Es una actividad más, sin obsesionarme</span><span class="dot"></span></div>
-        </div>
-        <div class="mision-event-wrap" id="misionEventDateWrap">
-          <label class="date-label" for="misionEventDate">📅 Fecha del evento o carrera</label>
-          <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
-        </div>
-      </div>
-    </div>
-
-    <div class="qblock" id="misionLuxuryBlock" style="display:none">
-      <div class="qlabel">¿Cómo te gustaría vivir el lujo o confort en este viaje?</div>
-      <div class="opt-list">
-        <div class="opt-row" data-q="mision_luxury" data-v="comodidad" onclick="selMisionLuxury(this)"><span class="em2">🛏️</span><span class="txt">Comodidad sin complicaciones</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_luxury" data-v="discretas" onclick="selMisionLuxury(this)"><span class="em2">🍷</span><span class="txt">Experiencias de calidad, discretas</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_luxury" data-v="reconocidos" onclick="selMisionLuxury(this)"><span class="em2">📸</span><span class="txt">Sitios reconocidos</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_luxury" data-v="mix" onclick="selMisionLuxury(this)"><span class="em2">⚖️</span><span class="txt">Mezcla de todo</span><span class="dot"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- VII — Tu Próximo Viaje (destino → fechas → tripulación/presupuesto) -->
+  <!-- VI — Tu Próximo Viaje (destino → fechas → tripulación/presupuesto) -->
   <div class="section">
     <div class="section-header">
-      <span class="section-num">VII</span>
+      <span class="section-num">VI</span>
       <div><div class="section-title">Tu Próximo Viaje</div><div class="section-sub">Los datos para trazar tu ruta</div></div>
     </div>
 
@@ -790,6 +741,73 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
     </div>
   </div>
 
+  <!-- VII — Misión del Viaje -->
+  <div class="section" id="misionSection">
+    <div class="section-header">
+      <span class="section-num">VII</span>
+      <div><div class="section-title">Misión del Viaje</div><div class="section-sub">El foco concreto de esta aventura</div></div>
+    </div>
+
+    <div class="qblock" id="misionFocusBlock">
+      <div class="qlabel">¿Cuál es el foco principal de este viaje?</div>
+      <span class="max-badge">Máx. 2 opciones</span>
+      <div class="grid4">
+        <button class="opt" data-q="mision_focus" data-v="urbano" onclick="toggleMisionFocus(this)"><span class="em">🏙️</span>Ciudades</button>
+        <button class="opt" data-q="mision_focus" data-v="naturaleza" onclick="toggleMisionFocus(this)"><span class="em">🏔️</span>Naturaleza</button>
+        <button class="opt" data-q="mision_focus" data-v="cultura" onclick="toggleMisionFocus(this)"><span class="em">🎨</span>Cultura e historia</button>
+        <button class="opt" data-q="mision_focus" data-v="gastro" onclick="toggleMisionFocus(this)"><span class="em">🍽️</span>Gastronomía</button>
+        <button class="opt" data-q="mision_focus" data-v="playa" onclick="toggleMisionFocus(this)"><span class="em">🏖️</span>Playa y mar</button>
+        <button class="opt" data-q="mision_focus" data-v="social" onclick="toggleMisionFocus(this)"><span class="em">🎉</span>Social y fiesta</button>
+        <button class="opt" data-q="mision_focus" data-v="compras" onclick="toggleMisionFocus(this)"><span class="em">🛍️</span>Compras</button>
+        <button class="opt" data-q="mision_focus" data-v="unico" onclick="toggleMisionFocus(this)"><span class="em">✨</span>Experiencias únicas</button>
+      </div>
+    </div>
+
+    <div class="qblock" id="misionSportBlock">
+      <div class="qlabel">¿Practicarás algún deporte específico?</div>
+      <div class="opt-list" style="margin-bottom:0.5rem">
+        <div class="opt-row" data-q="mision_sport" data-v="no" onclick="selMisionSport(this)"><span class="em2">🚫</span><span class="txt">No</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_sport" data-v="yes" onclick="selMisionSport(this)"><span class="em2">🎯</span><span class="txt">Sí</span><span class="dot"></span></div>
+      </div>
+
+      <div id="misionSportDetail" style="display:none">
+        <div class="grid4" style="margin-top:0.75rem">
+          <button class="opt" data-q="mision_sports" data-v="surf" onclick="toggleMisionSport(this)"><span class="em">🏄</span>Surf</button>
+          <button class="opt" data-q="mision_sports" data-v="buceo" onclick="toggleMisionSport(this)"><span class="em">🤿</span>Buceo</button>
+          <button class="opt" data-q="mision_sports" data-v="kitesurf" onclick="toggleMisionSport(this)"><span class="em">🪁</span>Kitesurf</button>
+          <button class="opt" data-q="mision_sports" data-v="trekking" onclick="toggleMisionSport(this)"><span class="em">🥾</span>Senderismo</button>
+          <button class="opt" data-q="mision_sports" data-v="escalada" onclick="toggleMisionSport(this)"><span class="em">🧗</span>Escalada</button>
+          <button class="opt" data-q="mision_sports" data-v="esqui" onclick="toggleMisionSport(this)"><span class="em">⛷️</span>Esquí</button>
+          <button class="opt" data-q="mision_sports" data-v="ciclismo" onclick="toggleMisionSport(this)"><span class="em">🚴</span>Ciclismo</button>
+          <button class="opt" data-q="mision_sports" data-v="running" onclick="toggleMisionSport(this)"><span class="em">🏃</span>Running</button>
+          <button class="opt" data-q="mision_sports" data-v="otro" onclick="toggleMisionSport(this)"><span class="em">✨</span>Otro</button>
+        </div>
+      </div>
+
+      <div id="misionSportIntentBlock" style="display:none;margin-top:1rem">
+        <div class="qlabel" style="margin-bottom:0.5rem">¿Es por competición o por placer?</div>
+        <div class="opt-list">
+          <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Competición</span><span class="dot"></span></div>
+          <div class="opt-row" data-q="mision_sport_intent" data-v="placer" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Placer</span><span class="dot"></span></div>
+        </div>
+        <div class="mision-event-wrap" id="misionEventDateWrap">
+          <label class="date-label" for="misionEventDate" id="misionEventDateLabel">Fecha del evento o carrera</label>
+          <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
+        </div>
+      </div>
+    </div>
+
+    <div class="qblock" id="misionLuxuryBlock" style="display:none">
+      <div class="qlabel">¿Qué tipo de lujo valoras?</div>
+      <div class="opt-list">
+        <div class="opt-row" data-q="mision_luxury" data-v="comodidad" onclick="selMisionLuxury(this)"><span class="em2">🛏️</span><span class="txt">Confort total</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_luxury" data-v="discretas" onclick="selMisionLuxury(this)"><span class="em2">🍷</span><span class="txt">Calidad discreta</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_luxury" data-v="reconocidos" onclick="selMisionLuxury(this)"><span class="em2">📸</span><span class="txt">Marcas reconocidas</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_luxury" data-v="mix" onclick="selMisionLuxury(this)"><span class="em2">⚖️</span><span class="txt">Mezcla</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+
   <!-- PROFILE -->
   <div class="profile-card" id="profileCard">
     <div class="profile-top">
@@ -804,7 +822,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
         <div class="profile-stat"><div class="stat-val" id="pEnergy">—</div><div class="stat-label" id="statEnergy">Energía</div></div>
         <div class="profile-stat"><div class="stat-val" id="pStyle">—</div><div class="stat-label" id="statPace">Ritmo</div></div>
       </div>
-      <button class="share-btn" onclick="shareProfile()">📤 Compartir mi perfil</button>
+      <button class="share-btn" onclick="shareProfile()">Compartir mi perfil</button>
     </div>
   </div>
 
@@ -825,8 +843,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
       </div>
     </div>
     <div class="shareable-actions">
-      <button type="button" class="sc-action-btn" id="scDownload" onclick="downloadShareableCard()">📥 Descargar mi tarjeta</button>
-      <button type="button" class="sc-action-btn secondary" id="scShare" onclick="shareShareableCard()">📤 Compartir</button>
+      <button type="button" class="sc-action-btn" id="scDownload" onclick="downloadShareableCard()">Descargar mi tarjeta</button>
+      <button type="button" class="sc-action-btn secondary" id="scShare" onclick="shareShareableCard()">Compartir</button>
     </div>
   </div>
 
@@ -836,7 +854,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 
   <div class="submit-wrap">
     <div class="limit-banner" id="limitBanner"></div>
-    <button class="submit-btn" id="submitBtn" onclick="handleGenerate()">🧭 Generar mi Bitácora Inteligente</button>
+    <button class="submit-btn" id="submitBtn" onclick="handleGenerate()">Generar mi Bitácora Inteligente</button>
     <div class="submit-note">BeTacora diseñará tu viaje personalizado · betacora.app</div>
   </div>
 
@@ -844,6 +862,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="questionnaire-icons.js"></script>
+<script src="geo-data.js"></script>
 <script src="bt-auth.js"></script>
 <script src="questionnaire-i18n.js"></script>
 <script>
@@ -927,16 +946,17 @@ const LANG = {
       ['ui.questions.wake.label','ui.questions.wake.hint'], ['ui.questions.pace.label',null], ['ui.questions.energy.label',null],
       ['ui.questions.motiv.label',null], ['ui.questions.exp.label',null], ['ui.questions.guide.label',null],
       ['ui.questions.accom.label',null], ['ui.questions.amenity.label',null], ['ui.questions.food.label',null],
-      ['ui.questions.diet.label',null],       ['ui.questions.cultura.label',null], ['ui.questions.act.label',null],
-      ['ui.questions.misionFocus.label',null],
-      ['ui.questions.misionSport.label',null],
-      ['ui.questions.misionLuxury.label',null],
+      ['ui.questions.diet.label',null], ['ui.questions.cultura.label',null], ['ui.questions.act.label',null],
       ['ui.questions.origin.label','ui.questions.origin.hint'],
       ['ui.questions.tripType.label',null],
       ['ui.questions.dates.label','ui.questions.dates.hint'],
       ['ui.questions.social.label',null], ['ui.questions.social_e.label',null],
-      [null,null], ['ui.questions.splurge.label',null],
-      ['ui.questions.extra.label','ui.questions.extra.hint']
+      [null,null], // budgetBlock handled specially
+      ['ui.questions.splurge.label',null],
+      ['ui.questions.extra.label','ui.questions.extra.hint'],
+      ['ui.questions.misionFocus.label',null],
+      ['ui.questions.misionSport.label',null],
+      ['ui.questions.misionLuxury.label',null]
     ];
     document.querySelectorAll('.container > .section .qblock').forEach((qb, idx) => {
       if (qb.id === 'budgetBlock') {
@@ -966,8 +986,7 @@ const LANG = {
     if (el('sportGroupOther')) el('sportGroupOther').textContent = locale.ui.misionSportGroups.other;
     const misionIntentLabel = document.querySelector('#misionSportIntentBlock .qlabel');
     if (misionIntentLabel) misionIntentLabel.textContent = locale.ui.questions.misionSportIntent.label;
-    const misionEventLabel = document.querySelector('label[for="misionEventDate"]');
-    if (misionEventLabel) misionEventLabel.textContent = locale.ui.questions.misionEventDate;
+    if (el('misionEventDateLabel')) el('misionEventDateLabel').textContent = locale.ui.questions.misionEventDate;
 
     if (el('budgetHintTotal')) el('budgetHintTotal').textContent = locale.ui.questions.budgetTotal.hint;
     if (el('budgetMax')) {
@@ -1008,11 +1027,10 @@ const LANG = {
     if (el('destSearch')) el('destSearch').placeholder = locale.ui.search.destPlaceholder;
     if (el('sorpresaMessage')) el('sorpresaMessage').textContent = locale.ui.sorpresaMessage;
 
-    const dateLabels = document.querySelectorAll('.date-label');
-    if (dateLabels.length >= 2) {
-      dateLabels[0].textContent = locale.ui.questions.dates.from;
-      dateLabels[1].textContent = locale.ui.questions.dates.to;
-    }
+    const dateFromLabel = document.querySelector('label[for="dateFrom"]');
+    const dateToLabel = document.querySelector('label[for="dateTo"]');
+    if (dateFromLabel) dateFromLabel.textContent = locale.ui.questions.dates.from;
+    if (dateToLabel) dateToLabel.textContent = locale.ui.questions.dates.to;
     if (el('dateFormatHint')) el('dateFormatHint').textContent = locale.ui.dateFormatHint;
     if (el('crewDivider')) el('crewDivider').textContent = locale.ui.crewDivider;
     if (el('extra')) el('extra').placeholder = locale.ui.questions.extra.placeholder;
@@ -1135,7 +1153,7 @@ const misionViaje = {
   luxury_style: null,
 };
 
-const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ultra_trail', 'ciclismo']);
+const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking']);
 const selectedOrigin = [];
 const selectedDest = [];
 
@@ -1147,72 +1165,37 @@ function updateCurrency() {
   answers['currency'] = cur;
 }
 
-const cities = [
-  {city:'Madrid',country:'España',flag:'🇪🇸'},{city:'Barcelona',country:'España',flag:'🇪🇸'},{city:'Sevilla',country:'España',flag:'🇪🇸'},{city:'Valencia',country:'España',flag:'🇪🇸'},{city:'Bilbao',country:'España',flag:'🇪🇸'},
-  {city:'Ciudad de México',country:'México',flag:'🇲🇽'},{city:'Cancún',country:'México',flag:'🇲🇽'},{city:'Guadalajara',country:'México',flag:'🇲🇽'},{city:'Monterrey',country:'México',flag:'🇲🇽'},{city:'Oaxaca',country:'México',flag:'🇲🇽'},
-  {city:'Buenos Aires',country:'Argentina',flag:'🇦🇷'},{city:'Córdoba',country:'Argentina',flag:'🇦🇷'},{city:'Mendoza',country:'Argentina',flag:'🇦🇷'},{city:'Bariloche',country:'Argentina',flag:'🇦🇷'},
-  {city:'Bogotá',country:'Colombia',flag:'🇨🇴'},{city:'Medellín',country:'Colombia',flag:'🇨🇴'},{city:'Cartagena',country:'Colombia',flag:'🇨🇴'},{city:'Cali',country:'Colombia',flag:'🇨🇴'},
-  {city:'Lima',country:'Perú',flag:'🇵🇪'},{city:'Cusco',country:'Perú',flag:'🇵🇪'},{city:'Arequipa',country:'Perú',flag:'🇵🇪'},{city:'Machu Picchu',country:'Perú',flag:'🇵🇪'},
-  {city:'São Paulo',country:'Brasil',flag:'🇧🇷'},{city:'Río de Janeiro',country:'Brasil',flag:'🇧🇷'},{city:'Salvador',country:'Brasil',flag:'🇧🇷'},{city:'Florianópolis',country:'Brasil',flag:'🇧🇷'},
-  {city:'Santiago',country:'Chile',flag:'🇨🇱'},{city:'Valparaíso',country:'Chile',flag:'🇨🇱'},{city:'Atacama',country:'Chile',flag:'🇨🇱'},
-  {city:'París',country:'Francia',flag:'🇫🇷'},{city:'Lyon',country:'Francia',flag:'🇫🇷'},{city:'Niza',country:'Francia',flag:'🇫🇷'},{city:'Marsella',country:'Francia',flag:'🇫🇷'},
-  {city:'Londres',country:'Reino Unido',flag:'🇬🇧'},{city:'Edimburgo',country:'Reino Unido',flag:'🇬🇧'},{city:'Manchester',country:'Reino Unido',flag:'🇬🇧'},
-  {city:'Roma',country:'Italia',flag:'🇮🇹'},{city:'Milán',country:'Italia',flag:'🇮🇹'},{city:'Venecia',country:'Italia',flag:'🇮🇹'},{city:'Florencia',country:'Italia',flag:'🇮🇹'},{city:'Nápoles',country:'Italia',flag:'🇮🇹'},
-  {city:'Berlín',country:'Alemania',flag:'🇩🇪'},{city:'Múnich',country:'Alemania',flag:'🇩🇪'},{city:'Hamburgo',country:'Alemania',flag:'🇩🇪'},{city:'Frankfurt',country:'Alemania',flag:'🇩🇪'},
-  {city:'Ámsterdam',country:'Países Bajos',flag:'🇳🇱'},{city:'Róterdam',country:'Países Bajos',flag:'🇳🇱'},
-  {city:'Lisboa',country:'Portugal',flag:'🇵🇹'},{city:'Oporto',country:'Portugal',flag:'🇵🇹'},{city:'Algarve',country:'Portugal',flag:'🇵🇹'},
-  {city:'Tokio',country:'Japón',flag:'🇯🇵'},{city:'Kioto',country:'Japón',flag:'🇯🇵'},{city:'Osaka',country:'Japón',flag:'🇯🇵'},{city:'Hiroshima',country:'Japón',flag:'🇯🇵'},{city:'Sapporo',country:'Japón',flag:'🇯🇵'},
-  {city:'Bangkok',country:'Tailandia',flag:'🇹🇭'},{city:'Chiang Mai',country:'Tailandia',flag:'🇹🇭'},{city:'Phuket',country:'Tailandia',flag:'🇹🇭'},{city:'Koh Samui',country:'Tailandia',flag:'🇹🇭'},
-  {city:'Bali',country:'Indonesia',flag:'🇮🇩'},{city:'Yakarta',country:'Indonesia',flag:'🇮🇩'},{city:'Yogyakarta',country:'Indonesia',flag:'🇮🇩'},
-  {city:'Nueva York',country:'EE.UU.',flag:'🇺🇸'},{city:'Los Ángeles',country:'EE.UU.',flag:'🇺🇸'},{city:'Miami',country:'EE.UU.',flag:'🇺🇸'},{city:'Chicago',country:'EE.UU.',flag:'🇺🇸'},{city:'San Francisco',country:'EE.UU.',flag:'🇺🇸'},{city:'Las Vegas',country:'EE.UU.',flag:'🇺🇸'},{city:'Nueva Orleans',country:'EE.UU.',flag:'🇺🇸'},
-  {city:'Dubái',country:'Emiratos Árabes',flag:'🇦🇪'},{city:'Abu Dabi',country:'Emiratos Árabes',flag:'🇦🇪'},
-  {city:'Marrakech',country:'Marruecos',flag:'🇲🇦'},{city:'Fez',country:'Marruecos',flag:'🇲🇦'},{city:'Casablanca',country:'Marruecos',flag:'🇲🇦'},
-  {city:'El Cairo',country:'Egipto',flag:'🇪🇬'},{city:'Luxor',country:'Egipto',flag:'🇪🇬'},{city:'Asuán',country:'Egipto',flag:'🇪🇬'},{city:'Sharm el-Sheij',country:'Egipto',flag:'🇪🇬'},
-  {city:'Nairobi',country:'Kenia',flag:'🇰🇪'},{city:'Mombasa',country:'Kenia',flag:'🇰🇪'},
-  {city:'Ciudad del Cabo',country:'Sudáfrica',flag:'🇿🇦'},{city:'Johannesburgo',country:'Sudáfrica',flag:'🇿🇦'},{city:'Safari Kruger',country:'Sudáfrica',flag:'🇿🇦'},
-  {city:'Sídney',country:'Australia',flag:'🇦🇺'},{city:'Melbourne',country:'Australia',flag:'🇦🇺'},{city:'Brisbane',country:'Australia',flag:'🇦🇺'},{city:'Cairns',country:'Australia',flag:'🇦🇺'},
-  {city:'Singapur',country:'Singapur',flag:'🇸🇬'},
-  {city:'Hong Kong',country:'Hong Kong',flag:'🇭🇰'},
-  {city:'Seúl',country:'Corea del Sur',flag:'🇰🇷'},{city:'Busan',country:'Corea del Sur',flag:'🇰🇷'},
-  {city:'Pekín',country:'China',flag:'🇨🇳'},{city:'Shanghái',country:'China',flag:'🇨🇳'},{city:'Guangzhou',country:'China',flag:'🇨🇳'},
-  {city:'Mumbai',country:'India',flag:'🇮🇳'},{city:'Nueva Delhi',country:'India',flag:'🇮🇳'},{city:'Jaipur',country:'India',flag:'🇮🇳'},{city:'Goa',country:'India',flag:'🇮🇳'},
-  {city:'Reikiavik',country:'Islandia',flag:'🇮🇸'},
-  {city:'Oslo',country:'Noruega',flag:'🇳🇴'},{city:'Bergen',country:'Noruega',flag:'🇳🇴'},
-  {city:'Estocolmo',country:'Suecia',flag:'🇸🇪'},{city:'Gotemburgo',country:'Suecia',flag:'🇸🇪'},
-  {city:'Copenhague',country:'Dinamarca',flag:'🇩🇰'},
-  {city:'Helsinki',country:'Finlandia',flag:'🇫🇮'},
-  {city:'Praga',country:'República Checa',flag:'🇨🇿'},
-  {city:'Viena',country:'Austria',flag:'🇦🇹'},{city:'Salzburgo',country:'Austria',flag:'🇦🇹'},
-  {city:'Zúrich',country:'Suiza',flag:'🇨🇭'},{city:'Ginebra',country:'Suiza',flag:'🇨🇭'},
-  {city:'Bruselas',country:'Bélgica',flag:'🇧🇪'},{city:'Brujas',country:'Bélgica',flag:'🇧🇪'},
-  {city:'Atenas',country:'Grecia',flag:'🇬🇷'},{city:'Santorini',country:'Grecia',flag:'🇬🇷'},{city:'Mykonos',country:'Grecia',flag:'🇬🇷'},{city:'Creta',country:'Grecia',flag:'🇬🇷'},
-  {city:'Estambul',country:'Turquía',flag:'🇹🇷'},{city:'Capadocia',country:'Turquía',flag:'🇹🇷'},{city:'Antalya',country:'Turquía',flag:'🇹🇷'},
-  {city:'Cracovia',country:'Polonia',flag:'🇵🇱'},{city:'Varsovia',country:'Polonia',flag:'🇵🇱'},
-  {city:'Budapest',country:'Hungría',flag:'🇭🇺'},
-  {city:'La Habana',country:'Cuba',flag:'🇨🇺'},{city:'Trinidad',country:'Cuba',flag:'🇨🇺'},
-  {city:'Santo Domingo',country:'R. Dominicana',flag:'🇩🇴'},{city:'Punta Cana',country:'R. Dominicana',flag:'🇩🇴'},
-  {city:'San José',country:'Costa Rica',flag:'🇨🇷'},{city:'Tamarindo',country:'Costa Rica',flag:'🇨🇷'},
-  {city:'Ciudad de Panamá',country:'Panamá',flag:'🇵🇦'},
-  {city:'Quito',country:'Ecuador',flag:'🇪🇨'},{city:'Galápagos',country:'Ecuador',flag:'🇪🇨'},{city:'Cuenca',country:'Ecuador',flag:'🇪🇨'},
-  {city:'La Paz',country:'Bolivia',flag:'🇧🇴'},{city:'Uyuni',country:'Bolivia',flag:'🇧🇴'},
-  {city:'Montevideo',country:'Uruguay',flag:'🇺🇾'},{city:'Punta del Este',country:'Uruguay',flag:'🇺🇾'},
-  {city:'Asunción',country:'Paraguay',flag:'🇵🇾'},
-  {city:'Katmandú',country:'Nepal',flag:'🇳🇵'},
-  {city:'Hanói',country:'Vietnam',flag:'🇻🇳'},{city:'Ciudad Ho Chi Minh',country:'Vietnam',flag:'🇻🇳'},{city:'Hoi An',country:'Vietnam',flag:'🇻🇳'},
-  {city:'Siem Riep',country:'Camboya',flag:'🇰🇭'},{city:'Phnom Penh',country:'Camboya',flag:'🇰🇭'},
-  {city:'Rangún',country:'Myanmar',flag:'🇲🇲'},{city:'Bagan',country:'Myanmar',flag:'🇲🇲'},
-  {city:'Kuala Lumpur',country:'Malasia',flag:'🇲🇾'},{city:'Langkawi',country:'Malasia',flag:'🇲🇾'},
-  {city:'Manila',country:'Filipinas',flag:'🇵🇭'},{city:'Boracay',country:'Filipinas',flag:'🇵🇭'},{city:'Palawan',country:'Filipinas',flag:'🇵🇭'},
-  {city:'Colombo',country:'Sri Lanka',flag:'🇱🇰'},{city:'Kandy',country:'Sri Lanka',flag:'🇱🇰'},
-  {city:'Tel Aviv',country:'Israel',flag:'🇮🇱'},{city:'Jerusalén',country:'Israel',flag:'🇮🇱'},
-  {city:'Ammán',country:'Jordania',flag:'🇯🇴'},{city:'Petra',country:'Jordania',flag:'🇯🇴'},{city:'Wadi Rum',country:'Jordania',flag:'🇯🇴'},
-  {city:'Toronto',country:'Canadá',flag:'🇨🇦'},{city:'Vancouver',country:'Canadá',flag:'🇨🇦'},{city:'Montreal',country:'Canadá',flag:'🇨🇦'},
-  {city:'Auckland',country:'Nueva Zelanda',flag:'🇳🇿'},{city:'Queenstown',country:'Nueva Zelanda',flag:'🇳🇿'},
-  {city:'Moscú',country:'Rusia',flag:'🇷🇺'},{city:'San Petersburgo',country:'Rusia',flag:'🇷🇺'}
-];
+function geoLang() {
+  const lang = (typeof LANG !== 'undefined' && LANG.current) ? LANG.current : 'es';
+  return (lang === 'en' || lang === 'fr') ? lang : 'es';
+}
 
-const countries = [...new Map(cities.map(c => [c.country, { name: c.country, flag: c.flag }])).values()]
-  .sort((a, b) => a.name.localeCompare(b.name, 'es'));
+function locName(obj) {
+  if (!obj) return '';
+  if (typeof obj === 'string') return obj;
+  const lang = geoLang();
+  return obj[lang] || obj.es || '';
+}
+
+function getGeoCities() {
+  return (typeof GEO_CITIES !== 'undefined' && Array.isArray(GEO_CITIES)) ? GEO_CITIES : [];
+}
+
+function getGeoCountries() {
+  const map = new Map();
+  getGeoCities().forEach(c => {
+    const key = c.country.es;
+    if (!map.has(key)) map.set(key, { name: c.country, flag: c.flag });
+  });
+  const lang = geoLang();
+  return [...map.values()].sort((a, b) => locName(a.name).localeCompare(locName(b.name), lang));
+}
+
+function matchesLocalized(nameObj, q) {
+  if (!nameObj) return false;
+  if (typeof nameObj === 'string') return nameObj.toLowerCase().includes(q);
+  return [nameObj.es, nameObj.en, nameObj.fr].some(n => n && n.toLowerCase().includes(q));
+}
 
 const searchResultCache = {};
 
@@ -1223,47 +1206,64 @@ function slugify(str) {
 function syncDestAnswers() {
   answers['destinations'] = selectedDest.map(x =>
     x.kind === 'country'
-      ? { tipo: 'pais', nombre: x.country, flag: x.flag }
-      : { tipo: 'ciudad', ciudad: x.city, pais: x.country, flag: x.flag }
+      ? { tipo: 'pais', nombre: x.country, nombre_es: x.country_es || x.country, flag: x.flag }
+      : { tipo: 'ciudad', ciudad: x.city, ciudad_es: x.city_es || x.city, pais: x.country, pais_es: x.country_es || x.country, flag: x.flag }
   );
 }
 
 function searchCity(val, resultsId, tagsId, type) {
   const res = document.getElementById(resultsId);
   if (!val || val.length < 1) { res.classList.remove('show'); return; }
-  const q = val.toLowerCase();
+  const q = val.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const cache = [];
   let html = '';
 
   if (type === 'dest') {
-    const matchedCountries = countries.filter(c => c.name.toLowerCase().includes(q)).slice(0, 5);
+    const matchedCountries = getGeoCountries()
+      .filter(c => matchesLocalized(c.name, q) || matchesLocalized(c.name, norm(q)) ||
+        [c.name.es, c.name.en, c.name.fr].some(n => norm(n).includes(q)))
+      .slice(0, 5);
     if (matchedCountries.length) {
       html += `<div class="search-section-label">${L().ui.search.countries}</div>`;
       matchedCountries.forEach(c => {
-        cache.push({ kind: 'country', country: c.name, flag: c.flag });
+        const display = locName(c.name);
+        cache.push({ kind: 'country', country: display, country_es: c.name.es, flag: c.flag });
         const idx = cache.length - 1;
         html += `<div class="search-item is-country" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
           <span class="flag">${c.flag}</span>
-          <span class="city-name">${c.name}</span>
+          <span class="city-name">${display}</span>
           <span class="country-name">${L().ui.search.exploreCountry}</span>
         </div>`;
       });
     }
   }
 
-  const matchedCities = cities.filter(c =>
-    c.city.toLowerCase().includes(q) || c.country.toLowerCase().includes(q)
-  ).slice(0, 8);
+  const matchedCities = getGeoCities()
+    .filter(c =>
+      [c.city.es, c.city.en, c.city.fr, c.country.es, c.country.en, c.country.fr]
+        .some(n => norm(n).includes(q))
+    )
+    .slice(0, 8);
 
   if (matchedCities.length) {
     if (html) html += `<div class="search-section-label">${L().ui.search.cities}</div>`;
     matchedCities.forEach(c => {
-      cache.push({ kind: 'city', city: c.city, country: c.country, flag: c.flag });
+      const cityDisplay = locName(c.city);
+      const countryDisplay = locName(c.country);
+      cache.push({
+        kind: 'city',
+        city: cityDisplay,
+        city_es: c.city.es,
+        country: countryDisplay,
+        country_es: c.country.es,
+        flag: c.flag,
+      });
       const idx = cache.length - 1;
       html += `<div class="search-item" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
         <span class="flag">${c.flag}</span>
-        <span class="city-name">${c.city}</span>
-        <span class="country-name">${c.country}</span>
+        <span class="city-name">${cityDisplay}</span>
+        <span class="country-name">${countryDisplay}</span>
       </div>`;
     });
   }
@@ -1387,6 +1387,10 @@ function sel(btn) {
 }
 
 function toggleMisionFocus(btn) {
+  const selected = document.querySelectorAll('[data-q="mision_focus"].sel');
+  if (!btn.classList.contains('sel') && selected.length >= 2) {
+    return;
+  }
   btn.classList.toggle('sel');
   misionViaje.focus = [...document.querySelectorAll('[data-q="mision_focus"].sel')].map(b => b.dataset.v);
   updateProgress();
@@ -1677,6 +1681,160 @@ function splitResponseHtml(html) {
   return { profile, itineraryHtml };
 }
 
+const BT_PLACE_TYPES = new Set(['hotel', 'food', 'activity', 'sight']);
+const BT_PLACE_COLORS = {
+  sight: '#2D7B7B',
+  food: '#E8634A',
+  hotel: '#1A1A1A',
+  activity: '#245f5f',
+};
+
+function normalizePlacesList(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .map((p) => {
+      if (!p || typeof p !== 'object') return null;
+      const lat = Number(p.lat);
+      const lng = Number(p.lng);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+      if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+      const type = String(p.type || '').toLowerCase();
+      return {
+        name: String(p.name || '').trim() || 'Lugar',
+        day: Number.isFinite(Number(p.day)) ? Math.max(1, Math.round(Number(p.day))) : null,
+        lat,
+        lng,
+        type: BT_PLACE_TYPES.has(type) ? type : 'sight',
+      };
+    })
+    .filter(Boolean);
+}
+
+/** Parse places JSON; salvage truncated Claude output when possible. */
+function parsePlacesLenient(raw) {
+  const text = (raw || '').trim();
+  if (!text) return [];
+
+  const tryParse = (s) => {
+    try {
+      const data = JSON.parse(s);
+      const list = Array.isArray(data) ? data : data?.places;
+      return Array.isArray(list) ? list : null;
+    } catch {
+      return null;
+    }
+  };
+
+  let list = tryParse(text);
+  if (list) return list;
+
+  // Truncated: drop trailing incomplete entry and close the array/object
+  let base = text.replace(/,\s*$/, '');
+  const lastBrace = base.lastIndexOf('}');
+  if (lastBrace >= 0) base = base.slice(0, lastBrace + 1);
+  for (const suffix of [']}','\n]}','}]}']) {
+    list = tryParse(base + suffix);
+    if (list) return list;
+  }
+
+  // Last resort: pull complete place objects by regex
+  const found = [];
+  const objRe = /\{[^{}]*?"name"\s*:\s*"[^"]*"[^{}]*?\}/g;
+  let m;
+  while ((m = objRe.exec(text)) !== null) {
+    try {
+      const obj = JSON.parse(m[0]);
+      if (obj && (obj.lat != null || obj.lng != null)) found.push(obj);
+    } catch { /* skip */ }
+  }
+  return found;
+}
+
+/** Extract #bt-places JSON and strip the script from HTML. Graceful if missing/invalid/truncated. */
+function extractPlacesBlock(html) {
+  if (!html || typeof html !== 'string') return { places: [], cleanHtml: html || '' };
+  const re = /<script\b[^>]*\bid\s*=\s*["']bt-places["'][^>]*>([\s\S]*?)(?:<\/script>|$)/i;
+  const match = html.match(re);
+  if (!match) return { places: [], cleanHtml: html };
+
+  let places = [];
+  try {
+    places = normalizePlacesList(parsePlacesLenient(match[1]));
+  } catch (e) {
+    console.warn('[BeTacora] bt-places JSON invalid:', e);
+    places = [];
+  }
+
+  const cleanHtml = html.replace(re, '').trim();
+  return { places, cleanHtml };
+}
+
+function btPlaceMarkerIcon(type) {
+  const LL = window.BTLeaflet;
+  const color = BT_PLACE_COLORS[type] || BT_PLACE_COLORS.sight;
+  return LL.divIcon({
+    className: 'bt-map-marker',
+    html: `<span style="background:${color}"></span>`,
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
+  });
+}
+
+let btItineraryMap = null;
+
+function destroyItineraryMap() {
+  if (btItineraryMap) {
+    try { btItineraryMap.remove(); } catch (e) { /* ignore */ }
+    btItineraryMap = null;
+  }
+}
+
+function renderItineraryMap(container, places) {
+  destroyItineraryMap();
+  const LL = window.BTLeaflet;
+  if (!container || !places.length || !LL) return false;
+
+  try {
+    btItineraryMap = LL.map(container, {
+      scrollWheelZoom: false,
+      attributionControl: true,
+    });
+    LL.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(btItineraryMap);
+
+    const bounds = [];
+    places.forEach((p) => {
+      const marker = LL.marker([p.lat, p.lng], { icon: btPlaceMarkerIcon(p.type) }).addTo(btItineraryMap);
+      const dayLabel = p.day != null
+        ? `<div class="bt-map-day">Día ${escapeHtml(String(p.day))}</div>`
+        : '';
+      marker.bindPopup(
+        `<div class="bt-map-popup"><strong>${escapeHtml(p.name)}</strong>${dayLabel}</div>`
+      );
+      bounds.push([p.lat, p.lng]);
+    });
+
+    if (bounds.length === 1) {
+      btItineraryMap.setView(bounds[0], 13);
+    } else {
+      btItineraryMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 14 });
+    }
+
+    // Leaflet needs a resize after layout settles
+    setTimeout(() => {
+      try { btItineraryMap && btItineraryMap.invalidateSize(); } catch (e) { /* ignore */ }
+    }, 100);
+    return true;
+  } catch (e) {
+    console.warn('[BeTacora] map render failed:', e);
+    destroyItineraryMap();
+    return false;
+  }
+}
+
 function renderShareableCard(profile) {
   if (!profile) return;
   aiProfile = profile;
@@ -1719,7 +1877,7 @@ async function captureShareableCard() {
   await loadHtml2Canvas();
   return html2canvas(el, {
     scale: 2,
-    backgroundColor: '#1e3a5f',
+    backgroundColor: '#1A1A1A',
     useCORS: true,
     logging: false,
   });
@@ -1804,7 +1962,8 @@ function escapeHtml(str) {
 }
 
 function renderItineraryHtml(html) {
-  const { profile, itineraryHtml } = splitResponseHtml(html);
+  const { places, cleanHtml } = extractPlacesBlock(html);
+  const { profile, itineraryHtml } = splitResponseHtml(cleanHtml);
 
   if (profile) {
     renderShareableCard(profile);
@@ -1835,13 +1994,28 @@ function renderItineraryHtml(html) {
 
   const section = document.getElementById('itinerarySection');
   const header = L().ui.bitacora;
+  const mapHtml = places.length
+    ? `<div class="bt-itinerary-map-wrap"><div class="bt-itinerary-map" id="btItineraryMap" role="img" aria-label="Mapa del itinerario"></div></div>`
+    : '';
   section.innerHTML = `
     <div class="bitacora-header">
       <div class="bitacora-header-eyebrow">${header.eyebrow}</div>
       <div class="bitacora-header-title">${header.title}</div>
     </div>
+    ${mapHtml}
     <div class="bitacora-article">${itineraryHtml}</div>`;
   section.classList.add('show');
+
+  if (places.length) {
+    const mapEl = document.getElementById('btItineraryMap');
+    if (!renderItineraryMap(mapEl, places) && mapEl) {
+      const wrap = mapEl.closest('.bt-itinerary-map-wrap');
+      if (wrap) wrap.remove();
+    }
+  } else {
+    destroyItineraryMap();
+  }
+
   setTimeout(() => {
     try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
   }, 600);
@@ -1886,7 +2060,7 @@ function showSaveBanner(type) {
   if (!el) return;
   el.classList.remove('prompt', 'saved');
   if (type === 'saved') {
-    el.textContent = '✓ Viaje guardado en tu bitácora';
+    el.textContent = 'Viaje guardado en tu bitácora';
     el.classList.add('show', 'saved');
   } else {
     el.innerHTML = '¿Quieres guardar este viaje? Crea tu cuenta gratis — tarda 30 segundos<br><a class="auth-banner-btn" href="/auth">Crear cuenta</a>';

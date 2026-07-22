@@ -193,6 +193,16 @@
           durationFallback: 'Viaje a medida',
           destFallback: 'Mi próximo viaje',
         },
+        map: {
+          day: 'Día',
+        },
+        banners: {
+          limitGuest: 'Regístrate gratis para guardar tu bitácora y generar más itinerarios',
+          limitReached: 'Has alcanzado tu límite gratuito. Próximamente planes premium disponibles.',
+          saved: 'Viaje guardado en tu bitácora',
+          savePrompt: '¿Quieres guardar este viaje? Crea tu cuenta gratis — tarda 30 segundos',
+          createAccount: 'Crear cuenta',
+        },
         duration: {
           day: '✈️ {n} día',
           days: '✈️ {n} días',
@@ -270,6 +280,16 @@
           glamping: { label: 'Glamping', sub: 'Naturaleza + confort' },
           tradicional: { label: 'Tradicional', sub: 'Riad, ryokan...' },
           barco: { label: 'Barco', sub: 'En el agua' },
+        },
+        accom_location: {
+          centro: { label: 'Cerca del centro' },
+          fuera: { label: 'Fuera del centro (más económico)' },
+          igual: { label: 'Me da igual' },
+        },
+        accom_priority: {
+          precio: { label: 'Optimizar precio' },
+          comodidad: { label: 'Optimizar comodidad' },
+          equilibrio: { label: 'Equilibrio' },
         },
         amenity: {
           wifi: { label: 'WiFi rápido' },
@@ -696,6 +716,16 @@
           durationFallback: 'Custom trip',
           destFallback: 'My next trip',
         },
+        map: {
+          day: 'Day',
+        },
+        banners: {
+          limitGuest: 'Sign up free to save your logbook and generate more itineraries',
+          limitReached: 'You’ve reached your free limit. Premium plans coming soon.',
+          saved: 'Trip saved to your logbook',
+          savePrompt: 'Want to save this trip? Create a free account — it takes 30 seconds',
+          createAccount: 'Create account',
+        },
         duration: {
           day: '✈️ {n} day',
           days: '✈️ {n} days',
@@ -773,6 +803,16 @@
           glamping: { label: 'Glamping', sub: 'Nature + comfort' },
           tradicional: { label: 'Traditional', sub: 'Riad, ryokan...' },
           barco: { label: 'Boat', sub: 'On the water' },
+        },
+        accom_location: {
+          centro: { label: 'Near the center' },
+          fuera: { label: 'Outside the center (more affordable)' },
+          igual: { label: 'No preference' },
+        },
+        accom_priority: {
+          precio: { label: 'Optimize for price' },
+          comodidad: { label: 'Optimize for comfort' },
+          equilibrio: { label: 'Balance' },
         },
         amenity: {
           wifi: { label: 'Fast WiFi' },
@@ -1151,7 +1191,7 @@
           open: 'Oui, laisser un avis',
           liked: 'Qu\'est-ce qui vous a le plus plu ?',
           likedPh: 'Un moment, un lieu, un plat…',
-          avoid: 'Que annuliez-vous ou éviteriez-vous de refaire ?',
+          avoid: 'Qu\'annuleriez-vous ou éviteriez-vous de refaire ?',
           avoidPh: 'Quelque chose que vous ne referiez pas…',
           wouldReturn: 'Reviendriez-vous dans cette destination ?',
           yes: 'Oui',
@@ -1167,7 +1207,7 @@
         },
         errors: {
           title: 'Oups, quelque chose s\'est mal passé',
-          generate: 'Nous n\'avons pas pu générer votre bitácora. Réessayez dans quelques instants.',
+          generate: 'Nous n\'avons pas pu générer votre carnet. Réessayez dans quelques instants.',
           invalid: 'La réponse ne contenait pas d\'itinéraire valide. Veuillez réessayer.',
           network: 'Impossible de joindre BeTacora. Vérifiez votre connexion et réessayez.',
         },
@@ -1198,6 +1238,16 @@
           mapLabel: 'Carte du voyage',
           durationFallback: 'Voyage sur mesure',
           destFallback: 'Mon prochain voyage',
+        },
+        map: {
+          day: 'Jour',
+        },
+        banners: {
+          limitGuest: 'Inscrivez-vous gratuitement pour enregistrer votre carnet et générer plus d\'itinéraires',
+          limitReached: 'Vous avez atteint votre limite gratuite. Plans premium bientôt disponibles.',
+          saved: 'Voyage enregistré dans votre carnet',
+          savePrompt: 'Envie de garder ce voyage ? Créez un compte gratuit — 30 secondes',
+          createAccount: 'Créer un compte',
         },
         duration: {
           day: '✈️ {n} jour',
@@ -1276,6 +1326,16 @@
           glamping: { label: 'Glamping', sub: 'Nature + confort' },
           tradicional: { label: 'Traditionnel', sub: 'Riad, ryokan...' },
           barco: { label: 'Bateau', sub: 'Sur l\'eau' },
+        },
+        accom_location: {
+          centro: { label: 'Près du centre' },
+          fuera: { label: 'Hors du centre (plus économique)' },
+          igual: { label: 'Peu importe' },
+        },
+        accom_priority: {
+          precio: { label: 'Optimiser le prix' },
+          comodidad: { label: 'Optimiser le confort' },
+          equilibrio: { label: 'Équilibre' },
         },
         amenity: {
           wifi: { label: 'WiFi rapide' },

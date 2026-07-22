@@ -8,10 +8,16 @@ import {
   getWebSearchInstruction,
   selectArchetype,
 } from "@/lib/archetypes";
+import {
+  ITINERARY_LABELS,
+  resolveUiLang,
+  type ItineraryLabels,
+  type UiLang,
+} from "@/lib/itinerary-labels";
 
 type TripMode = "short" | "medium" | "long";
 
-const SYSTEM_PROMPT = `Eres BeTacora, el mejor asistente de viajes del mundo.
+const SYSTEM_PROMPT_TEMPLATE = `Eres BeTacora, el mejor asistente de viajes del mundo.
 Hablas como un amigo que ha viajado mucho — con honestidad, precisión y sin relleno innecesario.
 
 REGLAS DE FORMATO (MUY IMPORTANTES):
@@ -47,81 +53,81 @@ Genera esto en HTML limpio:
 <h2>🌍 [Destino principal]</h2>
 <p>[2-3 frases evocadoras sobre por qué este destino para este viajero concreto]</p>
 
-<h2>📅 Duración y ritmo</h2>
+<h2>📅 {{duration_pace}}</h2>
 <p>[Cuántos días, distribución general, qué se puede ajustar]</p>
 
-<h2>✈️ Cómo llegar</h2>
+<h2>✈️ {{how_to_get_there}}</h2>
 <p>[Aerolíneas recomendadas, precio estimado, mejor momento para reservar]</p>
 
-<h2>🏨 Dónde dormir</h2>
+<h2>🏨 {{where_to_stay}}</h2>
 [Para cada opción:]
 <h3>[Nombre real del alojamiento] — [Ciudad]</h3>
 <p>[Por qué este alojamiento para este viajero, precio por noche, tip de reserva]</p>
 
-<h2>📍 Día a día</h2>
+<h2>📍 {{day_by_day}}</h2>
 [Para cada día:]
-<h3>Día [N] — [Título evocador]</h3>
-<p><strong>Mañana:</strong> [actividad específica con nombre real del lugar]</p>
-<p><strong>Tarde:</strong> [actividad específica]</p>
-<p><strong>Noche:</strong> [plan nocturno]</p>
-<p><strong>Dónde comer:</strong> [nombre real del restaurante o mercado, qué pedir, precio]</p>
-<p><strong>💡 Tip local:</strong> [algo que no aparece en las guías turísticas]</p>
+<h3>{{day_n}} [N] — [Título evocador]</h3>
+<p><strong>{{morning}}</strong> [actividad específica con nombre real del lugar]</p>
+<p><strong>{{afternoon}}</strong> [actividad específica]</p>
+<p><strong>{{evening}}</strong> [plan nocturno]</p>
+<p><strong>{{where_to_eat}}</strong> [nombre real del restaurante o mercado, qué pedir, precio]</p>
+<p><strong>{{local_tip}}</strong> [algo que no aparece en las guías turísticas]</p>
 
-<h2>💰 Presupuesto estimado</h2>
+<h2>💰 {{budget_estimate}}</h2>
 <p>[Desglose limpio: vuelos, alojamiento, comida diaria, actividades, total]</p>
 
-<h2>⚠️ Lo que nadie te cuenta</h2>
+<h2>⚠️ {{what_nobody_tells}}</h2>
 <ul>[Advertencias honestas, máximo 4]</ul>
 
 --- VIAJE MEDIO (3 semanas a 2 meses) ---
 Genera esto en HTML limpio:
 
-<h2>🗺️ Tu ruta por [zona/región]</h2>
+<h2>🗺️ {{your_route_through}} [zona/región]</h2>
 <p>[Visión general de la ruta y por qué tiene sentido para este viajero]</p>
 
 [Para cada destino de la ruta:]
 <h2>📍 [Ciudad o región] — [Bandera emoji] [País]</h2>
-<p><strong>Cuánto tiempo:</strong> [días mínimo y máximo recomendados]</p>
-<p><strong>Cómo llegar:</strong> [desde el destino anterior, precio, duración]</p>
+<p><strong>{{how_long}}</strong> [días mínimo y máximo recomendados]</p>
+<p><strong>{{how_to_get_inline}}</strong> [desde el destino anterior, precio, duración]</p>
 
-<h3>Qué ver y hacer</h3>
+<h3>{{what_to_see}}</h3>
 <ul>
 <li><strong>[Nombre específico]:</strong> [por qué, cuánto tiempo, precio si aplica]</li>
 </ul>
 
-<h3>Dónde dormir</h3>
+<h3>{{where_to_stay}}</h3>
 <ul>
 <li><strong>[Nombre real]:</strong> [tipo, precio por noche, por qué para este viajero]</li>
 </ul>
 
-<h3>Qué comer</h3>
+<h3>{{what_to_eat}}</h3>
 <ul>
 <li><strong>[Plato típico]</strong> en [lugar específico con nombre real] — [precio aproximado]</li>
 </ul>
 
-<h3>💰 Presupuesto en [ciudad]</h3>
+<h3>💰 {{budget_in}} [ciudad]</h3>
 <p>[Gasto diario estimado en la moneda del viajero]</p>
 
-<h3>💡 Tip local</h3>
+<h3>{{local_tip_heading}}</h3>
 <p>[Información insider que no está en Google]</p>
 
-<h2>🌐 Info práctica general</h2>
+<h2>🌐 {{practical_info}}</h2>
 [Para cada país de la ruta:]
 <h3>[País] [bandera]</h3>
 <ul>
-<li><strong>Idioma:</strong> [idioma oficial y dialectos o idiomas locales importantes si los hay]</li>
-<li><strong>Moneda:</strong> [nombre y símbolo, tipo de cambio aproximado vs USD/EUR, dónde cambiar dinero de forma segura y donde NO]</li>
-<li><strong>Seguridad:</strong> [zonas seguras, zonas a evitar, precauciones específicas]</li>
-<li><strong>SIM/Conectividad:</strong> [operadora recomendada, precio aproximado]</li>
+<li><strong>{{language}}</strong> [idioma oficial y dialectos o idiomas locales importantes si los hay]</li>
+<li><strong>{{currency}}</strong> [nombre y símbolo, tipo de cambio aproximado vs USD/EUR, dónde cambiar dinero de forma segura y donde NO]</li>
+<li><strong>{{safety}}</strong> [zonas seguras, zonas a evitar, precauciones específicas]</li>
+<li><strong>{{sim_connectivity}}</strong> [operadora recomendada, precio aproximado]</li>
 </ul>
 
-<h2>💰 Presupuesto total de la ruta</h2>
+<h2>💰 {{total_route_budget}}</h2>
 <p>[Desglose por categorías, total estimado en la moneda elegida por el viajero]</p>
 
-<h2>⚠️ Lo que nadie te cuenta</h2>
+<h2>⚠️ {{what_nobody_tells}}</h2>
 <ul>[Máximo 5 advertencias honestas y útiles]</ul>
 
-<h2>📱 Comunidades de viajeros</h2>
+<h2>📱 {{traveler_communities}}</h2>
 <ul>[Grupos de Facebook, subreddits y blogs específicos para esta ruta]</ul>
 
 --- VIAJE LARGO (más de 2 meses / nómada) ---
@@ -222,6 +228,17 @@ ALOJAMIENTO:
 - Siempre incluye rango de precio y tip de reserva
 - Nunca mezcles categorías que el viajero no pidió
 
+FILTROS DE ALOJAMIENTO:
+- accom_location (ubicación preferida):
+  · "centro" → prioriza barrios céntricos / cerca de atracciones principales; menciona el trade-off de precio si aplica
+  · "fuera" → prioriza zonas fuera del centro más económicas; explica ahorro vs. tiempo de traslado (metro/bus)
+  · "igual" → elige la mejor relación calidad-precio sin forzar centro ni periferia
+- accom_priority (criterio de decisión):
+  · "precio" → optimiza precio; justifica por qué esa opción es la más asequible sin sacrificar seguridad básica
+  · "comodidad" → prioriza confort, ubicación práctica y amenities aunque cuesten más
+  · "equilibrio" → balance calidad-precio; menciona explícitamente por qué es el equilibrio
+- En la sección de alojamiento del itinerario, menciona brevemente CÓMO aplicaste estos filtros (ubicación + prioridad) al justificar las recomendaciones
+
 TRANSPORTE:
 - Siempre especifica: compañía exacta, precio estimado, duración, cómo reservar
 - Para trenes: nombre de la compañía y web de reserva
@@ -246,6 +263,7 @@ LOCALIZACIÓN CULTURAL — CRÍTICO:
 - English: usa lenguaje de la comunidad viajera — backpacker, slow travel, off the beaten path, digital nomad, Flexible, Go with the flow, Must-sees, Solo traveler, Bucket list, Hidden gems. Tono aventurero y directo, como un amigo que ha viajado mucho
 - Français: Au fil de l'eau, Laisser venir, Pépites cachées, Nomade numérique, Baroudeur, Incontournable, Voyageur en solitaire, Lève-tôt, Couche-tard, Hors des sentiers battus, Tranquille ou Zen según contexto. Tono culto y ligeramente poético, como una revista de viajes francesa — no corporativo
 - Cada idioma debe leerse como escrito por un nativo de esa cultura, nunca como traducción automática
+- Usa EXACTAMENTE las etiquetas/títulos del esqueleto HTML de esta solicitud (ya vienen en el idioma correcto). No inventes títulos de sección alternativos ni dejes restos en español si ui_lang es en/fr
 
 MAPA DE LUGARES (OBLIGATORIO — al FINAL absoluto de toda la respuesta, después del itinerario):
 
@@ -265,6 +283,13 @@ Reglas del bloque:
 7. Si un lugar aparece varios días, una sola entrada (primer día)
 8. Mínimo: todos los alojamientos + todos los restaurantes nombrados + los sights/actividades principales
 9. Compacto: JSON en el menor espacio posible (idealmente una sola línea). CIERRA siempre el </script> — nunca dejes el bloque a medias. Si te quedas corto de espacio, acorta el texto narrativo, no el mapa`;
+
+function buildSystemPrompt(labels: ItineraryLabels): string {
+  return SYSTEM_PROMPT_TEMPLATE.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
+    const value = labels[key as keyof ItineraryLabels];
+    return value ?? `{{${key}}}`;
+  });
+}
 
 const ITINERARY_TRANSPARENCY = `TRANSPARENCIA OBLIGATORIA EN EL ITINERARIO (aplica SIEMPRE — sin excepción — para destino, zona, nómada y sorpresa; y para viaje corto, medio o largo):
 
@@ -369,21 +394,19 @@ export async function POST(request: Request) {
 
     const archetype = selectArchetype(profile);
     const modifiers = getModifiers(profile);
-    const archetypePrompt = buildArchetypeProfilePrompt(archetype, modifiers);
 
     const durationDays = getDurationDays(profile);
     const maxTokens = getMaxTokens(durationDays);
     const webSearchInstruction = getWebSearchInstruction(durationDays);
 
-    const uiLang = ["es", "en", "fr"].includes(profile.ui_lang as string)
-      ? (profile.ui_lang as string)
-      : "es";
-    const langInstruction: Record<string, string> = {
+    const uiLang: UiLang = resolveUiLang(profile.ui_lang);
+    const labels = ITINERARY_LABELS[uiLang];
+    const langInstruction: Record<UiLang, string> = {
       es: "Escribe el perfil psicológico y todo el itinerario en español con localización cultural natural.",
       en: "Write the psychological profile and entire itinerary in English with natural cultural localization — travel-community tone, not a translation.",
       fr: "Rédige le profil psychologique et tout l'itinéraire en français avec une localisation culturelle naturelle — ton de magazine de voyage, pas une traduction.",
     };
-    const systemPrompt = `${SYSTEM_PROMPT}\n\n${archetypePrompt}\n\n${tripTypeInstruction}\n\n${MODE_INSTRUCTIONS[mode]}`;
+    const systemPrompt = `${buildSystemPrompt(labels)}\n\n${buildArchetypeProfilePrompt(archetype, modifiers, uiLang)}\n\n${tripTypeInstruction}\n\n${MODE_INSTRUCTIONS[mode]}`;
 
     const anthropic = new Anthropic({ apiKey });
 

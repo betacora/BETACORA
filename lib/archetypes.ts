@@ -1,3 +1,15 @@
+import {
+  ITINERARY_LABELS,
+  resolveUiLang,
+  type UiLang,
+} from "./itinerary-labels";
+import {
+  selectArchetype as selectArchetypeCore,
+  getModifiers as getModifiersCore,
+  getArchetypeById as getArchetypeByIdCore,
+  MOTIVATION_MATRIX,
+} from "./archetypes-core.js";
+
 export type Archetype = {
   id: number;
   nombre: string;
@@ -7,13 +19,6 @@ export type Archetype = {
 };
 
 export type TravelerProfileInput = Record<string, unknown>;
-
-import {
-  selectArchetype as selectArchetypeCore,
-  getModifiers as getModifiersCore,
-  getArchetypeById as getArchetypeByIdCore,
-  MOTIVATION_MATRIX,
-} from "./archetypes-core.js";
 
 export { MOTIVATION_MATRIX };
 
@@ -32,8 +37,11 @@ export function getModifiers(profile: TravelerProfileInput): string[] {
 }
 export function buildArchetypeProfilePrompt(
   archetype: Archetype,
-  modifiers: string[]
+  modifiers: string[],
+  uiLang: UiLang | string = "es"
 ): string {
+  const lang = resolveUiLang(uiLang);
+  const labels = ITINERARY_LABELS[lang];
   const modifierBlock = modifiers
     .map((m, i) => `${i + 1}. ${m}`)
     .join("\n");
@@ -60,9 +68,9 @@ FORMATO DE SALIDA (HTML, ANTES del itinerario):
 <div class="profile-result">
 <h2>[Nombre del tipo]</h2>
 <p class="profile-essence">[Esencia]</p>
-<p><strong>Tu superpoder:</strong> [superpoder]</p>
+<p><strong>${labels.superpower}</strong> [superpoder]</p>
 <p class="profile-quote">"[Frase insignia]"</p>
-<p><strong>Si fueras un animal:</strong> [animal y razones]</p>
+<p><strong>${labels.if_animal}</strong> [animal y razones]</p>
 <div class="profile-stats">
 <p><strong>[Stat 1]:</strong> [0-100]</p>
 (5-6 stats total)

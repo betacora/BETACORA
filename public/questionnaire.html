@@ -829,6 +829,24 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
     </div>
 
     <div class="qblock">
+      <div class="qlabel">¿Dónde prefieres alojarte?</div>
+      <div class="grid3">
+        <button class="opt" data-q="accom_location" data-v="centro" onclick="sel(this)"><span class="em">📍</span>Cerca del centro</button>
+        <button class="opt" data-q="accom_location" data-v="fuera" onclick="sel(this)"><span class="em">🏠</span>Fuera del centro (más económico)</button>
+        <button class="opt" data-q="accom_location" data-v="igual" onclick="sel(this)"><span class="em">↔️</span>Me da igual</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qlabel">¿Qué priorizas al elegir alojamiento?</div>
+      <div class="grid3">
+        <button class="opt" data-q="accom_priority" data-v="precio" onclick="sel(this)"><span class="em">💰</span>Optimizar precio</button>
+        <button class="opt" data-q="accom_priority" data-v="comodidad" onclick="sel(this)"><span class="em">🛏️</span>Optimizar comodidad</button>
+        <button class="opt" data-q="accom_priority" data-v="equilibrio" onclick="sel(this)"><span class="em">⚖️</span>Equilibrio</button>
+      </div>
+    </div>
+
+    <div class="qblock">
       <div class="qlabel">¿Qué es innegociable en tu alojamiento?</div>
       <span class="multi-badge">Selección libre</span>
       <div class="grid4">
@@ -1399,7 +1417,10 @@ const LANG = {
     const qKeys = [
       ['ui.questions.wake.label','ui.questions.wake.hint'], ['ui.questions.pace.label',null], ['ui.questions.energy.label',null],
       ['ui.questions.motiv.label',null], ['ui.questions.exp.label',null], ['ui.questions.guide.label',null],
-      ['ui.questions.accom.label',null], ['ui.questions.amenity.label',null], ['ui.questions.food.label',null],
+      ['ui.questions.accom.label',null],
+      ['ui.questions.accomLocation.label',null],
+      ['ui.questions.accomPriority.label',null],
+      ['ui.questions.amenity.label',null], ['ui.questions.food.label',null],
       ['ui.questions.diet.label',null], ['ui.questions.cultura.label',null], ['ui.questions.act.label',null],
       ['ui.questions.origin.label','ui.questions.origin.hint'],
       ['ui.questions.tripType.label',null],
@@ -2727,8 +2748,9 @@ function renderItineraryMap(container, places) {
     const bounds = [];
     places.forEach((p) => {
       const marker = LL.marker([p.lat, p.lng], { icon: btPlaceMarkerIcon(p.type) }).addTo(btItineraryMap);
+      const dayPrefix = (L().ui.map && L().ui.map.day) || 'Día';
       const dayLabel = p.day != null
-        ? `<div class="bt-map-day">Día ${escapeHtml(String(p.day))}</div>`
+        ? `<div class="bt-map-day">${escapeHtml(dayPrefix)} ${escapeHtml(String(p.day))}</div>`
         : '';
       marker.bindPopup(
         `<div class="bt-map-popup"><strong>${escapeHtml(p.name)}</strong>${dayLabel}</div>`
@@ -3491,10 +3513,11 @@ function hideSaveBanner() {
 function showLimitBanner(reason) {
   const el = document.getElementById('limitBanner');
   if (!el) return;
+  const t = L().ui.banners || {};
   if (reason === 'not_logged_in') {
-    el.innerHTML = 'Regístrate gratis para guardar tu bitácora y generar más itinerarios<br><a class="auth-banner-btn" href="/auth">Crear cuenta</a>';
+    el.innerHTML = `${escapeHtml(t.limitGuest || '')}<br><a class="auth-banner-btn" href="/auth">${escapeHtml(t.createAccount || '')}</a>`;
   } else {
-    el.innerHTML = 'Has alcanzado tu límite gratuito. Próximamente planes premium disponibles.';
+    el.textContent = t.limitReached || '';
   }
   el.classList.add('show');
   setTimeout(() => {
@@ -3505,12 +3528,13 @@ function showLimitBanner(reason) {
 function showSaveBanner(type) {
   const el = document.getElementById('saveBanner');
   if (!el) return;
+  const t = L().ui.banners || {};
   el.classList.remove('prompt', 'saved');
   if (type === 'saved') {
-    el.textContent = 'Viaje guardado en tu bitácora';
+    el.textContent = t.saved || '';
     el.classList.add('show', 'saved');
   } else {
-    el.innerHTML = '¿Quieres guardar este viaje? Crea tu cuenta gratis — tarda 30 segundos<br><a class="auth-banner-btn" href="/auth">Crear cuenta</a>';
+    el.innerHTML = `${escapeHtml(t.savePrompt || '')}<br><a class="auth-banner-btn" href="/auth">${escapeHtml(t.createAccount || '')}</a>`;
     el.classList.add('show', 'prompt');
   }
 }

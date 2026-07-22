@@ -89,16 +89,29 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const trip = await fetchSharedTrip(slug);
+  const lang = resolveLang(trip?.lang);
   const dest = trip?.destination || "BeTacora";
   const archetype = trip?.profile_type ? ` · ${trip.profile_type}` : "";
+  const fallbackDesc =
+    lang === "en"
+      ? "Shared trip on BeTacora"
+      : lang === "fr"
+        ? "Voyage partagé sur BeTacora"
+        : "Viaje compartido en BeTacora";
+  const ogFallback =
+    lang === "en"
+      ? "Your intelligent travel log"
+      : lang === "fr"
+        ? "Votre carnet de voyage intelligent"
+        : "Tu bitácora inteligente";
   return {
     title: `${dest}${archetype} — BeTacora`,
     description: trip?.duration_label
       ? `${dest} · ${trip.duration_label}`
-      : `Viaje compartido en BeTacora`,
+      : fallbackDesc,
     openGraph: {
       title: `${dest} — BeTacora`,
-      description: trip?.profile_type || "Tu bitácora inteligente",
+      description: trip?.profile_type || ogFallback,
     },
   };
 }

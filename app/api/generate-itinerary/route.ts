@@ -182,6 +182,17 @@ DEPORTE ESPECÍFICO:
   · "maybe" → menciónalo como opción flexible u opcional (1 tip o alternativa), sin convertirlo en eje del viaje.
   Si un deporte está en sports pero no tiene entrada en sport_this_trip, trátarlo como "maybe".
 
+MUSEOS (mision_viaje.museum_type — solo si el viajero marcó museos en cultura):
+- Array de preferencias: arte | historia | contemporaneo | ciencia | cultural | bellas_artes
+- Prioriza museos y exposiciones de esos tipos en el itinerario; no ignores otros lugares culturales del perfil, pero da peso a estos tipos
+
+ACTIVIDADES DE ESTE VIAJE (mision_viaje.activity_this_trip — mapa actividad → "yes" | "no" | "maybe"):
+- Aplica la misma lógica que sport_this_trip a intereses no-deportivos (ej: cocina_c, safari, nightlife, yoga, playa, foto_t, urbano, etc.)
+  · "yes" → inclúyela de forma activa y concreta
+  · "no" → no la programes aunque figure en el perfil act
+  · "maybe" → menciónala como opción flexible
+- Si una actividad está en act pero no en activity_this_trip, trátarla como interés de perfil (no forzar en este viaje)
+
 ESTILO DE LUJO (mision_viaje.luxury_style — solo si existe / presupuesto high o ilim):
 - reconocidos → prioriza venues premium icónicos y experiencias reconocibles (hoteles emblemáticos, restaurantes con reputación).
 - discretas → calidad y autenticidad sobre reconocimiento; joyas locales que los turistas no encuentran fácilmente.

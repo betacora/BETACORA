@@ -8,31 +8,51 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
-function isStandaloneDisplay(): boolean {
+/** True when running as installed PWA (Android/desktop standalone or iOS home-screen). */
+export function isStandaloneDisplay(): boolean {
   if (typeof window === "undefined") return false;
   if (window.matchMedia("(display-mode: standalone)").matches) return true;
   if (window.matchMedia("(display-mode: fullscreen)").matches) return true;
+  if (window.matchMedia("(display-mode: minimal-ui)").matches) return true;
   const nav = window.navigator as Navigator & { standalone?: boolean };
   return nav.standalone === true;
 }
 
-function isIosDevice(): boolean {
+/**
+ * Robust iOS / iPadOS detection (Safari, Chrome, Firefox on iOS;
+ * iPadOS 13+ desktop-class UA).
+ */
+export function isIosDevice(): boolean {
   if (typeof window === "undefined") return false;
-  const ua = window.navigator.userAgent;
-  if (/iPad|iPhone|iPod/.test(ua)) return true;
-  // iPadOS 13+ may report as Mac
-  return (
-    window.navigator.platform === "MacIntel" &&
-    window.navigator.maxTouchPoints > 1
-  );
+  const nav = window.navigator;
+  const ua = nav.userAgent || "";
+  const platform = nav.platform || "";
+
+  if (/iPhone|iPod/i.test(ua)) return true;
+  if (/iPad/i.test(ua)) return true;
+  // iPadOS 13+ reports as Macintosh with touch
+  if (/Macintosh/i.test(ua) && nav.maxTouchPoints > 1) return true;
+  if (platform === "MacIntel" && nav.maxTouchPoints > 1) return true;
+  // Explicit iOS browser tokens when model string is missing
+  if (/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua) && /Mobile/i.test(ua)) return true;
+
+  return false;
 }
+
+type Variant = "hero" | "header";
 
 type Props = {
   lang: AppLang;
   className?: string;
+  /** hero = prominent near CTA; header = compact in nav */
+  variant?: Variant;
 };
 
-export function InstallAppButton({ lang, className = "" }: Props) {
+export function InstallAppButton({
+  lang,
+  className = "",
+  variant = "hero",
+}: Props) {
   const copy = INSTALL_COPY[lang];
   const [installed, setInstalled] = useState(true); // hide until client check
   const [ios, setIos] = useState(false);
@@ -42,7 +62,8 @@ export function InstallAppButton({ lang, className = "" }: Props) {
   const [showIosOverlay, setShowIosOverlay] = useState(false);
 
   useEffect(() => {
-    setInstalled(isStandaloneDisplay());
+    const syncInstalled = () => setInstalled(isStandaloneDisplay());
+    syncInstalled();
     setIos(isIosDevice());
 
     const onBip = (e: Event) => {
@@ -57,9 +78,17 @@ export function InstallAppButton({ lang, className = "" }: Props) {
 
     window.addEventListener("beforeinstallprompt", onBip);
     window.addEventListener("appinstalled", onInstalled);
+
+    const mq = window.matchMedia("(display-mode: standalone)");
+    const onMq = () => syncInstalled();
+    if (mq.addEventListener) mq.addEventListener("change", onMq);
+    else mq.addListener(onMq);
+
     return () => {
       window.removeEventListener("beforeinstallprompt", onBip);
       window.removeEventListener("appinstalled", onInstalled);
+      if (mq.removeEventListener) mq.removeEventListener("change", onMq);
+      else mq.removeListener(onMq);
     };
   }, []);
 
@@ -77,13 +106,14 @@ export function InstallAppButton({ lang, className = "" }: Props) {
     setDeferred(null);
   }
 
+  const btnClass =
+    variant === "header"
+      ? `inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[6px] border-0 bg-[#E8634A] text-white font-medium text-[0.72rem] tracking-wide cursor-pointer hover:opacity-90 transition-opacity whitespace-nowrap ${className}`
+      : `inline-flex items-center justify-center gap-2 w-full max-w-xs px-7 py-3.5 rounded-[7px] border-0 bg-[#E8634A] text-white font-medium text-base cursor-pointer hover:opacity-90 transition-opacity ${className}`;
+
   return (
     <>
-      <button
-        type="button"
-        onClick={handleClick}
-        className={`inline-flex items-center justify-center gap-2 px-7 py-3 rounded-[7px] border border-[#E8634A] bg-transparent text-[#E8634A] font-medium text-[0.9375rem] cursor-pointer hover:bg-[#FFF5F2] transition-colors ${className}`}
-      >
+      <button type="button" onClick={handleClick} className={btnClass}>
         <InstallGlyph />
         {copy.button}
       </button>
@@ -107,14 +137,33 @@ export function InstallAppButton({ lang, className = "" }: Props) {
               {copy.iosTitle}
             </p>
 
-            <div className="mt-5 flex items-center justify-center gap-3 py-4 rounded-[7px] bg-[#FFF5F2] border border-[rgba(232,99,74,0.2)]">
-              <ShareGlyph />
-              <span className="text-[#E8634A] font-medium text-sm tracking-tight text-left leading-snug max-w-[11rem]">
-                {copy.iosSteps}
-              </span>
+            <div className="mt-5 flex items-center justify-center gap-2.5 py-5 px-3 rounded-[7px] bg-white border border-[#E5E2DC]">
+              <div className="flex flex-col items-center gap-1.5 min-w-[4.5rem]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#FFF5F2] text-[#E8634A]">
+                  <IosShareGlyph />
+                </span>
+                <span className="text-[0.65rem] text-[#6B6B6B] font-normal text-center leading-tight">
+                  {copy.iosShareLabel}
+                </span>
+              </div>
+
+              <ArrowGlyph />
+
+              <div className="flex flex-col items-center gap-1.5 min-w-[4.5rem]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#FFF5F2] text-[#E8634A]">
+                  <HomeAddGlyph />
+                </span>
+                <span className="text-[0.65rem] text-[#6B6B6B] font-normal text-center leading-tight">
+                  {copy.iosHomeLabel}
+                </span>
+              </div>
             </div>
 
-            <p className="mt-4 text-sm text-[#6B6B6B] leading-relaxed m-0">
+            <p className="mt-4 text-sm font-medium text-[#1A1A1A] text-center leading-snug m-0">
+              {copy.iosSteps}
+            </p>
+
+            <p className="mt-3 text-sm text-[#6B6B6B] leading-relaxed m-0 text-center">
               {copy.iosHint}
             </p>
 
@@ -159,27 +208,74 @@ function InstallGlyph() {
   );
 }
 
-function ShareGlyph() {
+/** iOS-style Share: square with upward arrow */
+function IosShareGlyph() {
   return (
     <svg
-      width="28"
-      height="28"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      className="shrink-0 text-[#E8634A]"
     >
       <path
-        d="M12 16V4m0 0l-4 4m4-4l4 4"
+        d="M12 16V4m0 0l-3.5 3.5M12 4l3.5 3.5"
+        stroke="currentColor"
+        strokeWidth="1.85"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 10v8a2 2 0 002 2h8a2 2 0 002-2v-8"
+        stroke="currentColor"
+        strokeWidth="1.85"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function HomeAddGlyph() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"
         stroke="currentColor"
         strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M5 14v4a2 2 0 002 2h10a2 2 0 002-2v-4"
+        d="M12 11v4m-2-2h4"
         stroke="currentColor"
         strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowGlyph() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0 text-[#E8634A]"
+    >
+      <path
+        d="M5 12h14m0 0l-5-5m5 5l-5 5"
+        stroke="currentColor"
+        strokeWidth="1.85"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

@@ -57,22 +57,25 @@ export function LandingPage() {
           </span>
         </Link>
 
-        <div className="flex gap-0.5" role="group" aria-label="Language">
-          {LANGS.map((code) => (
-            <button
-              key={code}
-              type="button"
-              onClick={() => switchLang(code)}
-              className={`text-xs tracking-wide px-2.5 py-1.5 border-0 border-b-[1.5px] bg-transparent cursor-pointer transition-colors font-normal ${
-                lang === code
-                  ? "text-[#1A1A1A] border-[#E8634A]"
-                  : "text-[#6B6B6B] border-transparent hover:text-[#1A1A1A]"
-              }`}
-              aria-pressed={lang === code}
-            >
-              {LANG_LABEL[code]}
-            </button>
-          ))}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <InstallAppButton lang={lang} variant="header" />
+          <div className="flex gap-0.5" role="group" aria-label="Language">
+            {LANGS.map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => switchLang(code)}
+                className={`text-xs tracking-wide px-2.5 py-1.5 border-0 border-b-[1.5px] bg-transparent cursor-pointer transition-colors font-normal ${
+                  lang === code
+                    ? "text-[#1A1A1A] border-[#E8634A]"
+                    : "text-[#6B6B6B] border-transparent hover:text-[#1A1A1A]"
+                }`}
+                aria-pressed={lang === code}
+              >
+                {LANG_LABEL[code]}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
@@ -93,14 +96,15 @@ export function LandingPage() {
           {copy.sub}
         </p>
 
-        <Link
-          href="/questionnaire"
-          className="mt-10 sm:mt-12 px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity"
-        >
-          {copy.cta}
-        </Link>
-
-        <InstallAppButton lang={lang} className="mt-3.5" />
+        <div className="mt-10 sm:mt-12 flex flex-col items-center gap-3 w-full max-w-xs">
+          <Link
+            href="/questionnaire"
+            className="w-full px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity text-center"
+          >
+            {copy.cta}
+          </Link>
+          <InstallAppButton lang={lang} variant="hero" />
+        </div>
       </section>
     </main>
   );

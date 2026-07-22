@@ -97,6 +97,17 @@ body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-se
 .sport-trip-opt.sel {
   border-color: var(--coral); background: var(--coral-tint); color: var(--ink); font-weight: 500;
 }
+/* Reveal follow-ups (museum types / activity this-trip) */
+.follow-up-panel {
+  display: none; margin-top: 0.85rem; padding: 0.85rem 0.9rem 1rem;
+  background: var(--white); border: 1px solid var(--border); border-radius: 7px;
+}
+.follow-up-panel.show { display: block; }
+.follow-up-label {
+  font-size: 0.8125rem; font-weight: 500; color: var(--ink); margin-bottom: 0.65rem; line-height: 1.4;
+}
+.follow-up-panel .grid3,
+.follow-up-panel .grid4 { margin-top: 0; }
 .mision-event-wrap { margin-top: 0.85rem; display: none; }
 .mision-event-wrap.show { display: block; }
 .section-divider {
@@ -623,6 +634,17 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
         <button class="opt" data-q="cultura" data-v="festivales" onclick="toggle(this)"><span class="em">🎪</span>Festivales</button>
         <button class="opt" data-q="cultura" data-v="improv" onclick="toggle(this)"><span class="em">🧭</span>Improviso al llegar</button>
       </div>
+      <div id="museumTypePanel" class="follow-up-panel" aria-live="polite">
+        <div class="follow-up-label" id="museumTypeLabel">¿Qué tipo de museos te interesan?</div>
+        <div class="grid3">
+          <button type="button" class="opt" data-q="museum_type" data-v="arte" onclick="toggleMuseumType(this)"><span class="em">🖼️</span>Arte</button>
+          <button type="button" class="opt" data-q="museum_type" data-v="historia" onclick="toggleMuseumType(this)"><span class="em">📜</span>Historia</button>
+          <button type="button" class="opt" data-q="museum_type" data-v="contemporaneo" onclick="toggleMuseumType(this)"><span class="em">🔲</span>Contemporáneo</button>
+          <button type="button" class="opt" data-q="museum_type" data-v="ciencia" onclick="toggleMuseumType(this)"><span class="em">🔬</span>Ciencia</button>
+          <button type="button" class="opt" data-q="museum_type" data-v="cultural" onclick="toggleMuseumType(this)"><span class="em">🌍</span>Cultural</button>
+          <button type="button" class="opt" data-q="museum_type" data-v="bellas_artes" onclick="toggleMuseumType(this)"><span class="em">🎨</span>Bellas Artes</button>
+        </div>
+      </div>
     </div>
 
     <div class="qblock">
@@ -645,7 +667,9 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
         <button class="opt" data-q="act" data-v="foto_t" onclick="toggle(this)"><span class="em">📷</span>Tours fotográficos</button>
         <button class="opt" data-q="act" data-v="cocina_c" onclick="toggle(this)"><span class="em">👨‍🍳</span>Clases de cocina</button>
         <button class="opt" data-q="act" data-v="urbano" onclick="toggle(this)"><span class="em">🏙️</span>Urbanas</button>
+        <button class="opt" data-q="act" data-v="nightlife" onclick="toggle(this)"><span class="em">🌙</span>Vida nocturna</button>
       </div>
+      <div id="activityThisTripPanel" class="sport-trip-panel" aria-live="polite"></div>
     </div>
   </div>
 
@@ -1085,6 +1109,11 @@ const LANG = {
     const misionIntentLabel = document.querySelector('#misionSportIntentBlock .qlabel');
     if (misionIntentLabel) misionIntentLabel.textContent = locale.ui.questions.misionSportIntent.label;
     if (el('misionEventDateLabel')) el('misionEventDateLabel').textContent = locale.ui.questions.misionEventDate;
+    if (el('museumTypeLabel')) {
+      el('museumTypeLabel').textContent = locale.ui.questions.museumType?.label || el('museumTypeLabel').textContent;
+    }
+    if (typeof renderSportThisTripPanel === 'function') renderSportThisTripPanel();
+    if (typeof renderActivityThisTripPanel === 'function') renderActivityThisTripPanel();
 
     if (el('budgetHintTotal')) el('budgetHintTotal').textContent = locale.ui.questions.budgetTotal.hint;
     if (el('budgetMax')) {
@@ -1250,13 +1279,24 @@ const misionViaje = {
   sport_intent: null,
   sport_event_date: null,
   luxury_style: null,
+  museum_type: [],
+  activity_this_trip: {},
 };
 
 const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking', 'tennis', 'padel', 'golf']);
 const SPORT_THIS_TRIP_OPTS = ['yes', 'no', 'maybe'];
+/** Non-sport activity interests that get “¿En este viaje?” (sports already covered in Misión). */
+const ACTIVITY_THIS_TRIP_KEYS = new Set([
+  'cocina_c', 'safari', 'nightlife', 'yoga', 'playa', 'globo', 'caballo', 'foto_t', 'urbano', 'kayak', 'parapente',
+]);
 const SPORT_EMOJI = {
   surf: '🏄', golf: '⛳', tennis: '🎾', padel: '🏸', buceo: '🤿', kitesurf: '🪁',
   trekking: '🥾', escalada: '🧗', esqui: '⛷️', ciclismo: '🚴', running: '🏃', otro: '✨',
+};
+const ACT_EMOJI = {
+  trekking: '🥾', buceo: '🤿', surf: '🏄', escalada: '🧗', ciclismo: '🚴', kayak: '🛶',
+  yoga: '🧘', safari: '🦁', esqui: '⛷️', parapente: '🪂', playa: '🏖️', globo: '🎈',
+  caballo: '🐴', foto_t: '📷', cocina_c: '👨‍🍳', urbano: '🏙️', nightlife: '🌙',
 };
 const selectedOrigin = [];
 const selectedDest = [];
@@ -1685,6 +1725,88 @@ function toggle(btn) {
   const vals = [];
   document.querySelectorAll(`[data-q="${q}"].sel`).forEach(b => vals.push(b.dataset.v));
   answers[q] = vals;
+  if (q === 'cultura') updateMuseumTypePanel();
+  if (q === 'act') syncActivityThisTrip();
+  updateProgress();
+}
+
+function toggleMuseumType(btn) {
+  btn.classList.toggle('sel');
+  misionViaje.museum_type = [...document.querySelectorAll('[data-q="museum_type"].sel')].map((b) => b.dataset.v);
+  updateProgress();
+}
+
+function updateMuseumTypePanel() {
+  const panel = document.getElementById('museumTypePanel');
+  if (!panel) return;
+  const hasMuseums = (answers.cultura || []).includes('museos');
+  if (hasMuseums) {
+    panel.classList.add('show');
+  } else {
+    panel.classList.remove('show');
+    misionViaje.museum_type = [];
+    panel.querySelectorAll('[data-q="museum_type"]').forEach((b) => b.classList.remove('sel'));
+  }
+}
+
+function activityThisTripLabel(key) {
+  const ui = L().ui.sportThisTrip || {};
+  return ui[key] || key;
+}
+
+function activityDisplayName(act) {
+  const entry = L().opt?.act?.[act];
+  return entry?.label || act;
+}
+
+function activityEmoji(act) {
+  return ACT_EMOJI[act] || '';
+}
+
+function syncActivityThisTrip() {
+  const selected = (answers.act || []).filter((a) => ACTIVITY_THIS_TRIP_KEYS.has(a));
+  Object.keys(misionViaje.activity_this_trip || {}).forEach((k) => {
+    if (!selected.includes(k)) delete misionViaje.activity_this_trip[k];
+  });
+  renderActivityThisTripPanel();
+}
+
+function renderActivityThisTripPanel() {
+  const panel = document.getElementById('activityThisTripPanel');
+  if (!panel) return;
+  const acts = (answers.act || []).filter((a) => ACTIVITY_THIS_TRIP_KEYS.has(a));
+  if (!acts.length) {
+    panel.innerHTML = '';
+    return;
+  }
+  if (!misionViaje.activity_this_trip) misionViaje.activity_this_trip = {};
+  const qLabel = activityThisTripLabel('question');
+  panel.innerHTML = acts.map((act) => {
+    const current = misionViaje.activity_this_trip[act] || '';
+    const opts = SPORT_THIS_TRIP_OPTS.map((v) => {
+      const sel = current === v ? ' sel' : '';
+      return `<button type="button" class="sport-trip-opt${sel}" data-act="${act}" data-v="${v}" onclick="selActivityThisTrip(this)">${activityThisTripLabel(v)}</button>`;
+    }).join('');
+    return `<div class="sport-trip-row" data-act="${act}">
+      <div class="sport-trip-top">
+        <span class="sport-trip-name"><span aria-hidden="true">${activityEmoji(act)}</span>${activityDisplayName(act)}</span>
+        <span class="sport-trip-q">${qLabel}</span>
+      </div>
+      <div class="sport-trip-opts">${opts}</div>
+    </div>`;
+  }).join('');
+}
+
+function selActivityThisTrip(btn) {
+  const act = btn.dataset.act;
+  const val = btn.dataset.v;
+  if (!act || !SPORT_THIS_TRIP_OPTS.includes(val)) return;
+  if (!misionViaje.activity_this_trip) misionViaje.activity_this_trip = {};
+  misionViaje.activity_this_trip[act] = val;
+  const row = btn.closest('.sport-trip-row');
+  if (row) {
+    row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
+  }
   updateProgress();
 }
 
@@ -2150,6 +2272,14 @@ function collectAllAnswers() {
   if (misionViaje.sport_intent) mv.sport_intent = misionViaje.sport_intent;
   if (misionViaje.sport_event_date) mv.sport_event_date = misionViaje.sport_event_date;
   if (misionViaje.luxury_style) mv.luxury_style = misionViaje.luxury_style;
+  if ((misionViaje.museum_type || []).length) mv.museum_type = [...misionViaje.museum_type];
+  const actTrip = {};
+  (answers.act || []).forEach((a) => {
+    if (ACTIVITY_THIS_TRIP_KEYS.has(a) && misionViaje.activity_this_trip[a]) {
+      actTrip[a] = misionViaje.activity_this_trip[a];
+    }
+  });
+  if (Object.keys(actTrip).length) mv.activity_this_trip = actTrip;
   return { ...answers, mision_viaje: mv };
 }
 

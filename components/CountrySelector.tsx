@@ -14,6 +14,7 @@ type CountrySelectorProps = {
   value: string;
   onChange: (countryName: string) => void;
   placeholder?: string;
+  clearLabel?: string;
   required?: boolean;
   lang?: Lang;
 };
@@ -22,6 +23,7 @@ export function CountrySelector({
   value,
   onChange,
   placeholder = "Busca tu país...",
+  clearLabel = "Quitar país",
   required,
   lang = "es",
 }: CountrySelectorProps) {
@@ -94,7 +96,7 @@ export function CountrySelector({
             type="button"
             onClick={clear}
             className="text-sm text-[#E8634A] bg-transparent border-0 cursor-pointer font-medium"
-            aria-label="Quitar país"
+            aria-label={clearLabel}
           >
             ✕
           </button>

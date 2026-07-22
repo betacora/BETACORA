@@ -175,7 +175,12 @@ Si mision_viaje.focus incluye valores, pondera las recomendaciones según esos f
 DEPORTE ESPECÍFICO:
 - Si sport_mode es "yes" y sport_intent es "competir" (con sport_event_date si existe): estructura el itinerario alrededor de la fecha del evento; prioriza descanso previo, logística sencilla, notas de nutrición e hidratación, alojamiento cerca del punto de salida si aplica.
 - Si sport_mode es "yes" y sport_intent es "placer": el deporte seleccionado (mision_viaje.sports) debe tener presencia significativa — spots concretos, rutas, condiciones de temporada, escuelas o guías — sin estructurar todo el viaje como una carrera.
-- Deportes posibles: surf, buceo, kitesurf, trekking/senderismo, escalada, esqui, ciclismo, running, otro.
+- Deportes posibles: surf, golf, tennis, padel, buceo, kitesurf, trekking/senderismo, escalada, esqui, ciclismo, running, otro.
+- sport_this_trip (mapa deporte → "yes" | "no" | "maybe"): decide cómo tratar CADA deporte seleccionado en ESTE viaje:
+  · "yes" → inclúyelo de forma activa y concreta en el itinerario (spots, reservas, timing).
+  · "no" → no lo programes aunque figure en sports / perfil; no fuerces actividades de ese deporte.
+  · "maybe" → menciónalo como opción flexible u opcional (1 tip o alternativa), sin convertirlo en eje del viaje.
+  Si un deporte está en sports pero no tiene entrada en sport_this_trip, trátarlo como "maybe".
 
 ESTILO DE LUJO (mision_viaje.luxury_style — solo si existe / presupuesto high o ilim):
 - reconocidos → prioriza venues premium icónicos y experiencias reconocibles (hoteles emblemáticos, restaurantes con reputación).

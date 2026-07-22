@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { InstallAppButton } from "@/components/InstallAppButton";
 import {
   detectLang,
   persistLang,
@@ -98,6 +99,8 @@ export function LandingPage() {
         >
           {copy.cta}
         </Link>
+
+        <InstallAppButton lang={lang} className="mt-3.5" />
       </section>
     </main>
   );

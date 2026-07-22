@@ -45,3 +45,39 @@ export const LANDING_COPY: Record<
     cta: "Découvrez votre profil voyageur",
   },
 };
+
+export const INSTALL_COPY: Record<
+  AppLang,
+  {
+    button: string;
+    iosTitle: string;
+    iosSteps: string;
+    iosHint: string;
+    close: string;
+  }
+> = {
+  es: {
+    button: "Instalar App",
+    iosTitle: "Instalar BeTacora",
+    iosSteps: "Toca compartir → Añadir a inicio",
+    iosHint:
+      "En Safari, toca el botón Compartir (cuadrado con flecha) y elige «Añadir a pantalla de inicio».",
+    close: "Entendido",
+  },
+  en: {
+    button: "Install App",
+    iosTitle: "Install BeTacora",
+    iosSteps: "Tap Share → Add to Home Screen",
+    iosHint:
+      "In Safari, tap the Share button (square with arrow), then choose “Add to Home Screen”.",
+    close: "Got it",
+  },
+  fr: {
+    button: "Installer l'app",
+    iosTitle: "Installer BeTacora",
+    iosSteps: "Touchez Partager → Sur l'écran d'accueil",
+    iosHint:
+      "Dans Safari, touchez Partager (carré avec flèche), puis « Sur l'écran d'accueil ».",
+    close: "Compris",
+  },
+};

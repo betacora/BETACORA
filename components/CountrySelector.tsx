@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   countries,
   localized,
+  MIN_QUERY_LEN,
   searchCountries,
   type CountryEntry,
   type Lang,
@@ -25,6 +26,7 @@ export function CountrySelector({
   lang = "es",
 }: CountrySelectorProps) {
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<CountryEntry | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,11 @@ export function CountrySelector({
   }, [value]);
 
   useEffect(() => {
+    const t = setTimeout(() => setDebouncedQuery(query), 220);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  useEffect(() => {
     function onDocClick(e: MouseEvent) {
       if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
         setOpen(false);
@@ -53,12 +60,16 @@ export function CountrySelector({
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
-  const results = searchCountries(query, 8, lang);
+  const results =
+    debouncedQuery.trim().length >= MIN_QUERY_LEN
+      ? searchCountries(debouncedQuery, 20, lang)
+      : [];
 
   function pick(country: CountryEntry) {
     setSelected(country);
     onChange(country.name.es);
     setQuery("");
+    setDebouncedQuery("");
     setOpen(false);
   }
 
@@ -66,6 +77,7 @@ export function CountrySelector({
     setSelected(null);
     onChange("");
     setQuery("");
+    setDebouncedQuery("");
   }
 
   return (
@@ -125,7 +137,7 @@ export function CountrySelector({
           {open && results.length > 0 && (
             <ul className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-[7px] border border-[#E5E2DC] bg-white list-none p-1 m-0">
               {results.map((c) => (
-                <li key={c.name.es}>
+                <li key={c.isoCode}>
                   <button
                     type="button"
                     onClick={() => pick(c)}

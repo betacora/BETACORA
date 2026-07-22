@@ -68,6 +68,35 @@ body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-se
   font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em;
   color: var(--muted); margin-bottom: 0.55rem;
 }
+/* Per-sport “on this trip?” follow-up — compact, editorial */
+.sport-trip-panel { margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.45rem; }
+.sport-trip-panel:empty { display: none; }
+.sport-trip-row {
+  display: flex; flex-direction: column; align-items: stretch; gap: 0.5rem;
+  padding: 0.7rem 0.85rem; background: var(--white); border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.sport-trip-top {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.65rem;
+}
+.sport-trip-name {
+  font-size: 0.8125rem; font-weight: 500; color: var(--ink);
+  display: inline-flex; align-items: center; gap: 0.35rem;
+}
+.sport-trip-q {
+  font-size: 0.72rem; font-weight: 400; color: var(--muted); letter-spacing: 0.01em;
+}
+.sport-trip-opts { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.sport-trip-opt {
+  appearance: none; border: 1px solid var(--border); background: var(--white); color: var(--ink);
+  font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 400;
+  padding: 0.4rem 0.85rem; border-radius: 4px; cursor: pointer; line-height: 1.2;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.sport-trip-opt:hover { border-color: #d5d0c8; }
+.sport-trip-opt.sel {
+  border-color: var(--coral); background: var(--coral-tint); color: var(--ink); font-weight: 500;
+}
 .mision-event-wrap { margin-top: 0.85rem; display: none; }
 .mision-event-wrap.show { display: block; }
 .section-divider {
@@ -633,7 +662,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
       <div class="search-wrap">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
-          <input type="text" id="originSearch" placeholder="Escribe tu ciudad — Madrid, Ciudad de México, Buenos Aires..." oninput="searchCity(this.value,'originResults','originTags','origin')" autocomplete="off">
+          <input type="text" id="originSearch" placeholder="Escribe tu ciudad — Madrid, Ciudad de México, Buenos Aires..." oninput="onGeoSearchInput(this.value,'originResults','originTags','origin')" autocomplete="off">
         </div>
         <div class="search-dropdown" id="originResults"></div>
       </div>
@@ -677,7 +706,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
           <div class="search-wrap">
             <div class="search-input-wrap">
               <span class="search-icon">🔍</span>
-              <input type="text" id="destSearch" placeholder="Busca ciudad o país de destino..." oninput="searchCity(this.value,'destResults','destTags','dest')" autocomplete="off">
+              <input type="text" id="destSearch" placeholder="Busca ciudad o país de destino..." oninput="onGeoSearchInput(this.value,'destResults','destTags','dest')" autocomplete="off">
             </div>
             <div class="search-dropdown" id="destResults"></div>
           </div>
@@ -838,6 +867,9 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
       <div id="misionSportDetail" style="display:none">
         <div class="grid4" style="margin-top:0.75rem">
           <button class="opt" data-q="mision_sports" data-v="surf" onclick="toggleMisionSport(this)"><span class="em">🏄</span>Surf</button>
+          <button class="opt" data-q="mision_sports" data-v="golf" onclick="toggleMisionSport(this)"><span class="em">⛳</span>Golf</button>
+          <button class="opt" data-q="mision_sports" data-v="tennis" onclick="toggleMisionSport(this)"><span class="em">🎾</span>Tenis</button>
+          <button class="opt" data-q="mision_sports" data-v="padel" onclick="toggleMisionSport(this)"><span class="em">🏸</span>Pádel</button>
           <button class="opt" data-q="mision_sports" data-v="buceo" onclick="toggleMisionSport(this)"><span class="em">🤿</span>Buceo</button>
           <button class="opt" data-q="mision_sports" data-v="kitesurf" onclick="toggleMisionSport(this)"><span class="em">🪁</span>Kitesurf</button>
           <button class="opt" data-q="mision_sports" data-v="trekking" onclick="toggleMisionSport(this)"><span class="em">🥾</span>Senderismo</button>
@@ -847,6 +879,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
           <button class="opt" data-q="mision_sports" data-v="running" onclick="toggleMisionSport(this)"><span class="em">🏃</span>Running</button>
           <button class="opt" data-q="mision_sports" data-v="otro" onclick="toggleMisionSport(this)"><span class="em">✨</span>Otro</button>
         </div>
+        <div id="sportThisTripPanel" class="sport-trip-panel" aria-live="polite"></div>
       </div>
 
       <div id="misionSportIntentBlock" style="display:none;margin-top:1rem">
@@ -1213,12 +1246,18 @@ const misionViaje = {
   focus: [],
   sport_mode: null,
   sports: [],
+  sport_this_trip: {},
   sport_intent: null,
   sport_event_date: null,
   luxury_style: null,
 };
 
-const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking']);
+const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking', 'tennis', 'padel', 'golf']);
+const SPORT_THIS_TRIP_OPTS = ['yes', 'no', 'maybe'];
+const SPORT_EMOJI = {
+  surf: '🏄', golf: '⛳', tennis: '🎾', padel: '🏸', buceo: '🤿', kitesurf: '🪁',
+  trekking: '🥾', escalada: '🧗', esqui: '⛷️', ciclismo: '🚴', running: '🏃', otro: '✨',
+};
 const selectedOrigin = [];
 const selectedDest = [];
 
@@ -1238,31 +1277,13 @@ function geoLang() {
 function locName(obj) {
   if (!obj) return '';
   if (typeof obj === 'string') return obj;
+  if (typeof GEO !== 'undefined' && GEO.localized) return GEO.localized(obj, geoLang());
   const lang = geoLang();
-  return obj[lang] || obj.es || '';
-}
-
-function getGeoCities() {
-  return (typeof GEO_CITIES !== 'undefined' && Array.isArray(GEO_CITIES)) ? GEO_CITIES : [];
-}
-
-function getGeoCountries() {
-  const map = new Map();
-  getGeoCities().forEach(c => {
-    const key = c.country.es;
-    if (!map.has(key)) map.set(key, { name: c.country, flag: c.flag });
-  });
-  const lang = geoLang();
-  return [...map.values()].sort((a, b) => locName(a.name).localeCompare(locName(b.name), lang));
-}
-
-function matchesLocalized(nameObj, q) {
-  if (!nameObj) return false;
-  if (typeof nameObj === 'string') return nameObj.toLowerCase().includes(q);
-  return [nameObj.es, nameObj.en, nameObj.fr].some(n => n && n.toLowerCase().includes(q));
+  return obj[lang] || obj.en || obj.es || '';
 }
 
 const searchResultCache = {};
+const geoSearchSeq = {};
 
 function slugify(str) {
   return str.replace(/\s/g, '_').replace(/[^\w\-]/g, '');
@@ -1276,80 +1297,117 @@ function syncDestAnswers() {
   );
 }
 
-function searchCity(val, resultsId, tagsId, type) {
-  const res = document.getElementById(resultsId);
-  if (!val || val.length < 1) { res.classList.remove('show'); return; }
-  const q = val.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const cache = [];
-  let html = '';
+const onGeoSearchInput = (typeof GEO !== 'undefined' && GEO.debounce)
+  ? GEO.debounce(function (val, resultsId, tagsId, type) {
+      searchCity(val, resultsId, tagsId, type);
+    }, GEO.DEBOUNCE_MS || 220)
+  : function (val, resultsId, tagsId, type) {
+      searchCity(val, resultsId, tagsId, type);
+    };
 
-  if (type === 'dest') {
-    const matchedCountries = getGeoCountries()
-      .filter(c => matchesLocalized(c.name, q) || matchesLocalized(c.name, norm(q)) ||
-        [c.name.es, c.name.en, c.name.fr].some(n => norm(n).includes(q)))
-      .slice(0, 5);
-    if (matchedCountries.length) {
+async function searchCity(val, resultsId, tagsId, type) {
+  const res = document.getElementById(resultsId);
+  const minLen = (typeof GEO !== 'undefined' && GEO.MIN_LEN) ? GEO.MIN_LEN : 2;
+  if (!val || val.trim().length < minLen) {
+    res.classList.remove('show');
+    res.innerHTML = '';
+    return;
+  }
+
+  const seq = (geoSearchSeq[resultsId] = (geoSearchSeq[resultsId] || 0) + 1);
+  const lang = geoLang();
+
+  try {
+    let matchedCountries = [];
+    let matchedCities = [];
+
+    if (typeof GEO !== 'undefined' && GEO.searchPlaces) {
+      if (type === 'dest') {
+        const data = await GEO.searchPlaces(val, lang, 20);
+        if (seq !== geoSearchSeq[resultsId]) return;
+        matchedCountries = (data.countries || []).slice(0, 5);
+        matchedCities = (data.cities || []).slice(0, 20);
+      } else {
+        matchedCities = await GEO.searchCities(val, lang, 20);
+        if (seq !== geoSearchSeq[resultsId]) return;
+      }
+    } else if (typeof searchCities === 'function') {
+      matchedCities = await searchCities(val, lang, 20);
+      if (seq !== geoSearchSeq[resultsId]) return;
+      if (type === 'dest' && typeof searchCountries === 'function') {
+        matchedCountries = (await searchCountries(val, lang, 5)).slice(0, 5);
+        if (seq !== geoSearchSeq[resultsId]) return;
+      }
+    }
+
+    const cache = [];
+    let html = '';
+
+    if (type === 'dest' && matchedCountries.length) {
       html += `<div class="search-section-label">${L().ui.search.countries}</div>`;
       matchedCountries.forEach(c => {
         const display = locName(c.name);
-        cache.push({ kind: 'country', country: display, country_es: c.name.es, flag: c.flag });
+        cache.push({
+          kind: 'country',
+          country: display,
+          country_es: (c.name && c.name.es) || display,
+          flag: c.flag || '',
+        });
         const idx = cache.length - 1;
         html += `<div class="search-item is-country" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
-          <span class="flag">${c.flag}</span>
+          <span class="flag">${c.flag || ''}</span>
           <span class="city-name">${display}</span>
           <span class="country-name">${L().ui.search.exploreCountry}</span>
         </div>`;
       });
     }
-  }
 
-  const matchedCities = getGeoCities()
-    .filter(c =>
-      [c.city.es, c.city.en, c.city.fr, c.country.es, c.country.en, c.country.fr]
-        .some(n => norm(n).includes(q))
-    )
-    .slice(0, 8);
-
-  if (matchedCities.length) {
-    if (html) html += `<div class="search-section-label">${L().ui.search.cities}</div>`;
-    matchedCities.forEach(c => {
-      const cityDisplay = locName(c.city);
-      const countryDisplay = locName(c.country);
-      cache.push({
-        kind: 'city',
-        city: cityDisplay,
-        city_es: c.city.es,
-        country: countryDisplay,
-        country_es: c.country.es,
-        flag: c.flag,
+    if (matchedCities.length) {
+      if (html) html += `<div class="search-section-label">${L().ui.search.cities}</div>`;
+      matchedCities.forEach(c => {
+        const cityDisplay = locName(c.city);
+        const countryDisplay = locName(c.country);
+        cache.push({
+          kind: 'city',
+          city: cityDisplay,
+          city_es: (c.city && (c.city.es || c.city.en)) || cityDisplay,
+          country: countryDisplay,
+          country_es: (c.country && c.country.es) || countryDisplay,
+          flag: c.flag || '',
+        });
+        const idx = cache.length - 1;
+        html += `<div class="search-item" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
+          <span class="flag">${c.flag || ''}</span>
+          <span class="city-name">${cityDisplay}</span>
+          <span class="country-name">${countryDisplay}</span>
+        </div>`;
       });
-      const idx = cache.length - 1;
-      html += `<div class="search-item" onclick="selectSearchResult(${idx},'${resultsId}','${tagsId}','${type}')">
-        <span class="flag">${c.flag}</span>
-        <span class="city-name">${cityDisplay}</span>
-        <span class="country-name">${countryDisplay}</span>
-      </div>`;
-    });
-  }
+    }
 
-  if (!html) { res.classList.remove('show'); return; }
-  searchResultCache[resultsId] = cache;
-  res.innerHTML = html;
-  res.classList.add('show');
+    if (!html) { res.classList.remove('show'); res.innerHTML = ''; return; }
+    searchResultCache[resultsId] = cache;
+    res.innerHTML = html;
+    res.classList.add('show');
+  } catch (err) {
+    console.error('geo search error', err);
+    if (seq === geoSearchSeq[resultsId]) res.classList.remove('show');
+  }
 }
 
 function selectSearchResult(index, resultsId, tagsId, type) {
   const item = searchResultCache[resultsId][index];
   if (!item) return;
-  if (item.kind === 'country') addCountry(item.country, item.flag, resultsId, tagsId, type);
-  else addCity(item.city, item.country, item.flag, resultsId, tagsId, type);
+  if (item.kind === 'country') {
+    addCountry(item.country, item.flag, resultsId, tagsId, type, item.country_es);
+  } else {
+    addCity(item.city, item.country, item.flag, resultsId, tagsId, type, item.city_es, item.country_es);
+  }
 }
 
-function addCountry(country, flag, resultsId, tagsId, type) {
+function addCountry(country, flag, resultsId, tagsId, type, country_es) {
   if (type !== 'dest') return;
   if (selectedDest.find(x => x.kind === 'country' && x.country === country)) return;
-  selectedDest.push({ kind: 'country', country, flag });
+  selectedDest.push({ kind: 'country', country, flag, country_es: country_es || country });
   syncDestAnswers();
   const container = document.getElementById(tagsId);
   const tag = document.createElement('div');
@@ -1362,12 +1420,19 @@ function addCountry(country, flag, resultsId, tagsId, type) {
   updateProgress();
 }
 
-function addCity(city, country, flag, resultsId, tagsId, type) {
+function addCity(city, country, flag, resultsId, tagsId, type, city_es, country_es) {
   const arr = type === 'origin' ? selectedOrigin : selectedDest;
   const key = type === 'origin' ? 'origin' : 'destinations';
-  if (arr.find(x => x.kind === 'city' && x.city === city)) return;
+  if (arr.find(x => (x.kind === 'city' || !x.kind) && x.city === city)) return;
   if (type === 'dest') {
-    arr.push({ kind: 'city', city, country, flag });
+    arr.push({
+      kind: 'city',
+      city,
+      country,
+      flag,
+      city_es: city_es || city,
+      country_es: country_es || country,
+    });
     syncDestAnswers();
   } else {
     arr.push({ city, country, flag });
@@ -1471,10 +1536,12 @@ function selMisionSport(row) {
   if (!showDetail) {
     document.querySelectorAll('[data-q="mision_sports"]').forEach(b => b.classList.remove('sel'));
     misionViaje.sports = [];
+    misionViaje.sport_this_trip = {};
     misionViaje.sport_intent = null;
     misionViaje.sport_event_date = null;
     document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
     document.getElementById('misionEventDate').value = '';
+    renderSportThisTripPanel();
   }
   updateMisionSportIntentVisibility();
   updateProgress();
@@ -1482,8 +1549,68 @@ function selMisionSport(row) {
 
 function toggleMisionSport(btn) {
   btn.classList.toggle('sel');
+  const sport = btn.dataset.v;
   misionViaje.sports = [...document.querySelectorAll('[data-q="mision_sports"].sel')].map(b => b.dataset.v);
+  if (!btn.classList.contains('sel')) {
+    delete misionViaje.sport_this_trip[sport];
+  }
+  // Drop answers for sports no longer selected
+  Object.keys(misionViaje.sport_this_trip).forEach((k) => {
+    if (!misionViaje.sports.includes(k)) delete misionViaje.sport_this_trip[k];
+  });
+  renderSportThisTripPanel();
   updateMisionSportIntentVisibility();
+  updateProgress();
+}
+
+function sportThisTripLabel(key) {
+  const ui = L().ui.sportThisTrip || {};
+  return ui[key] || key;
+}
+
+function sportDisplayName(sport) {
+  const entry = L().opt?.mision_sports?.[sport];
+  return entry?.label || sport;
+}
+
+function sportEmoji(sport) {
+  return SPORT_EMOJI[sport] || '';
+}
+
+function renderSportThisTripPanel() {
+  const panel = document.getElementById('sportThisTripPanel');
+  if (!panel) return;
+  const sports = misionViaje.sports || [];
+  if (!sports.length) {
+    panel.innerHTML = '';
+    return;
+  }
+  const qLabel = sportThisTripLabel('question');
+  panel.innerHTML = sports.map((sport) => {
+    const current = misionViaje.sport_this_trip[sport] || '';
+    const opts = SPORT_THIS_TRIP_OPTS.map((v) => {
+      const sel = current === v ? ' sel' : '';
+      return `<button type="button" class="sport-trip-opt${sel}" data-sport="${sport}" data-v="${v}" onclick="selSportThisTrip(this)">${sportThisTripLabel(v)}</button>`;
+    }).join('');
+    return `<div class="sport-trip-row" data-sport="${sport}">
+      <div class="sport-trip-top">
+        <span class="sport-trip-name"><span aria-hidden="true">${sportEmoji(sport)}</span>${sportDisplayName(sport)}</span>
+        <span class="sport-trip-q">${qLabel}</span>
+      </div>
+      <div class="sport-trip-opts">${opts}</div>
+    </div>`;
+  }).join('');
+}
+
+function selSportThisTrip(btn) {
+  const sport = btn.dataset.sport;
+  const val = btn.dataset.v;
+  if (!sport || !SPORT_THIS_TRIP_OPTS.includes(val)) return;
+  misionViaje.sport_this_trip[sport] = val;
+  const row = btn.closest('.sport-trip-row');
+  if (row) {
+    row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
+  }
   updateProgress();
 }
 
@@ -2015,6 +2142,11 @@ function collectAllAnswers() {
   if (misionViaje.focus.length) mv.focus = misionViaje.focus;
   if (misionViaje.sport_mode) mv.sport_mode = misionViaje.sport_mode;
   if (misionViaje.sports.length) mv.sports = misionViaje.sports;
+  const tripMap = {};
+  (misionViaje.sports || []).forEach((s) => {
+    if (misionViaje.sport_this_trip[s]) tripMap[s] = misionViaje.sport_this_trip[s];
+  });
+  if (Object.keys(tripMap).length) mv.sport_this_trip = tripMap;
   if (misionViaje.sport_intent) mv.sport_intent = misionViaje.sport_intent;
   if (misionViaje.sport_event_date) mv.sport_event_date = misionViaje.sport_event_date;
   if (misionViaje.luxury_style) mv.luxury_style = misionViaje.luxury_style;

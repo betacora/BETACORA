@@ -31,6 +31,12 @@
           mountain: 'Montaña',
           other: 'Otros',
         },
+        sportThisTrip: {
+          question: '¿En este viaje?',
+          yes: 'Sí',
+          no: 'No',
+          maybe: 'Depende',
+        },
         questions: {
           wake: { label: '¿A qué hora despiertas en un viaje ideal?', hint: 'Sin alarmas — tu hora natural' },
           pace: { label: '¿Cómo prefieres estructurar tus días?' },
@@ -327,6 +333,9 @@
         },
         mision_sports: {
           surf: { label: 'Surf' },
+          golf: { label: 'Golf' },
+          tennis: { label: 'Tenis' },
+          padel: { label: 'Pádel' },
           buceo: { label: 'Buceo' },
           kitesurf: { label: 'Kitesurf' },
           trekking: { label: 'Senderismo' },
@@ -442,6 +451,12 @@
           water: 'Water sports',
           mountain: 'Mountain',
           other: 'Other',
+        },
+        sportThisTrip: {
+          question: 'On this trip?',
+          yes: 'Yes',
+          no: 'No',
+          maybe: 'Maybe',
         },
         questions: {
           wake: { label: 'What time do you wake on an ideal trip?', hint: 'No alarms — your natural rhythm' },
@@ -739,6 +754,9 @@
         },
         mision_sports: {
           surf: { label: 'Surf' },
+          golf: { label: 'Golf' },
+          tennis: { label: 'Tennis' },
+          padel: { label: 'Padel' },
           buceo: { label: 'Diving' },
           kitesurf: { label: 'Kitesurf' },
           trekking: { label: 'Hiking' },
@@ -854,6 +872,12 @@
           water: 'Sports nautiques',
           mountain: 'Montagne',
           other: 'Autres',
+        },
+        sportThisTrip: {
+          question: 'Sur ce voyage ?',
+          yes: 'Oui',
+          no: 'Non',
+          maybe: 'Ça dépend',
         },
         questions: {
           wake: { label: 'À quelle heure vous réveillez-vous en voyage idéal ?', hint: 'Sans réveil — votre rythme naturel' },
@@ -1151,6 +1175,9 @@
         },
         mision_sports: {
           surf: { label: 'Surf' },
+          golf: { label: 'Golf' },
+          tennis: { label: 'Tennis' },
+          padel: { label: 'Padel' },
           buceo: { label: 'Plongée' },
           kitesurf: { label: 'Kitesurf' },
           trekking: { label: 'Randonnée' },

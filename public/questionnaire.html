@@ -290,22 +290,87 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .bt-map-popup { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; line-height: 1.35; }
 .bt-map-popup strong { display: block; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
 .bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; }
-.bitacora-article { padding: 1.5rem 1.25rem 2rem; max-width: 720px; margin: 0 auto; }
-.bitacora-article .section-card { background: var(--white); border-radius: 7px; padding: 1.5rem 1.35rem; margin-bottom: 1.25rem; box-shadow: none; border: 1px solid var(--border); }
+.bitacora-article { padding: 1.5rem 1.25rem 2rem; max-width: 720px; margin: 0 auto; color: var(--ink); background: var(--bg); }
+.bitacora-article .section-card {
+  background: var(--white); border-radius: 8px; padding: 24px; margin-bottom: 1.25rem;
+  box-shadow: none; border: 1px solid var(--border);
+}
 .bitacora-article .section-card:last-child { margin-bottom: 0; }
-.bitacora-article h2 { font-size: clamp(1.35rem, 4vw, 1.65rem); font-weight: 500; color: var(--ink); line-height: 1.25; margin: 0 0 1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
-.bitacora-article h3 { font-size: 1.05rem; font-weight: 500; color: var(--teal); line-height: 1.35; margin: 1.25rem 0 0.65rem; }
-.bitacora-article h3:first-child { margin-top: 0; }
+.bitacora-article h2 {
+  font-size: clamp(1.35rem, 4vw, 1.65rem); font-weight: 500; color: var(--ink);
+  line-height: 1.25; margin: 0 0 1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+/* Day / subsection headers: charcoal, thin separator above — no colored backgrounds */
+.bitacora-article h3 {
+  font-size: 1.05rem; font-weight: 500; color: var(--ink); line-height: 1.35;
+  margin: 1.5rem 0 0.75rem; padding-top: 1.15rem; border-top: 1px solid var(--border);
+  background: transparent;
+}
+.bitacora-article h3:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 .bitacora-article p { font-size: 0.95rem; line-height: 1.8; color: var(--ink); margin: 0 0 0.85rem; font-weight: 400; }
 .bitacora-article p:last-child { margin-bottom: 0; }
 .bitacora-article ul { list-style: none; padding: 0; margin: 0.5rem 0 1rem; }
-.bitacora-article li { font-size: 0.93rem; line-height: 1.75; color: var(--ink); padding: 0.3rem 0 0.3rem 1.25rem; position: relative; font-weight: 400; }
-.bitacora-article li::before { content: ''; position: absolute; left: 0; top: 0.72em; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
-.itinerary-error { background: var(--coral-tint); border: 1px solid rgba(232,99,74,0.25); border-radius: 7px; padding: 1.25rem 1.5rem; color: var(--ink); font-size: 0.9rem; line-height: 1.6; text-align: center; margin: 1.5rem; font-weight: 400; }
+.bitacora-article li {
+  font-size: 0.93rem; line-height: 1.75; color: var(--ink);
+  padding: 0.35rem 0 0.35rem 1.15rem; position: relative; font-weight: 400;
+}
+.bitacora-article li::before {
+  content: ''; position: absolute; left: 0; top: 0.78em; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--teal);
+}
+/* Teal: small labels, icons, links only */
+.bitacora-article a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+.bitacora-article a:hover { color: var(--teal-dark); }
+.bitacora-article .label,
+.bitacora-article .meta-label { color: var(--teal); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.02em; }
+/* Coral: prices, CTAs, key highlights — sparingly */
+.bitacora-article .price,
+.bitacora-article .highlight { color: var(--coral); font-weight: 500; }
+.bitacora-article strong { color: var(--ink); font-weight: 500; }
+/* Practical rows: Amazon-style label left / value right */
+.bitacora-article .info-row,
+.bitacora-article .price-row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.93rem; color: var(--ink);
+}
+.bitacora-article .info-row:last-child,
+.bitacora-article .price-row:last-child { border-bottom: none; }
+.bitacora-article .info-row .label,
+.bitacora-article .price-row .label { color: var(--muted); font-weight: 400; flex-shrink: 0; }
+.bitacora-article .info-row .value,
+.bitacora-article .price-row .value { text-align: right; color: var(--ink); font-weight: 400; }
+.bitacora-article .price-row .value { color: var(--coral); font-weight: 500; }
+/* Transparency notes (traveler profile): editorial footnote */
+.bitacora-article > em,
+.bitacora-article .section-card > em,
+.bitacora-article p > em:only-child {
+  display: block; font-style: italic; color: var(--muted); font-size: 0.84rem; line-height: 1.65;
+  margin: 0.85rem 0 1rem; padding: 0.4rem 0 0.4rem 0.9rem;
+  border-left: 2px solid var(--teal); background: transparent; font-weight: 400;
+}
+.bitacora-article p em:not(:only-child),
+.bitacora-article li em {
+  display: inline; font-style: italic; color: var(--muted); border-left: none;
+  padding: 0; margin: 0; font-size: inherit; background: transparent;
+}
+/* Practical list items with label:value — calm Amazon-style alignment */
+.bitacora-article li strong {
+  color: var(--ink); font-weight: 500;
+}
+.bitacora-article h2 + p strong:first-child,
+.bitacora-article p > strong:first-child {
+  color: var(--ink); font-weight: 500;
+}
+.itinerary-error {
+  background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1.25rem 1.5rem; color: var(--ink); font-size: 0.9rem; line-height: 1.6;
+  text-align: center; margin: 1.5rem; font-weight: 400;
+}
 .itinerary-error strong { display: block; color: var(--coral); margin-bottom: 0.4rem; font-size: 1rem; font-weight: 500; }
 @media(max-width:520px) {
   .bitacora-article { padding: 1rem 0.85rem 1.5rem; }
-  .bitacora-article .section-card { padding: 1.15rem 1rem; }
+  .bitacora-article .section-card { padding: 20px 16px; }
   .bitacora-header { padding: 1.35rem 1rem; }
   .header { padding: 0.9rem 1rem; gap: 0.75rem; }
   .header-tag { display: none; }
@@ -1961,6 +2026,44 @@ function escapeHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+/** Group itinerary HTML into white section-cards by each h2 block. */
+function wrapItineraryInCards(html) {
+  if (!html || !html.trim()) return '';
+  const doc = new DOMParser().parseFromString(`<div id="bt-root">${html}</div>`, 'text/html');
+  const root = doc.getElementById('bt-root');
+  if (!root) return html;
+  const nodes = Array.from(root.childNodes);
+  const frag = doc.createDocumentFragment();
+  let card = null;
+
+  function flushCard() {
+    if (card && card.childNodes.length) frag.appendChild(card);
+    card = null;
+  }
+
+  nodes.forEach((node) => {
+    if (node.nodeType === 3 && !node.textContent.trim()) return;
+    const isH2 = node.nodeType === 1 && node.tagName === 'H2';
+    if (isH2) {
+      flushCard();
+      card = doc.createElement('div');
+      card.className = 'section-card';
+      card.appendChild(node);
+      return;
+    }
+    if (!card) {
+      card = doc.createElement('div');
+      card.className = 'section-card';
+    }
+    card.appendChild(node);
+  });
+  flushCard();
+
+  const wrap = doc.createElement('div');
+  wrap.appendChild(frag);
+  return wrap.innerHTML;
+}
+
 function renderItineraryHtml(html) {
   const { places, cleanHtml } = extractPlacesBlock(html);
   const { profile, itineraryHtml } = splitResponseHtml(cleanHtml);
@@ -2003,7 +2106,7 @@ function renderItineraryHtml(html) {
       <div class="bitacora-header-title">${header.title}</div>
     </div>
     ${mapHtml}
-    <div class="bitacora-article">${itineraryHtml}</div>`;
+    <div class="bitacora-article">${wrapItineraryInCards(itineraryHtml)}</div>`;
   section.classList.add('show');
 
   if (places.length) {

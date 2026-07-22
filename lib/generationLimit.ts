@@ -81,6 +81,45 @@ export async function saveItinerary(
     questionnaire_answers: Record<string, unknown>;
     itinerary_html: string;
   }
+): Promise<{ ok: boolean; id?: string; error?: string }> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { ok: false, error: "not_logged_in" };
+  }
+
+  const { data, error } = await supabase
+    .from("itineraries")
+    .insert({
+      user_id: user.id,
+      destination: payload.destination ?? null,
+      profile_type: payload.profile_type ?? null,
+      profile_essence: payload.profile_essence ?? null,
+      questionnaire_answers: payload.questionnaire_answers,
+      itinerary_html: payload.itinerary_html,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true, id: data?.id };
+}
+
+export type PostTripWouldReturn = "yes" | "no" | "maybe";
+
+export async function savePostTripFeedback(
+  supabase: SupabaseClient,
+  itineraryId: string,
+  feedback: {
+    liked: string;
+    avoid: string;
+    would_return: PostTripWouldReturn;
+  }
 ): Promise<{ ok: boolean; error?: string }> {
   const {
     data: { user },
@@ -90,18 +129,61 @@ export async function saveItinerary(
     return { ok: false, error: "not_logged_in" };
   }
 
-  const { error } = await supabase.from("itineraries").insert({
-    user_id: user.id,
-    destination: payload.destination ?? null,
-    profile_type: payload.profile_type ?? null,
-    profile_essence: payload.profile_essence ?? null,
-    questionnaire_answers: payload.questionnaire_answers,
-    itinerary_html: payload.itinerary_html,
-  });
+  if (!itineraryId) {
+    return { ok: false, error: "no_itinerary" };
+  }
 
-  if (error) {
+  const { error } = await supabase
+    .from("itineraries")
+    .update({
+      post_trip_liked: feedback.liked.trim() || null,
+      post_trip_avoid: feedback.avoid.trim() || null,
+      post_trip_would_return: feedback.would_return,
+    })
+    .eq("id", itineraryId)
+    .eq("user_id", user.id);
+
+  if (!error) {
+    return { ok: true };
+  }
+
+  const missingCol =
+    error.code === "PGRST204" ||
+    error.code === "42703" ||
+    /post_trip_/i.test(error.message || "");
+  if (!missingCol) {
     return { ok: false, error: error.message };
   }
 
+  const { data: row, error: readErr } = await supabase
+    .from("itineraries")
+    .select("questionnaire_answers")
+    .eq("id", itineraryId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (readErr) return { ok: false, error: readErr.message };
+
+  const prev =
+    row?.questionnaire_answers && typeof row.questionnaire_answers === "object"
+      ? (row.questionnaire_answers as Record<string, unknown>)
+      : {};
+
+  const { error: fbErr } = await supabase
+    .from("itineraries")
+    .update({
+      questionnaire_answers: {
+        ...prev,
+        post_trip: {
+          liked: feedback.liked.trim() || null,
+          avoid: feedback.avoid.trim() || null,
+          would_return: feedback.would_return,
+          saved_at: new Date().toISOString(),
+        },
+      },
+    })
+    .eq("id", itineraryId)
+    .eq("user_id", user.id);
+
+  if (fbErr) return { ok: false, error: fbErr.message };
   return { ok: true };
 }

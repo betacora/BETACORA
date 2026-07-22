@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { AnalyticsBridge } from "@/components/AnalyticsBridge";
 import { SplashScreen } from "./splash-screen";
 import { SwRegister } from "./sw-register";
 import "./globals.css";
@@ -50,6 +52,8 @@ export default function RootLayout({
         <SplashScreen />
         <SwRegister />
         {children}
+        <AnalyticsBridge />
+        <Analytics />
       </body>
     </html>
   );

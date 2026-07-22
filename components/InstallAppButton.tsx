@@ -108,14 +108,14 @@ export function InstallAppButton({
 
   const btnClass =
     variant === "header"
-      ? `inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-[6px] border-0 bg-[#E8634A] text-white font-medium text-[0.72rem] tracking-wide cursor-pointer hover:opacity-90 transition-opacity whitespace-nowrap ${className}`
+      ? `inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-[6px] border-0 bg-[#E8634A] text-white font-medium text-[0.68rem] tracking-wide cursor-pointer hover:opacity-90 transition-opacity whitespace-nowrap shrink-0 ${className}`
       : `inline-flex items-center justify-center gap-2 w-full max-w-xs px-7 py-3.5 rounded-[7px] border-0 bg-[#E8634A] text-white font-medium text-base cursor-pointer hover:opacity-90 transition-opacity ${className}`;
 
   return (
     <>
       <button type="button" onClick={handleClick} className={btnClass}>
         <InstallGlyph />
-        {copy.button}
+        {variant === "header" ? copy.buttonShort : copy.button}
       </button>
 
       {showIosOverlay ? (

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { InstallAppButton } from "@/components/InstallAppButton";
+import { FunnelEvent, trackFunnel } from "@/lib/analytics";
 import {
   detectLang,
   persistLang,
@@ -27,6 +28,7 @@ export function LandingPage() {
       persistLang(detected);
     }
     document.documentElement.lang = detected;
+    trackFunnel(FunnelEvent.LandingPageView, { lang: detected });
   }, []);
 
   function switchLang(next: AppLang) {
@@ -39,10 +41,10 @@ export function LandingPage() {
 
   return (
     <main className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]">
-      <header className="w-full px-5 py-5 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-4 border-b border-[#E5E2DC]">
+      <header className="w-full px-4 py-4 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-2 sm:gap-4 border-b border-[#E5E2DC]">
         <Link
           href="/"
-          className="flex items-center gap-2.5 no-underline text-[#1A1A1A]"
+          className="flex items-center gap-2 sm:gap-2.5 no-underline text-[#1A1A1A] min-w-0"
           aria-label="BeTacora"
         >
           <img
@@ -50,22 +52,22 @@ export function LandingPage() {
             alt=""
             width={36}
             height={36}
-            className="h-9 w-9 rounded-[7px] object-contain"
+            className="h-8 w-8 sm:h-9 sm:w-9 rounded-[7px] object-contain shrink-0"
           />
-          <span className="text-xl md:text-2xl font-medium tracking-tight">
+          <span className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight truncate">
             Be<span className="text-[#E8634A]">Tacora</span>
           </span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <InstallAppButton lang={lang} variant="header" />
-          <div className="flex gap-0.5" role="group" aria-label="Language">
+          <div className="flex gap-0" role="group" aria-label="Language">
             {LANGS.map((code) => (
               <button
                 key={code}
                 type="button"
                 onClick={() => switchLang(code)}
-                className={`text-xs tracking-wide px-2.5 py-1.5 border-0 border-b-[1.5px] bg-transparent cursor-pointer transition-colors font-normal ${
+                className={`text-[0.7rem] sm:text-xs tracking-wide px-1.5 sm:px-2.5 py-1.5 border-0 border-b-[1.5px] bg-transparent cursor-pointer transition-colors font-normal ${
                   lang === code
                     ? "text-[#1A1A1A] border-[#E8634A]"
                     : "text-[#6B6B6B] border-transparent hover:text-[#1A1A1A]"

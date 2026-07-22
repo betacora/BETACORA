@@ -50,6 +50,7 @@ export const INSTALL_COPY: Record<
   AppLang,
   {
     button: string;
+    buttonShort: string;
     iosTitle: string;
     iosSteps: string;
     iosShareLabel: string;
@@ -60,6 +61,7 @@ export const INSTALL_COPY: Record<
 > = {
   es: {
     button: "Instalar App",
+    buttonShort: "Instalar",
     iosTitle: "Instalar BeTacora",
     iosSteps: "Toca compartir → Añadir a inicio",
     iosShareLabel: "Compartir",
@@ -70,6 +72,7 @@ export const INSTALL_COPY: Record<
   },
   en: {
     button: "Install App",
+    buttonShort: "Install",
     iosTitle: "Install BeTacora",
     iosSteps: "Tap Share → Add to Home Screen",
     iosShareLabel: "Share",
@@ -80,6 +83,7 @@ export const INSTALL_COPY: Record<
   },
   fr: {
     button: "Installer l'app",
+    buttonShort: "Installer",
     iosTitle: "Installer BeTacora",
     iosSteps: "Touchez Partager → Sur l'écran d'accueil",
     iosShareLabel: "Partager",

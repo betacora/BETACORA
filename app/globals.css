@@ -32,3 +32,44 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Shared trip read-only view */
+.prose-viaje {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #1a1a1a;
+}
+.prose-viaje h2 {
+  margin: 1.75rem 0 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.prose-viaje h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.prose-viaje p,
+.prose-viaje li {
+  color: #1a1a1a;
+}
+.prose-viaje ul {
+  padding-left: 1.15rem;
+  margin: 0.5rem 0 1rem;
+}
+.prose-viaje .section-card {
+  background: #fff;
+  border: 1px solid #e5e2dc;
+  border-radius: 8px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 0.85rem;
+}
+.prose-viaje a {
+  color: #2d7b7b;
+}
+.prose-viaje .price,
+.prose-viaje .highlight {
+  color: #e8634a;
+}
+

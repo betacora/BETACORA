@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase";
 import { CountrySelector } from "@/components/CountrySelector";
 import { AUTH_COPY, detectLang, type AppLang } from "@/lib/lang";
 import { InstallAppButton } from "@/components/InstallAppButton";
+import { FunnelEvent, trackFunnel } from "@/lib/analytics";
 
 type Mode = "login" | "register";
 
@@ -173,6 +174,10 @@ export default function AuthPage() {
         return;
       }
 
+      trackFunnel(FunnelEvent.RegistrationCompleted, {
+        has_session: Boolean(data.session),
+      });
+
       if (!data.session) {
         setPendingEmail(email.trim());
         setAwaitingEmailConfirm(true);
@@ -242,10 +247,10 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]">
-      <header className="w-full px-4 py-3.5 sm:px-6 flex items-center justify-between gap-3 border-b border-[#E5E2DC] bg-[#FAF8F4] sticky top-0 z-50">
+      <header className="w-full px-3.5 py-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-3 border-b border-[#E5E2DC] bg-[#FAF8F4] sticky top-0 z-50 min-w-0">
         <Link
           href="/"
-          className="flex items-center gap-2 no-underline text-[#1A1A1A]"
+          className="flex items-center gap-2 no-underline text-[#1A1A1A] min-w-0 shrink"
           aria-label="BeTacora"
         >
           <img
@@ -253,13 +258,13 @@ export default function AuthPage() {
             alt=""
             width={28}
             height={28}
-            className="h-7 w-7 rounded-[6px] object-contain"
+            className="h-7 w-7 rounded-[6px] object-contain shrink-0"
           />
-          <span className="text-base font-medium tracking-tight">
+          <span className="text-base font-medium tracking-tight truncate">
             Be<span className="text-[#E8634A]">Tacora</span>
           </span>
         </Link>
-        <InstallAppButton lang={lang} variant="header" />
+        <InstallAppButton lang={lang} variant="header" className="shrink-0" />
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-10">
@@ -321,6 +326,7 @@ export default function AuthPage() {
                   onClick={() => {
                     setMode("register");
                     resetMessages();
+                    trackFunnel(FunnelEvent.RegistrationStarted);
                   }}
                   className={`flex-1 py-2.5 text-sm font-medium border-0 cursor-pointer transition-colors ${
                     mode === "register"

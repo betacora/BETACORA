@@ -22,7 +22,14 @@ CREATE TABLE IF NOT EXISTS itineraries (
   questionnaire_answers JSONB,
   itinerary_html TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  is_active BOOLEAN DEFAULT true
+  is_active BOOLEAN DEFAULT true,
+  -- Post-trip Travel DNA (captured after the trip; unused for personalization yet)
+  post_trip_liked TEXT,
+  post_trip_avoid TEXT,
+  post_trip_would_return TEXT CHECK (
+    post_trip_would_return IS NULL
+    OR post_trip_would_return IN ('yes', 'no', 'maybe')
+  )
 );
 
 -- Row Level Security
@@ -52,3 +59,29 @@ CREATE POLICY "Users insert own itineraries"
 CREATE POLICY "Users update own itineraries"
   ON itineraries FOR UPDATE
   USING (auth.uid() = user_id);
+
+-- Public share snapshots for "Compartir viaje" links (read-only views)
+CREATE TABLE IF NOT EXISTS shared_trips (
+  slug TEXT PRIMARY KEY,
+  destination TEXT,
+  duration_label TEXT,
+  profile_type TEXT,
+  highlights JSONB DEFAULT '[]'::jsonb,
+  places JSONB DEFAULT '[]'::jsonb,
+  itinerary_html TEXT,
+  lang TEXT DEFAULT 'es',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE shared_trips ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can create a share snapshot (slug is unguessable)
+DROP POLICY IF EXISTS "Anyone can insert shared trips" ON shared_trips;
+CREATE POLICY "Anyone can insert shared trips"
+  ON shared_trips FOR INSERT
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone can read shared trips" ON shared_trips;
+CREATE POLICY "Anyone can read shared trips"
+  ON shared_trips FOR SELECT
+  USING (true);

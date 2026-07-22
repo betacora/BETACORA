@@ -1,6 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
+import { FunnelEvent, trackFunnel } from "@/lib/analytics";
+
 export default function QuestionnairePage() {
+  useEffect(() => {
+    trackFunnel(FunnelEvent.QuestionnaireStarted, { source: "page" });
+  }, []);
+
   return (
     <main
       className="bg-[#FAF8F4]"

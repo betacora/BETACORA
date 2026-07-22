@@ -103,17 +103,89 @@
     const user = await getUser();
     if (!user) return { ok: false, error: "not_logged_in" };
 
-    const { error } = await client.from("itineraries").insert({
-      user_id: user.id,
-      destination: payload.destination ?? null,
-      profile_type: payload.profile_type ?? null,
-      profile_essence: payload.profile_essence ?? null,
-      questionnaire_answers: payload.questionnaire_answers,
-      itinerary_html: payload.itinerary_html,
-    });
+    const { data, error } = await client
+      .from("itineraries")
+      .insert({
+        user_id: user.id,
+        destination: payload.destination ?? null,
+        profile_type: payload.profile_type ?? null,
+        profile_essence: payload.profile_essence ?? null,
+        questionnaire_answers: payload.questionnaire_answers,
+        itinerary_html: payload.itinerary_html,
+      })
+      .select("id")
+      .single();
 
     if (error) return { ok: false, error: error.message };
-    return { ok: true };
+    return { ok: true, id: data?.id ?? null };
+  }
+
+  async function savePostTripFeedback(itineraryId, feedback) {
+    const client = await init();
+    if (!client) return { ok: false, error: "no_client" };
+
+    const user = await getUser();
+    if (!user) return { ok: false, error: "not_logged_in" };
+    if (!itineraryId) return { ok: false, error: "no_itinerary" };
+
+    const would = feedback?.would_return;
+    if (!["yes", "no", "maybe"].includes(would)) {
+      return { ok: false, error: "invalid_would_return" };
+    }
+
+    const liked = (feedback.liked || "").trim() || null;
+    const avoid = (feedback.avoid || "").trim() || null;
+    const payload = {
+      post_trip_liked: liked,
+      post_trip_avoid: avoid,
+      post_trip_would_return: would,
+    };
+
+    const { error } = await client
+      .from("itineraries")
+      .update(payload)
+      .eq("id", itineraryId)
+      .eq("user_id", user.id);
+
+    if (!error) return { ok: true };
+
+    // Columns not migrated yet: nest under questionnaire_answers until DDL is applied
+    const missingCol =
+      error.code === "PGRST204" ||
+      error.code === "42703" ||
+      /post_trip_/i.test(error.message || "");
+    if (!missingCol) return { ok: false, error: error.message };
+
+    const { data: row, error: readErr } = await client
+      .from("itineraries")
+      .select("questionnaire_answers")
+      .eq("id", itineraryId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (readErr) return { ok: false, error: readErr.message };
+
+    const prev =
+      row?.questionnaire_answers && typeof row.questionnaire_answers === "object"
+        ? row.questionnaire_answers
+        : {};
+    const { error: fbErr } = await client
+      .from("itineraries")
+      .update({
+        questionnaire_answers: {
+          ...prev,
+          post_trip: {
+            liked,
+            avoid,
+            would_return: would,
+            saved_at: new Date().toISOString(),
+          },
+        },
+      })
+      .eq("id", itineraryId)
+      .eq("user_id", user.id);
+
+    if (fbErr) return { ok: false, error: fbErr.message };
+    return { ok: true, via: "questionnaire_answers" };
   }
 
   window.btAuth = {
@@ -122,5 +194,6 @@
     checkLimit,
     incrementCount,
     saveItinerary,
+    savePostTripFeedback,
   };
 })();

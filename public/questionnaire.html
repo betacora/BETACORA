@@ -56,12 +56,14 @@ body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-se
 .multi-badge { display: inline-block; font-size: 0.68rem; font-weight: 400; color: var(--teal); background: transparent; border: 1px solid var(--border); padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.85rem; }
 .max-badge { display: inline-block; font-size: 0.68rem; font-weight: 400; color: var(--teal); background: transparent; border: 1px solid var(--border); padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.85rem; margin-left: 0.4rem; }
 
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
-.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.55rem; }
-.grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.55rem; }
-.grid-dur { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; }
-@media(min-width:640px) { .grid-dur { grid-template-columns: repeat(4, 1fr); } }
-@media(max-width:520px) { .grid3,.grid4 { grid-template-columns: 1fr 1fr; } }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.55rem; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55rem; }
+.grid-dur { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+@media(min-width:640px) { .grid-dur { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media(max-width:520px) {
+  .grid3,.grid4,.grid-dur { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .mision-sport-group { margin-top: 1.1rem; }
 .mision-sport-group:first-child { margin-top: 0.85rem; }
 .sport-group-label {
@@ -123,13 +125,18 @@ body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-se
 
 /* Option cards — grid */
 .opt {
-  display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 0.65rem;
-  padding: 0.9rem 1rem; background: var(--white); border: 1px solid var(--border); border-radius: 7px;
+  display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 0.55rem;
+  padding: 0.85rem 0.85rem; background: var(--white); border: 1px solid var(--border); border-radius: 7px;
   cursor: pointer; text-align: left; font-size: 0.8125rem; color: var(--ink); transition: border-color 0.18s, background 0.18s;
   position: relative; line-height: 1.35; font-family: 'DM Sans', sans-serif; font-weight: 400; box-shadow: none;
+  min-width: 0; max-width: 100%; box-sizing: border-box; overflow: hidden;
 }
-.opt .em, .opt .q-icon { margin-bottom: 0; }
-.opt small { font-size: 0.72rem; color: var(--muted); display: block; font-weight: 400; }
+.opt .em, .opt .q-icon { margin-bottom: 0; flex-shrink: 0; }
+.opt-copy {
+  display: block; min-width: 0; flex: 1 1 auto;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+.opt small { font-size: 0.72rem; color: var(--muted); display: block; font-weight: 400; line-height: 1.25; margin-top: 0.1rem; }
 .opt:hover { border-color: #d5d0c8; background: var(--white); }
 .opt.sel { border: 1.5px solid var(--coral); background: var(--coral-tint); color: var(--ink); font-weight: 400; }
 .opt.sel::after { display: none; }
@@ -204,7 +211,13 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .profile-top { background: var(--ink); padding: 2rem; color: white; position: relative; overflow: hidden; }
 .profile-top::before, .profile-top::after { display: none; }
 .profile-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; position: relative; z-index: 1; font-weight: 400; }
-.profile-name { font-size: 1.75rem; font-weight: 500; line-height: 1.2; margin-bottom: 1rem; position: relative; z-index: 1; }
+.profile-name { font-size: 1.75rem; font-weight: 500; line-height: 1.2; margin-bottom: 0.65rem; position: relative; z-index: 1; }
+.profile-essence-preview {
+  font-size: 0.88rem; line-height: 1.55; color: rgba(255,255,255,0.72);
+  margin-bottom: 1rem; font-weight: 400; position: relative; z-index: 1;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.profile-essence-preview:empty { display: none; margin: 0; }
 .profile-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; position: relative; z-index: 1; }
 .ptag { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); padding: 0.2rem 0.65rem; border-radius: 4px; font-size: 0.7rem; font-weight: 400; }
 .profile-quote { font-size: 0.9rem; font-style: italic; color: rgba(255,255,255,0.75); line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; position: relative; z-index: 1; font-weight: 400; }
@@ -215,7 +228,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 .share-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--coral); color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
 .share-btn:hover { opacity: 0.9; transform: none; }
 
-/* SHAREABLE CARD */
+/* SHAREABLE CARD — Instagram portrait 1080×1350 */
 .shareable-wrap { display: none; margin-top: 2rem; text-align: center; }
 .shareable-wrap.show { display: block; animation: shareableFadeIn 0.65s ease forwards; }
 @keyframes shareableFadeIn {
@@ -224,55 +237,188 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 }
 .shareable-card-outer { display: flex; justify-content: center; margin-bottom: 1.25rem; }
 .shareable-card {
-  width: 400px; height: 500px; max-width: 100%;
-  background: #1a1a1a; border-radius: 8px; overflow: hidden;
-  position: relative; display: flex; flex-direction: column;
-  box-shadow: none; border: 1px solid var(--border);
+  width: min(360px, 92vw);
+  aspect-ratio: 1080 / 1350;
+  height: auto;
+  background: var(--bg);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: none;
+  border: 1px solid var(--border);
   font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
 }
-.sc-compass { display: none; }
-.sc-logo { position: relative; z-index: 1; padding: 1.25rem 1.35rem 0; text-align: left; font-size: 0.95rem; font-weight: 500; }
-.sc-be { color: #fff; }
-.sc-tacora { color: var(--coral); }
-.sc-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.5rem 1.25rem 0.25rem; position: relative; z-index: 1; overflow: hidden; }
-.sc-type { font-size: 1.4rem; font-weight: 500; color: #fff; text-align: center; line-height: 1.15; margin-bottom: 0.45rem; max-width: 340px; letter-spacing: -0.01em; }
+.shareable-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(45,123,123,0.07), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(232,99,74,0.06), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.sc-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12% 10% 6%;
+  position: relative;
+  z-index: 1;
+  gap: 0;
+  overflow: hidden;
+}
+.sc-eyebrow {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1rem;
+}
+.sc-type {
+  font-size: clamp(1.45rem, 6.2vw, 1.85rem);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.85rem;
+  max-width: 18em;
+}
+.sc-rule {
+  width: 36px; height: 2px;
+  background: var(--coral);
+  border: none; margin: 0 auto 0.9rem;
+  border-radius: 1px;
+}
 .sc-essence {
-  font-size: 0.62rem; color: rgba(255,255,255,0.82); text-align: center; line-height: 1.45;
-  max-width: 340px; margin-bottom: 0.45rem;
-  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 22em;
+  margin-bottom: 1rem;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 .sc-quote {
-  font-size: 0.72rem; font-style: italic; color: rgba(232,99,74,0.85); text-align: center;
-  line-height: 1.4; max-width: 320px; margin-bottom: 0.4rem;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: 0.88rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--coral);
+  line-height: 1.4;
+  max-width: 20em;
+  margin-bottom: 1.15rem;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sc-animal-block {
+  width: 100%;
+  max-width: 22em;
+  padding-top: 0.35rem;
+}
+.sc-animal-label {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.35rem;
 }
 .sc-animal {
-  font-size: 0.58rem; color: rgba(255,255,255,0.7); text-align: center; line-height: 1.35;
-  max-width: 340px; margin-bottom: 0.5rem;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: 0.78rem;
+  color: var(--ink);
+  line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
-.sc-stats-bars { width: 100%; max-width: 300px; margin-top: 0.15rem; }
-.sc-stat-row { margin-bottom: 0.32rem; }
-.sc-stat-label { display: flex; justify-content: space-between; font-size: 0.52rem; font-weight: 500; color: rgba(255,255,255,0.75); margin-bottom: 0.12rem; letter-spacing: 0.02em; }
-.sc-stat-bar { height: 3px; background: rgba(255,255,255,0.12); border-radius: 1px; overflow: hidden; }
-.sc-stat-fill { height: 100%; background: var(--coral); border-radius: 1px; transition: width 0.4s ease; }
 .sc-footer {
-  background: var(--coral); color: #fff; text-align: center; padding: 0.75rem 1rem;
-  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.03em; position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.85rem 1rem 1.15rem;
+  border-top: 1px solid var(--border);
+  background: transparent;
+}
+.sc-logo {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.sc-logo-mark {
+  width: 16px; height: 16px; border-radius: 3px; object-fit: contain;
+}
+.sc-be { color: var(--ink); }
+.sc-tacora { color: var(--coral); }
+.sc-cta {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.04em;
 }
 .shareable-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
 .sc-action-btn {
   display: inline-flex; align-items: center; gap: 0.4rem;
-  background: var(--ink); color: white; border: none;
+  background: var(--coral); color: white; border: none;
   padding: 0.75rem 1.35rem; border-radius: 7px;
   font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
   cursor: pointer; transition: opacity 0.2s; box-shadow: none;
 }
 .sc-action-btn:hover { opacity: 0.88; transform: none; }
-.sc-action-btn.secondary { background: var(--coral); }
-.sc-action-btn.secondary:hover { opacity: 0.88; }
+.sc-action-btn.secondary {
+  background: transparent; color: var(--ink); border: 1px solid var(--border);
+}
+.sc-action-btn.secondary:hover { border-color: #d5d0c8; opacity: 1; }
+.sc-action-btn:disabled { opacity: 0.55; cursor: wait; }
+/* Trip share card (post-itinerary) */
+.trip-share-wrap { margin-top: 1.5rem; }
+.trip-share-card .tsc-body {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 10% 9% 5%; position: relative; z-index: 1; gap: 0; overflow: hidden;
+  box-sizing: border-box; min-width: 0; width: 100%;
+}
+.tsc-eyebrow {
+  font-size: 0.58rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 0.65rem;
+}
+.tsc-dest {
+  font-size: clamp(1.25rem, 5.5vw, 1.7rem); font-weight: 500; color: var(--ink);
+  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.45rem;
+  max-width: 100%; overflow-wrap: anywhere;
+}
+.tsc-meta {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.35rem 0.45rem;
+  font-size: 0.72rem; color: var(--muted); margin-bottom: 0.85rem; max-width: 100%;
+}
+.tsc-meta-archetype { color: var(--ink); font-weight: 500; max-width: 100%; overflow-wrap: anywhere; }
+.tsc-map {
+  width: 100%; max-width: 100%; aspect-ratio: 2.4 / 1; margin: 0.25rem 0 0.85rem;
+  border-radius: 6px; overflow: hidden; background: #efece6; border: 1px solid var(--border);
+}
+.tsc-map svg { display: block; width: 100%; height: 100%; }
+.tsc-highlights-label {
+  font-size: 0.58rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 0.35rem;
+}
+.tsc-highlights {
+  list-style: none; padding: 0; margin: 0 0 0.35rem; width: 100%; max-width: 22em;
+}
+.tsc-highlights li {
+  font-size: 0.78rem; color: var(--ink); line-height: 1.4; padding: 0.15rem 0;
+  overflow-wrap: anywhere;
+}
+.shareable-actions .tsc-copy-link { display: none; }
+.shareable-actions .tsc-copy-link.show { display: inline-flex; }
 @media(max-width:440px) {
-  .shareable-card { width: 100%; height: auto; min-height: 480px; aspect-ratio: 4/5; }
+  .shareable-card { width: 100%; }
 }
 
 .submit-wrap { margin-top: 3rem; text-align: center; }
@@ -308,16 +454,36 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 }
 .auth-banner-btn:hover { opacity: 0.92; }
 
-.itinerary-section { display: none; margin-top: 2rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); box-shadow: none; overflow: hidden; }
+.itinerary-section { display: none; margin-top: 2rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); box-shadow: none; overflow: hidden; max-width: 100%; }
 .itinerary-section.show { display: block; }
+.itinerary-section.is-loading { display: block; }
+.itinerary-loading {
+  padding: 2.75rem 1.5rem 3rem; text-align: center;
+}
+.itinerary-loading-mark {
+  width: 44px; height: 44px; margin: 0 auto 1.25rem; border-radius: 8px;
+  object-fit: contain; animation: btItinPulse 1.35s ease-in-out infinite;
+}
+@keyframes btItinPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.itinerary-loading-title {
+  font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.45rem; letter-spacing: -0.01em;
+}
+.itinerary-loading-sub {
+  font-size: 0.9rem; color: var(--muted); font-weight: 400; line-height: 1.55;
+  max-width: 26rem; margin: 0 auto;
+}
 .bitacora-header { background: var(--ink); padding: 1.75rem 1.5rem; color: white; text-align: center; }
 .bitacora-header-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.4rem; font-weight: 400; }
 .bitacora-header-title { font-size: clamp(1.25rem, 3.5vw, 1.6rem); font-weight: 500; }
-.bt-itinerary-map-wrap { padding: 1rem 1rem 0; }
+.bt-itinerary-map-wrap { padding: 1rem 1rem 0; max-width: 100%; box-sizing: border-box; }
 .bt-itinerary-map {
-  width: 100%; height: 320px; border-radius: 8px; border: 1px solid var(--border);
+  width: 100%; max-width: 100%; height: 320px; border-radius: 8px; border: 1px solid var(--border);
   overflow: hidden; background: #e8e6e1; z-index: 0;
 }
+.bt-itinerary-map .leaflet-container { width: 100% !important; max-width: 100%; }
 @media (min-width: 768px) {
   .bt-itinerary-map { height: 420px; }
   .bt-itinerary-map-wrap { padding: 1.25rem 1.25rem 0; }
@@ -408,16 +574,120 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
   text-align: center; margin: 1.5rem; font-weight: 400;
 }
 .itinerary-error strong { display: block; color: var(--coral); margin-bottom: 0.4rem; font-size: 1rem; font-weight: 500; }
+
+/* Post-trip feedback — Travel DNA capture */
+.post-trip {
+  margin: 0 auto 1.75rem; max-width: 720px; padding: 0 1.25rem;
+}
+.post-trip-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1.35rem 1.5rem; box-shadow: none;
+}
+.post-trip-prompt {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.85rem;
+}
+.post-trip-prompt-text {
+  font-size: 0.95rem; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.4;
+}
+.post-trip-open {
+  appearance: none; border: 1px solid var(--coral); background: transparent; color: var(--coral);
+  font-family: 'DM Sans', sans-serif; font-size: 0.8125rem; font-weight: 500;
+  padding: 0.5rem 0.95rem; border-radius: 7px; cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.post-trip-open:hover { background: var(--coral-tint); }
+.post-trip-form { display: none; margin-top: 1.15rem; }
+.post-trip-form.show { display: block; }
+.post-trip-field { margin-bottom: 1rem; }
+.post-trip-label {
+  display: block; font-size: 0.8125rem; font-weight: 500; color: var(--ink);
+  margin-bottom: 0.4rem; line-height: 1.35;
+}
+.post-trip-input {
+  width: 100%; padding: 0.75rem 0.9rem; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--ink);
+  outline: none; resize: vertical; min-height: 2.75rem; line-height: 1.5; box-sizing: border-box;
+}
+.post-trip-input:focus { border-color: var(--teal); background: var(--white); }
+.post-trip-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.post-trip-chip {
+  appearance: none; border: 1px solid var(--border); background: var(--white); color: var(--ink);
+  font-family: 'DM Sans', sans-serif; font-size: 0.8125rem; font-weight: 400;
+  padding: 0.45rem 0.9rem; border-radius: 4px; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+}
+.post-trip-chip:hover { border-color: #d5d0c8; }
+.post-trip-chip.sel {
+  border-color: var(--coral); background: var(--coral-tint); color: var(--ink); font-weight: 500;
+}
+.post-trip-actions { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.15rem; align-items: center; }
+.post-trip-submit {
+  appearance: none; border: none; background: var(--coral); color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500;
+  padding: 0.65rem 1.25rem; border-radius: 7px; cursor: pointer;
+}
+.post-trip-submit:hover { opacity: 0.92; }
+.post-trip-submit:disabled { opacity: 0.55; cursor: wait; }
+.post-trip-msg {
+  font-size: 0.8125rem; color: var(--muted); margin: 0.75rem 0 0; line-height: 1.5; display: none;
+}
+.post-trip-msg.show { display: block; }
+.post-trip-msg.ok { color: var(--teal); }
+.post-trip-msg.err { color: var(--coral); }
+.post-trip-msg a { color: var(--coral); font-weight: 500; }
 @media(max-width:520px) {
+  .post-trip { padding: 0 0.85rem 1.25rem; }
+  .post-trip-card { padding: 1.15rem 1rem; }
+  .post-trip-prompt { flex-direction: column; align-items: stretch; }
+  .post-trip-open { width: 100%; text-align: center; }
   .bitacora-article { padding: 1rem 0.85rem 1.5rem; }
-  .bitacora-article .section-card { padding: 20px 16px; }
+  .bitacora-article .section-card { padding: 1rem 0.9rem; }
+  .bitacora-article .info-row,
+  .bitacora-article .price-row {
+    flex-wrap: wrap; gap: 0.2rem 0.75rem;
+  }
+  .bitacora-article .info-row .value,
+  .bitacora-article .price-row .value {
+    text-align: left; max-width: 100%; word-break: break-word;
+  }
   .bitacora-header { padding: 1.35rem 1rem; }
+  .bt-itinerary-map-wrap { padding: 0.75rem 0.75rem 0; }
+  .bt-itinerary-map { height: 260px; }
+  .bt-itinerary-map .leaflet-container { width: 100% !important; max-width: 100%; }
+  .itinerary-section { max-width: 100%; overflow-x: clip; }
   .header { padding: 0.9rem 1rem; gap: 0.75rem; }
   .header-tag { display: none; }
   .logo { font-size: 1.15rem; gap: 0.45rem; }
   .logo-mark { width: 24px; height: 24px; }
   .progress-wrap { padding: 0.65rem 1rem; }
   .header-right { gap: 0.5rem; }
+  .container { padding: 1.5rem 1rem 4rem; }
+  .qlabel { font-size: 1.35rem; }
+  .calendar-wrap { grid-template-columns: 1fr; }
+  .budget-row { flex-wrap: wrap; }
+  .currency-select { width: 100%; max-width: 100%; }
+  .amount-box { width: 100%; min-width: 0; }
+  .profile-top { padding: 1.35rem 1.15rem; }
+  .profile-name { font-size: 1.4rem; }
+  .profile-bottom {
+    padding: 1.15rem; flex-direction: column; align-items: stretch; gap: 1rem;
+  }
+  .profile-bottom > div { width: 100%; justify-content: space-between; gap: 0.75rem !important; }
+  .share-btn { width: 100%; justify-content: center; }
+  .shareable-actions { flex-direction: column; padding: 0 0.25rem; }
+  .sc-action-btn { width: 100%; justify-content: center; box-sizing: border-box; }
+  .opt { padding: 0.75rem 0.7rem; gap: 0.4rem; font-size: 0.78rem; }
+  .opt small { display: block; line-height: 1.25; }
+  .grid2,.grid3,.grid4,.grid-dur { gap: 0.45rem; }
+  .follow-up-panel { padding: 0.75rem 0.7rem 0.85rem; }
+  .sport-trip-opts { gap: 0.3rem; }
+  .sport-trip-opt { flex: 1 1 auto; min-width: 0; text-align: center; padding: 0.4rem 0.55rem; }
+  .post-trip-submit { width: 100%; }
+  .post-trip-chips { gap: 0.35rem; }
+  .post-trip-chip { flex: 1 1 auto; text-align: center; min-width: 0; }
+  .bitacora-article p, .bitacora-article li { overflow-wrap: anywhere; }
+  .lang-switch { gap: 0; }
+  .lang-btn { padding: 0.35rem 0.45rem; font-size: 0.7rem; }
+  html, body { overflow-x: hidden; max-width: 100%; }
 }
 </style>
 </head>
@@ -935,6 +1205,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
     <div class="profile-top">
       <div class="profile-eyebrow">✦ Tu Bitácora Viajera</div>
       <div class="profile-name" id="pName">El Explorador Auténtico</div>
+      <div class="profile-essence-preview" id="pEssence"></div>
       <div class="profile-tags" id="pTags"></div>
       <div class="profile-quote" id="pQuote"></div>
     </div>
@@ -952,32 +1223,72 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
   <div class="shareable-wrap" id="shareableCard">
     <div class="shareable-card-outer">
       <div class="shareable-card" id="shareableCardInner">
-        <div class="sc-compass" aria-hidden="true">🧭</div>
-        <div class="sc-logo"><span class="sc-be">Be</span><span class="sc-tacora">Tacora</span></div>
         <div class="sc-body">
+          <div class="sc-eyebrow" id="scEyebrow">Tu perfil viajero</div>
           <div class="sc-type" id="scType">El Explorador de Fronteras</div>
+          <hr class="sc-rule" aria-hidden="true">
           <div class="sc-essence" id="scEssence"></div>
           <div class="sc-quote" id="scQuote"></div>
-          <div class="sc-animal" id="scAnimal"></div>
-          <div class="sc-stats-bars" id="scStatsBars"></div>
+          <div class="sc-animal-block">
+            <div class="sc-animal-label" id="scAnimalLabel">Si fueras un animal</div>
+            <div class="sc-animal" id="scAnimal"></div>
+          </div>
         </div>
-        <div class="sc-footer" id="scFooter">betacora.app · Tu bitácora inteligente</div>
+        <div class="sc-footer">
+          <div class="sc-logo">
+            <img class="sc-logo-mark" src="/icon-512.png?v=3" alt="" width="16" height="16" />
+            <span><span class="sc-be">Be</span><span class="sc-tacora">Tacora</span></span>
+          </div>
+          <div class="sc-cta" id="scCta">beta-cora.com</div>
+        </div>
       </div>
     </div>
     <div class="shareable-actions">
-      <button type="button" class="sc-action-btn" id="scDownload" onclick="downloadShareableCard()">Descargar mi tarjeta</button>
-      <button type="button" class="sc-action-btn secondary" id="scShare" onclick="shareShareableCard()">Compartir</button>
+      <button type="button" class="sc-action-btn" id="scShare" onclick="shareShareableCard()">Compartir</button>
+      <button type="button" class="sc-action-btn secondary" id="scDownload" onclick="downloadShareableCard()">Descargar</button>
     </div>
   </div>
 
   <div class="itinerary-section" id="itinerarySection"></div>
+
+  <!-- TRIP SHARE CARD -->
+  <div class="shareable-wrap trip-share-wrap" id="tripShareCard">
+    <div class="shareable-card-outer">
+      <div class="shareable-card trip-share-card" id="tripShareCardInner">
+        <div class="tsc-body">
+          <div class="tsc-eyebrow" id="tscEyebrow">Mi viaje BeTacora</div>
+          <div class="tsc-dest" id="tscDest">—</div>
+          <div class="tsc-meta">
+            <span id="tscDuration">—</span>
+            <span aria-hidden="true">·</span>
+            <span class="tsc-meta-archetype" id="tscArchetype">—</span>
+          </div>
+          <div class="tsc-map" id="tscMap" role="img" aria-label="Mapa"></div>
+          <div class="tsc-highlights-label" id="tscHighlightsLabel">Destacados</div>
+          <ul class="tsc-highlights" id="tscHighlights"></ul>
+        </div>
+        <div class="sc-footer">
+          <div class="sc-logo">
+            <img class="sc-logo-mark" src="/icon-512.png?v=3" alt="" width="16" height="16" />
+            <span><span class="sc-be">Be</span><span class="sc-tacora">Tacora</span></span>
+          </div>
+          <div class="sc-cta" id="tscCta">beta-cora.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="shareable-actions">
+      <button type="button" class="sc-action-btn" id="tscShare" onclick="shareTripCard()">Compartir viaje</button>
+      <button type="button" class="sc-action-btn secondary" id="tscDownload" onclick="downloadTripCard()">Descargar imagen</button>
+      <button type="button" class="sc-action-btn secondary tsc-copy-link" id="tscCopyLink" onclick="copyTripShareLink()">Copiar enlace</button>
+    </div>
+  </div>
 
   <div class="save-banner" id="saveBanner"></div>
 
   <div class="submit-wrap">
     <div class="limit-banner" id="limitBanner"></div>
     <button class="submit-btn" id="submitBtn" onclick="handleGenerate()">Generar mi Bitácora Inteligente</button>
-    <div class="submit-note">BeTacora diseñará tu viaje personalizado · betacora.app</div>
+    <div class="submit-note">BeTacora diseñará tu viaje personalizado · beta-cora.com</div>
   </div>
 
 </div>
@@ -987,6 +1298,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 <script src="geo-data.js"></script>
 <script src="bt-auth.js"></script>
 <script src="questionnaire-i18n.js"></script>
+<script src="archetypes.js"></script>
 <script>
 window.addEventListener('error', (e) => {
   console.error('BeTacora caught error:', e.message, e.filename, e.lineno);
@@ -997,6 +1309,23 @@ window.addEventListener('unhandledrejection', (e) => {
   console.error('BeTacora unhandled rejection:', e.reason);
   e.preventDefault();
 });
+
+/** Relay funnel events to the /questionnaire parent (Vercel Analytics) or window.va. */
+function btTrack(event, data) {
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage(
+        { type: 'bt:analytics', event: event, data: data || undefined },
+        window.location.origin
+      );
+    }
+    if (typeof window.va === 'function') {
+      window.va('event', { name: event, data: data || {} });
+    }
+  } catch (err) {
+    console.warn('[BeTacora] analytics track skipped:', err);
+  }
+}
 
 // ─── SIMPLE LANGUAGE SYSTEM ───────────────────────────────────────
 const LANG = {
@@ -1020,6 +1349,9 @@ const LANG = {
     energyLabels = I18N[lang].energyLabels;
     if (document.getElementById('profileCard')?.classList.contains('show')) generateProfile();
     if (document.getElementById('shareableCard')?.classList.contains('show') && aiProfile) renderShareableCard(aiProfile);
+    if (document.getElementById('tripShareCard')?.classList.contains('show') && lastTripShare) {
+      renderTripShareCard(lastTripShare);
+    }
     updateProgress();
   },
 
@@ -1138,17 +1470,19 @@ const LANG = {
     }
 
     document.querySelectorAll('button.opt[data-q][data-v]').forEach(btn => {
+      if (btn.dataset.q === 'budget_r' || btn.dataset.q === 'budget_monthly_r') return;
       const entry = locale.opt[btn.dataset.q]?.[btn.dataset.v];
       if (!entry) return;
       const icon = btn.querySelector('.q-icon') || btn.querySelector('.em');
       const iconHtml = icon ? icon.outerHTML : '';
-      btn.innerHTML = iconHtml + entry.label + (entry.sub ? `<small>${entry.sub}</small>` : '');
+      btn.innerHTML = `${iconHtml}<span class="opt-copy">${entry.label}${entry.sub ? `<small>${entry.sub}</small>` : ''}</span>`;
     });
     document.querySelectorAll('.opt-row[data-q][data-v]').forEach(row => {
       const txt = row.querySelector('.txt');
       const label = locale.row[row.dataset.q]?.[row.dataset.v];
       if (txt && label) txt.textContent = label;
     });
+    if (typeof updateBudgetRangeLabels === 'function') updateBudgetRangeLabels();
 
     if (el('originSearch')) el('originSearch').placeholder = locale.ui.search.originPlaceholder;
     if (el('destSearch')) el('destSearch').placeholder = locale.ui.search.destPlaceholder;
@@ -1175,7 +1509,14 @@ const LANG = {
     if (submitNote) submitNote.textContent = locale.ui.submit.note;
     if (el('scDownload')) el('scDownload').textContent = locale.ui.shareableCard.download;
     if (el('scShare')) el('scShare').textContent = locale.ui.shareableCard.share;
-    if (el('scFooter')) el('scFooter').textContent = 'betacora.app · ' + locale.ui.shareableCard.tagline;
+    if (el('scEyebrow')) el('scEyebrow').textContent = locale.ui.shareableCard.eyebrow;
+    if (el('scAnimalLabel')) el('scAnimalLabel').textContent = locale.ui.shareableCard.animalLabel;
+    if (el('scCta')) el('scCta').textContent = locale.ui.shareableCard.cta;
+    applyTripShareLabels();
+    if (document.getElementById('shareableCard')?.classList.contains('show') && aiProfile) renderShareableCard(aiProfile);
+    if (document.getElementById('tripShareCard')?.classList.contains('show') && lastTripShare) {
+      renderTripShareCard(lastTripShare);
+    }
 
     refreshDurationPill();
     if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
@@ -1303,10 +1644,208 @@ const selectedDest = [];
 
 const currencySymbols = { USD:'$', EUR:'€', GBP:'£', MXN:'$', ARS:'$', COP:'$', BRL:'R$', CLP:'$', PEN:'S/', CHF:'Fr', JPY:'¥', CAD:'$', AUD:'$', AED:'د.إ', THB:'฿' };
 
-function updateCurrency() {
+/** Approximate FX vs EUR for display ranges (rounded, not live rates). */
+const CURRENCY_FROM_EUR = {
+  EUR: 1, USD: 1.1, GBP: 0.86, MXN: 20, ARS: 1200, COP: 4500, BRL: 6.2,
+  CLP: 1050, PEN: 4.1, CHF: 0.95, JPY: 165, CAD: 1.5, AUD: 1.7, AED: 4.0, THB: 40,
+};
+
+/** Total trip budget tiers in EUR (per person, flights + lodging). */
+const BUDGET_TOTAL_EUR = {
+  low:  { min: 0, max: 800 },
+  mid:  { min: 800, max: 2000 },
+  high: { min: 2000, max: 5000 },
+  ilim: { min: 5000, max: null },
+};
+
+/** Monthly nomad budget tiers in EUR. */
+const BUDGET_MONTHLY_EUR = {
+  under1000:   { min: 0, max: 1000 },
+  '1000-2000': { min: 1000, max: 2000 },
+  '2000-3500': { min: 2000, max: 3500 },
+  over3500:    { min: 3500, max: null },
+  ilim:        { min: null, max: null },
+};
+
+const COUNTRY_TO_CURRENCY = {
+  spain: 'EUR', españa: 'EUR', france: 'EUR', francia: 'EUR', germany: 'EUR', alemania: 'EUR',
+  italy: 'EUR', italia: 'EUR', portugal: 'EUR', netherlands: 'EUR', 'países bajos': 'EUR',
+  belgium: 'EUR', bélgica: 'EUR', austria: 'EUR', ireland: 'EUR', irlanda: 'EUR',
+  'united states': 'USD', 'estados unidos': 'USD', usa: 'USD', eeuu: 'USD',
+  mexico: 'MXN', méxico: 'MXN',
+  'united kingdom': 'GBP', 'reino unido': 'GBP', england: 'GBP', 'gran bretaña': 'GBP',
+  argentina: 'ARS', colombia: 'COP', brazil: 'BRL', brasil: 'BRL', chile: 'CLP', peru: 'PEN', perú: 'PEN',
+  switzerland: 'CHF', suiza: 'CHF', japan: 'JPY', japón: 'JPY', canada: 'CAD', canadá: 'CAD',
+  australia: 'AUD', 'united arab emirates': 'AED', 'emiratos árabes unidos': 'AED', thailand: 'THB', tailandia: 'THB',
+};
+
+let currencyTouched = false;
+
+function inferCurrencyFromLocale() {
+  const nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+  if (nav.includes('-mx') || nav.endsWith('_mx')) return 'MXN';
+  if (nav.startsWith('en-gb') || nav.includes('-gb')) return 'GBP';
+  if (nav.startsWith('en-us') || nav.includes('-us')) return 'USD';
+  if (nav.startsWith('en-ca') || nav.includes('-ca')) return 'CAD';
+  if (nav.startsWith('en-au') || nav.includes('-au')) return 'AUD';
+  if (nav.startsWith('ja')) return 'JPY';
+  if (nav.startsWith('pt-br') || nav.includes('-br')) return 'BRL';
+  if (nav.startsWith('es-ar') || nav.includes('-ar')) return 'ARS';
+  if (nav.startsWith('es-co') || nav.includes('-co')) return 'COP';
+  if (nav.startsWith('es-cl') || nav.includes('-cl')) return 'CLP';
+  if (nav.startsWith('es-pe') || nav.includes('-pe')) return 'PEN';
+  if (nav.startsWith('es') || nav.startsWith('fr') || nav.startsWith('de') || nav.startsWith('it') || nav.startsWith('pt')) return 'EUR';
+  return 'EUR';
+}
+
+function currencyFromCountryName(country) {
+  if (!country) return null;
+  const key = String(country).trim().toLowerCase();
+  return COUNTRY_TO_CURRENCY[key] || null;
+}
+
+function roundBudgetAmount(n, currency) {
+  const abs = Math.abs(n);
+  if (['JPY', 'CLP', 'COP', 'ARS'].includes(currency)) {
+    if (abs >= 100000) return Math.round(n / 10000) * 10000;
+    if (abs >= 10000) return Math.round(n / 1000) * 1000;
+    if (abs >= 1000) return Math.round(n / 100) * 100;
+    return Math.round(n / 50) * 50;
+  }
+  if (abs >= 1000) return Math.round(n / 50) * 50;
+  if (abs >= 100) return Math.round(n / 10) * 10;
+  return Math.round(n);
+}
+
+function convertFromEur(amountEur, currency) {
+  if (amountEur == null) return null;
+  const rate = CURRENCY_FROM_EUR[currency] || 1;
+  return roundBudgetAmount(amountEur * rate, currency);
+}
+
+function formatBudgetAmount(amount, currency) {
+  if (amount == null) return '';
+  const lang = (typeof LANG !== 'undefined' && LANG.current) ? LANG.current : 'es';
+  const locale = lang === 'en' ? 'en-US' : lang === 'fr' ? 'fr-FR' : 'es-ES';
+  const formatted = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(amount);
+  if (currency === 'EUR') return `${formatted}€`;
+  if (currency === 'GBP') return `£${formatted}`;
+  if (currency === 'JPY') return `¥${formatted}`;
+  if (['USD', 'MXN', 'CAD', 'AUD', 'ARS', 'CLP', 'COP'].includes(currency)) {
+    return `$${formatted}`;
+  }
+  const sym = currencySymbols[currency];
+  if (sym) return `${sym}${formatted}`;
+  return `${formatted} ${currency}`;
+}
+
+function convertBounds(boundsEur, currency) {
+  return {
+    min: boundsEur.min == null ? null : convertFromEur(boundsEur.min, currency),
+    max: boundsEur.max == null ? null : convertFromEur(boundsEur.max, currency),
+  };
+}
+
+function getBudgetBounds(tier, mode, currency) {
+  const table = mode === 'monthly' ? BUDGET_MONTHLY_EUR : BUDGET_TOTAL_EUR;
+  const base = table[tier];
+  if (!base) return null;
+  return convertBounds(base, currency);
+}
+
+function formatTierRangeSub(tier, mode, currency) {
+  const locale = L();
+  const tpls = locale.ui.budgetRanges || {};
+  const bounds = getBudgetBounds(tier, mode, currency);
+  if (!bounds) return '';
+
+  if (mode === 'monthly' && tier === 'ilim') {
+    return tpls.noCapMonthly || tpls.noCap || '';
+  }
+
+  const a = (n) => formatBudgetAmount(n, currency);
+  if (bounds.max != null && (bounds.min == null || bounds.min === 0)) {
+    const tpl = mode === 'monthly' ? (tpls.upToMonthly || tpls.upTo) : tpls.upTo;
+    return (tpl || 'hasta {amount}').replace('{amount}', a(bounds.max));
+  }
+  if (bounds.min != null && bounds.max == null) {
+    const tpl = mode === 'monthly' ? (tpls.moreThanMonthly || tpls.moreThan) : tpls.moreThan;
+    return (tpl || 'más de {amount}').replace('{amount}', a(bounds.min));
+  }
+  if (bounds.min != null && bounds.max != null) {
+    const tpl = mode === 'monthly' ? (tpls.betweenMonthly || tpls.between) : tpls.between;
+    return (tpl || '{min}–{max}')
+      .replace('{min}', a(bounds.min))
+      .replace('{max}', a(bounds.max));
+  }
+  return tpls.noCap || '';
+}
+
+function paintBudgetOptButton(btn, qKey, tier, mode, currency) {
+  const locale = L();
+  const entry = locale.opt[qKey]?.[tier];
+  if (!entry) return;
+  const icon = btn.querySelector('.q-icon') || btn.querySelector('.em');
+  const iconHtml = icon ? icon.outerHTML : '';
+  const sub = formatTierRangeSub(tier, mode, currency);
+  btn.innerHTML = `${iconHtml}<span class="opt-copy">${entry.label}${sub ? `<small>${sub}</small>` : ''}</span>`;
+}
+
+function updateBudgetRangeLabels() {
+  const select = document.getElementById('currencySelect');
+  if (!select) return;
+  const currency = select.value || 'EUR';
+  document.querySelectorAll('#budgetOptsTotal button.opt[data-q="budget_r"]').forEach((btn) => {
+    paintBudgetOptButton(btn, 'budget_r', btn.dataset.v, 'total', currency);
+  });
+  document.querySelectorAll('#budgetOptsMonthly button.opt[data-q="budget_monthly_r"]').forEach((btn) => {
+    paintBudgetOptButton(btn, 'budget_monthly_r', btn.dataset.v, 'monthly', currency);
+  });
+  if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
+}
+
+function setCurrency(currency, { touched = false } = {}) {
+  const select = document.getElementById('currencySelect');
+  if (!select) return;
+  const has = [...select.options].some((o) => o.value === currency);
+  if (!has) return;
+  select.value = currency;
+  if (touched) currencyTouched = true;
+  document.getElementById('currSym').textContent = currencySymbols[currency] || currency;
+  answers['currency'] = currency;
+  updateBudgetRangeLabels();
+}
+
+function updateCurrency(fromUser) {
+  if (fromUser) currencyTouched = true;
   const cur = document.getElementById('currencySelect').value;
   document.getElementById('currSym').textContent = currencySymbols[cur] || '$';
   answers['currency'] = cur;
+  updateBudgetRangeLabels();
+}
+
+function maybeInferCurrencyFromOrigin() {
+  if (currencyTouched) return;
+  const origin = selectedOrigin[0];
+  if (!origin) return;
+  const inferred = currencyFromCountryName(origin.country);
+  if (inferred) setCurrency(inferred);
+}
+
+function buildBudgetRangePayload(currency) {
+  const isNomada = answers['trip_type'] === 'nomada';
+  const tier = isNomada ? answers['budget_monthly_r'] : answers['budget_r'];
+  if (!tier) return null;
+  const mode = isNomada ? 'monthly' : 'total';
+  const bounds = getBudgetBounds(tier, mode, currency) || { min: null, max: null };
+  return {
+    tier,
+    currency,
+    mode,
+    min: bounds.min,
+    max: bounds.max,
+    label: formatTierRangeSub(tier, mode, currency),
+  };
 }
 
 function geoLang() {
@@ -1477,6 +2016,7 @@ function addCity(city, country, flag, resultsId, tagsId, type, city_es, country_
   } else {
     arr.push({ city, country, flag });
     answers[key] = arr.map(x => x.city);
+    if (typeof maybeInferCurrencyFromOrigin === 'function') maybeInferCurrencyFromOrigin();
   }
   const container = document.getElementById(tagsId);
   const tag = document.createElement('div');
@@ -1530,6 +2070,7 @@ function updateBudgetMode(isNomada) {
   document.getElementById('budgetOptsTotal').style.display = isNomada ? 'none' : 'grid';
   document.getElementById('budgetOptsMonthly').style.display = isNomada ? 'grid' : 'none';
   updateBudgetPlaceholders(isNomada);
+  if (typeof updateBudgetRangeLabels === 'function') updateBudgetRangeLabels();
 }
 
 function showTripType(mode) {
@@ -1879,8 +2420,6 @@ function updateProgress() {
 
 function generateProfile() {
   const lang = L();
-  const vibeMap = lang.profiles;
-  const quotes = lang.quotes;
   const wakeTags = lang.wakeTags;
   const energyTags = lang.energyTags;
   const socialTags = lang.socialTags;
@@ -1888,11 +2427,33 @@ function generateProfile() {
   const paceMap = lang.paceLabels;
   const motivLabels = lang.motivLabels;
 
+  const profile = collectAllAnswers();
+  let archetype = null;
+  let modifiers = [];
+  try {
+    if (window.BTArchetypes?.selectArchetype) {
+      archetype = window.BTArchetypes.selectArchetype(profile);
+      modifiers = window.BTArchetypes.getModifiers?.(profile) || [];
+    }
+  } catch (e) {
+    console.warn('[BeTacora] client archetype selection failed:', e);
+  }
+
+  // Fallback to legacy motiv map only if archetypes.js not ready
+  if (!archetype) {
+    const motiv = answers['motiv'];
+    const primary = Array.isArray(motiv) && motiv.length > 0 ? motiv[0] : 'unico';
+    archetype = {
+      id: 0,
+      nombre: (lang.profiles && (lang.profiles[primary] || lang.profiles.unico)) || 'El Viajero Auténtico',
+      esencia: '',
+      frase_insignia: (lang.quotes && (lang.quotes[primary] || lang.quotes.unico)) || '',
+      nota: '',
+    };
+  }
+
   const motiv = answers['motiv'];
   const primary = Array.isArray(motiv) && motiv.length > 0 ? motiv[0] : 'unico';
-  const name = vibeMap[primary] || vibeMap.unico;
-  const quote = quotes[primary] || quotes.unico;
-
   const energy = answers['energy'] || 3;
   const tags = [];
   if (answers['wake']) tags.push(wakeTags[answers['wake']]);
@@ -1909,20 +2470,64 @@ function generateProfile() {
     else tags.push(`${first.flag} ${first.city}`);
   }
 
+  const name = archetype.nombre;
+  const quote = archetype.frase_insignia || '';
+  const essence = archetype.esencia || '';
+
   document.getElementById('pName').textContent = name;
-  document.getElementById('pQuote').textContent = quote;
-  document.getElementById('pTags').innerHTML = tags.filter(Boolean).map(t=>`<span class="ptag">${t}</span>`).join('');
+  const pEssence = document.getElementById('pEssence');
+  if (pEssence) pEssence.textContent = essence;
+  document.getElementById('pQuote').textContent = quote ? `"${quote}"` : '';
+  document.getElementById('pTags').innerHTML = tags.filter(Boolean).map(t => `<span class="ptag">${t}</span>`).join('');
 
   const pace = answers['pace'];
   document.getElementById('pMotiv').textContent = motivLabels[primary] || primary;
-  document.getElementById('pEnergy').textContent = lang.energyLabels[energy-1];
+  document.getElementById('pEnergy').textContent = lang.energyLabels[energy - 1];
   document.getElementById('pStyle').textContent = Array.isArray(pace) && pace.length > 0 ? paceMap[pace[0]] || '—' : '—';
+
+  // Provisional aiProfile until the AI HTML enriches it
+  aiProfile = {
+    type: name,
+    essence,
+    quote,
+    superpower: '',
+    animal: '',
+    stats: [],
+    archetypeId: archetype.id || null,
+    modifiers,
+    provisional: true,
+  };
 
   const card = document.getElementById('profileCard');
   card.classList.add('show');
   setTimeout(() => {
-    try { card.scrollIntoView({behavior:'smooth',block:'center'}); } catch (e) { console.error('BeTacora scroll error:', e); }
+    try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { console.error('BeTacora scroll error:', e); }
   }, 100);
+
+  return aiProfile;
+}
+
+async function ensureArchetypesReady(timeoutMs = 2500) {
+  if (window.BTArchetypes?.selectArchetype) return true;
+  return new Promise((resolve) => {
+    const done = () => resolve(!!window.BTArchetypes?.selectArchetype);
+    window.addEventListener('bt-archetypes-ready', done, { once: true });
+    setTimeout(done, timeoutMs);
+  });
+}
+
+function showItineraryLoading() {
+  const section = document.getElementById('itinerarySection');
+  const copy = (L().ui.itineraryLoading) || {};
+  const title = copy.title || 'Diseñando tu bitácora...';
+  const sub = copy.sub || 'Tu perfil ya está listo. Estamos creando el itinerario personalizado.';
+  section.innerHTML = `
+    <div class="itinerary-loading" role="status" aria-live="polite">
+      <img class="itinerary-loading-mark" src="/icon-512.png?v=3" alt="" width="44" height="44" />
+      <div class="itinerary-loading-title">${escapeHtml(title)}</div>
+      <div class="itinerary-loading-sub">${escapeHtml(sub)}</div>
+    </div>`;
+  section.classList.add('show', 'is-loading');
 }
 
 function stripQuoteMarks(text) {
@@ -2149,6 +2754,25 @@ function renderItineraryMap(container, places) {
   }
 }
 
+const SHARE_CARD_W = 1080;
+const SHARE_CARD_H = 1350;
+const SHARE_CARD_CTA = 'beta-cora.com';
+const SHARE_CARD_URL = 'https://beta-cora.com';
+
+function applyShareableCardLabels() {
+  const card = L().ui.shareableCard || {};
+  const eyebrow = document.getElementById('scEyebrow');
+  const animalLabel = document.getElementById('scAnimalLabel');
+  const cta = document.getElementById('scCta');
+  const download = document.getElementById('scDownload');
+  const share = document.getElementById('scShare');
+  if (eyebrow) eyebrow.textContent = card.eyebrow || '';
+  if (animalLabel) animalLabel.textContent = card.animalLabel || '';
+  if (cta) cta.textContent = card.cta || SHARE_CARD_CTA;
+  if (download) download.textContent = card.download || '';
+  if (share) share.textContent = card.share || '';
+}
+
 function renderShareableCard(profile) {
   if (!profile) return;
   aiProfile = profile;
@@ -2156,22 +2780,17 @@ function renderShareableCard(profile) {
   document.getElementById('scType').textContent = profile.type || '—';
   document.getElementById('scEssence').textContent = profile.essence || '';
   document.getElementById('scQuote').textContent = profile.quote ? `"${profile.quote}"` : '';
-  document.getElementById('scAnimal').textContent = profile.animal
-    ? `🐾 ${profile.animal}` : '';
+  const animalEl = document.getElementById('scAnimal');
+  const animalBlock = animalEl?.closest('.sc-animal-block');
+  if (profile.animal) {
+    animalEl.textContent = profile.animal;
+    if (animalBlock) animalBlock.style.display = '';
+  } else {
+    animalEl.textContent = '';
+    if (animalBlock) animalBlock.style.display = 'none';
+  }
 
-  const statsEl = document.getElementById('scStatsBars');
-  const topStats = (profile.stats || []).slice(0, 4);
-  statsEl.innerHTML = topStats.map(s => `
-    <div class="sc-stat-row">
-      <div class="sc-stat-label"><span>${escapeHtml(s.label)}</span><span>${s.value}</span></div>
-      <div class="sc-stat-bar"><div class="sc-stat-fill" style="width:${s.value}%"></div></div>
-    </div>`).join('');
-
-  const card = L().ui.shareableCard;
-  document.getElementById('scFooter').textContent = 'betacora.app · ' + card.tagline;
-  document.getElementById('scDownload').textContent = card.download;
-  document.getElementById('scShare').textContent = card.share;
-
+  applyShareableCardLabels();
   document.getElementById('shareableCard').classList.add('show');
 }
 
@@ -2186,61 +2805,497 @@ function loadHtml2Canvas() {
   });
 }
 
+function normalizeShareCanvas(source) {
+  if (source.width === SHARE_CARD_W && source.height === SHARE_CARD_H) return source;
+  const out = document.createElement('canvas');
+  out.width = SHARE_CARD_W;
+  out.height = SHARE_CARD_H;
+  const ctx = out.getContext('2d');
+  ctx.fillStyle = '#FAF8F4';
+  ctx.fillRect(0, 0, SHARE_CARD_W, SHARE_CARD_H);
+  ctx.drawImage(source, 0, 0, SHARE_CARD_W, SHARE_CARD_H);
+  return out;
+}
+
 async function captureShareableCard() {
   const el = document.getElementById('shareableCardInner');
+  if (!el) throw new Error('Shareable card missing');
   await loadHtml2Canvas();
-  return html2canvas(el, {
-    scale: 2,
-    backgroundColor: '#1A1A1A',
-    useCORS: true,
-    logging: false,
-  });
+  if (document.fonts?.ready) {
+    try { await document.fonts.ready; } catch (e) { /* ignore */ }
+  }
+  // Force layout size so scale maps cleanly to 1080×1350
+  const prev = {
+    width: el.style.width,
+    height: el.style.height,
+    maxWidth: el.style.maxWidth,
+  };
+  el.style.width = '360px';
+  el.style.maxWidth = '360px';
+  el.style.height = '450px';
+  // 360×450 → scale 3 = 1080×1350
+  void el.offsetWidth;
+  try {
+    const canvas = await html2canvas(el, {
+      scale: 3,
+      width: 360,
+      height: 450,
+      backgroundColor: '#FAF8F4',
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      imageTimeout: 5000,
+    });
+    return normalizeShareCanvas(canvas);
+  } finally {
+    el.style.width = prev.width;
+    el.style.height = prev.height;
+    el.style.maxWidth = prev.maxWidth;
+  }
+}
+
+function triggerShareableDownload(canvas) {
+  const link = document.createElement('a');
+  link.download = 'betacora-perfil.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 }
 
 async function downloadShareableCard() {
+  const btn = document.getElementById('scDownload');
+  if (btn) btn.disabled = true;
   try {
     const canvas = await captureShareableCard();
-    const link = document.createElement('a');
-    link.download = 'betacora-perfil.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    triggerShareableDownload(canvas);
   } catch (e) {
     console.error(e);
     alert(L().ui.errors.network);
+  } finally {
+    if (btn) btn.disabled = false;
   }
 }
 
 async function shareShareableCard() {
+  const btn = document.getElementById('scShare');
+  if (btn) btn.disabled = true;
   try {
     const canvas = await captureShareableCard();
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Failed to create image');
 
     const file = new File([blob], 'betacora-perfil.png', { type: 'image/png' });
+    const name = aiProfile?.type || 'BeTacora';
+    const shareText = (L().ui.share.text || '').replace('{name}', name);
     const shareData = {
       title: L().ui.share.title,
-      text: (aiProfile?.quote || L().ui.shareableCard.tagline) + ' — betacora.app',
-      url: 'https://betacora.app',
+      text: shareText,
     };
 
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ ...shareData, files: [file] });
+    // Mobile: native share with image file when supported
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ ...shareData, files: [file], url: SHARE_CARD_URL });
       return;
     }
-    if (navigator.share) {
-      await navigator.share(shareData);
-      return;
-    }
-    await navigator.clipboard.writeText('https://betacora.app');
-    alert(L().ui.share.linkCopied);
-  } catch (e) {
-    if (e.name !== 'AbortError') {
+    if (typeof navigator.share === 'function') {
       try {
-        await navigator.clipboard.writeText('https://betacora.app');
-        alert(L().ui.share.linkCopied);
-      } catch {
-        console.error(e);
+        await navigator.share({ ...shareData, url: SHARE_CARD_URL });
+        return;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
       }
+    }
+    // Desktop / unsupported: download the Instagram portrait PNG
+    triggerShareableDownload(canvas);
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;
+    console.error(e);
+    try {
+      const canvas = await captureShareableCard();
+      triggerShareableDownload(canvas);
+    } catch (err) {
+      alert(L().ui.errors.network);
+    }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// ─── TRIP SHARE ───────────────────────────────────────────────────
+let lastTripShare = null;
+let lastItineraryHtml = '';
+let lastTripPlaces = [];
+
+function applyTripShareLabels() {
+  const t = L().ui.shareTrip || {};
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val != null) el.textContent = val; };
+  set('tscEyebrow', t.eyebrow);
+  set('tscHighlightsLabel', t.highlightsLabel);
+  set('tscShare', t.share);
+  set('tscDownload', t.download);
+  set('tscCopyLink', t.copyLink);
+  set('tscCta', (L().ui.shareableCard || {}).cta || SHARE_CARD_CTA);
+  const map = document.getElementById('tscMap');
+  if (map && t.mapLabel) map.setAttribute('aria-label', t.mapLabel);
+}
+
+function stripEmojiPrefix(text) {
+  const raw = String(text || '').trim();
+  try {
+    return raw
+      .replace(/^[\s\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+/u, '')
+      .trim();
+  } catch {
+    return raw.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+  }
+}
+
+function extractDestinationLabel() {
+  const saved = getDestinationForSave();
+  const surpriseLabels = new Set(['Sorpresa', 'Viaje nómada', 'Surprise', 'Surprise me']);
+  if (saved && !surpriseLabels.has(saved)) return saved;
+
+  const h2 = document.querySelector('#itinerarySection .bitacora-article h2');
+  if (h2) {
+    const raw = stripEmojiPrefix(h2.textContent || '');
+    const cut = raw.split(/\s+[—–|-]\s+/)[0].trim();
+    if (cut) return cut.slice(0, 80);
+  }
+  return saved || (L().ui.shareTrip || {}).destFallback || 'BeTacora';
+}
+
+function getTripDurationLabel() {
+  const t = L().ui.shareTrip || {};
+  const d = L().ui.duration || {};
+  const days = Number(answers.duration_days);
+  if (Number.isFinite(days) && days > 0) {
+    const tpl = days === 1 ? (d.day || '{n} día') : (d.days || '{n} días');
+    return tpl.replace('✈️ ', '').replace('{n}', String(days));
+  }
+  const durMap = {
+    finde: 3,
+    finde_largo: 4,
+    semana: 7,
+    dos: 14,
+    tres: 21,
+  };
+  const mapped = durMap[answers.dur];
+  if (mapped) {
+    const tpl = d.days || '{n} días';
+    return tpl.replace('✈️ ', '').replace('{n}', String(mapped));
+  }
+  return t.durationFallback || '';
+}
+
+function collectTripHighlights(places) {
+  const list = places || [];
+  const byType = (types) =>
+    list
+      .filter((p) => p && types.includes(p.type))
+      .map((p) => (p.name ? String(p.name).trim() : ''))
+      .filter(Boolean);
+
+  const preferred = byType(['activity', 'sight']);
+  const food = byType(['food']);
+  const nonHotel = list
+    .filter((p) => p && p.type !== 'hotel')
+    .map((p) => (p.name ? String(p.name).trim() : ''))
+    .filter(Boolean);
+
+  const fromPlaces = preferred.length
+    ? preferred
+    : food.length
+      ? food
+      : nonHotel;
+
+  const fromHeadings = [...document.querySelectorAll('#itinerarySection .bitacora-article h3')]
+    .map((el) => stripEmojiPrefix(el.textContent || ''))
+    .filter(Boolean);
+
+  const isDayHeading = (h) => /^(d[ií]a|day|jour)\b/i.test(h) || /\bd[ií]a\s+\d/i.test(h);
+  const isLodgingHeading = (h) => /hotel|hostel|riad|ryokan|glamping|apart/i.test(h);
+  const dayHeadings = fromHeadings.filter(isDayHeading);
+  const otherHeadings = fromHeadings.filter((h) => !isDayHeading(h) && !isLodgingHeading(h));
+
+  const merged = [];
+  for (const name of [...fromPlaces, ...dayHeadings, ...otherHeadings]) {
+    if (!merged.some((x) => x.toLowerCase() === name.toLowerCase())) merged.push(name);
+    if (merged.length >= 3) break;
+  }
+  // Last resort: any place names including hotels
+  if (merged.length < 2) {
+    for (const p of list) {
+      const name = p && p.name ? String(p.name).trim() : '';
+      if (!name) continue;
+      if (!merged.some((x) => x.toLowerCase() === name.toLowerCase())) merged.push(name);
+      if (merged.length >= 3) break;
+    }
+  }
+  if (merged.length < 2) {
+    for (const name of fromHeadings) {
+      if (!merged.some((x) => x.toLowerCase() === name.toLowerCase())) merged.push(name);
+      if (merged.length >= 3) break;
+    }
+  }
+  return merged;
+}
+
+function buildTripMapSnippet(places) {
+  const valid = (places || []).filter(
+    (p) => p && Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lng))
+  );
+  if (!valid.length) {
+    return `<svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 28 Q25 18 50 26 T100 20" fill="none" stroke="rgba(45,123,123,0.25)" stroke-width="0.7"/>
+      <path d="M0 16 Q35 12 60 18 T100 10" fill="none" stroke="rgba(232,99,74,0.18)" stroke-width="0.55"/>
+      <circle cx="48" cy="20" r="2.2" fill="#E8634A"/>
+    </svg>`;
+  }
+
+  const lats = valid.map((p) => Number(p.lat));
+  const lngs = valid.map((p) => Number(p.lng));
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+  const latSpan = Math.max(maxLat - minLat, 0.02);
+  const lngSpan = Math.max(maxLng - minLng, 0.02);
+  const pad = 10;
+  const dots = valid.slice(0, 8).map((p) => {
+    const x = pad + ((Number(p.lng) - minLng) / lngSpan) * (100 - pad * 2);
+    const y = pad + (1 - (Number(p.lat) - minLat) / latSpan) * (40 - pad * 2);
+    return `<g>
+      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="none" stroke="#E8634A" stroke-opacity="0.3" stroke-width="0.6"/>
+      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.7" fill="#E8634A"/>
+    </g>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0 28 Q25 18 50 26 T100 20" fill="none" stroke="rgba(45,123,123,0.22)" stroke-width="0.7"/>
+    <path d="M0 16 Q35 12 60 18 T100 10" fill="none" stroke="rgba(232,99,74,0.16)" stroke-width="0.55"/>
+    ${dots}
+  </svg>`;
+}
+
+function renderTripShareCard(data) {
+  if (!data) return;
+  lastTripShare = data;
+  const t = L().ui.shareTrip || {};
+  applyTripShareLabels();
+
+  document.getElementById('tscDest').textContent = data.destination || t.destFallback || '—';
+  document.getElementById('tscDuration').textContent = data.durationLabel || t.durationFallback || '—';
+  document.getElementById('tscArchetype').textContent = data.archetype || aiProfile?.type || '—';
+  document.getElementById('tscMap').innerHTML = buildTripMapSnippet(data.places || []);
+
+  const list = document.getElementById('tscHighlights');
+  const highlights = data.highlights || [];
+  list.innerHTML = highlights.map((h) => `<li>${escapeHtml(h)}</li>`).join('');
+  const label = document.getElementById('tscHighlightsLabel');
+  if (label) label.style.display = highlights.length ? '' : 'none';
+
+  const copyBtn = document.getElementById('tscCopyLink');
+  if (copyBtn) {
+    if (data.shareUrl) {
+      copyBtn.classList.add('show');
+      copyBtn.style.display = 'inline-flex';
+    } else {
+      copyBtn.classList.remove('show');
+      copyBtn.style.display = 'none';
+    }
+  }
+
+  document.getElementById('tripShareCard').classList.add('show');
+}
+
+function hideTripShareCard() {
+  const el = document.getElementById('tripShareCard');
+  if (el) el.classList.remove('show');
+  const copyBtn = document.getElementById('tscCopyLink');
+  if (copyBtn) copyBtn.classList.remove('show');
+  lastTripShare = null;
+  lastItineraryHtml = '';
+  lastTripPlaces = [];
+}
+
+async function captureTripShareCard() {
+  const el = document.getElementById('tripShareCardInner');
+  if (!el) throw new Error('Trip share card missing');
+  await loadHtml2Canvas();
+  if (document.fonts?.ready) {
+    try { await document.fonts.ready; } catch (e) { /* ignore */ }
+  }
+  const prev = {
+    width: el.style.width,
+    height: el.style.height,
+    maxWidth: el.style.maxWidth,
+  };
+  el.style.width = '360px';
+  el.style.maxWidth = '360px';
+  el.style.height = '450px';
+  void el.offsetWidth;
+  try {
+    const canvas = await html2canvas(el, {
+      scale: 3,
+      width: 360,
+      height: 450,
+      backgroundColor: '#FAF8F4',
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      imageTimeout: 5000,
+    });
+    return normalizeShareCanvas(canvas);
+  } finally {
+    el.style.width = prev.width;
+    el.style.height = prev.height;
+    el.style.maxWidth = prev.maxWidth;
+  }
+}
+
+function triggerTripDownload(canvas) {
+  const link = document.createElement('a');
+  link.download = 'betacora-viaje.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function tripShareText(data) {
+  const t = L().ui.shareTrip || {};
+  return (t.text || '')
+    .replace('{dest}', data.destination || '')
+    .replace('{duration}', data.durationLabel || '')
+    .replace('{archetype}', data.archetype || '');
+}
+
+async function ensureTripShareLink(data) {
+  if (data.shareUrl) return data.shareUrl;
+  try {
+    const article = document.querySelector('#itinerarySection .bitacora-article');
+    const res = await fetch('/api/share-trip', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        destination: data.destination,
+        duration_label: data.durationLabel,
+        profile_type: data.archetype,
+        highlights: data.highlights,
+        places: (data.places || []).slice(0, 30),
+        itinerary_html: article ? article.innerHTML : lastItineraryHtml,
+        lang: LANG.current,
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.url) {
+      data.shareUrl = json.url;
+      data.slug = json.slug || null;
+      lastTripShare = data;
+      const copyBtn = document.getElementById('tscCopyLink');
+      if (copyBtn) {
+        copyBtn.classList.add('show');
+        copyBtn.style.display = 'inline-flex';
+      }
+      return json.url;
+    }
+  } catch (e) {
+    console.warn('[BeTacora] share link unavailable, using image:', e);
+  }
+  return null;
+}
+
+async function downloadTripCard() {
+  const btn = document.getElementById('tscDownload');
+  if (btn) btn.disabled = true;
+  try {
+    if (!lastTripShare) throw new Error('No trip to share');
+    const canvas = await captureTripShareCard();
+    triggerTripDownload(canvas);
+  } catch (e) {
+    console.error(e);
+    alert(L().ui.errors.network);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function copyTripShareLink() {
+  const t = L().ui.shareTrip || {};
+  const btn = document.getElementById('tscCopyLink');
+  if (btn) btn.disabled = true;
+  try {
+    if (!lastTripShare) return;
+    const url = await ensureTripShareLink(lastTripShare);
+    if (!url) {
+      alert(L().ui.errors.network);
+      return;
+    }
+    await navigator.clipboard.writeText(url);
+    alert(t.linkCopied || L().ui.share.linkCopied);
+  } catch (e) {
+    console.error(e);
+    alert(L().ui.errors.network);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function shareTripCard() {
+  const btn = document.getElementById('tscShare');
+  const t = L().ui.shareTrip || {};
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = t.sharing || '…';
+  }
+  try {
+    if (!lastTripShare) throw new Error('No trip to share');
+    const shareUrl = await ensureTripShareLink(lastTripShare);
+    const canvas = await captureTripShareCard();
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) throw new Error('Failed to create image');
+
+    const file = new File([blob], 'betacora-viaje.png', { type: 'image/png' });
+    const shareData = {
+      title: t.title || 'BeTacora',
+      text: tripShareText(lastTripShare),
+    };
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      const payload = { ...shareData, files: [file] };
+      if (shareUrl) payload.url = shareUrl;
+      await navigator.share(payload);
+      return;
+    }
+    if (typeof navigator.share === 'function') {
+      try {
+        const payload = { ...shareData };
+        if (shareUrl) payload.url = shareUrl;
+        await navigator.share(payload);
+        return;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+    }
+
+    // Desktop fallback: download image; copy link when available
+    triggerTripDownload(canvas);
+    if (shareUrl) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert(t.linkCopied || L().ui.share.linkCopied);
+      } catch (e) { /* ignore */ }
+    }
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;
+    console.error(e);
+    try {
+      const canvas = await captureTripShareCard();
+      triggerTripDownload(canvas);
+    } catch (err) {
+      alert(L().ui.errors.network);
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = t.share || 'Compartir viaje';
     }
   }
 }
@@ -2326,18 +3381,21 @@ function wrapItineraryInCards(html) {
   return wrap.innerHTML;
 }
 
-function renderItineraryHtml(html) {
+function renderItineraryHtml(html, serverArchetype) {
   const { places, cleanHtml } = extractPlacesBlock(html);
   const { profile, itineraryHtml } = splitResponseHtml(cleanHtml);
 
+  // Sync profile card: prefer rich AI profile; fall back to server archetype name for consistency
   if (profile) {
+    const pEssence = document.getElementById('pEssence');
+    if (pEssence) pEssence.textContent = profile.essence || '';
     renderShareableCard(profile);
-    document.getElementById('pName').textContent = profile.type || '—';
+    document.getElementById('pName').textContent = profile.type || serverArchetype?.nombre || '—';
     document.getElementById('pQuote').textContent = profile.quote ? `"${profile.quote}"` : '';
     if (profile.superpower) {
-      document.getElementById('pTags').innerHTML = `<span class="ptag">⚡ ${escapeHtml(profile.superpower)}</span>`;
+      document.getElementById('pTags').innerHTML = `<span class="ptag">${escapeHtml(profile.superpower)}</span>`;
     } else if (profile.animal) {
-      document.getElementById('pTags').innerHTML = `<span class="ptag">🐾 ${escapeHtml(profile.animal)}</span>`;
+      document.getElementById('pTags').innerHTML = `<span class="ptag">${escapeHtml(profile.animal)}</span>`;
     }
     const dnaStats = (profile.stats || []).slice(0, 3);
     if (dnaStats[0]) {
@@ -2352,9 +3410,17 @@ function renderItineraryHtml(html) {
       document.getElementById('pStyle').textContent = dnaStats[2].value;
       document.getElementById('statPace').textContent = dnaStats[2].label;
     }
-    setTimeout(() => {
-      try { document.getElementById('shareableCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { console.error('BeTacora scroll error:', e); }
-    }, 300);
+    if (aiProfile?.provisional) {
+      aiProfile = { ...profile, provisional: false, archetypeId: serverArchetype?.id ?? aiProfile.archetypeId };
+    }
+  } else if (serverArchetype?.nombre) {
+    // Keep instant card but confirm name matches server selection
+    document.getElementById('pName').textContent = serverArchetype.nombre;
+    if (aiProfile) {
+      aiProfile.type = serverArchetype.nombre;
+      aiProfile.archetypeId = serverArchetype.id ?? aiProfile.archetypeId;
+      aiProfile.provisional = false;
+    }
   }
 
   const section = document.getElementById('itinerarySection');
@@ -2368,8 +3434,11 @@ function renderItineraryHtml(html) {
       <div class="bitacora-header-title">${header.title}</div>
     </div>
     ${mapHtml}
-    <div class="bitacora-article">${wrapItineraryInCards(itineraryHtml)}</div>`;
+    <div class="bitacora-article">${wrapItineraryInCards(itineraryHtml)}</div>
+    ${buildPostTripHtml()}`;
+  section.classList.remove('is-loading');
   section.classList.add('show');
+  bindPostTripUi();
 
   if (places.length) {
     const mapEl = document.getElementById('btItineraryMap');
@@ -2381,6 +3450,18 @@ function renderItineraryHtml(html) {
     destroyItineraryMap();
   }
 
+  lastItineraryHtml = itineraryHtml || '';
+  lastTripPlaces = places || [];
+  renderTripShareCard({
+    destination: extractDestinationLabel(),
+    durationLabel: getTripDurationLabel(),
+    archetype: (profile && profile.type) || serverArchetype?.nombre || aiProfile?.type || '',
+    highlights: collectTripHighlights(places),
+    places: places || [],
+    shareUrl: null,
+    slug: null,
+  });
+
   setTimeout(() => {
     try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
   }, 600);
@@ -2390,6 +3471,7 @@ function showItineraryError(message) {
   const section = document.getElementById('itinerarySection');
   const err = L().ui.errors;
   section.innerHTML = `<div class="itinerary-error"><strong>${err.title}</strong>${escapeHtml(message)}</div>`;
+  section.classList.remove('is-loading');
   section.classList.add('show');
   setTimeout(() => {
     try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
@@ -2433,6 +3515,160 @@ function showSaveBanner(type) {
   }
 }
 
+/** Id of the itinerary row just saved for the current result (post-trip feedback). */
+let lastSavedItineraryId = null;
+let postTripWouldReturn = null;
+
+function buildPostTripHtml() {
+  const t = L().ui.postTrip || {};
+  return `<div class="post-trip" id="postTripBlock">
+    <div class="post-trip-card">
+      <div class="post-trip-prompt" id="postTripPrompt">
+        <p class="post-trip-prompt-text">${escapeHtml(t.prompt || '')}</p>
+        <button type="button" class="post-trip-open" id="postTripOpen">${escapeHtml(t.open || '')}</button>
+      </div>
+      <div class="post-trip-form" id="postTripForm">
+        <div class="post-trip-field">
+          <label class="post-trip-label" for="postTripLiked">${escapeHtml(t.liked || '')}</label>
+          <textarea class="post-trip-input" id="postTripLiked" rows="2" maxlength="400" placeholder="${escapeHtml(t.likedPh || '')}"></textarea>
+        </div>
+        <div class="post-trip-field">
+          <label class="post-trip-label" for="postTripAvoid">${escapeHtml(t.avoid || '')}</label>
+          <textarea class="post-trip-input" id="postTripAvoid" rows="2" maxlength="400" placeholder="${escapeHtml(t.avoidPh || '')}"></textarea>
+        </div>
+        <div class="post-trip-field">
+          <div class="post-trip-label">${escapeHtml(t.wouldReturn || '')}</div>
+          <div class="post-trip-chips" role="group">
+            <button type="button" class="post-trip-chip" data-v="yes">${escapeHtml(t.yes || 'Sí')}</button>
+            <button type="button" class="post-trip-chip" data-v="no">${escapeHtml(t.no || 'No')}</button>
+            <button type="button" class="post-trip-chip" data-v="maybe">${escapeHtml(t.maybe || 'Tal vez')}</button>
+          </div>
+        </div>
+        <div class="post-trip-actions">
+          <button type="button" class="post-trip-submit" id="postTripSubmit">${escapeHtml(t.submit || '')}</button>
+        </div>
+        <p class="post-trip-msg" id="postTripMsg" role="status"></p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function bindPostTripUi() {
+  postTripWouldReturn = null;
+  const openBtn = document.getElementById('postTripOpen');
+  const form = document.getElementById('postTripForm');
+  if (openBtn && form) {
+    openBtn.addEventListener('click', () => {
+      form.classList.add('show');
+      openBtn.hidden = true;
+      const liked = document.getElementById('postTripLiked');
+      if (liked) liked.focus();
+    });
+  }
+  document.querySelectorAll('#postTripForm .post-trip-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#postTripForm .post-trip-chip').forEach((c) => c.classList.remove('sel'));
+      chip.classList.add('sel');
+      postTripWouldReturn = chip.dataset.v;
+    });
+  });
+  const submit = document.getElementById('postTripSubmit');
+  if (submit) submit.addEventListener('click', () => { submitPostTripFeedback().catch(console.error); });
+}
+
+function showPostTripMsg(html, kind) {
+  const el = document.getElementById('postTripMsg');
+  if (!el) return;
+  el.innerHTML = html;
+  el.classList.remove('ok', 'err');
+  if (kind) el.classList.add(kind);
+  el.classList.add('show');
+}
+
+async function submitPostTripFeedback() {
+  const t = L().ui.postTrip || {};
+  const liked = (document.getElementById('postTripLiked')?.value || '').trim();
+  const avoid = (document.getElementById('postTripAvoid')?.value || '').trim();
+  const submit = document.getElementById('postTripSubmit');
+
+  if (!postTripWouldReturn) {
+    showPostTripMsg(escapeHtml(t.needAnswer || ''), 'err');
+    return;
+  }
+
+  if (!window.btAuth) {
+    showPostTripMsg(escapeHtml(t.error || ''), 'err');
+    return;
+  }
+
+  await window.btAuth.init();
+  const user = await window.btAuth.getUser();
+  if (!user) {
+    showPostTripMsg(
+      `${escapeHtml(t.needLogin || '')} <a href="/auth">${escapeHtml(t.loginCta || '')}</a>`,
+      'err'
+    );
+    return;
+  }
+
+  if (!lastSavedItineraryId) {
+    // Logged in but itinerary wasn't persisted yet — try saving a stub row from current result
+    const article = document.querySelector('.bitacora-article');
+    const html = article ? article.innerHTML : '';
+    const saved = await window.btAuth.saveItinerary({
+      destination: getDestinationForSave(),
+      profile_type: aiProfile?.type ?? null,
+      profile_essence: aiProfile?.essence ?? null,
+      questionnaire_answers: collectAllAnswers(),
+      itinerary_html: html || '(post-trip feedback)',
+    });
+    if (saved?.ok && saved.id) {
+      lastSavedItineraryId = saved.id;
+    } else {
+      showPostTripMsg(
+        `${escapeHtml(t.needLogin || '')} <a href="/auth">${escapeHtml(t.loginCta || '')}</a>`,
+        'err'
+      );
+      return;
+    }
+  }
+
+  if (submit) {
+    submit.disabled = true;
+    submit.textContent = t.submitting || '…';
+  }
+
+  try {
+    const result = await window.btAuth.savePostTripFeedback(lastSavedItineraryId, {
+      liked,
+      avoid,
+      would_return: postTripWouldReturn,
+    });
+    if (!result.ok) {
+      if (result.error === 'not_logged_in') {
+        showPostTripMsg(
+          `${escapeHtml(t.needLogin || '')} <a href="/auth">${escapeHtml(t.loginCta || '')}</a>`,
+          'err'
+        );
+      } else {
+        console.warn('[BeTacora] post-trip save failed:', result.error);
+        showPostTripMsg(escapeHtml(t.error || ''), 'err');
+      }
+      return;
+    }
+    showPostTripMsg(escapeHtml(t.thanks || ''), 'ok');
+    if (submit) submit.hidden = true;
+    document.querySelectorAll('#postTripForm .post-trip-input, #postTripForm .post-trip-chip').forEach((el) => {
+      el.disabled = true;
+    });
+  } finally {
+    if (submit && !submit.hidden) {
+      submit.disabled = false;
+      submit.textContent = t.submit || '';
+    }
+  }
+}
+
 function getDestinationForSave() {
   if (selectedDest.length > 0) {
     const d = selectedDest[0];
@@ -2448,33 +3684,46 @@ function getDestinationForSave() {
 
 async function handleGenerate() {
   const btn = document.getElementById('submitBtn');
-  const section = document.getElementById('itinerarySection');
 
   hideLimitBanner();
   hideSaveBanner();
+  lastSavedItineraryId = null;
+  postTripWouldReturn = null;
+
+  collectAllAnswers();
+  btTrack('questionnaire_completed', {
+    trip_type: answers['trip_type'] || null,
+    ui_lang: LANG.current,
+  });
+  btn.disabled = true;
+  btn.textContent = L().ui.submit.btnLoading;
+  document.getElementById('shareableCard').classList.remove('show');
+  aiProfile = null;
+
+  // Instant deterministic profile (same selectArchetype as server) — before any network wait
+  await ensureArchetypesReady();
+  const t0 = performance.now();
+  generateProfile();
+  console.log('[BeTacora] profile card ready in', Math.round(performance.now() - t0), 'ms');
+  showItineraryLoading();
 
   if (window.btAuth) {
     try {
       await window.btAuth.init();
       const limit = await window.btAuth.checkLimit();
       if (!limit.allowed) {
+        const section = document.getElementById('itinerarySection');
+        section.innerHTML = '';
+        section.classList.remove('show', 'is-loading');
         showLimitBanner(limit.reason);
+        btn.disabled = false;
+        btn.textContent = L().ui.submit.btn;
         return;
       }
     } catch (e) {
       console.warn('[BeTacora] limit check skipped:', e);
     }
   }
-
-  collectAllAnswers();
-  btn.disabled = true;
-  btn.textContent = L().ui.submit.btnLoading;
-  section.innerHTML = '';
-  section.classList.remove('show');
-  document.getElementById('shareableCard').classList.remove('show');
-  aiProfile = null;
-
-  generateProfile();
 
   const err = L().ui.errors;
 
@@ -2493,22 +3742,40 @@ async function handleGenerate() {
       showItineraryError(err.invalid);
       return;
     }
-    renderItineraryHtml(data.html);
+    // Confirm/replace provisional card with AI profile + keep in sync with server archetype
+    if (data.archetype?.nombre && aiProfile?.provisional) {
+      const serverName = data.archetype.nombre;
+      if (aiProfile.type !== serverName) {
+        console.warn('[BeTacora] client/server archetype mismatch', aiProfile.type, '→', serverName);
+        document.getElementById('pName').textContent = serverName;
+        aiProfile.type = serverName;
+      }
+      aiProfile.archetypeId = data.archetype.id ?? aiProfile.archetypeId;
+    }
+    renderItineraryHtml(data.html, data.archetype);
+    btTrack('itinerary_generated', {
+      mode: data.mode || null,
+      archetype_id: data.archetype?.id ?? null,
+    });
 
     if (window.btAuth) {
       try {
         await window.btAuth.incrementCount();
         const user = await window.btAuth.getUser();
         if (user) {
-          await window.btAuth.saveItinerary({
+          const saved = await window.btAuth.saveItinerary({
             destination: getDestinationForSave(),
             profile_type: aiProfile?.type ?? null,
             profile_essence: aiProfile?.essence ?? null,
             questionnaire_answers: collectAllAnswers(),
             itinerary_html: data.html,
           });
+          if (saved?.ok && saved.id) {
+            lastSavedItineraryId = saved.id;
+          }
           showSaveBanner('saved');
         } else {
+          lastSavedItineraryId = null;
           showSaveBanner('prompt');
         }
       } catch (e) {
@@ -2560,6 +3827,9 @@ try {
     localStorage.setItem('bt_lang', LANG.current);
   }
   answers['ui_lang'] = LANG.current;
+  if (typeof setCurrency === 'function' && typeof inferCurrencyFromLocale === 'function') {
+    setCurrency(inferCurrencyFromLocale());
+  }
   LANG.apply();
   if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
   updateSlider();

@@ -28,7 +28,11 @@ export function LandingPage() {
       persistLang(detected);
     }
     document.documentElement.lang = detected;
-    trackFunnel(FunnelEvent.LandingPageView, { lang: detected });
+    // Defer so the Analytics script can attach before the first custom event
+    const t = window.setTimeout(() => {
+      trackFunnel(FunnelEvent.LandingPageView, { lang: detected });
+    }, 0);
+    return () => window.clearTimeout(t);
   }, []);
 
   function switchLang(next: AppLang) {
@@ -101,6 +105,12 @@ export function LandingPage() {
         <div className="mt-10 sm:mt-12 flex flex-col items-center gap-3 w-full max-w-xs">
           <Link
             href="/questionnaire"
+            onClick={() =>
+              trackFunnel(FunnelEvent.QuestionnaireStarted, {
+                source: "landing_cta",
+                lang,
+              })
+            }
             className="w-full px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity text-center"
           >
             {copy.cta}

@@ -1,4 +1,4 @@
-import { track } from "@vercel/analytics";
+import { track } from "@vercel/analytics/react";
 
 /** Funnel events for drop-off analysis (Vercel Web Analytics custom events). */
 export const FunnelEvent = {

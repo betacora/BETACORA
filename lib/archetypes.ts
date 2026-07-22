@@ -8,13 +8,28 @@ export type Archetype = {
 
 export type TravelerProfileInput = Record<string, unknown>;
 
-export {
-  selectArchetype,
-  getModifiers,
-  getArchetypeById,
+import {
+  selectArchetype as selectArchetypeCore,
+  getModifiers as getModifiersCore,
+  getArchetypeById as getArchetypeByIdCore,
   MOTIVATION_MATRIX,
 } from "./archetypes-core.js";
 
+export { MOTIVATION_MATRIX };
+
+/** Always returns a valid Archetype (core falls back to id 1). */
+export function getArchetypeById(id: number): Archetype {
+  return getArchetypeByIdCore(id) as Archetype;
+}
+
+/** Always returns a valid Archetype (core falls back to id 1). */
+export function selectArchetype(profile: TravelerProfileInput): Archetype {
+  return selectArchetypeCore(profile) as Archetype;
+}
+
+export function getModifiers(profile: TravelerProfileInput): string[] {
+  return getModifiersCore(profile) as string[];
+}
 export function buildArchetypeProfilePrompt(
   archetype: Archetype,
   modifiers: string[]

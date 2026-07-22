@@ -15,10 +15,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon-192.png?v=2", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png?v=2", sizes: "512x512", type: "image/png" },
+      { url: "/icon-192.png?v=3", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png?v=3", sizes: "512x512", type: "image/png" },
     ],
-    apple: "/icon-192.png?v=2",
+    apple: "/icon-192.png?v=3",
   },
 };
 
@@ -40,11 +40,11 @@ export default function RootLayout({
           }}
         />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/icon-192.png?v=2" type="image/png" sizes="192x192" />
+        <link rel="icon" href="/icon-192.png?v=3" type="image/png" sizes="192x192" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="BeTacora" />
-        <link rel="apple-touch-icon" href="/icon-192.png?v=2" />
+        <link rel="apple-touch-icon" href="/icon-192.png?v=3" />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[#FAF8F4]">
         <SplashScreen />

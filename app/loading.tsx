@@ -4,7 +4,7 @@ export default function Loading() {
       className="fixed inset-0 z-[9998] flex items-center justify-center bg-[#2D7B7B]"
     >
       <img
-        src="/icon-512.png?v=2"
+        src="/icon-512.png?v=3"
         alt="BeTacora"
         width={128}
         height={128}

@@ -250,7 +250,7 @@ export default function AuthPage() {
         <div className="rounded-[8px] p-7 sm:p-8 border border-[#E5E2DC] bg-white">
           <div className="flex flex-col items-center mb-6">
             <img
-              src="/icon-512.png?v=2"
+              src="/icon-512.png?v=3"
               alt="BeTacora"
               width={56}
               height={56}

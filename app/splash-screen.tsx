@@ -37,7 +37,7 @@ export function SplashScreen() {
       }}
     >
       <img
-        src="/icon-512.png?v=2"
+        src="/icon-512.png?v=3"
         alt="BeTacora"
         width={160}
         height={160}

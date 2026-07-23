@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
+import { BrandWordmark } from "@/components/BrandWordmark";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -145,11 +146,11 @@ function MiniMap({
   });
 
   return (
-    <section className="mt-8" aria-label={label}>
-      <h2 className="text-[0.65rem] tracking-[0.16em] uppercase text-[#2D7B7B] font-medium mb-3">
+    <section className="mt-10" aria-label={label}>
+      <h2 className="text-[0.65rem] tracking-[0.16em] uppercase text-[#6B6B6B] font-medium mb-4">
         {label}
       </h2>
-      <div className="relative rounded-[8px] border border-[#E5E2DC] bg-[#F3F1EC] overflow-hidden h-44">
+      <div className="relative rounded-[8px] border border-[#E5E2DC] bg-white overflow-hidden h-48">
         <svg viewBox="0 0 100 56" className="absolute inset-0 w-full h-full" aria-hidden>
           <defs>
             <radialGradient id="g1" cx="50%" cy="40%" r="60%">
@@ -217,9 +218,7 @@ export default async function SharedTripPage({
             height={36}
             className="h-9 w-9 rounded-[7px] object-contain"
           />
-          <span className="text-xl font-medium tracking-tight">
-            Be<span className="text-[#E8634A]">Tacora</span>
-          </span>
+          <BrandWordmark className="text-xl font-medium tracking-tight" />
         </Link>
         <Link
           href="/questionnaire"
@@ -229,15 +228,15 @@ export default async function SharedTripPage({
         </Link>
       </header>
 
-      <article className="max-w-2xl mx-auto px-5 py-10 sm:px-8">
-        <p className="text-[0.65rem] tracking-[0.16em] uppercase text-[#2D7B7B] font-medium mb-3">
+      <article className="max-w-2xl mx-auto px-5 py-12 sm:px-8 sm:py-16">
+        <p className="text-[0.65rem] tracking-[0.16em] uppercase text-[#6B6B6B] font-medium mb-4">
           {copy.eyebrow}
         </p>
-        <h1 className="text-[1.75rem] sm:text-[2.1rem] font-medium tracking-tight leading-tight">
+        <h1 className="text-[1.85rem] sm:text-[2.25rem] font-medium tracking-tight leading-[1.2]">
           {trip.destination || "BeTacora"}
         </h1>
 
-        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[#6B6B6B]">
+        <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#6B6B6B] leading-relaxed">
           {trip.duration_label ? (
             <span>
               <span className="text-[#9a9590]">{copy.duration}: </span>
@@ -253,15 +252,15 @@ export default async function SharedTripPage({
         </div>
 
         {highlights.length > 0 ? (
-          <section className="mt-8">
-            <h2 className="text-[0.65rem] tracking-[0.16em] uppercase text-[#2D7B7B] font-medium mb-3">
+          <section className="mt-10">
+            <h2 className="text-[0.65rem] tracking-[0.16em] uppercase text-[#6B6B6B] font-medium mb-4">
               {copy.highlights}
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {highlights.map((h) => (
                 <li
                   key={h}
-                  className="rounded-[7px] border border-[#E5E2DC] bg-white px-4 py-3 text-[0.95rem] leading-snug"
+                  className="rounded-[7px] border border-[#E5E2DC] bg-white px-4 py-3.5 text-[0.95rem] leading-snug"
                 >
                   {h}
                 </li>
@@ -274,16 +273,16 @@ export default async function SharedTripPage({
 
         {trip.itinerary_html ? (
           <section
-            className="mt-10 prose-viaje"
+            className="mt-12 prose-viaje"
             dangerouslySetInnerHTML={{ __html: trip.itinerary_html }}
           />
         ) : null}
 
-        <div className="mt-12 pt-8 border-t border-[#E5E2DC] text-center">
-          <p className="text-sm text-[#6B6B6B] mb-4">{copy.cta}</p>
+        <div className="mt-16 pt-10 border-t border-[#E5E2DC] text-center">
+          <p className="text-sm text-[#6B6B6B] mb-5 leading-relaxed">{copy.cta}</p>
           <Link
             href="/questionnaire"
-            className="inline-flex px-8 py-3.5 rounded-[7px] bg-[#E8634A] text-white font-medium text-sm no-underline hover:opacity-90"
+            className="inline-flex px-8 py-3.5 rounded-[7px] bg-[#E8634A] text-white font-medium text-sm no-underline hover:opacity-90 transition-opacity duration-200"
           >
             {copy.back}
           </Link>

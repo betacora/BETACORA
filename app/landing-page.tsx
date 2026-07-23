@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
 import {
@@ -58,9 +59,7 @@ export function LandingPage() {
             height={36}
             className="h-8 w-8 sm:h-9 sm:w-9 rounded-[7px] object-contain shrink-0"
           />
-          <span className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight truncate">
-            Be<span className="text-[#E8634A]">Tacora</span>
-          </span>
+          <BrandWordmark className="text-lg sm:text-xl md:text-2xl font-medium tracking-tight truncate" />
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
@@ -85,24 +84,24 @@ export function LandingPage() {
         </div>
       </header>
 
-      <section className="flex-1 flex flex-col items-center justify-center px-5 pb-20 sm:px-8 md:px-12 text-center">
+      <section className="flex-1 flex flex-col items-center justify-center px-6 pb-24 sm:px-8 md:px-12 text-center">
         <img
           src="/icon-512.png?v=4"
           alt="BeTacora"
-          width={88}
-          height={88}
-          className="h-[72px] w-[72px] sm:h-[88px] sm:w-[88px] rounded-[8px] object-contain mb-8 sm:mb-10"
+          width={72}
+          height={72}
+          className="h-16 w-16 sm:h-[72px] sm:w-[72px] rounded-[8px] object-contain mb-10 sm:mb-12"
         />
 
-        <h1 className="text-[1.625rem] sm:text-3xl md:text-[2.25rem] font-medium text-[#1A1A1A] max-w-md leading-snug tracking-tight">
+        <h1 className="text-[1.75rem] sm:text-[2rem] md:text-[2.35rem] font-medium text-[#1A1A1A] max-w-md leading-[1.25] tracking-tight">
           {copy.tagline}
         </h1>
 
-        <p className="mt-4 text-[0.9375rem] text-[#6B6B6B] max-w-sm leading-relaxed font-normal">
+        <p className="mt-5 text-[0.9375rem] sm:text-base text-[#6B6B6B] max-w-sm leading-[1.65] font-normal">
           {copy.sub}
         </p>
 
-        <div className="mt-10 sm:mt-12 flex flex-col items-center gap-3 w-full max-w-xs">
+        <div className="mt-12 sm:mt-14 flex flex-col items-center gap-3.5 w-full max-w-xs">
           <Link
             href="/questionnaire"
             onClick={() =>
@@ -111,7 +110,7 @@ export function LandingPage() {
                 lang,
               })
             }
-            className="w-full px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity text-center"
+            className="w-full px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity duration-200 text-center"
           >
             {copy.cta}
           </Link>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { CountrySelector } from "@/components/CountrySelector";
 import { AUTH_COPY, detectLang, type AppLang } from "@/lib/lang";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
 
@@ -260,9 +261,7 @@ export default function AuthPage() {
             height={28}
             className="h-7 w-7 rounded-[6px] object-contain shrink-0"
           />
-          <span className="text-base font-medium tracking-tight truncate">
-            Be<span className="text-[#E8634A]">Tacora</span>
-          </span>
+          <BrandWordmark className="text-base font-medium tracking-tight truncate" />
         </Link>
         <InstallAppButton lang={lang} variant="header" className="shrink-0" />
       </header>
@@ -276,7 +275,7 @@ export default function AuthPage() {
           ← {copy.back}
         </Link>
 
-        <div className="rounded-[8px] p-7 sm:p-8 border border-[#E5E2DC] bg-white">
+        <div className="rounded-[8px] p-8 sm:p-10 border border-[#E5E2DC] bg-white">
           {awaitingEmailConfirm ? (
             <EmailConfirmScreen
               copy={copy}
@@ -288,35 +287,33 @@ export default function AuthPage() {
             />
           ) : (
             <>
-              <div className="flex flex-col items-center mb-6">
+              <div className="flex flex-col items-center mb-8">
                 <img
                   src="/icon-512.png?v=4"
                   alt="BeTacora"
-                  width={56}
-                  height={56}
-                  className="h-14 w-14 rounded-[8px] object-contain"
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 rounded-[8px] object-contain"
                 />
-                <p className="mt-3 text-lg font-medium tracking-tight">
-                  Be<span className="text-[#E8634A]">Tacora</span>
-                </p>
-                <p className="text-[#6B6B6B] text-center text-sm mt-2 leading-relaxed max-w-[280px]">
+                <BrandWordmark className="mt-4 text-lg font-medium tracking-tight" />
+                <p className="text-[#6B6B6B] text-center text-sm mt-2.5 leading-[1.6] max-w-[280px]">
                   {mode === "login"
                     ? copy.loginSubtitle
                     : copy.registerSubtitle}
                 </p>
               </div>
 
-              <div className="flex rounded-[7px] overflow-hidden mb-6 border border-[#E5E2DC]">
+              <div className="flex mb-8 border-b border-[#E5E2DC]">
                 <button
                   type="button"
                   onClick={() => {
                     setMode("login");
                     resetMessages();
                   }}
-                  className={`flex-1 py-2.5 text-sm font-medium border-0 cursor-pointer transition-colors ${
+                  className={`flex-1 py-2.5 text-sm font-medium border-0 border-b-[1.5px] -mb-px bg-transparent cursor-pointer transition-colors duration-200 ${
                     mode === "login"
-                      ? "bg-[#E8634A] text-white"
-                      : "bg-white text-[#6B6B6B] hover:text-[#1A1A1A]"
+                      ? "text-[#1A1A1A] border-[#E8634A]"
+                      : "text-[#6B6B6B] border-transparent hover:text-[#1A1A1A]"
                   }`}
                 >
                   {copy.tabLogin}
@@ -328,10 +325,10 @@ export default function AuthPage() {
                     resetMessages();
                     trackFunnel(FunnelEvent.RegistrationStarted);
                   }}
-                  className={`flex-1 py-2.5 text-sm font-medium border-0 cursor-pointer transition-colors ${
+                  className={`flex-1 py-2.5 text-sm font-medium border-0 border-b-[1.5px] -mb-px bg-transparent cursor-pointer transition-colors duration-200 ${
                     mode === "register"
-                      ? "bg-[#E8634A] text-white"
-                      : "bg-white text-[#6B6B6B] hover:text-[#1A1A1A]"
+                      ? "text-[#1A1A1A] border-[#E8634A]"
+                      : "text-[#6B6B6B] border-transparent hover:text-[#1A1A1A]"
                   }`}
                 >
                   {copy.tabRegister}
@@ -424,13 +421,13 @@ export default function AuthPage() {
                 )}
 
                 {error && (
-                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-[#FFF5F2] text-[#E8634A] border border-[rgba(232,99,74,0.25)]">
+                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E2DC]">
                     {error}
                   </p>
                 )}
 
                 {info && (
-                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#2D7B7B] border border-[#E5E2DC]">
+                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#6B6B6B] border border-[#E5E2DC]">
                     {info}
                   </p>
                 )}
@@ -440,7 +437,7 @@ export default function AuthPage() {
                     type="button"
                     onClick={handleResendConfirmation}
                     disabled={resending}
-                    className="w-full py-2.5 rounded-[7px] text-sm font-medium border border-[#2D7B7B] text-[#2D7B7B] bg-transparent cursor-pointer disabled:opacity-60"
+                    className="w-full py-2.5 rounded-[7px] text-sm font-medium border border-[#E5E2DC] text-[#1A1A1A] bg-transparent cursor-pointer disabled:opacity-60 hover:border-[#d5d0c8] transition-colors duration-200"
                   >
                     {resending ? copy.resending : copy.resend}
                   </button>
@@ -449,7 +446,7 @@ export default function AuthPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-[7px] font-medium text-white border-0 cursor-pointer disabled:opacity-60 transition-opacity bg-[#E8634A]"
+                  className="w-full py-3.5 rounded-[7px] font-medium text-white border-0 cursor-pointer disabled:opacity-60 transition-opacity duration-200 bg-[#E8634A]"
                 >
                   {loading
                     ? copy.loading
@@ -496,19 +493,19 @@ function EmailConfirmScreen({
         {copy.confirmHint}
       </p>
       {email ? (
-        <p className="mt-2 text-sm font-medium text-[#2D7B7B] m-0 break-all">
+        <p className="mt-3 text-sm font-medium text-[#1A1A1A] m-0 break-all">
           {email}
         </p>
       ) : null}
 
       {error ? (
-        <p className="mt-4 w-full text-sm rounded-[7px] px-3 py-2.5 bg-[#FFF5F2] text-[#E8634A] border border-[rgba(232,99,74,0.25)] text-left">
+        <p className="mt-5 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E2DC] text-left">
           {error}
         </p>
       ) : null}
 
       {info ? (
-        <p className="mt-4 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#2D7B7B] border border-[#E5E2DC] text-left">
+        <p className="mt-5 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#6B6B6B] border border-[#E5E2DC] text-left">
           {info}
         </p>
       ) : null}
@@ -517,7 +514,7 @@ function EmailConfirmScreen({
         type="button"
         onClick={onResend}
         disabled={resending}
-        className="mt-6 w-full py-3 rounded-[7px] text-sm font-medium border border-[#2D7B7B] text-[#2D7B7B] bg-transparent cursor-pointer disabled:opacity-60 hover:bg-[#f0f7f7] transition-colors"
+        className="mt-8 w-full py-3 rounded-[7px] text-sm font-medium border border-[#E5E2DC] text-[#1A1A1A] bg-transparent cursor-pointer disabled:opacity-60 hover:border-[#d5d0c8] transition-colors duration-200"
       >
         {resending ? copy.resending : copy.resend}
       </button>
@@ -528,12 +525,12 @@ function EmailConfirmScreen({
 function EnvelopeIcon() {
   return (
     <div
-      className="flex h-16 w-16 items-center justify-center rounded-[8px] bg-[#FFF5F2] text-[#E8634A]"
+      className="flex h-14 w-14 items-center justify-center rounded-[8px] border border-[#E5E2DC] bg-[#FAF8F4] text-[#1A1A1A]"
       aria-hidden="true"
     >
       <svg
-        width="32"
-        height="32"
+        width="28"
+        height="28"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

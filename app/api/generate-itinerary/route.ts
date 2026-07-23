@@ -21,13 +21,20 @@ const SYSTEM_PROMPT_TEMPLATE = `Eres BeTacora, el mejor asistente de viajes del 
 Hablas como un amigo que ha viajado mucho — con honestidad, precisión y sin relleno innecesario.
 
 REGLAS DE FORMATO (MUY IMPORTANTES):
-- Escribe en HTML limpio usando solo: h2, h3, p, ul, li, strong, em, div (div solo para el bloque profile-result y profile-stats) — más el bloque de lugares al final (ver MAPA DE LUGARES)
+- Escribe en HTML limpio usando solo: h2, h3, p, ul, li, strong, em, div (div solo para el bloque profile-result y profile-stats) — más el bloque de lugares al final (ver MAPA DE LUGARES). Clase CSS permitida solo en el subtítulo de día: class="day-meta"
 - En el cuerpo del itinerario: NUNCA uses JSON, llaves, corchetes, comillas técnicas ni paréntesis innecesarios
 - NUNCA repitas información
 - Sé conciso pero específico — cada frase debe aportar valor real
 - Escribe como una revista de viajes de calidad, no como una base de datos
 - Usa emojis solo donde añaden claridad real
 - Usa web_search para información actualizada sobre destinos, restaurantes, precios y seguridad
+
+CAPÍTULOS DEL DÍA A DÍA (viajes cortos — CRÍTICO):
+- Cada día es un CAPÍTULO narrativo, no un encabezado genérico tipo "{{day_n}} 1"
+- El <h3> es SOLO el título-capítulo: 3 a 6 palabras, evocador, específico de LO QUE PASA ESE DÍA (actividades reales + tono del perfil). Ejemplos de espíritu (no copies literal): "El caos de Hanói", "The train you'll never forget", "Les collines qui respirent"
+- PROHIBIDO en el <h3>: número de día, la palabra {{day_n}}/Day/Jour, fechas, guiones con "Día N", títulos genéricos ("Exploración", "Día libre", "City tour", "Arrival day", "Journée libre")
+- Justo debajo del <h3>, un <p class="day-meta"> con la info práctica: <strong>{{day_n}} [N]</strong> — [fecha]. La fecha debe calcularse a partir de dateFrom/date_depart + índice del día cuando existan en el perfil; si no hay fechas, omite la fecha y deja solo <strong>{{day_n}} [N]</strong>
+- El título debe poder entenderse sin leer el cuerpo, pero debe sentirse auténtico a ese día concreto (no un eslogan vacío)
 
 FUENTES DE INFORMACIÓN:
 
@@ -65,8 +72,9 @@ Genera esto en HTML limpio:
 <p>[Por qué este alojamiento para este viajero, precio por noche, tip de reserva]</p>
 
 <h2>📍 {{day_by_day}}</h2>
-[Para cada día:]
-<h3>{{day_n}} [N] — [Título evocador]</h3>
+[Para cada día — OBLIGATORIO este formato exacto:]
+<h3>[Título-capítulo evocador de 3 a 6 palabras]</h3>
+<p class="day-meta"><strong>{{day_n}} [N]</strong> — [fecha concreta si se conoce, p. ej. 12 mar / 12 Mar / 12 mars; si no hay fecha, solo {{day_n}} [N]]</p>
 <p><strong>{{morning}}</strong> [actividad específica con nombre real del lugar]</p>
 <p><strong>{{afternoon}}</strong> [actividad específica]</p>
 <p><strong>{{evening}}</strong> [plan nocturno]</p>
@@ -423,7 +431,7 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "user",
-          content: `Idioma de respuesta: ${uiLang}\n${langInstruction[uiLang]}\n\nPerfil del viajero:\n${JSON.stringify(profile, null, 2)}\n\nArquetipo seleccionado por el sistema: ${archetype.nombre} (id ${archetype.id})\nDuración estimada: ${durationDays ?? "desconocida"} días\n\nGenera PRIMERO el perfil psicológico en <div class="profile-result"> siguiendo el ARQUETIPO ASIGNADO y modificadores del system prompt, y DESPUÉS el itinerario en HTML limpio (${tripType}, modo ${mode}).\n\nOBLIGATORIO en el itinerario: incluye exactamente 2-3 explicaciones en <em> conectando recomendaciones clave con datos reales del perfil (transparencia, no venta).\n\nOBLIGATORIO al final absoluto: el bloque <script type="application/json" id="bt-places"> con todos los lugares nombrados y coordenadas (ver MAPA DE LUGARES).\n\n${webSearchInstruction} Responde solo con HTML + el script bt-places al final. Sin markdown ni fences.`,
+          content: `Idioma de respuesta: ${uiLang}\n${langInstruction[uiLang]}\n\nPerfil del viajero:\n${JSON.stringify(profile, null, 2)}\n\nArquetipo seleccionado por el sistema: ${archetype.nombre} (id ${archetype.id})\nDuración estimada: ${durationDays ?? "desconocida"} días\n\nGenera PRIMERO el perfil psicológico en <div class="profile-result"> siguiendo el ARQUETIPO ASIGNADO y modificadores del system prompt, y DESPUÉS el itinerario en HTML limpio (${tripType}, modo ${mode}).\n\nOBLIGATORIO en el itinerario: incluye exactamente 2-3 explicaciones en <em> conectando recomendaciones clave con datos reales del perfil (transparencia, no venta).\n\nOBLIGATORIO en viajes cortos (día a día): cada día con <h3> título-capítulo evocador (3-6 palabras, sin número de día) + <p class="day-meta"> con ${labels.day_n} N y fecha si se conoce.\n\nOBLIGATORIO al final absoluto: el bloque <script type="application/json" id="bt-places"> con todos los lugares nombrados y coordenadas (ver MAPA DE LUGARES).\n\n${webSearchInstruction} Responde solo con HTML + el script bt-places al final. Sin markdown ni fences.`,
         },
       ],
     });

@@ -36,34 +36,52 @@ body {
 /* Shared trip read-only view */
 .prose-viaje {
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.75;
   color: #1a1a1a;
 }
 .prose-viaje h2 {
-  margin: 1.75rem 0 0.75rem;
-  font-size: 1.15rem;
+  margin: 2.25rem 0 1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   letter-spacing: -0.01em;
+  line-height: 1.3;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #e5e2dc;
 }
 .prose-viaje h3 {
-  margin: 1.25rem 0 0.5rem;
-  font-size: 1rem;
+  margin: 1.75rem 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.prose-viaje p.day-meta {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #6b6b6b;
+  margin: 0 0 0.95rem;
+}
+.prose-viaje p.day-meta strong {
+  color: #2d7b7b;
   font-weight: 500;
 }
 .prose-viaje p,
 .prose-viaje li {
   color: #1a1a1a;
 }
+.prose-viaje p {
+  margin: 0 0 0.95rem;
+}
 .prose-viaje ul {
   padding-left: 1.15rem;
-  margin: 0.5rem 0 1rem;
+  margin: 0.65rem 0 1.15rem;
 }
 .prose-viaje .section-card {
   background: #fff;
   border: 1px solid #e5e2dc;
   border-radius: 8px;
-  padding: 1.15rem 1.25rem;
-  margin-bottom: 0.85rem;
+  padding: 1.35rem 1.4rem;
+  margin-bottom: 1.15rem;
 }
 .prose-viaje a {
   color: #2d7b7b;

@@ -38,7 +38,7 @@ export function SplashScreen() {
     >
       <img
         src="/icon-512.png?v=4"
-        alt="BeTacora"
+        alt="BeTacora — bitácora inteligente de viajes"
         width={160}
         height={160}
         className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-[8px] object-contain"

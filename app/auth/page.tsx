@@ -190,7 +190,7 @@ export default function AuthPage() {
       if (data.user) {
         await saveProfile(data.user.id);
       }
-      router.push("/questionnaire");
+      router.push("/inicio");
       return;
     }
 
@@ -229,7 +229,7 @@ export default function AuthPage() {
         await saveProfile(data.user.id);
       }
     }
-    router.push("/questionnaire");
+    router.push("/inicio");
   }
 
   const showLoginResend =
@@ -290,7 +290,7 @@ export default function AuthPage() {
               <div className="flex flex-col items-center mb-8">
                 <img
                   src="/icon-512.png?v=4"
-                  alt="BeTacora"
+                  alt="BeTacora — bitácora inteligente de viajes"
                   width={48}
                   height={48}
                   className="h-12 w-12 rounded-[8px] object-contain"

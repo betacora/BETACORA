@@ -3,12 +3,15 @@ import { Analytics } from "@vercel/analytics/next";
 import { AnalyticsBridge } from "@/components/AnalyticsBridge";
 import { SplashScreen } from "./splash-screen";
 import { SwRegister } from "./sw-register";
+import { buildJsonLd, buildPageMetadata } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
+const homeMeta = buildPageMetadata("home", "es", "/");
+
 export const metadata: Metadata = {
-  title: "BeTacora — Tu bitácora inteligente",
-  description:
-    "El lugar donde vive toda tu vida como viajero. Tu bitácora inteligente · Your Smart Logbook",
+  ...homeMeta,
+  metadataBase: new URL(SITE_URL),
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -27,6 +30,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: "#2D7B7B",
 };
+
+const jsonLd = buildJsonLd();
 
 export default function RootLayout({
   children,
@@ -47,6 +52,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="BeTacora" />
         <link rel="apple-touch-icon" href="/icon-192.png?v=4" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[#FAF8F4]">
         <SplashScreen />

@@ -1,29 +1,6 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useEffect } from "react";
-import { FunnelEvent, trackFunnel } from "@/lib/analytics";
-
-export default function QuestionnairePage() {
-  useEffect(() => {
-    trackFunnel(FunnelEvent.QuestionnaireStarted, { source: "page" });
-  }, []);
-
-  return (
-    <main
-      className="bg-[#FAF8F4]"
-      style={{ position: "fixed", inset: 0, margin: 0, padding: 0 }}
-    >
-      <iframe
-        src="/questionnaire.html"
-        title="Cuestionario BeTacora"
-        style={{ width: "100%", height: "100%", border: 0, display: "block" }}
-        onLoad={() => {
-          console.log("[BeTacora] questionnaire iframe loaded");
-        }}
-        onError={() => {
-          console.error("[BeTacora] questionnaire iframe failed to load");
-        }}
-      />
-    </main>
-  );
+/** Legacy route — questionnaire now lives under the Explorar tab. */
+export default function QuestionnaireRedirect() {
+  redirect("/explorar");
 }

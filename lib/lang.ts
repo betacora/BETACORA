@@ -27,22 +27,25 @@ export function persistLang(lang: AppLang): void {
 
 export const LANDING_COPY: Record<
   AppLang,
-  { tagline: string; sub: string; cta: string }
+  { tagline: string; sub: string; cta: string; about: string }
 > = {
   es: {
     tagline: "Tu bitácora inteligente de viajes",
-    sub: "Descubre tu perfil viajero y genera itinerarios hechos a tu medida.",
+    sub: "Descubre tu perfil viajero y genera itinerarios a tu medida. Todo queda en tu bitácora.",
     cta: "Descubre tu perfil viajero",
+    about: "Sobre nosotros",
   },
   en: {
     tagline: "Your smart travel logbook",
     sub: "Discover your traveler profile and get itineraries made for you.",
     cta: "Discover your traveler profile",
+    about: "About",
   },
   fr: {
     tagline: "Votre carnet de voyage intelligent",
     sub: "Découvrez votre profil voyageur et des itinéraires sur mesure.",
     cta: "Découvrez votre profil voyageur",
+    about: "À propos",
   },
 };
 
@@ -137,11 +140,201 @@ export type AuthCopy = {
   };
 };
 
+export type NavTabId = "inicio" | "explorar" | "guia" | "viajes" | "perfil";
+
+export const NAV_COPY: Record<
+  AppLang,
+  {
+    tabs: Record<NavTabId, string>;
+    inicio: {
+      greetingNamed: string;
+      greetingGeneric: string;
+      sub: string;
+      startTrip: string;
+      viewProfile: string;
+      myTrips: string;
+    };
+    guia: {
+      title: string;
+      body: string;
+    };
+    viajes: {
+      title: string;
+      emptyTitle: string;
+      emptyBody: string;
+      emptyCta: string;
+      loginTitle: string;
+      loginBody: string;
+      loginCta: string;
+      openTrip: string;
+      untitled: string;
+      loading: string;
+    };
+    perfil: {
+      title: string;
+      eyebrow: string;
+      emptyTitle: string;
+      emptyCta: string;
+      loginTitle: string;
+      loginBody: string;
+      loginCta: string;
+      loading: string;
+      logout: string;
+      statMotiv: string;
+      statEnergy: string;
+      statPace: string;
+    };
+  }
+> = {
+  es: {
+    tabs: {
+      inicio: "Inicio",
+      explorar: "Explorar",
+      guia: "Guía",
+      viajes: "Mis Viajes",
+      perfil: "Perfil",
+    },
+    inicio: {
+      greetingNamed: "Hola, {name}",
+      greetingGeneric: "Bienvenido a BeTacora",
+      sub: "Tu bitácora inteligente de viajes.",
+      startTrip: "Empezar un viaje",
+      viewProfile: "Ver mi perfil",
+      myTrips: "Mis viajes",
+    },
+    guia: {
+      title: "Próximamente: tu guía de viaje",
+      body: "Estamos preparando guías virtuales, híbridas y presenciales personalizadas para tu estilo de viajar.",
+    },
+    viajes: {
+      title: "Mis Viajes",
+      emptyTitle: "Aún no tienes viajes guardados",
+      emptyBody: "Explora y genera tu primera bitácora inteligente.",
+      emptyCta: "Explorar",
+      loginTitle: "Inicia sesión para ver tus viajes",
+      loginBody: "Tus itinerarios se guardan en tu cuenta.",
+      loginCta: "Iniciar sesión",
+      openTrip: "Ver itinerario",
+      untitled: "Viaje sin destino",
+      loading: "Cargando viajes…",
+    },
+    perfil: {
+      title: "Perfil",
+      eyebrow: "✦ Tu Bitácora Viajera",
+      emptyTitle: "Descubre tu identidad viajera",
+      emptyCta: "Descubre tu identidad viajera",
+      loginTitle: "Inicia sesión para ver tu perfil",
+      loginBody: "Tu arquetipo viajero vive en tu cuenta.",
+      loginCta: "Iniciar sesión",
+      loading: "Cargando perfil…",
+      logout: "Cerrar sesión",
+      statMotiv: "Motivación",
+      statEnergy: "Energía",
+      statPace: "Ritmo",
+    },
+  },
+  en: {
+    tabs: {
+      inicio: "Home",
+      explorar: "Explore",
+      guia: "Guide",
+      viajes: "My Trips",
+      perfil: "Profile",
+    },
+    inicio: {
+      greetingNamed: "Hello, {name}",
+      greetingGeneric: "Welcome to BeTacora",
+      sub: "Your smart travel logbook.",
+      startTrip: "Start a trip",
+      viewProfile: "View my profile",
+      myTrips: "My trips",
+    },
+    guia: {
+      title: "Coming soon: your travel guide",
+      body: "We're building virtual, hybrid, and in-person guides tailored to how you travel.",
+    },
+    viajes: {
+      title: "My Trips",
+      emptyTitle: "No saved trips yet",
+      emptyBody: "Explore and generate your first smart itinerary.",
+      emptyCta: "Explore",
+      loginTitle: "Sign in to see your trips",
+      loginBody: "Your itineraries are saved to your account.",
+      loginCta: "Sign in",
+      openTrip: "View itinerary",
+      untitled: "Trip without destination",
+      loading: "Loading trips…",
+    },
+    perfil: {
+      title: "Profile",
+      eyebrow: "✦ Your Travel Logbook",
+      emptyTitle: "Discover your traveler identity",
+      emptyCta: "Discover your traveler identity",
+      loginTitle: "Sign in to see your profile",
+      loginBody: "Your traveler archetype lives in your account.",
+      loginCta: "Sign in",
+      loading: "Loading profile…",
+      logout: "Sign out",
+      statMotiv: "Motivation",
+      statEnergy: "Energy",
+      statPace: "Pace",
+    },
+  },
+  fr: {
+    tabs: {
+      inicio: "Accueil",
+      explorar: "Explorer",
+      guia: "Guide",
+      viajes: "Mes Voyages",
+      perfil: "Profil",
+    },
+    inicio: {
+      greetingNamed: "Bonjour, {name}",
+      greetingGeneric: "Bienvenue sur BeTacora",
+      sub: "Votre carnet de voyage intelligent.",
+      startTrip: "Commencer un voyage",
+      viewProfile: "Voir mon profil",
+      myTrips: "Mes voyages",
+    },
+    guia: {
+      title: "Bientôt : votre guide de voyage",
+      body: "Nous préparons des guides virtuels, hybrides et en présentiel adaptés à votre façon de voyager.",
+    },
+    viajes: {
+      title: "Mes Voyages",
+      emptyTitle: "Aucun voyage enregistré",
+      emptyBody: "Explorez et générez votre premier itinéraire intelligent.",
+      emptyCta: "Explorer",
+      loginTitle: "Connectez-vous pour voir vos voyages",
+      loginBody: "Vos itinéraires sont enregistrés dans votre compte.",
+      loginCta: "Se connecter",
+      openTrip: "Voir l'itinéraire",
+      untitled: "Voyage sans destination",
+      loading: "Chargement…",
+    },
+    perfil: {
+      title: "Profil",
+      eyebrow: "✦ Votre Carnet de Voyage",
+      emptyTitle: "Découvrez votre identité voyageuse",
+      emptyCta: "Découvrez votre identité voyageuse",
+      loginTitle: "Connectez-vous pour voir votre profil",
+      loginBody: "Votre archétype voyageur vit dans votre compte.",
+      loginCta: "Se connecter",
+      loading: "Chargement…",
+      logout: "Se déconnecter",
+      statMotiv: "Motivation",
+      statEnergy: "Énergie",
+      statPace: "Rythme",
+    },
+  },
+};
+
+
 export const AUTH_COPY: Record<AppLang, AuthCopy> = {
   es: {
     back: "Volver",
-    loginSubtitle: "Inicia sesión para guardar tus itinerarios",
-    registerSubtitle: "Crea tu cuenta y desbloquea más generaciones",
+    loginSubtitle: "Inicia sesión para guardar tus viajes en tu bitácora",
+    registerSubtitle: "Crea tu cuenta y empieza a construir tu bitácora",
     tabLogin: "Entrar",
     tabRegister: "Registrarse",
     fullName: "Nombre completo",

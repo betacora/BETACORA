@@ -2,7 +2,7 @@
   "id": "/",
   "name": "BeTacora",
   "short_name": "BeTacora",
-  "description": "Tu bitácora inteligente de viajes",
+  "description": "BeTacora — tu bitácora inteligente de viajes",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

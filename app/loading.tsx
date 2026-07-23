@@ -5,7 +5,7 @@ export default function Loading() {
     >
       <img
         src="/icon-512.png?v=4"
-        alt="BeTacora"
+        alt="BeTacora — bitácora inteligente de viajes"
         width={128}
         height={128}
         className="w-24 h-24 sm:w-32 sm:h-32 rounded-[8px] object-contain animate-pulse"

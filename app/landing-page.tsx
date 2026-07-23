@@ -11,6 +11,7 @@ import {
   LANDING_COPY,
   type AppLang,
 } from "@/lib/lang";
+import { ABOUT_PATH } from "@/lib/site";
 
 const LANGS: AppLang[] = ["es", "en", "fr"];
 const LANG_LABEL: Record<AppLang, string> = {
@@ -54,7 +55,7 @@ export function LandingPage() {
         >
           <img
             src="/icon-512.png?v=4"
-            alt=""
+            alt="BeTacora — bitácora inteligente de viajes"
             width={36}
             height={36}
             className="h-8 w-8 sm:h-9 sm:w-9 rounded-[7px] object-contain shrink-0"
@@ -87,7 +88,7 @@ export function LandingPage() {
       <section className="flex-1 flex flex-col items-center justify-center px-6 pb-24 sm:px-8 md:px-12 text-center">
         <img
           src="/icon-512.png?v=4"
-          alt="BeTacora"
+          alt="BeTacora — bitácora inteligente de viajes"
           width={72}
           height={72}
           className="h-16 w-16 sm:h-[72px] sm:w-[72px] rounded-[8px] object-contain mb-10 sm:mb-12"
@@ -103,7 +104,7 @@ export function LandingPage() {
 
         <div className="mt-12 sm:mt-14 flex flex-col items-center gap-3.5 w-full max-w-xs">
           <Link
-            href="/questionnaire"
+            href="/explorar"
             onClick={() =>
               trackFunnel(FunnelEvent.QuestionnaireStarted, {
                 source: "landing_cta",
@@ -117,6 +118,21 @@ export function LandingPage() {
           <InstallAppButton lang={lang} variant="hero" />
         </div>
       </section>
+
+      <footer className="w-full px-6 py-8 sm:px-8 md:px-12 border-t border-[#E5E2DC] text-center">
+        <p className="text-sm text-[#6B6B6B] leading-relaxed">
+          <Link
+            href={ABOUT_PATH[lang]}
+            className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
+          >
+            {copy.about}
+          </Link>
+          <span className="mx-2 text-[#E5E2DC]" aria-hidden="true">
+            ·
+          </span>
+          <span>{copy.tagline}</span>
+        </p>
+      </footer>
     </main>
   );
 }

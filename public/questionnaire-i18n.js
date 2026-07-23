@@ -5,7 +5,7 @@
   const I18N = {
     es: {
       ui: {
-        pageTitle: 'BeTacora — Tu Perfil Viajero',
+        pageTitle: 'BeTacora — Tu bitácora inteligente · Perfil Viajero',
         headerTag: 'Tu Perfil Viajero',
         install: {
           button: 'Instalar App',

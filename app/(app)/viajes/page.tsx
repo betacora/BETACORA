@@ -69,6 +69,7 @@ export default function ViajesPage() {
             title={copy.loginTitle}
             body={copy.loginBody}
             cta={copy.loginCta}
+            href="/auth?next=/viajes"
           />
         ) : trips.length === 0 ? (
           <div className="rounded-[8px] border border-[#E5E2DC] bg-white p-7 text-center">

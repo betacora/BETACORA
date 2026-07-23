@@ -27,24 +27,27 @@ export function persistLang(lang: AppLang): void {
 
 export const LANDING_COPY: Record<
   AppLang,
-  { tagline: string; sub: string; cta: string; about: string }
+  { tagline: string; sub: string; cta: string; ctaReturning: string; about: string }
 > = {
   es: {
     tagline: "Tu bitácora inteligente de viajes",
     sub: "Descubre tu perfil viajero y genera itinerarios a tu medida. Todo queda en tu bitácora.",
     cta: "Descubre tu perfil viajero",
+    ctaReturning: "Empezar nuevo viaje",
     about: "Sobre nosotros",
   },
   en: {
     tagline: "Your smart travel logbook",
     sub: "Discover your traveler profile and get itineraries made for you.",
     cta: "Discover your traveler profile",
+    ctaReturning: "Start a new trip",
     about: "About",
   },
   fr: {
     tagline: "Votre carnet de voyage intelligent",
     sub: "Découvrez votre profil voyageur et des itinéraires sur mesure.",
     cta: "Découvrez votre profil voyageur",
+    ctaReturning: "Commencer un nouveau voyage",
     about: "À propos",
   },
 };
@@ -151,6 +154,7 @@ export const NAV_COPY: Record<
       greetingGeneric: string;
       sub: string;
       startTrip: string;
+      discoverProfile: string;
       viewProfile: string;
       myTrips: string;
     };
@@ -175,6 +179,7 @@ export const NAV_COPY: Record<
       eyebrow: string;
       emptyTitle: string;
       emptyCta: string;
+      updateProfile: string;
       loginTitle: string;
       loginBody: string;
       loginCta: string;
@@ -198,7 +203,8 @@ export const NAV_COPY: Record<
       greetingNamed: "Hola, {name}",
       greetingGeneric: "Bienvenido a BeTacora",
       sub: "Tu bitácora inteligente de viajes.",
-      startTrip: "Empezar un viaje",
+      startTrip: "Empezar nuevo viaje",
+      discoverProfile: "Descubre tu perfil viajero",
       viewProfile: "Ver mi perfil",
       myTrips: "Mis viajes",
     },
@@ -223,6 +229,7 @@ export const NAV_COPY: Record<
       eyebrow: "✦ Tu Bitácora Viajera",
       emptyTitle: "Descubre tu identidad viajera",
       emptyCta: "Descubre tu identidad viajera",
+      updateProfile: "Actualizar mi perfil",
       loginTitle: "Inicia sesión para ver tu perfil",
       loginBody: "Tu arquetipo viajero vive en tu cuenta.",
       loginCta: "Iniciar sesión",
@@ -245,7 +252,8 @@ export const NAV_COPY: Record<
       greetingNamed: "Hello, {name}",
       greetingGeneric: "Welcome to BeTacora",
       sub: "Your smart travel logbook.",
-      startTrip: "Start a trip",
+      startTrip: "Start a new trip",
+      discoverProfile: "Discover your traveler profile",
       viewProfile: "View my profile",
       myTrips: "My trips",
     },
@@ -270,6 +278,7 @@ export const NAV_COPY: Record<
       eyebrow: "✦ Your Travel Logbook",
       emptyTitle: "Discover your traveler identity",
       emptyCta: "Discover your traveler identity",
+      updateProfile: "Update my profile",
       loginTitle: "Sign in to see your profile",
       loginBody: "Your traveler archetype lives in your account.",
       loginCta: "Sign in",
@@ -292,7 +301,8 @@ export const NAV_COPY: Record<
       greetingNamed: "Bonjour, {name}",
       greetingGeneric: "Bienvenue sur BeTacora",
       sub: "Votre carnet de voyage intelligent.",
-      startTrip: "Commencer un voyage",
+      startTrip: "Commencer un nouveau voyage",
+      discoverProfile: "Découvrez votre profil voyageur",
       viewProfile: "Voir mon profil",
       myTrips: "Mes voyages",
     },
@@ -317,6 +327,7 @@ export const NAV_COPY: Record<
       eyebrow: "✦ Votre Carnet de Voyage",
       emptyTitle: "Découvrez votre identité voyageuse",
       emptyCta: "Découvrez votre identité voyageuse",
+      updateProfile: "Mettre à jour mon profil",
       loginTitle: "Connectez-vous pour voir votre profil",
       loginBody: "Votre archétype voyageur vit dans votre compte.",
       loginCta: "Se connecter",

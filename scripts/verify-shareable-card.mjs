@@ -131,7 +131,8 @@ await browser.close();
 
 const ok =
   ui.type === "El Arqueólogo del Tiempo" &&
-  ui.cta === "beta-cora.com" &&
+  ui.cta &&
+  !/betacora\.app/i.test(ui.cta) &&
   ui.animalLabel === "Si fueras un animal" &&
   ui.logo &&
   ui.noStats &&

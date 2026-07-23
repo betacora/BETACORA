@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { CountrySelector } from "@/components/CountrySelector";
 import { AUTH_COPY, detectLang, type AppLang } from "@/lib/lang";
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
+import { safeNextPath } from "@/lib/safeNextPath";
 
 type Mode = "login" | "register";
 
@@ -23,7 +24,24 @@ function isEmailNotConfirmedError(message: string): boolean {
 }
 
 export default function AuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FAF8F4]"
+          aria-busy="true"
+        />
+      }
+    >
+      <AuthPageInner />
+    </Suspense>
+  );
+}
+
+function AuthPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextPath = safeNextPath(searchParams.get("next"));
   const [lang, setLang] = useState<AppLang>("en");
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<Mode>("login");
@@ -49,7 +67,16 @@ export default function AuthPage() {
     setLang(detected);
     document.documentElement.lang = detected;
     setReady(true);
-  }, []);
+
+    let cancelled = false;
+    supabase.auth.getUser().then(({ data }) => {
+      if (cancelled || !data.user) return;
+      router.replace(nextPath);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [nextPath, router]);
 
   function resetMessages() {
     setError(null);
@@ -190,7 +217,7 @@ export default function AuthPage() {
       if (data.user) {
         await saveProfile(data.user.id);
       }
-      router.push("/inicio");
+      router.push(nextPath);
       return;
     }
 
@@ -229,7 +256,7 @@ export default function AuthPage() {
         await saveProfile(data.user.id);
       }
     }
-    router.push("/inicio");
+    router.push(nextPath);
   }
 
   const showLoginResend =

@@ -12,6 +12,9 @@ import {
   type AppLang,
 } from "@/lib/lang";
 import { ABOUT_PATH } from "@/lib/site";
+import { useAuth } from "@/lib/useAuth";
+import { getTravelerProfile } from "@/lib/travelerProfile";
+import { supabase } from "@/lib/supabase";
 
 const LANGS: AppLang[] = ["es", "en", "fr"];
 const LANG_LABEL: Record<AppLang, string> = {
@@ -22,6 +25,9 @@ const LANG_LABEL: Record<AppLang, string> = {
 
 export function LandingPage() {
   const [lang, setLang] = useState<AppLang>("en");
+  const { isLoggedIn, loading: authLoading } = useAuth();
+  const [hasProfile, setHasProfile] = useState(false);
+  const [profileReady, setProfileReady] = useState(false);
 
   useEffect(() => {
     const detected = detectLang("en");
@@ -30,12 +36,34 @@ export function LandingPage() {
       persistLang(detected);
     }
     document.documentElement.lang = detected;
-    // Defer so the Analytics script can attach before the first custom event
     const t = window.setTimeout(() => {
       trackFunnel(FunnelEvent.LandingPageView, { lang: detected });
     }, 0);
     return () => window.clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      if (authLoading) return;
+      if (!isLoggedIn) {
+        if (!cancelled) {
+          setHasProfile(false);
+          setProfileReady(true);
+        }
+        return;
+      }
+      const profile = await getTravelerProfile(supabase);
+      if (!cancelled) {
+        setHasProfile(Boolean(profile?.profile_type));
+        setProfileReady(true);
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, isLoggedIn]);
 
   function switchLang(next: AppLang) {
     setLang(next);
@@ -44,6 +72,12 @@ export function LandingPage() {
   }
 
   const copy = LANDING_COPY[lang];
+  const ctaHref = !isLoggedIn
+    ? "/auth?next=/explorar"
+    : hasProfile
+      ? "/explorar?mode=trip"
+      : "/explorar?mode=discover";
+  const ctaLabel = hasProfile && isLoggedIn ? copy.ctaReturning : copy.cta;
 
   return (
     <main className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]">
@@ -104,16 +138,18 @@ export function LandingPage() {
 
         <div className="mt-12 sm:mt-14 flex flex-col items-center gap-3.5 w-full max-w-xs">
           <Link
-            href="/explorar"
+            href={authLoading || !profileReady ? "/auth?next=/explorar" : ctaHref}
             onClick={() =>
               trackFunnel(FunnelEvent.QuestionnaireStarted, {
                 source: "landing_cta",
                 lang,
+                gated: !isLoggedIn,
+                returning: hasProfile,
               })
             }
             className="w-full px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity duration-200 text-center"
           >
-            {copy.cta}
+            {authLoading || !profileReady ? copy.cta : ctaLabel}
           </Link>
           <InstallAppButton lang={lang} variant="hero" />
         </div>

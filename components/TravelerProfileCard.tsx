@@ -71,7 +71,7 @@ export function TravelerProfileCard({ lang, profile, showCta = false }: Props) {
       {showCta ? (
         <div className="border-t border-[#E5E2DC] px-6 py-4 sm:px-8 bg-[#FAF8F4]">
           <Link
-            href="/explorar"
+            href="/explorar?mode=trip"
             className="inline-flex w-full justify-center items-center px-5 py-3 rounded-[7px] bg-[#E8634A] text-white text-sm font-medium no-underline hover:opacity-90 transition-opacity"
           >
             {copy.emptyCta}

@@ -7,6 +7,16 @@
       ui: {
         pageTitle: 'BeTacora — Tu bitácora inteligente · Perfil Viajero',
         headerTag: 'Tu Perfil Viajero',
+        quickTrip: {
+          kicker: 'Nuevo viaje',
+          title: '¿A dónde quieres ir?',
+          sub: 'Tu perfil viajero ya está listo. Elige un destino para este viaje.',
+          subNamed: 'Usando tu perfil {name}. Elige un destino para este viaje.',
+          panelTitle: 'Detalles del viaje',
+          close: 'Cerrar',
+          updateProfile: '¿Cambió algo de ti? Actualiza tu perfil completo',
+          headerTag: 'Nuevo viaje',
+        },
         install: {
           button: 'Instalar App',
           iosTitle: 'Instalar BeTacora',
@@ -130,7 +140,7 @@
         submit: {
           btn: 'Generar mi Bitácora Inteligente',
           btnLoading: 'Generando tu bitácora...',
-          note: 'BeTacora diseñará tu viaje personalizado · beta-cora.com',
+          note: 'BeTacora diseñará tu viaje personalizado · {site}',
         },
         bitacora: {
           eyebrow: '✦ Tu Bitácora Inteligente',
@@ -166,7 +176,7 @@
           network: 'No pudimos conectar con BeTacora. Comprueba tu conexión e inténtalo otra vez.',
         },
         share: {
-          text: 'Soy "{name}" según BeTacora 🧭\nDescubre tu perfil viajero en beta-cora.com',
+          text: 'Soy "{name}" según BeTacora 🧭\nDescubre tu perfil viajero en {url}',
           title: 'Mi Perfil BeTacora',
           copied: '¡Copiado al portapapeles! Comparte tu perfil viajero 🧭',
           linkCopied: 'Enlace copiado — compártelo con quien quieras 🧭',
@@ -177,7 +187,7 @@
           tagline: 'Tu bitácora inteligente',
           eyebrow: 'Tu perfil viajero',
           animalLabel: 'Si fueras un animal',
-          cta: 'beta-cora.com',
+          cta: '{site}',
         },
         travelIdentity: {
           download: 'Descargar esta',
@@ -196,7 +206,7 @@
           countdownOne: 'Falta 1 amanecer para {dest}',
           inviteTitle: 'Descubre tu identidad viajera',
           inviteCta: 'Tu bitácora inteligente te espera',
-          cta: 'beta-cora.com',
+          cta: '{site}',
           destFallback: 'tu próximo viaje',
           and: ' y ',
           timeMorning: 'Mañana',
@@ -266,7 +276,7 @@
           linkCopied: 'Enlace del viaje copiado',
           sharing: 'Preparando…',
           title: 'Mi viaje BeTacora',
-          text: 'Mira mi viaje a {dest} ({duration}) — perfil {archetype}. Diseñado con BeTacora.',
+          text: 'Mira mi viaje a {dest} ({duration}) — perfil {archetype}. Diseñado con BeTacora.\n{url}',
           highlightsLabel: 'Destacados',
           mapLabel: 'Mapa del viaje',
           durationFallback: 'Viaje a medida',
@@ -609,6 +619,16 @@
       ui: {
         pageTitle: 'BeTacora — Your Traveler Profile',
         headerTag: 'Your Traveler Profile',
+        quickTrip: {
+          kicker: 'New trip',
+          title: 'Where do you want to go?',
+          sub: 'Your traveler profile is ready. Pick a destination for this trip.',
+          subNamed: 'Using your {name} profile. Pick a destination for this trip.',
+          panelTitle: 'Trip details',
+          close: 'Close',
+          updateProfile: 'Something changed about you? Update your full profile',
+          headerTag: 'New trip',
+        },
         install: {
           button: 'Install App',
           iosTitle: 'Install BeTacora',
@@ -732,7 +752,7 @@
         submit: {
           btn: 'Generate My Smart Logbook',
           btnLoading: 'Building your logbook...',
-          note: 'BeTacora will design your personalized trip · beta-cora.com',
+          note: 'BeTacora will design your personalized trip · {site}',
         },
         bitacora: {
           eyebrow: '✦ Your Smart Logbook',
@@ -768,7 +788,7 @@
           network: "We couldn't reach BeTacora. Check your connection and try again.",
         },
         share: {
-          text: 'I\'m "{name}" according to BeTacora 🧭\nDiscover your traveler profile at beta-cora.com',
+          text: 'I\'m "{name}" according to BeTacora 🧭\nDiscover your traveler profile at {url}',
           title: 'My BeTacora Profile',
           copied: 'Copied to clipboard! Share your traveler profile 🧭',
           linkCopied: 'Link copied — share it with anyone 🧭',
@@ -779,7 +799,7 @@
           tagline: 'Your Smart Logbook',
           eyebrow: 'Your traveler profile',
           animalLabel: 'If you were an animal',
-          cta: 'beta-cora.com',
+          cta: '{site}',
         },
         travelIdentity: {
           download: 'Download this',
@@ -798,7 +818,7 @@
           countdownOne: '1 sunrise until {dest}',
           inviteTitle: 'Discover your traveler identity',
           inviteCta: 'Your smart logbook is waiting',
-          cta: 'beta-cora.com',
+          cta: '{site}',
           destFallback: 'your next trip',
           and: ' and ',
           timeMorning: 'Morning',
@@ -868,7 +888,7 @@
           linkCopied: 'Trip link copied',
           sharing: 'Preparing…',
           title: 'My BeTacora trip',
-          text: 'Check out my trip to {dest} ({duration}) — profile {archetype}. Designed with BeTacora.',
+          text: 'Check out my trip to {dest} ({duration}) — profile {archetype}. Designed with BeTacora.\n{url}',
           highlightsLabel: 'Highlights',
           mapLabel: 'Trip map',
           durationFallback: 'Custom trip',
@@ -1211,6 +1231,16 @@
       ui: {
         pageTitle: 'BeTacora — Votre Profil Voyageur',
         headerTag: 'Votre Profil Voyageur',
+        quickTrip: {
+          kicker: 'Nouveau voyage',
+          title: 'Où veux-tu aller ?',
+          sub: 'Ton profil voyageur est prêt. Choisis une destination pour ce voyage.',
+          subNamed: 'Profil {name} utilisé. Choisis une destination pour ce voyage.',
+          panelTitle: 'Détails du voyage',
+          close: 'Fermer',
+          updateProfile: 'Quelque chose a changé ? Mets à jour ton profil complet',
+          headerTag: 'Nouveau voyage',
+        },
         install: {
           button: "Installer l'app",
           iosTitle: 'Installer BeTacora',
@@ -1334,7 +1364,7 @@
         submit: {
           btn: 'Générer ma Bitácora Intelligente',
           btnLoading: 'Génération en cours...',
-          note: 'BeTacora concevra votre voyage personnalisé · beta-cora.com',
+          note: 'BeTacora concevra votre voyage personnalisé · {site}',
         },
         bitacora: {
           eyebrow: '✦ Votre Bitácora Intelligente',
@@ -1370,7 +1400,7 @@
           network: 'Impossible de joindre BeTacora. Vérifiez votre connexion et réessayez.',
         },
         share: {
-          text: 'Je suis « {name} » selon BeTacora 🧭\nDécouvrez votre profil voyageur sur beta-cora.com',
+          text: 'Je suis « {name} » selon BeTacora 🧭\nDécouvrez votre profil voyageur sur {url}',
           title: 'Mon Profil BeTacora',
           copied: 'Copié ! Partagez votre profil voyageur 🧭',
           linkCopied: 'Lien copié — partagez-le avec qui vous voulez 🧭',
@@ -1381,7 +1411,7 @@
           tagline: 'Votre Carnet de Bord',
           eyebrow: 'Votre profil voyageur',
           animalLabel: 'Si vous étiez un animal',
-          cta: 'beta-cora.com',
+          cta: '{site}',
         },
         travelIdentity: {
           download: 'Télécharger celle-ci',
@@ -1400,7 +1430,7 @@
           countdownOne: 'Plus qu’1 aube avant {dest}',
           inviteTitle: 'Découvrez votre identité voyageuse',
           inviteCta: 'Votre carnet intelligent vous attend',
-          cta: 'beta-cora.com',
+          cta: '{site}',
           destFallback: 'votre prochain voyage',
           and: ' et ',
           timeMorning: 'Matin',
@@ -1470,7 +1500,7 @@
           linkCopied: 'Lien du voyage copié',
           sharing: 'Préparation…',
           title: 'Mon voyage BeTacora',
-          text: 'Découvre mon voyage à {dest} ({duration}) — profil {archetype}. Conçu avec BeTacora.',
+          text: 'Découvre mon voyage à {dest} ({duration}) — profil {archetype}. Conçu avec BeTacora.\n{url}',
           highlightsLabel: 'Temps forts',
           mapLabel: 'Carte du voyage',
           durationFallback: 'Voyage sur mesure',

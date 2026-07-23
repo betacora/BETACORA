@@ -117,7 +117,161 @@
       .single();
 
     if (error) return { ok: false, error: error.message };
+
+    await saveTravelerProfile(client, user.id, payload);
+
     return { ok: true, id: data?.id ?? null };
+  }
+
+  const PERSONALITY_KEYS = [
+    "wake",
+    "pace",
+    "energy",
+    "motiv",
+    "exp",
+    "guide",
+    "accom",
+    "accom_location",
+    "accom_priority",
+    "amenity",
+    "food",
+    "diet",
+    "cultura",
+    "museum_type",
+    "act",
+    "social",
+    "social_e",
+    "splurge",
+  ];
+
+  function extractPersonality(answers) {
+    if (!answers || typeof answers !== "object") return {};
+    const out = {};
+    for (const key of PERSONALITY_KEYS) {
+      const val = answers[key];
+      if (val !== undefined && val !== null && val !== "") out[key] = val;
+    }
+    const mision = answers.mision_viaje;
+    if (
+      mision &&
+      typeof mision === "object" &&
+      Array.isArray(mision.museum_type) &&
+      mision.museum_type.length &&
+      out.museum_type === undefined
+    ) {
+      out.museum_type = mision.museum_type;
+    }
+    return out;
+  }
+
+  async function saveTravelerProfile(client, userId, payload) {
+    const traveler_answers = extractPersonality(
+      payload.questionnaire_answers || {},
+    );
+    if (!payload.profile_type && Object.keys(traveler_answers).length === 0) {
+      return;
+    }
+    const { error } = await client
+      .from("profiles")
+      .update({
+        profile_type: payload.profile_type ?? null,
+        profile_essence: payload.profile_essence ?? null,
+        traveler_answers,
+        profile_updated_at: new Date().toISOString(),
+      })
+      .eq("id", userId);
+    if (error) {
+      const missing =
+        error.code === "PGRST204" ||
+        error.code === "42703" ||
+        /profile_type|traveler_answers|profile_essence|profile_updated_at/i.test(
+          error.message || "",
+        );
+      if (!missing) {
+        console.warn("[BeTacora] save traveler profile:", error.message);
+      }
+    }
+  }
+
+  async function getTravelerProfile() {
+    const client = await init();
+    if (!client) return null;
+    const user = await getUser();
+    if (!user) return null;
+
+    const { data: profile, error: profileError } = await client
+      .from("profiles")
+      .select(
+        "profile_type, profile_essence, traveler_answers, profile_updated_at",
+      )
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const { data: lastTrip } = await client
+      .from("itineraries")
+      .select("questionnaire_answers, created_at")
+      .eq("user_id", user.id)
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const lastAnswers =
+      lastTrip?.questionnaire_answers &&
+      typeof lastTrip.questionnaire_answers === "object"
+        ? lastTrip.questionnaire_answers
+        : {};
+
+    const tripDefaults = {
+      origin: lastAnswers.origin ?? null,
+      currency: lastAnswers.currency ?? null,
+    };
+
+    if (
+      !profileError &&
+      profile?.profile_type &&
+      profile.traveler_answers &&
+      typeof profile.traveler_answers === "object"
+    ) {
+      return {
+        profile_type: profile.profile_type,
+        profile_essence: profile.profile_essence ?? null,
+        traveler_answers: extractPersonality(profile.traveler_answers),
+        source: "profiles",
+        trip_defaults: tripDefaults,
+      };
+    }
+
+    const { data: itinerary, error: itineraryError } = await client
+      .from("itineraries")
+      .select(
+        "profile_type, profile_essence, questionnaire_answers, created_at",
+      )
+      .eq("user_id", user.id)
+      .eq("is_active", true)
+      .not("profile_type", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (itineraryError || !itinerary?.profile_type) return null;
+
+    const answers =
+      itinerary.questionnaire_answers &&
+      typeof itinerary.questionnaire_answers === "object"
+        ? itinerary.questionnaire_answers
+        : {};
+
+    return {
+      profile_type: itinerary.profile_type,
+      profile_essence: itinerary.profile_essence ?? null,
+      traveler_answers: extractPersonality(answers),
+      source: "itineraries",
+      trip_defaults: {
+        origin: answers.origin ?? tripDefaults.origin,
+        currency: answers.currency ?? tripDefaults.currency,
+      },
+    };
   }
 
   async function savePostTripFeedback(itineraryId, feedback) {
@@ -188,12 +342,16 @@
     return { ok: true, via: "questionnaire_answers" };
   }
 
-  window.btAuth = {
-    init,
-    getUser,
-    checkLimit,
-    incrementCount,
-    saveItinerary,
-    savePostTripFeedback,
-  };
+  window.btAuth = Object.assign(
+    {
+      init,
+      getUser,
+      checkLimit,
+      incrementCount,
+      saveItinerary,
+      savePostTripFeedback,
+      getTravelerProfile,
+    },
+    window.btAuth || {},
+  );
 })();

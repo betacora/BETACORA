@@ -66,10 +66,17 @@ export default function PerfilPage() {
             title={copy.loginTitle}
             body={copy.loginBody}
             cta={copy.loginCta}
+            href="/auth?next=/perfil"
           />
         ) : profile ? (
           <div className="flex flex-col gap-4">
             <TravelerProfileCard lang={lang} profile={profile} />
+            <Link
+              href="/explorar?mode=discover"
+              className="w-full text-center py-2.5 text-sm text-[#2D7B7B] no-underline hover:opacity-80"
+            >
+              {copy.updateProfile}
+            </Link>
             <button
               type="button"
               onClick={() => signOut()}
@@ -84,7 +91,7 @@ export default function PerfilPage() {
               {copy.emptyTitle}
             </p>
             <Link
-              href="/explorar"
+              href="/explorar?mode=discover"
               className="mt-6 inline-flex w-full max-w-xs justify-center px-6 py-3 rounded-[7px] bg-[#E8634A] text-white font-medium text-sm no-underline hover:opacity-90"
             >
               {copy.emptyCta}

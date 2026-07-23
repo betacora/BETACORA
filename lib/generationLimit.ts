@@ -107,6 +107,17 @@ export async function saveItinerary(
     return { ok: false, error: error.message };
   }
 
+  try {
+    const { saveTravelerProfileToUser } = await import("@/lib/travelerProfile");
+    await saveTravelerProfileToUser(supabase, user.id, {
+      profile_type: payload.profile_type,
+      profile_essence: payload.profile_essence,
+      questionnaire_answers: payload.questionnaire_answers,
+    });
+  } catch (e) {
+    console.warn("[BeTacora] traveler profile mirror skipped:", e);
+  }
+
   return { ok: true, id: data?.id };
 }
 

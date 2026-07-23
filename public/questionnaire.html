@@ -50,6 +50,129 @@ body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-se
 .section-num { color: var(--muted); background: transparent; border: 1px solid var(--border); font-size: 0.62rem; font-weight: 500; padding: 0.22rem 0.5rem; border-radius: 4px; letter-spacing: 0.08em; line-height: 1.2; flex-shrink: 0; margin-top: 0.15rem; }
 .section-title { font-size: 1.05rem; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
 .section-sub { font-size: 0.9375rem; color: var(--muted); font-style: normal; margin-top: 0.25rem; font-weight: 400; line-height: 1.55; }
+.section[data-flow="personality"].flow-hidden { display: none !important; }
+body.qt-active .progress-wrap,
+body.qt-active .submit-wrap,
+body.qt-active #tripSection > .section-header,
+body.qt-active .qt-hide-in-trip { display: none !important; }
+body.qt-active .container > #accomSection,
+body.qt-active .container > #misionSection,
+body.qt-active .container > #tripSection { display: none !important; }
+body.qt-active .container { padding-top: 1.25rem; max-width: 720px; }
+body.qt-active #tripSection { margin-bottom: 0; }
+body.qt-active.qt-panel-open { overflow: hidden; }
+
+/* Returning-user: destination search hero */
+.qt-hero {
+  display: none;
+  margin: 0 auto 1.5rem;
+  max-width: 720px;
+  padding: 1.5rem 1.5rem 0.5rem;
+}
+body.qt-active .qt-hero { display: block; }
+.qt-hero-kicker {
+  font-size: 0.72rem; font-weight: 400; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem;
+}
+.qt-hero-title {
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-size: clamp(1.75rem, 4.5vw, 2.15rem);
+  font-weight: 700; letter-spacing: -0.03em; color: var(--ink);
+  line-height: 1.2; margin-bottom: 0.45rem;
+}
+.qt-hero-sub {
+  font-size: 0.9375rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.25rem;
+}
+.qt-hero .search-wrap { margin-bottom: 0.65rem; }
+.qt-hero .search-input-wrap {
+  border: 1px solid var(--border); background: var(--white);
+  border-radius: 10px; padding: 0.35rem 0.85rem; min-height: 3.25rem;
+  box-shadow: 0 1px 0 rgba(26,26,26,0.03);
+}
+.qt-hero .search-input-wrap:focus-within { border-color: var(--teal); }
+.qt-hero #destSearch {
+  font-size: 1.05rem; font-weight: 500; padding: 0.65rem 0.25rem;
+}
+.qt-hero .tags-wrap { margin-top: 0.5rem; }
+
+/* Trip panel: side sheet desktop / bottom sheet mobile */
+.qt-overlay {
+  position: fixed; inset: 0; z-index: 400;
+  pointer-events: none; visibility: hidden;
+}
+.qt-overlay.open { pointer-events: auto; visibility: visible; }
+.qt-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(26, 26, 26, 0.28);
+  opacity: 0; transition: opacity 220ms ease;
+}
+.qt-overlay.open .qt-backdrop { opacity: 1; }
+.qt-panel {
+  position: absolute; background: var(--bg); color: var(--ink);
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border);
+  transition: transform 230ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.qt-panel-header {
+  flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 1rem; padding: 1.15rem 1.25rem; border-bottom: 1px solid var(--border);
+  background: var(--bg); position: sticky; top: 0; z-index: 2;
+}
+.qt-panel-title {
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25;
+}
+.qt-panel-dest {
+  font-size: 0.8125rem; color: var(--muted); margin-top: 0.25rem; line-height: 1.4;
+}
+.qt-panel-close {
+  appearance: none; border: 1px solid var(--border); background: var(--white);
+  color: var(--ink); width: 2.25rem; height: 2.25rem; border-radius: 7px;
+  cursor: pointer; font-size: 1.1rem; line-height: 1; flex-shrink: 0;
+}
+.qt-panel-close:hover { border-color: #d5d0c8; }
+.qt-panel-body {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+.qt-panel-body .section { margin-bottom: 2.5rem; }
+.qt-panel-body .qlabel { font-size: clamp(1.2rem, 3.5vw, 1.45rem); }
+.qt-panel-footer {
+  flex-shrink: 0; padding: 0.95rem 1.25rem calc(0.95rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border); background: var(--bg);
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.qt-update-link {
+  appearance: none; border: none; background: transparent; padding: 0;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 400;
+  color: var(--muted); text-align: left; cursor: pointer; line-height: 1.4;
+  text-decoration: underline; text-underline-offset: 0.15em;
+}
+.qt-update-link:hover { color: var(--teal); }
+.qt-panel-footer .submit-btn { width: 100%; margin: 0; }
+@media (min-width: 768px) {
+  .qt-panel {
+    top: 0; right: 0; bottom: 0; width: min(480px, 100%);
+    border-radius: 0; border-right: none; border-top: none; border-bottom: none;
+    transform: translateX(100%);
+  }
+  .qt-overlay.open .qt-panel { transform: translateX(0); }
+}
+@media (max-width: 767px) {
+  .qt-panel {
+    left: 0; right: 0; bottom: 0; max-height: min(92vh, 920px);
+    border-radius: 14px 14px 0 0; border-bottom: none;
+    transform: translateY(100%);
+  }
+  .qt-overlay.open .qt-panel { transform: translateY(0); }
+  .qt-panel-header { padding-top: 0.85rem; }
+  .qt-panel::before {
+    content: ''; display: block; width: 2.25rem; height: 3px;
+    background: var(--border); border-radius: 2px; margin: 0.45rem auto 0;
+    flex-shrink: 0;
+  }
+}
 
 .qblock { background: transparent; border-radius: 0; padding: 0; margin-bottom: 2.85rem; box-shadow: none; border: none; }
 .qblock:focus-within { border-color: transparent; }
@@ -754,10 +877,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   <span class="progress-label" id="pLabel">Comenzando...</span>
 </div>
 
+<!-- Returning-user short flow: destination search hero -->
+<div class="qt-hero" id="qtHero" hidden>
+  <div class="qt-hero-kicker" id="qtHeroKicker">Nuevo viaje</div>
+  <h2 class="qt-hero-title" id="qtHeroTitle">¿A dónde quieres ir?</h2>
+  <p class="qt-hero-sub" id="qtHeroSub">Tu perfil viajero ya está listo. Elige un destino para este viaje.</p>
+  <div id="qtSearchSlot"></div>
+</div>
+
 <div class="container">
 
   <!-- I -->
-  <div class="section">
+  <div class="section" data-flow="personality">
     <div class="section-header">
       <span class="section-num">I</span>
       <div><div class="section-title">Tu Ritmo de Viaje</div><div class="section-sub">Cómo vives el tiempo cuando viajas</div></div>
@@ -796,7 +927,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   </div>
 
   <!-- II -->
-  <div class="section">
+  <div class="section" data-flow="personality">
     <div class="section-header">
       <span class="section-num">II</span>
       <div><div class="section-title">El Alma del Viaje</div><div class="section-sub">Lo que buscas cuando escapas</div></div>
@@ -846,8 +977,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
     </div>
   </div>
 
-  <!-- III -->
-  <div class="section">
+  <!-- III — accommodation (trip-specific in returning-user flow) -->
+  <div class="section" data-flow="trip" id="accomSection">
     <div class="section-header">
       <span class="section-num">III</span>
       <div><div class="section-title">El Refugio</div><div class="section-sub">Dónde descansa tu cuerpo y tu mente</div></div>
@@ -904,7 +1035,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   </div>
 
   <!-- IV -->
-  <div class="section">
+  <div class="section" data-flow="personality">
     <div class="section-header">
       <span class="section-num">IV</span>
       <div><div class="section-title">La Mesa del Capitán</div><div class="section-sub">Tus rituales con la comida</div></div>
@@ -940,7 +1071,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   </div>
 
   <!-- V -->
-  <div class="section">
+  <div class="section" data-flow="personality">
     <div class="section-header">
       <span class="section-num">V</span>
       <div><div class="section-title">Cultura y Actividades</div><div class="section-sub">Lo que despierta tu curiosidad</div></div>
@@ -1003,13 +1134,13 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   </div>
 
   <!-- VI — Tu Próximo Viaje (destino → fechas → tripulación/presupuesto) -->
-  <div class="section">
+  <div class="section" data-flow="trip" id="tripSection">
     <div class="section-header">
       <span class="section-num">VI</span>
       <div><div class="section-title">Tu Próximo Viaje</div><div class="section-sub">Los datos para trazar tu ruta</div></div>
     </div>
 
-    <div class="qblock">
+    <div class="qblock qt-hide-in-trip" id="originBlock">
       <div class="qlabel">¿Desde qué ciudad sales?</div>
       <div class="qhint">Busca tu ciudad de origen</div>
       <div class="search-wrap">
@@ -1022,7 +1153,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       <div class="tags-wrap" id="originTags"></div>
     </div>
 
-    <div class="qblock">
+    <div class="qblock qt-hide-in-trip" id="tripTypeBlock">
       <div class="qlabel">¿Cómo es tu próximo viaje?</div>
       <div class="opt-list" style="margin-bottom:0.75rem">
         <div class="opt-row" data-q="trip_type" data-v="destino" onclick="selTripType(this)"><span class="em2">🎯</span><span class="txt">Destino concreto</span><span class="dot"></span></div>
@@ -1105,9 +1236,9 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <div class="section-divider" id="crewDivider">Ahora, hablemos de tu tripulación y presupuesto</div>
+    <div class="section-divider qt-hide-in-trip" id="crewDivider">Ahora, hablemos de tu tripulación y presupuesto</div>
 
-    <div class="qblock">
+    <div class="qblock qt-hide-in-trip" id="socialBlock">
       <div class="qlabel">¿Cómo sueles viajar?</div>
       <div class="grid4">
         <button class="opt" data-q="social" data-v="solo" onclick="sel(this)"><span class="em">🦅</span>Solo</button>
@@ -1117,7 +1248,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <div class="qblock">
+    <div class="qblock qt-hide-in-trip" id="socialEnergyBlock">
       <div class="qlabel">Tu energía social en un viaje</div>
       <div class="opt-list">
         <div class="opt-row" data-q="social_e" data-v="intro" onclick="selRow(this)"><span class="em2">🎧</span><span class="txt">Introvertido — el viaje es tiempo para mí</span><span class="dot"></span></div>
@@ -1168,7 +1299,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <div class="qblock">
+    <div class="qblock qt-hide-in-trip" id="splurgeBlock">
       <div class="qlabel">¿En qué gastas sin mirar el precio?</div>
       <span class="multi-badge">Selección libre</span>
       <div class="grid3">
@@ -1181,7 +1312,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <div class="qblock">
+    <div class="qblock qt-hide-in-trip" id="extraBlock">
       <div class="qlabel">¿Algo más que BeTacora deba saber?</div>
       <div class="qhint">La pregunta que ninguna app te ha hecho antes</div>
       <textarea class="txt-input" rows="3" id="extra" placeholder="Experiencias pasadas, sueños de viaje, miedos, condiciones especiales..." oninput="updateProgress()"></textarea>
@@ -1189,7 +1320,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   </div>
 
   <!-- VII — Misión del Viaje -->
-  <div class="section" id="misionSection">
+  <div class="section" id="misionSection" data-flow="trip">
     <div class="section-header">
       <span class="section-num">VII</span>
       <div><div class="section-title">Misión del Viaje</div><div class="section-sub">El foco concreto de esta aventura</div></div>
@@ -1322,7 +1453,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
             <img class="sc-logo-mark" src="/icon-512.png?v=4" alt="" width="16" height="16" />
             <span class="sc-wordmark" aria-hidden="true"><span class="sc-syl-be">Be</span><span class="sc-syl-ta">Ta</span><span class="sc-syl-co">co</span><span class="sc-syl-ra">ra</span></span>
           </div>
-          <div class="sc-cta" id="tscCta">beta-cora.com</div>
+          <div class="sc-cta" id="tscCta"></div>
         </div>
       </div>
     </div>
@@ -1341,6 +1472,27 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
     <div class="submit-note">BeTacora diseñará tu viaje personalizado · beta-cora.com</div>
   </div>
 
+</div>
+
+<!-- Returning-user trip details sheet -->
+<div class="qt-overlay" id="qtOverlay" aria-hidden="true">
+  <div class="qt-backdrop" id="qtBackdrop"></div>
+  <aside class="qt-panel" role="dialog" aria-modal="true" aria-labelledby="qtPanelTitle">
+    <div class="qt-panel-header">
+      <div>
+        <div class="qt-panel-title" id="qtPanelTitle">Detalles del viaje</div>
+        <div class="qt-panel-dest" id="qtPanelDest"></div>
+      </div>
+      <button type="button" class="qt-panel-close" id="qtPanelClose" aria-label="Cerrar">×</button>
+    </div>
+    <div class="qt-panel-body" id="qtPanelBody"></div>
+    <div class="qt-panel-footer">
+      <button type="button" class="qt-update-link" id="qtUpdateProfile">
+        ¿Cambió algo de ti? Actualiza tu perfil completo
+      </button>
+      <button type="button" class="submit-btn" id="qtSubmitBtn">Generar mi Bitácora Inteligente</button>
+    </div>
+  </aside>
 </div>
 
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -1376,6 +1528,53 @@ function btTrack(event, data) {
   } catch (err) {
     console.warn('[BeTacora] analytics track skipped:', err);
   }
+}
+
+/** Canonical share origin — always matches the host serving the app. */
+function getShareOrigin() {
+  try {
+    if (typeof location !== 'undefined' && location.origin && location.origin !== 'null') {
+      return location.origin;
+    }
+  } catch (_) { /* ignore */ }
+  return 'https://www.beta-cora.com';
+}
+
+/** Human-readable host for on-card CTAs (no protocol). */
+function getShareHostLabel() {
+  try {
+    return new URL(getShareOrigin()).host.replace(/^www\./, '');
+  } catch (_) {
+    return 'beta-cora.com';
+  }
+}
+
+/**
+ * Fill share copy placeholders and scrub any leftover legacy domains.
+ * {url} → full origin (https://…), {site} → host label (beta-cora.com).
+ */
+function formatShareCopy(template, vars) {
+  const origin = getShareOrigin();
+  const site = getShareHostLabel();
+  let out = String(template || '');
+  const map = { url: origin, site, ...(vars || {}) };
+  out = out.replace(/\{(name|url|site|dest|duration|archetype)\}/g, (_, key) =>
+    map[key] != null ? String(map[key]) : ''
+  );
+  // Legacy domains that must never ship in share payloads
+  out = out
+    .replace(/https?:\/\/(?:www\.)?betacora\.app\/?/gi, origin)
+    .replace(/(?:www\.)?betacora\.app/gi, site);
+  return out;
+}
+
+/** Ensure share text contains a clickable absolute URL for WhatsApp / IG. */
+function withShareUrlInText(text, url) {
+  const origin = url || getShareOrigin();
+  const body = String(text || '').trim();
+  if (!body) return origin;
+  if (body.includes(origin) || /https?:\/\/\S+/i.test(body)) return body;
+  return `${body}\n${origin}`;
 }
 
 // ─── SIMPLE LANGUAGE SYSTEM ───────────────────────────────────────
@@ -1561,12 +1760,13 @@ const LANG = {
     if (shareBtn) shareBtn.textContent = locale.ui.profile.shareBtn;
     if (el('submitBtn') && !el('submitBtn').disabled) el('submitBtn').textContent = locale.ui.submit.btn;
     const submitNote = document.querySelector('.submit-note');
-    if (submitNote) submitNote.textContent = locale.ui.submit.note;
+    if (submitNote) submitNote.textContent = formatShareCopy(locale.ui.submit.note);
     if (el('scDownload')) el('scDownload').textContent = locale.ui.travelIdentity?.download || locale.ui.shareableCard.download;
     if (el('scShare')) el('scShare').textContent = locale.ui.travelIdentity?.share || locale.ui.shareableCard.share;
     if (el('tiPrev') && locale.ui.travelIdentity?.prev) el('tiPrev').setAttribute('aria-label', locale.ui.travelIdentity.prev);
     if (el('tiNext') && locale.ui.travelIdentity?.next) el('tiNext').setAttribute('aria-label', locale.ui.travelIdentity.next);
     applyTripShareLabels();
+    if (typeof applyQuickTripLabels === 'function') applyQuickTripLabels();
     if (document.getElementById('shareableCard')?.classList.contains('show') && aiProfile) renderShareableCard(aiProfile);
     if (document.getElementById('tripShareCard')?.classList.contains('show') && lastTripShare) {
       renderTripShareCard(lastTripShare);
@@ -2054,6 +2254,9 @@ function addCountry(country, flag, resultsId, tagsId, type, country_es) {
   document.getElementById('destSearch').value = '';
   document.getElementById(resultsId).classList.remove('show');
   updateProgress();
+  if (type === 'dest' && typeof onQuickTripDestSelected === 'function') {
+    onQuickTripDestSelected();
+  }
 }
 
 function addCity(city, country, flag, resultsId, tagsId, type, city_es, country_es) {
@@ -2085,6 +2288,9 @@ function addCity(city, country, flag, resultsId, tagsId, type, city_es, country_
   document.getElementById(inputId).value = '';
   document.getElementById(resultsId).classList.remove('show');
   updateProgress();
+  if (type === 'dest' && typeof onQuickTripDestSelected === 'function') {
+    onQuickTripDestSelected();
+  }
 }
 
 function removePlace(slug, type) {
@@ -2468,7 +2674,8 @@ function updateProgress() {
     if (Array.isArray(v)) return v.length > 0;
     return v !== undefined && v !== '' && v !== null;
   }).length;
-  const pct = Math.min(100, Math.round((filled/20)*100));
+  const denom = window.__btFlowMode === 'trip' ? 8 : 20;
+  const pct = Math.min(100, Math.round((filled / denom) * 100));
   document.getElementById('pFill').style.width = pct+'%';
   const pLabel = document.getElementById('pLabel');
   pLabel.textContent = getProgressLabel(pct);
@@ -2814,8 +3021,8 @@ function renderItineraryMap(container, places) {
 
 const SHARE_CARD_W = 1080;
 const SHARE_CARD_H = 1350;
-const SHARE_CARD_CTA = 'beta-cora.com';
-const SHARE_CARD_URL = 'https://beta-cora.com';
+function SHARE_CARD_CTA() { return getShareHostLabel(); }
+function SHARE_CARD_URL() { return getShareOrigin(); }
 
 function renderShareableCard(profile) {
   if (!profile) return;
@@ -2914,7 +3121,7 @@ function applyTripShareLabels() {
   set('tscShare', t.share);
   set('tscDownload', t.download);
   set('tscCopyLink', t.copyLink);
-  set('tscCta', (L().ui.shareableCard || {}).cta || SHARE_CARD_CTA);
+  set('tscCta', formatShareCopy((L().ui.shareableCard || {}).cta || '{site}'));
   const map = document.getElementById('tscMap');
   if (map && t.mapLabel) map.setAttribute('aria-label', t.mapLabel);
 }
@@ -3141,12 +3348,16 @@ function triggerTripDownload(canvas) {
   link.click();
 }
 
-function tripShareText(data) {
+function tripShareText(data, shareUrl) {
   const t = L().ui.shareTrip || {};
-  return (t.text || '')
-    .replace('{dest}', data.destination || '')
-    .replace('{duration}', data.durationLabel || '')
-    .replace('{archetype}', data.archetype || '');
+  const link = shareUrl || data.shareUrl || getShareOrigin();
+  const base = formatShareCopy(t.text || '', {
+    dest: data.destination || '',
+    duration: data.durationLabel || '',
+    archetype: data.archetype || '',
+    url: link,
+  });
+  return withShareUrlInText(base, link);
 }
 
 async function ensureTripShareLink(data) {
@@ -3237,7 +3448,7 @@ async function shareTripCard() {
     const file = new File([blob], 'betacora-viaje.png', { type: 'image/png' });
     const shareData = {
       title: t.title || 'BeTacora',
-      text: tripShareText(lastTripShare),
+      text: tripShareText(lastTripShare, shareUrl),
     };
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -3490,7 +3701,7 @@ function showLimitBanner(reason) {
   if (!el) return;
   const t = L().ui.banners || {};
   if (reason === 'not_logged_in') {
-    el.innerHTML = `${escapeHtml(t.limitGuest || '')}<br><a class="auth-banner-btn" href="/auth">${escapeHtml(t.createAccount || '')}</a>`;
+    el.innerHTML = `${escapeHtml(t.limitGuest || '')}<br><a class="auth-banner-btn" href="/auth?next=${encodeURIComponent('/explorar')}">${escapeHtml(t.createAccount || '')}</a>`;
   } else {
     el.textContent = t.limitReached || '';
   }
@@ -3509,7 +3720,7 @@ function showSaveBanner(type) {
     el.textContent = t.saved || '';
     el.classList.add('show', 'saved');
   } else {
-    el.innerHTML = `${escapeHtml(t.savePrompt || '')}<br><a class="auth-banner-btn" href="/auth">${escapeHtml(t.createAccount || '')}</a>`;
+    el.innerHTML = `${escapeHtml(t.savePrompt || '')}<br><a class="auth-banner-btn" href="/auth?next=${encodeURIComponent('/explorar')}">${escapeHtml(t.createAccount || '')}</a>`;
     el.classList.add('show', 'prompt');
   }
 }
@@ -3604,7 +3815,7 @@ async function submitPostTripFeedback() {
   const user = await window.btAuth.getUser();
   if (!user) {
     showPostTripMsg(
-      `${escapeHtml(t.needLogin || '')} <a href="/auth">${escapeHtml(t.loginCta || '')}</a>`,
+      `${escapeHtml(t.needLogin || '')} <a href="/auth?next=/explorar">${escapeHtml(t.loginCta || '')}</a>`,
       'err'
     );
     return;
@@ -3625,7 +3836,7 @@ async function submitPostTripFeedback() {
       lastSavedItineraryId = saved.id;
     } else {
       showPostTripMsg(
-        `${escapeHtml(t.needLogin || '')} <a href="/auth">${escapeHtml(t.loginCta || '')}</a>`,
+        `${escapeHtml(t.needLogin || '')} <a href="/auth?next=/explorar">${escapeHtml(t.loginCta || '')}</a>`,
         'err'
       );
       return;
@@ -3646,7 +3857,7 @@ async function submitPostTripFeedback() {
     if (!result.ok) {
       if (result.error === 'not_logged_in') {
         showPostTripMsg(
-          `${escapeHtml(t.needLogin || '')} <a href="/auth">${escapeHtml(t.loginCta || '')}</a>`,
+          `${escapeHtml(t.needLogin || '')} <a href="/auth?next=/explorar">${escapeHtml(t.loginCta || '')}</a>`,
           'err'
         );
       } else {
@@ -3682,20 +3893,42 @@ function getDestinationForSave() {
 }
 
 async function handleGenerate() {
-  const btn = document.getElementById('submitBtn');
+  const btn =
+    document.getElementById('qtSubmitBtn') &&
+    document.body.classList.contains('qt-active') &&
+    document.getElementById('qtOverlay')?.classList.contains('open')
+      ? document.getElementById('qtSubmitBtn')
+      : document.getElementById('submitBtn');
+  const mainBtn = document.getElementById('submitBtn');
+  const qtBtn = document.getElementById('qtSubmitBtn');
 
   hideLimitBanner();
   hideSaveBanner();
   lastSavedItineraryId = null;
   postTripWouldReturn = null;
 
+  if (typeof mergeSavedPersonalityForTrip === 'function') {
+    mergeSavedPersonalityForTrip();
+  }
   collectAllAnswers();
   btTrack('questionnaire_completed', {
     trip_type: answers['trip_type'] || null,
     ui_lang: LANG.current,
+    flow: document.body.classList.contains('qt-active') ? 'quick_trip' : 'full',
   });
-  btn.disabled = true;
-  btn.textContent = L().ui.submit.btnLoading;
+  const loadingLabel = L().ui.submit.btnLoading;
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = loadingLabel;
+  }
+  if (mainBtn && mainBtn !== btn) {
+    mainBtn.disabled = true;
+    mainBtn.textContent = loadingLabel;
+  }
+  if (qtBtn && qtBtn !== btn) {
+    qtBtn.disabled = true;
+    qtBtn.textContent = loadingLabel;
+  }
   document.getElementById('shareableCard').classList.remove('show');
   aiProfile = null;
 
@@ -3715,8 +3948,7 @@ async function handleGenerate() {
         section.innerHTML = '';
         section.classList.remove('show', 'is-loading');
         showLimitBanner(limit.reason);
-        btn.disabled = false;
-        btn.textContent = L().ui.submit.btn;
+        resetGenerateButtons();
         return;
       }
     } catch (e) {
@@ -3751,10 +3983,12 @@ async function handleGenerate() {
       }
       aiProfile.archetypeId = data.archetype.id ?? aiProfile.archetypeId;
     }
+    if (typeof closeTripPanel === 'function') closeTripPanel();
     renderItineraryHtml(data.html, data.archetype);
     btTrack('itinerary_generated', {
       mode: data.mode || null,
       archetype_id: data.archetype?.id ?? null,
+      flow: document.body.classList.contains('qt-active') ? 'quick_trip' : 'full',
     });
 
     if (window.btAuth) {
@@ -3784,18 +4018,31 @@ async function handleGenerate() {
   } catch (errCaught) {
     showItineraryError(err.network);
   } finally {
-    btn.disabled = false;
-    btn.textContent = L().ui.submit.btn;
+    resetGenerateButtons();
   }
 }
 
+function resetGenerateButtons() {
+  const label = L().ui.submit.btn;
+  ['submitBtn', 'qtSubmitBtn'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.disabled = false;
+    el.textContent = label;
+  });
+}
+
 function shareProfile() {
-  const name = aiProfile?.type || document.getElementById('pName').textContent;
-  const text = L().ui.share.text.replace('{name}', name);
+  const name = aiProfile?.type || document.getElementById('pName')?.textContent || 'BeTacora';
+  const origin = getShareOrigin();
+  const text = withShareUrlInText(
+    formatShareCopy(L().ui.share.text, { name }),
+    origin
+  );
   if (navigator.share) {
-    navigator.share({title: L().ui.share.title, text, url:'https://betacora.app'}).catch(()=>{});
+    navigator.share({ title: L().ui.share.title, text, url: origin }).catch(() => {});
   } else {
-    navigator.clipboard.writeText(text).then(()=>alert(L().ui.share.copied));
+    navigator.clipboard.writeText(text).then(() => alert(L().ui.share.copied));
   }
 }
 
@@ -3811,6 +4058,362 @@ document.addEventListener('click', e => {
 });
 
 // ─── Page init (runs once on load) ───────────────────────────────
+const PERSONALITY_KEYS = [
+  'wake','pace','energy','motiv','exp','guide',
+  'accom','accom_location','accom_priority','amenity',
+  'food','diet','cultura','museum_type','act',
+  'social','social_e','splurge',
+];
+
+function getQuestionnaireMode() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('mode');
+    if (mode === 'trip' || mode === 'discover') return mode;
+  } catch (e) { /* ignore */ }
+  return 'discover';
+}
+
+function applySavedPersonality(saved) {
+  if (!saved || typeof saved !== 'object') return;
+  PERSONALITY_KEYS.forEach((key) => {
+    if (saved[key] !== undefined && saved[key] !== null && saved[key] !== '') {
+      answers[key] = saved[key];
+    }
+  });
+  if (typeof saved.energy === 'number' || typeof saved.energy === 'string') {
+    const slider = document.getElementById('energySlider');
+    if (slider) {
+      slider.value = String(saved.energy);
+      if (typeof updateSlider === 'function') updateSlider();
+    }
+  }
+  if (Array.isArray(saved.museum_type) && saved.museum_type.length) {
+    misionViaje.museum_type = [...saved.museum_type];
+  }
+}
+
+let savedTravelerProfile = null;
+let quickTripActive = false;
+const qtHomes = new Map(); // id -> { parent, nextSibling }
+
+function qtCopy() {
+  const ui = (L().ui && L().ui.quickTrip) || {};
+  const lang = LANG.current || 'es';
+  const fallback = {
+    es: {
+      kicker: 'Nuevo viaje',
+      title: '¿A dónde quieres ir?',
+      sub: 'Tu perfil viajero ya está listo. Elige un destino para este viaje.',
+      subNamed: 'Usando tu perfil {name}. Elige un destino para este viaje.',
+      panelTitle: 'Detalles del viaje',
+      close: 'Cerrar',
+      updateProfile: '¿Cambió algo de ti? Actualiza tu perfil completo',
+      headerTag: 'Nuevo viaje',
+    },
+    en: {
+      kicker: 'New trip',
+      title: 'Where do you want to go?',
+      sub: 'Your traveler profile is ready. Pick a destination for this trip.',
+      subNamed: 'Using your {name} profile. Pick a destination for this trip.',
+      panelTitle: 'Trip details',
+      close: 'Close',
+      updateProfile: 'Something changed about you? Update your full profile',
+      headerTag: 'New trip',
+    },
+    fr: {
+      kicker: 'Nouveau voyage',
+      title: 'Où veux-tu aller ?',
+      sub: 'Ton profil voyageur est prêt. Choisis une destination pour ce voyage.',
+      subNamed: 'Profil {name} utilisé. Choisis une destination pour ce voyage.',
+      panelTitle: 'Détails du voyage',
+      close: 'Fermer',
+      updateProfile: 'Quelque chose a changé ? Mets à jour ton profil complet',
+      headerTag: 'Nouveau voyage',
+    },
+  };
+  return { ...(fallback[lang] || fallback.es), ...ui };
+}
+
+function applyQuickTripLabels() {
+  if (!quickTripActive) return;
+  const c = qtCopy();
+  const set = (id, text) => {
+    const el = document.getElementById(id);
+    if (el && text) el.textContent = text;
+  };
+  set('qtHeroKicker', c.kicker);
+  set('qtHeroTitle', c.title);
+  const name = savedTravelerProfile?.profile_type;
+  const subEl = document.getElementById('qtHeroSub');
+  if (subEl) {
+    subEl.textContent = name
+      ? (c.subNamed || c.sub).replace('{name}', name)
+      : (c.sub || '');
+  }
+  set('qtPanelTitle', c.panelTitle);
+  set('qtUpdateProfile', c.updateProfile);
+  const closeBtn = document.getElementById('qtPanelClose');
+  if (closeBtn) closeBtn.setAttribute('aria-label', c.close || 'Close');
+  const headerTag = document.getElementById('headerTag');
+  if (headerTag) headerTag.textContent = c.headerTag || c.kicker;
+  const qtSubmit = document.getElementById('qtSubmitBtn');
+  if (qtSubmit && !qtSubmit.disabled) {
+    qtSubmit.textContent = L().ui.submit.btn;
+  }
+}
+
+function rememberHome(el) {
+  if (!el || qtHomes.has(el.id)) return;
+  qtHomes.set(el.id, { parent: el.parentNode, next: el.nextSibling });
+}
+
+function moveTo(el, host) {
+  if (!el || !host) return;
+  rememberHome(el);
+  host.appendChild(el);
+}
+
+function restoreHome(id) {
+  const el = document.getElementById(id);
+  const home = qtHomes.get(id);
+  if (!el || !home?.parent) return;
+  if (home.next && home.next.parentNode === home.parent) {
+    home.parent.insertBefore(el, home.next);
+  } else {
+    home.parent.appendChild(el);
+  }
+}
+
+function formatSelectedDestLabel() {
+  if (!selectedDest.length) return '';
+  return selectedDest
+    .map((d) => {
+      if (d.kind === 'country') return `${d.flag || ''} ${d.country}`.trim();
+      return `${d.flag || ''} ${d.city}`.trim();
+    })
+    .join(' · ');
+}
+
+function hydrateDomFromAnswers(src, keys) {
+  if (!src) return;
+  keys.forEach((key) => {
+    const val = src[key];
+    if (val === undefined || val === null || val === '') return;
+    answers[key] = val;
+    if (Array.isArray(val)) {
+      val.forEach((v) => {
+        document.querySelectorAll(`[data-q="${key}"]`).forEach((el) => {
+          if (el.dataset.v === String(v)) el.classList.add('sel');
+        });
+      });
+    } else {
+      document.querySelectorAll(`[data-q="${key}"]`).forEach((el) => {
+        el.classList.toggle('sel', el.dataset.v === String(val));
+      });
+    }
+  });
+}
+
+function applyTripDefaults(profile) {
+  const defaults = profile?.trip_defaults || {};
+  if (defaults.currency && typeof setCurrency === 'function') {
+    setCurrency(defaults.currency);
+  }
+  const origin = defaults.origin;
+  if (origin) {
+    const cities = Array.isArray(origin) ? origin : [origin];
+    answers.origin = cities;
+    // Keep silent — no origin UI in quick trip; tags stay hidden via qt-hide-in-trip
+    selectedOrigin.length = 0;
+    cities.forEach((city) => {
+      if (city && typeof city === 'string') {
+        selectedOrigin.push({ city, country: '', flag: '' });
+      }
+    });
+  }
+}
+
+function mergeSavedPersonalityForTrip() {
+  if (!quickTripActive || !savedTravelerProfile?.traveler_answers) return;
+  const saved = { ...savedTravelerProfile.traveler_answers };
+  const panelKeys = ['accom', 'accom_location', 'accom_priority', 'amenity'];
+  const panelOverride = {};
+  panelKeys.forEach((k) => {
+    if (answers[k] !== undefined && answers[k] !== null && answers[k] !== '') {
+      panelOverride[k] = answers[k];
+    }
+  });
+  Object.assign(answers, saved, panelOverride);
+  if (Array.isArray(saved.museum_type) && saved.museum_type.length && !(misionViaje.museum_type || []).length) {
+    misionViaje.museum_type = [...saved.museum_type];
+  }
+}
+
+function openTripPanel() {
+  if (!quickTripActive) return;
+  const overlay = document.getElementById('qtOverlay');
+  const body = document.getElementById('qtPanelBody');
+  if (!overlay || !body) return;
+
+  moveTo(document.getElementById('accomSection'), body);
+  moveTo(document.getElementById('datesBlock'), body);
+  moveTo(document.getElementById('budgetBlock'), body);
+  moveTo(document.getElementById('misionSection'), body);
+
+  const destLabel = formatSelectedDestLabel();
+  const destEl = document.getElementById('qtPanelDest');
+  if (destEl) destEl.textContent = destLabel;
+
+  answers.trip_type = 'destino';
+  showTripType('destino');
+
+  // Prefill lodging from DNA as defaults (user can change for this trip)
+  if (savedTravelerProfile?.traveler_answers) {
+    hydrateDomFromAnswers(savedTravelerProfile.traveler_answers, [
+      'accom', 'accom_location', 'accom_priority', 'amenity',
+    ]);
+  }
+
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('qt-panel-open');
+  applyQuickTripLabels();
+  if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
+  updateProgress();
+}
+
+function closeTripPanel() {
+  const overlay = document.getElementById('qtOverlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+  document.body.classList.remove('qt-panel-open');
+  // Keep moved nodes in panel body so reopening is instant; restore only on exit to full profile
+}
+
+function onQuickTripDestSelected() {
+  if (!quickTripActive) return;
+  if (selectedDest.length > 0) openTripPanel();
+}
+
+function exitQuickTripToFullProfile(e) {
+  if (e) e.preventDefault();
+  // Only when explicitly tapped — never auto
+  const target = '/explorar?mode=discover';
+  if (window.top && window.top !== window) {
+    window.top.location.href = target;
+  } else {
+    window.location.href = target;
+  }
+}
+
+let qtChromeWired = false;
+function wireQuickTripChrome() {
+  if (qtChromeWired) return;
+  qtChromeWired = true;
+  const backdrop = document.getElementById('qtBackdrop');
+  const closeBtn = document.getElementById('qtPanelClose');
+  const updateBtn = document.getElementById('qtUpdateProfile');
+  const submitBtn = document.getElementById('qtSubmitBtn');
+  if (backdrop) backdrop.addEventListener('click', closeTripPanel);
+  if (closeBtn) closeBtn.addEventListener('click', closeTripPanel);
+  if (updateBtn) updateBtn.addEventListener('click', exitQuickTripToFullProfile);
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      if (typeof handleGenerate === 'function') handleGenerate();
+    });
+  }
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && document.body.classList.contains('qt-panel-open')) {
+      closeTripPanel();
+    }
+  });
+}
+
+function enterTripMode(profile) {
+  window.__btFlowMode = 'trip';
+  quickTripActive = true;
+  savedTravelerProfile = profile || null;
+  document.body.classList.add('qt-active');
+
+  document.querySelectorAll('[data-flow="personality"]').forEach((el) => {
+    el.classList.add('flow-hidden');
+  });
+
+  applySavedPersonality(profile?.traveler_answers || {});
+  applyTripDefaults(profile);
+
+  const hero = document.getElementById('qtHero');
+  const slot = document.getElementById('qtSearchSlot');
+  const destSearch = document.getElementById('destCitySearch');
+  if (hero) hero.hidden = false;
+  if (slot && destSearch) moveTo(destSearch, slot);
+  // Show destination search as primary (not optional)
+  const destHint = destSearch?.querySelector('.qhint');
+  if (destHint) destHint.style.display = 'none';
+  const destLabel = destSearch?.querySelector('.qlabel');
+  if (destLabel) destLabel.style.display = 'none';
+
+  // Ensure trip step 2 / dest search is visible for the moved control
+  answers.trip_type = 'destino';
+  showTripType('destino');
+
+  applyQuickTripLabels();
+  wireQuickTripChrome();
+  updateProgress();
+
+  try {
+    hero?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) { /* ignore */ }
+}
+
+async function initFlowMode() {
+  const mode = getQuestionnaireMode();
+  window.__btFlowMode = mode === 'trip' ? 'trip' : 'discover';
+
+  if (!window.btAuth) {
+    if (mode === 'trip') {
+      document.querySelectorAll('[data-flow="personality"]').forEach((el) => {
+        el.classList.add('flow-hidden');
+      });
+    }
+    return;
+  }
+
+  try {
+    await window.btAuth.init();
+    const user = await window.btAuth.getUser();
+    if (!user) {
+      // Explorar already auth-gates; only force login for trip mode here.
+      if (mode === 'trip') {
+        const target = '/auth?next=' + encodeURIComponent('/explorar');
+        if (window.top && window.top !== window) {
+          window.top.location.href = target;
+        } else {
+          window.location.href = target;
+        }
+      }
+      return;
+    }
+
+    if (mode === 'trip') {
+      const profile = await window.btAuth.getTravelerProfile();
+      if (profile?.profile_type) {
+        enterTripMode(profile);
+      } else {
+        window.__btFlowMode = 'discover';
+        if (window.top && window.top !== window) {
+          window.top.location.replace('/explorar?mode=discover');
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[BeTacora] flow mode init skipped:', e);
+  }
+}
+
 try {
   const dateFrom = document.getElementById('dateFrom');
   if (dateFrom) dateFrom.min = new Date().toISOString().split('T')[0];
@@ -3833,6 +4436,7 @@ try {
   if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
   updateSlider();
   updateProgress();
+  initFlowMode();
 } catch (e) {
   console.error('BeTacora init error:', e);
 }

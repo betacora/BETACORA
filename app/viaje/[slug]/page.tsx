@@ -221,7 +221,7 @@ export default async function SharedTripPage({
           <BrandWordmark className="text-xl font-medium tracking-tight" />
         </Link>
         <Link
-          href="/explorar"
+          href="/auth?next=/explorar"
           className="text-sm font-medium text-[#E8634A] no-underline hover:opacity-80"
         >
           {copy.back}
@@ -281,7 +281,7 @@ export default async function SharedTripPage({
         <div className="mt-16 pt-10 border-t border-[#E5E2DC] text-center">
           <p className="text-sm text-[#6B6B6B] mb-5 leading-relaxed">{copy.cta}</p>
           <Link
-            href="/explorar"
+            href="/auth?next=/explorar"
             className="inline-flex px-8 py-3.5 rounded-[7px] bg-[#E8634A] text-white font-medium text-sm no-underline hover:opacity-90 transition-opacity duration-200"
           >
             {copy.back}

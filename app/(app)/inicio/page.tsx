@@ -63,10 +63,10 @@ export default function InicioPage() {
 
         <div className="mt-10 flex flex-col gap-3 w-full">
           <Link
-            href="/explorar"
+            href={archetype ? "/explorar?mode=trip" : "/explorar?mode=discover"}
             className="w-full text-center px-6 py-3.5 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity"
           >
-            {copy.startTrip}
+            {archetype ? copy.startTrip : copy.discoverProfile}
           </Link>
           {archetype ? (
             <Link

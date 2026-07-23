@@ -10,8 +10,19 @@ CREATE TABLE IF NOT EXISTS profiles (
   privacy_accepted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   generations_count INTEGER DEFAULT 0,
-  last_generation_at TIMESTAMPTZ
+  last_generation_at TIMESTAMPTZ,
+  -- One-time traveler DNA (personality answers + archetype); trip answers live on itineraries
+  profile_type TEXT,
+  profile_essence TEXT,
+  traveler_answers JSONB,
+  profile_updated_at TIMESTAMPTZ
 );
+
+-- If profiles already exists without traveler DNA columns, run:
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS profile_type TEXT;
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS profile_essence TEXT;
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS traveler_answers JSONB;
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS profile_updated_at TIMESTAMPTZ;
 
 CREATE TABLE IF NOT EXISTS itineraries (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

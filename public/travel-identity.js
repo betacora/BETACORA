@@ -8,8 +8,53 @@
 
   const W = 1080;
   const H = 1350;
-  const CTA = 'beta-cora.com';
-  const URL = 'https://beta-cora.com';
+
+  function getShareOrigin() {
+    try {
+      if (global.location?.origin && global.location.origin !== 'null') {
+        return global.location.origin;
+      }
+    } catch (_) { /* ignore */ }
+    return 'https://www.beta-cora.com';
+  }
+
+  function getShareHostLabel() {
+    try {
+      return new URL(getShareOrigin()).host.replace(/^www\./, '');
+    } catch (_) {
+      return 'beta-cora.com';
+    }
+  }
+
+  function formatShareCopy(template, vars) {
+    const origin = getShareOrigin();
+    const site = getShareHostLabel();
+    let out = String(template || '');
+    const map = { url: origin, site, ...(vars || {}) };
+    out = out.replace(/\{(name|url|site|dest|duration|archetype)\}/g, (_, key) =>
+      map[key] != null ? String(map[key]) : ''
+    );
+    out = out
+      .replace(/https?:\/\/(?:www\.)?betacora\.app\/?/gi, origin)
+      .replace(/(?:www\.)?betacora\.app/gi, site);
+    return out;
+  }
+
+  function withShareUrlInText(text, url) {
+    const origin = url || getShareOrigin();
+    const body = String(text || '').trim();
+    if (!body) return origin;
+    if (body.includes(origin) || /https?:\/\/\S+/i.test(body)) return body;
+    return `${body}\n${origin}`;
+  }
+
+  /** Live getters so exports always reflect current host */
+  function shareCtaLabel() {
+    return getShareHostLabel();
+  }
+  function sharePageUrl() {
+    return getShareOrigin();
+  }
 
   let slideIndex = 0;
   let slides = [];
@@ -378,8 +423,8 @@
         <div class="ti-slide ti-invite" data-ti-slide="invite">
           <div class="ti-kicker ti-wordmark" aria-label="BeTacora"><span class="logo-syl-be">Be</span><span class="logo-syl-ta">Ta</span><span class="logo-syl-co">co</span><span class="logo-syl-ra">ra</span></div>
           <h2 class="ti-invite-title">${escapeHtml(copy.inviteTitle || '')}</h2>
-          <p class="ti-invite-cta">${escapeHtml(copy.inviteCta || CTA)}</p>
-          <div class="ti-invite-url">${escapeHtml(copy.cta || CTA)}</div>
+          <p class="ti-invite-cta">${escapeHtml(copy.inviteCta || shareCtaLabel())}</p>
+          <div class="ti-invite-url">${escapeHtml(formatShareCopy(copy.cta || '{site}'))}</div>
         </div>`,
     });
 
@@ -560,21 +605,28 @@
     const id = slides[slideIndex]?.id || 'slide';
     const file = new File([blob], `betacora-identidad-${id}.png`, { type: 'image/png' });
     const name = global.aiProfile?.type || 'BeTacora';
-    const shareText = (L().ui?.share?.text || '').replace('{name}', name);
+    const origin = sharePageUrl();
+    const shareText = withShareUrlInText(
+      formatShareCopy(L().ui?.share?.text || '', { name }),
+      origin
+    );
     const data = { title: L().ui?.share?.title || 'BeTacora', text: shareText };
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ ...data, files: [file], url: URL });
+      await navigator.share({ ...data, files: [file], url: origin });
       return;
     }
     if (typeof navigator.share === 'function') {
       try {
-        await navigator.share({ ...data, url: URL });
+        await navigator.share({ ...data, url: origin });
         return;
       } catch (e) {
         if (e && e.name === 'AbortError') return;
       }
     }
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch (_) { /* ignore */ }
     triggerDownload(canvas, file.name);
   }
 
@@ -586,9 +638,11 @@
     share,
     getSlides: () => slides.slice(),
     getIndex: () => slideIndex,
-    W,
-    H,
-    CTA,
-    URL,
+    getShareOrigin,
+    getShareHostLabel,
+    get W() { return W; },
+    get H() { return H; },
+    get CTA() { return shareCtaLabel(); },
+    get URL() { return sharePageUrl(); },
   };
 })(typeof window !== 'undefined' ? window : globalThis);

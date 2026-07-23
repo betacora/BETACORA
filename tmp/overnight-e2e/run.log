@@ -1,0 +1,138 @@
+
+=== 1) Real itinerary generation (ES, 4 days Lisboa) ===
+✓ generate-itinerary HTTP 200
+✓ itinerary HTML length 14667
+✓ archetype/profile present 
+✓ museum content reflected museo, arte, historia
+✓ surf/sport reflected surf, playa, costa, ola
+✓ cooking/gastro reflected cocina, cooking, taller, clase
+✓ accom filters reflected fuera, precio, barrio, metro
+✓ EUR currency in content €, eur, euro
+✓ bt-places markers 21 places
+✓ generation duration 115.6s
+
+=== 2) Share-trip API ===
+✓ share-trip HTTP 200
+✓ share slug exta4l5xsj
+✓ share URL http://localhost:3000/viaje/exta4l5xsj
+
+=== 3) Playwright UI + i18n + mobile 375 ===
+✓ console clean: landing ok
+✓ console clean: auth ok
+✓ console clean: questionnaire ok
+✓ shared trip page content 
+✓ shared trip 375 no horizontal overflow {"clientWidth":375,"scrollWidth":375,"bodyScroll":375}
+✓ console clean: shared trip ok
+✓ EN i18n museumLabel What kind of museums interest you?
+✓ EN i18n museumArte Art
+✓ EN i18n accomLoc Near the center
+✓ EN i18n accomPri Optimize for price
+✓ EN i18n currencyUsd USD — Dollar
+✓ EN i18n postTrip.prompt Back from this trip already?
+✓ EN i18n shareTrip.share Share trip
+✓ EN i18n banners.createAccount Create account
+✓ EN i18n mapDay Day
+✓ EN no Spanish leftovers in today's UI ok
+✓ FR museum label Quel type de musées vous intéresse ?
+✓ FR accom location Près du centre
+✓ FR accom priority Optimiser le prix
+✓ FR postTrip De retour de ce voyage ?
+✓ FR shareTrip Partager le voyage
+✓ FR map day Jour
+✓ FR errors no Spanish bitácora Nous n'avons pas pu générer votre carnet. Réessayez dans quelques instants.
+✓ instant/profile card visible after render 
+✓ Leaflet map container h=260
+✓ Leaflet markers/tiles present yes
+✓ post-trip feedback block present 
+✓ post-trip form opens 
+✓ post-trip ES prompt ¿Ya volviste de este viaje?
+✓ share cards shown trip=true profile=true
+✓ itinerary 375 layout (allow leaflet tile bleed) {"clientWidth":375,"scrollWidth":375}
+✓ shareable card 1080x1350 1080x1350
+✓ shareable card downloaded /Users/rodrigobeccacecesanchez/Desktop/betacora/tmp/overnight-e2e/betacora-perfil.png
+✓ post-trip submit responds Inicia sesión para guardar tu feedback en tu bitácora. Iniciar sesión
+⚠ Post-trip save to Supabase columns requires a logged-in user — UI path verified; DB write needs manual login tomorrow.
+✓ console clean: itinerary UI ok
+
+=== 4) EN generation (short) for translation of AI output ===
+✓ EN generate HTTP 200
+✓ EN itinerary English content day, museum, hotel, surf, outside, price, £, gbp
+✓ EN itinerary mostly English spanishTokens=0
+
+=== 5) FR generation (short) ===
+✓ FR generate HTTP 200
+✓ FR itinerary French content jour, musée, hotel, hébergement, surf, €
+✓ FR itinerary no Spanish bitácora 
+
+=== SUMMARY ===
+{
+  "passed": 54,
+  "failed": 0,
+  "caveats": [
+    "Post-trip save to Supabase columns requires a logged-in user — UI path verified; DB write needs manual login tomorrow."
+  ],
+  "failedItems": [],
+  "passedItems": [
+    "generate-itinerary HTTP: 200",
+    "itinerary HTML length: 14667",
+    "archetype/profile present",
+    "museum content reflected: museo, arte, historia",
+    "surf/sport reflected: surf, playa, costa, ola",
+    "cooking/gastro reflected: cocina, cooking, taller, clase",
+    "accom filters reflected: fuera, precio, barrio, metro",
+    "EUR currency in content: €, eur, euro",
+    "bt-places markers: 21 places",
+    "generation duration: 115.6s",
+    "share-trip HTTP: 200",
+    "share slug: exta4l5xsj",
+    "share URL: http://localhost:3000/viaje/exta4l5xsj",
+    "console clean: landing: ok",
+    "console clean: auth: ok",
+    "console clean: questionnaire: ok",
+    "shared trip page content",
+    "shared trip 375 no horizontal overflow: {\"clientWidth\":375,\"scrollWidth\":375,\"bodyScroll\":375}",
+    "console clean: shared trip: ok",
+    "EN i18n museumLabel: What kind of museums interest you?",
+    "EN i18n museumArte: Art",
+    "EN i18n accomLoc: Near the center",
+    "EN i18n accomPri: Optimize for price",
+    "EN i18n currencyUsd: USD — Dollar",
+    "EN i18n postTrip.prompt: Back from this trip already?",
+    "EN i18n shareTrip.share: Share trip",
+    "EN i18n banners.createAccount: Create account",
+    "EN i18n mapDay: Day",
+    "EN no Spanish leftovers in today's UI: ok",
+    "FR museum label: Quel type de musées vous intéresse ?",
+    "FR accom location: Près du centre",
+    "FR accom priority: Optimiser le prix",
+    "FR postTrip: De retour de ce voyage ?",
+    "FR shareTrip: Partager le voyage",
+    "FR map day: Jour",
+    "FR errors no Spanish bitácora: Nous n'avons pas pu générer votre carnet. Réessayez dans quelques instants.",
+    "instant/profile card visible after render",
+    "Leaflet map container: h=260",
+    "Leaflet markers/tiles present: yes",
+    "post-trip feedback block present",
+    "post-trip form opens",
+    "post-trip ES prompt: ¿Ya volviste de este viaje?",
+    "share cards shown: trip=true profile=true",
+    "itinerary 375 layout (allow leaflet tile bleed): {\"clientWidth\":375,\"scrollWidth\":375}",
+    "shareable card 1080x1350: 1080x1350",
+    "shareable card downloaded: /Users/rodrigobeccacecesanchez/Desktop/betacora/tmp/overnight-e2e/betacora-perfil.png",
+    "post-trip submit responds: Inicia sesión para guardar tu feedback en tu bitácora. Iniciar sesión",
+    "console clean: itinerary UI: ok",
+    "EN generate HTTP: 200",
+    "EN itinerary English content: day, museum, hotel, surf, outside, price, £, gbp",
+    "EN itinerary mostly English: spanishTokens=0",
+    "FR generate HTTP: 200",
+    "FR itinerary French content: jour, musée, hotel, hébergement, surf, €",
+    "FR itinerary no Spanish bitácora"
+  ],
+  "artifacts": {
+    "itineraryEs": "/Users/rodrigobeccacecesanchez/Desktop/betacora/tmp/overnight-e2e/itinerary-es.html",
+    "sharedTrip375": "/Users/rodrigobeccacecesanchez/Desktop/betacora/tmp/overnight-e2e/shared-trip-375.png",
+    "shareablePng": "/Users/rodrigobeccacecesanchez/Desktop/betacora/tmp/overnight-e2e/betacora-perfil.png"
+  }
+}
+
+All overnight E2E checks passed.

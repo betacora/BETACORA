@@ -31,13 +31,13 @@ export function SplashScreen() {
       aria-hidden="true"
       className="fixed inset-0 z-[9999] flex items-center justify-center"
       style={{
-        background: "#2D7B7B",
+        background: "#FAF8F4",
         opacity: fading ? 0 : 1,
         transition: "opacity 0.3s ease",
       }}
     >
       <img
-        src="/icon-512.png?v=3"
+        src="/icon-512.png?v=4"
         alt="BeTacora"
         width={160}
         height={160}

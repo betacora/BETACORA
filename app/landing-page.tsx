@@ -52,7 +52,7 @@ export function LandingPage() {
           aria-label="BeTacora"
         >
           <img
-            src="/icon-512.png?v=3"
+            src="/icon-512.png?v=4"
             alt=""
             width={36}
             height={36}
@@ -87,7 +87,7 @@ export function LandingPage() {
 
       <section className="flex-1 flex flex-col items-center justify-center px-5 pb-20 sm:px-8 md:px-12 text-center">
         <img
-          src="/icon-512.png?v=3"
+          src="/icon-512.png?v=4"
           alt="BeTacora"
           width={88}
           height={88}

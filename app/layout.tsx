@@ -17,10 +17,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon-192.png?v=3", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png?v=3", sizes: "512x512", type: "image/png" },
+      { url: "/icon-192.png?v=4", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png?v=4", sizes: "512x512", type: "image/png" },
     ],
-    apple: "/icon-192.png?v=3",
+    apple: "/icon-192.png?v=4",
   },
 };
 
@@ -34,19 +34,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="h-full antialiased" style={{ background: "#2D7B7B" }}>
+    <html lang="es" className="h-full antialiased" style={{ background: "#FAF8F4" }}>
       <head>
         <style
           dangerouslySetInnerHTML={{
-            __html: `#app-splash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#2D7B7B}html,body{background:#2D7B7B}`,
+            __html: `#app-splash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#FAF8F4}html,body{background:#FAF8F4}`,
           }}
         />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/icon-192.png?v=3" type="image/png" sizes="192x192" />
+        <link rel="icon" href="/icon-192.png?v=4" type="image/png" sizes="192x192" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="BeTacora" />
-        <link rel="apple-touch-icon" href="/icon-192.png?v=3" />
+        <link rel="apple-touch-icon" href="/icon-192.png?v=4" />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-[#FAF8F4]">
         <SplashScreen />

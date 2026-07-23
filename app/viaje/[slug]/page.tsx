@@ -211,7 +211,7 @@ export default async function SharedTripPage({
       <header className="w-full px-5 py-5 sm:px-8 md:px-12 flex items-center justify-between gap-4 border-b border-[#E5E2DC]">
         <Link href="/" className="flex items-center gap-2.5 no-underline text-[#1A1A1A]">
           <img
-            src="/icon-512.png?v=3"
+            src="/icon-512.png?v=4"
             alt=""
             width={36}
             height={36}

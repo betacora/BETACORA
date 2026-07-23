@@ -254,7 +254,7 @@ export default function AuthPage() {
           aria-label="BeTacora"
         >
           <img
-            src="/icon-512.png?v=3"
+            src="/icon-512.png?v=4"
             alt=""
             width={28}
             height={28}
@@ -290,7 +290,7 @@ export default function AuthPage() {
             <>
               <div className="flex flex-col items-center mb-6">
                 <img
-                  src="/icon-512.png?v=3"
+                  src="/icon-512.png?v=4"
                   alt="BeTacora"
                   width={56}
                   height={56}

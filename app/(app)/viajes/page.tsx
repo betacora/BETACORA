@@ -72,7 +72,7 @@ export default function ViajesPage() {
             href="/auth?next=/viajes"
           />
         ) : trips.length === 0 ? (
-          <div className="rounded-[8px] border border-[#E5E2DC] bg-white p-7 text-center">
+          <div className="rounded-[8px] border border-[#E5E5E5] bg-white p-7 text-center">
             <p className="text-lg font-medium text-[#1A1A1A] m-0">
               {copy.emptyTitle}
             </p>
@@ -92,7 +92,7 @@ export default function ViajesPage() {
               <li key={trip.id}>
                 <Link
                   href={`/viajes/${trip.id}`}
-                  className="block rounded-[8px] border border-[#E5E2DC] bg-white p-4 no-underline hover:border-[#d5d0c8] transition-colors"
+                  className="block rounded-[8px] border border-[#E5E5E5] bg-white p-4 no-underline hover:border-[#D4D4D4] transition-colors"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -108,7 +108,7 @@ export default function ViajesPage() {
                         {formatDate(trip.created_at, lang)}
                       </p>
                     </div>
-                    <span className="shrink-0 text-xs font-medium text-[#E8634A] mt-0.5">
+                    <span className="shrink-0 text-xs font-medium text-[#6B6B6B] mt-0.5">
                       {copy.openTrip}
                     </span>
                   </div>

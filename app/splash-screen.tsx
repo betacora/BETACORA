@@ -31,7 +31,7 @@ export function SplashScreen() {
       aria-hidden="true"
       className="fixed inset-0 z-[9999] flex items-center justify-center"
       style={{
-        background: "#FAF8F4",
+        background: "#FFFFFF",
         opacity: fading ? 0 : 1,
         transition: "opacity 0.3s ease",
       }}

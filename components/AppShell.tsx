@@ -16,7 +16,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]">
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#1A1A1A]">
       <div
         className={`flex-1 flex flex-col min-h-0 ${
           isExplorar

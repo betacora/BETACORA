@@ -42,6 +42,23 @@ export function LandingPage() {
     return () => window.clearTimeout(t);
   }, []);
 
+  // If Site URL still points at `/`, Supabase drops hash tokens on the landing
+  // page. Forward them to the auth callback so the user gets logged in + success UI.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    const params = new URLSearchParams(hash.slice(1));
+    const isAuthReturn =
+      params.has("access_token") ||
+      params.get("type") === "signup" ||
+      params.get("type") === "email" ||
+      params.has("error") ||
+      params.has("error_code");
+    if (!isAuthReturn) return;
+    window.location.replace(`/auth/callback?confirmed=1&next=/inicio${hash}`);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -80,8 +97,8 @@ export function LandingPage() {
   const ctaLabel = hasProfile && isLoggedIn ? copy.ctaReturning : copy.cta;
 
   return (
-    <main className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]">
-      <header className="w-full px-4 py-4 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-2 sm:gap-4 border-b border-[#E5E2DC]">
+    <main className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#1A1A1A]">
+      <header className="w-full px-4 py-4 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-2 sm:gap-4 border-b border-[#E5E5E5]">
         <Link
           href="/"
           className="flex items-center gap-2 sm:gap-2.5 no-underline text-[#1A1A1A] min-w-0"
@@ -155,7 +172,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <footer className="w-full px-6 py-8 sm:px-8 md:px-12 border-t border-[#E5E2DC] text-center">
+      <footer className="w-full px-6 py-8 sm:px-8 md:px-12 border-t border-[#E5E5E5] text-center">
         <p className="text-sm text-[#6B6B6B] leading-relaxed">
           <Link
             href={ABOUT_PATH[lang]}
@@ -163,7 +180,7 @@ export function LandingPage() {
           >
             {copy.about}
           </Link>
-          <span className="mx-2 text-[#E5E2DC]" aria-hidden="true">
+          <span className="mx-2 text-[#E5E5E5]" aria-hidden="true">
             ·
           </span>
           <span>{copy.tagline}</span>

@@ -80,13 +80,13 @@ export default function PerfilPage() {
             <button
               type="button"
               onClick={() => signOut()}
-              className="w-full py-3 rounded-[7px] border border-[#E5E2DC] bg-white text-sm font-medium text-[#6B6B6B] cursor-pointer hover:text-[#1A1A1A] transition-colors"
+              className="w-full py-3 rounded-[7px] border border-[#E5E5E5] bg-white text-sm font-medium text-[#6B6B6B] cursor-pointer hover:text-[#1A1A1A] transition-colors"
             >
               {copy.logout}
             </button>
           </div>
         ) : (
-          <div className="rounded-[8px] border border-[#E5E2DC] bg-white p-7 text-center">
+          <div className="rounded-[8px] border border-[#E5E5E5] bg-white p-7 text-center">
             <p className="text-lg font-medium text-[#1A1A1A] m-0">
               {copy.emptyTitle}
             </p>

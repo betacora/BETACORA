@@ -157,7 +157,7 @@ export function SwRegister() {
   return (
     <div
       role="status"
-      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-[9000] w-[min(92vw,22rem)] -translate-x-1/2 rounded-[8px] border border-[#E5E2DC] bg-white px-4 py-3 shadow-[0_8px_28px_rgba(26,26,26,0.12)]"
+      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-[9000] w-[min(92vw,22rem)] -translate-x-1/2 rounded-[8px] border border-[#E5E5E5] bg-white px-4 py-3 shadow-[0_8px_28px_rgba(26,26,26,0.12)]"
     >
       <p className="m-0 text-sm text-[#1A1A1A] leading-snug font-medium">
         {copy.message}

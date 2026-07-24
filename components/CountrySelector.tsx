@@ -85,7 +85,7 @@ export function CountrySelector({
   return (
     <div ref={wrapRef} className="relative">
       {selected ? (
-        <div className="flex items-center justify-between rounded-[7px] px-4 py-3 border border-[#E5E2DC] bg-white">
+        <div className="flex items-center justify-between rounded-[7px] px-4 py-3 border border-[#E5E5E5] bg-white">
           <span className="text-base text-[#1A1A1A]">
             <span className="mr-2 text-sm" aria-hidden="true">
               {selected.flag}
@@ -95,7 +95,7 @@ export function CountrySelector({
           <button
             type="button"
             onClick={clear}
-            className="text-sm text-[#E8634A] bg-transparent border-0 cursor-pointer font-medium"
+            className="text-sm text-[#2D7B7B] bg-transparent border-0 cursor-pointer font-medium hover:opacity-80 transition-opacity duration-200"
             aria-label={clearLabel}
           >
             ✕
@@ -137,13 +137,13 @@ export function CountrySelector({
             />
           </div>
           {open && results.length > 0 && (
-            <ul className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-[7px] border border-[#E5E2DC] bg-white list-none p-1 m-0">
+            <ul className="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-[7px] border border-[#E5E5E5] bg-white list-none p-1 m-0">
               {results.map((c) => (
                 <li key={c.isoCode}>
                   <button
                     type="button"
                     onClick={() => pick(c)}
-                    className="w-full text-left px-3 py-2.5 rounded-[6px] hover:bg-[#FFF5F2] border-0 bg-transparent cursor-pointer text-base text-[#1A1A1A]"
+                    className="w-full text-left px-3 py-2.5 rounded-[6px] hover:bg-[#FAFAFA] border-0 bg-transparent cursor-pointer text-base text-[#1A1A1A]"
                   >
                     <span className="mr-2 text-sm" aria-hidden="true">
                       {c.flag}
@@ -161,4 +161,4 @@ export function CountrySelector({
 }
 
 const inputClass =
-  "w-full rounded-[7px] px-4 py-3 text-base border border-[#E5E2DC] outline-none transition-colors focus:border-[#2D7B7B] bg-white text-[#1A1A1A] placeholder:text-[#9a9590]";
+  "w-full rounded-[7px] px-4 py-3 text-base border border-[#E5E5E5] outline-none transition-colors focus:border-[#2D7B7B] bg-white text-[#1A1A1A] placeholder:text-[#9CA3AF]";

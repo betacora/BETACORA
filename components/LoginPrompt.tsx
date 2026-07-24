@@ -11,7 +11,7 @@ type Props = {
 
 export function LoginPrompt({ title, body, cta, href = "/auth" }: Props) {
   return (
-    <div className="rounded-[8px] border border-[#E5E2DC] bg-white p-7 text-center">
+    <div className="rounded-[8px] border border-[#E5E5E5] bg-white p-7 text-center">
       <p className="text-lg font-medium text-[#1A1A1A] tracking-tight m-0">
         {title}
       </p>

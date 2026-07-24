@@ -65,7 +65,7 @@ export default function ViajeDetailPage() {
             <p className="text-[#6B6B6B] m-0">{copy.emptyTitle}</p>
             <Link
               href="/viajes"
-              className="mt-4 inline-block text-sm text-[#E8634A] no-underline"
+            className="mt-4 inline-block text-sm text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity duration-200"
             >
               ← {copy.title}
             </Link>

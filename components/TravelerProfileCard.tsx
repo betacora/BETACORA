@@ -23,7 +23,7 @@ export function TravelerProfileCard({ lang, profile, showCta = false }: Props) {
   const stats = profile.stats?.slice(0, 3) || [];
 
   return (
-    <article className="rounded-[8px] overflow-hidden border border-[#E5E2DC] bg-white">
+    <article className="rounded-[8px] overflow-hidden border border-[#E5E5E5] bg-white">
       <div className="bg-white px-6 pt-7 pb-5 sm:px-8">
         <p className="text-[0.65rem] tracking-[0.16em] uppercase text-[#6B6B6B] font-normal m-0 mb-2">
           {copy.eyebrow}
@@ -41,7 +41,7 @@ export function TravelerProfileCard({ lang, profile, showCta = false }: Props) {
             {profile.tags.map((t) => (
               <span
                 key={t}
-                className="text-[0.7rem] text-[#6B6B6B] border border-[#E5E2DC] rounded px-2.5 py-0.5"
+                className="text-[0.7rem] text-[#6B6B6B] border border-[#E5E5E5] rounded px-2.5 py-0.5"
               >
                 {t}
               </span>
@@ -49,14 +49,14 @@ export function TravelerProfileCard({ lang, profile, showCta = false }: Props) {
           </div>
         ) : null}
         {profile.quote ? (
-          <p className="mt-4 pt-4 border-t border-[#E5E2DC] text-[0.9rem] italic text-[#6B6B6B] leading-relaxed m-0">
+          <p className="mt-4 pt-4 border-t border-[#E5E5E5] text-[0.9rem] italic text-[#6B6B6B] leading-relaxed m-0">
             {profile.quote}
           </p>
         ) : null}
       </div>
 
       {stats.length > 0 ? (
-        <div className="bg-[#FAF8F4] border-t border-[#E5E2DC] px-6 py-4 sm:px-8 flex gap-6 flex-wrap justify-between">
+        <div className="bg-[#FFFFFF] border-t border-[#E5E5E5] px-6 py-4 sm:px-8 flex gap-6 flex-wrap justify-between">
           {stats.map((s) => (
             <div key={s.label} className="text-center min-w-[4.5rem]">
               <div className="text-base font-medium text-[#1A1A1A]">{s.value}</div>
@@ -69,10 +69,10 @@ export function TravelerProfileCard({ lang, profile, showCta = false }: Props) {
       ) : null}
 
       {showCta ? (
-        <div className="border-t border-[#E5E2DC] px-6 py-4 sm:px-8 bg-[#FAF8F4]">
+        <div className="border-t border-[#E5E5E5] px-6 py-4 sm:px-8 bg-[#FFFFFF]">
           <Link
             href="/explorar?mode=trip"
-            className="inline-flex w-full justify-center items-center px-5 py-3 rounded-[7px] bg-[#E8634A] text-white text-sm font-medium no-underline hover:opacity-90 transition-opacity"
+            className="inline-flex w-full justify-center items-center px-5 py-3 rounded-[7px] bg-[#E8634A] text-white text-sm font-medium no-underline hover:opacity-90 transition-opacity duration-200"
           >
             {copy.emptyCta}
           </Link>

@@ -106,6 +106,9 @@ export type AuthCopy = {
   registerSubtitle: string;
   tabLogin: string;
   tabRegister: string;
+  continueWithGoogle: string;
+  continueWithApple: string;
+  orEmail: string;
   fullName: string;
   namePlaceholder: string;
   nationality: string;
@@ -122,9 +125,10 @@ export type AuthCopy = {
   submitLogin: string;
   submitRegister: string;
   loading: string;
-  footer: string;
   confirmTitle: string;
   confirmHint: string;
+  confirmedTitle: string;
+  confirmedHint: string;
   resend: string;
   resending: string;
   resendSuccess: string;
@@ -140,6 +144,8 @@ export type AuthCopy = {
     ageRequired: string;
     resendNeedEmail: string;
     emailNotConfirmed: string;
+    oauthFailed: string;
+    confirmFailed: string;
   };
 };
 
@@ -348,6 +354,9 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     registerSubtitle: "Crea tu cuenta y empieza a construir tu bitácora",
     tabLogin: "Entrar",
     tabRegister: "Registrarse",
+    continueWithGoogle: "Continuar con Google",
+    continueWithApple: "Continuar con Apple",
+    orEmail: "o con email",
     fullName: "Nombre completo",
     namePlaceholder: "Tu nombre",
     nationality: "Nacionalidad",
@@ -364,9 +373,10 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     submitLogin: "Entrar",
     submitRegister: "Crear cuenta",
     loading: "…",
-    footer: "Sin cuenta: 1 itinerario · Con cuenta: 2 por mes",
     confirmTitle: "Revisa tu email y confirma tu cuenta",
     confirmHint: "Te hemos enviado un enlace de confirmación.",
+    confirmedTitle: "¡Cuenta confirmada!",
+    confirmedHint: "Entrando en tu bitácora…",
     resend: "Reenviar email de confirmación",
     resending: "Enviando…",
     resendSuccess:
@@ -384,6 +394,9 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
       resendNeedEmail: "Introduce tu email para reenviar la confirmación.",
       emailNotConfirmed:
         "Tu email aún no está confirmado. Revisa tu bandeja de entrada.",
+      oauthFailed: "No se pudo iniciar sesión. Inténtalo de nuevo.",
+      confirmFailed:
+        "No pudimos confirmar tu cuenta. El enlace puede haber caducado. Prueba a iniciar sesión o reenviar el email.",
     },
   },
   en: {
@@ -392,6 +405,9 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     registerSubtitle: "Create your account and unlock more generations",
     tabLogin: "Sign in",
     tabRegister: "Sign up",
+    continueWithGoogle: "Continue with Google",
+    continueWithApple: "Continue with Apple",
+    orEmail: "or with email",
     fullName: "Full name",
     namePlaceholder: "Your name",
     nationality: "Nationality",
@@ -408,9 +424,10 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     submitLogin: "Sign in",
     submitRegister: "Create account",
     loading: "…",
-    footer: "No account: 1 itinerary · With account: 2 per month",
     confirmTitle: "Check your email and confirm your account",
     confirmHint: "We've sent you a confirmation link.",
+    confirmedTitle: "Account confirmed!",
+    confirmedHint: "Taking you to your logbook…",
     resend: "Resend confirmation email",
     resending: "Sending…",
     resendSuccess:
@@ -428,6 +445,9 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
       resendNeedEmail: "Enter your email to resend confirmation.",
       emailNotConfirmed:
         "Your email is not confirmed yet. Check your inbox.",
+      oauthFailed: "Sign-in failed. Please try again.",
+      confirmFailed:
+        "We couldn't confirm your account. The link may have expired. Try signing in or resending the email.",
     },
   },
   fr: {
@@ -436,6 +456,9 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     registerSubtitle: "Créez votre compte et débloquez plus de générations",
     tabLogin: "Connexion",
     tabRegister: "S'inscrire",
+    continueWithGoogle: "Continuer avec Google",
+    continueWithApple: "Continuer avec Apple",
+    orEmail: "ou avec email",
     fullName: "Nom complet",
     namePlaceholder: "Votre nom",
     nationality: "Nationalité",
@@ -452,9 +475,10 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     submitLogin: "Se connecter",
     submitRegister: "Créer un compte",
     loading: "…",
-    footer: "Sans compte : 1 itinéraire · Avec compte : 2 par mois",
     confirmTitle: "Vérifiez votre email et confirmez votre compte",
     confirmHint: "Nous vous avons envoyé un lien de confirmation.",
+    confirmedTitle: "Compte confirmé !",
+    confirmedHint: "Ouverture de votre carnet…",
     resend: "Renvoyer l'email de confirmation",
     resending: "Envoi…",
     resendSuccess:
@@ -473,6 +497,9 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
         "Entrez votre email pour renvoyer la confirmation.",
       emailNotConfirmed:
         "Votre email n'est pas encore confirmé. Vérifiez votre boîte de réception.",
+      oauthFailed: "La connexion a échoué. Réessayez.",
+      confirmFailed:
+        "Impossible de confirmer votre compte. Le lien a peut-être expiré. Essayez de vous connecter ou de renvoyer l'email.",
     },
   },
 };

@@ -9,6 +9,7 @@ import { AUTH_COPY, detectLang, type AppLang } from "@/lib/lang";
 import { BrandWordmark } from "@/components/BrandWordmark";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
+import { getAuthOrigin, getEmailConfirmRedirectTo } from "@/lib/authRedirect";
 import { safeNextPath } from "@/lib/safeNextPath";
 
 type Mode = "login" | "register";
@@ -28,7 +29,7 @@ export default function AuthPage() {
     <Suspense
       fallback={
         <div
-          className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FAF8F4]"
+          className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FFFFFF]"
           aria-busy="true"
         />
       }
@@ -53,6 +54,9 @@ function AuthPageInner() {
   const [privacy, setPrivacy] = useState(false);
   const [age18, setAge18] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState<"google" | "apple" | null>(
+    null,
+  );
   const [resending, setResending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -61,6 +65,7 @@ function AuthPageInner() {
   const [awaitingEmailConfirm, setAwaitingEmailConfirm] = useState(false);
 
   const copy = AUTH_COPY[lang];
+  const busy = loading || oauthLoading !== null;
 
   useEffect(() => {
     const detected = detectLang("en");
@@ -83,6 +88,31 @@ function AuthPageInner() {
     setInfo(null);
     setPendingEmail(null);
     setAwaitingEmailConfirm(false);
+  }
+
+  async function handleOAuth(provider: "google" | "apple") {
+    setError(null);
+    setInfo(null);
+    setOauthLoading(provider);
+
+    if (mode === "register") {
+      trackFunnel(FunnelEvent.RegistrationStarted, { provider });
+    }
+
+    const redirectTo = `${getAuthOrigin()}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo,
+        skipBrowserRedirect: false,
+      },
+    });
+
+    if (oauthError) {
+      setOauthLoading(null);
+      setError(oauthError.message || copy.errors.oauthFailed);
+    }
+    // On success the browser navigates away to the provider.
   }
 
   async function saveProfile(userId: string) {
@@ -109,6 +139,9 @@ function AuthPageInner() {
     const { error: resendError } = await supabase.auth.resend({
       type: "signup",
       email: targetEmail,
+      options: {
+        emailRedirectTo: getEmailConfirmRedirectTo(nextPath),
+      },
     });
     setResending(false);
     if (resendError) {
@@ -188,6 +221,7 @@ function AuthPageInner() {
         email: email.trim(),
         password,
         options: {
+          emailRedirectTo: getEmailConfirmRedirectTo(nextPath),
           data: {
             name: name.trim(),
             nationality: nationality.trim(),
@@ -267,15 +301,15 @@ function AuthPageInner() {
   if (!ready) {
     return (
       <div
-        className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FAF8F4]"
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FFFFFF]"
         aria-busy="true"
       />
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]">
-      <header className="w-full px-3.5 py-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-3 border-b border-[#E5E2DC] bg-[#FAF8F4] sticky top-0 z-50 min-w-0">
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#1A1A1A]">
+      <header className="w-full px-3.5 py-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-3 border-b border-[#E5E5E5] bg-[#FFFFFF] sticky top-0 z-50 min-w-0">
         <Link
           href="/"
           className="flex items-center gap-2 no-underline text-[#1A1A1A] min-w-0 shrink"
@@ -302,7 +336,7 @@ function AuthPageInner() {
           ← {copy.back}
         </Link>
 
-        <div className="rounded-[8px] p-8 sm:p-10 border border-[#E5E2DC] bg-white">
+        <div className="rounded-[8px] p-8 sm:p-10 border border-[#E5E5E5] bg-white">
           {awaitingEmailConfirm ? (
             <EmailConfirmScreen
               copy={copy}
@@ -330,7 +364,7 @@ function AuthPageInner() {
                 </p>
               </div>
 
-              <div className="flex mb-8 border-b border-[#E5E2DC]">
+              <div className="flex mb-8 border-b border-[#E5E5E5]">
                 <button
                   type="button"
                   onClick={() => {
@@ -361,6 +395,52 @@ function AuthPageInner() {
                   {copy.tabRegister}
                 </button>
               </div>
+
+              <div className="space-y-3 mb-6">
+                <button
+                  type="button"
+                  onClick={() => handleOAuth("google")}
+                  disabled={busy}
+                  aria-label={copy.continueWithGoogle}
+                  className="w-full h-11 px-4 inline-flex items-center justify-center gap-3 rounded-[7px] border border-[#E5E5E5] bg-white text-[#1A1A1A] text-sm font-medium cursor-pointer disabled:opacity-60 hover:bg-[#FAFAFA] hover:border-[#D4D4D4] transition-colors duration-200"
+                >
+                  <GoogleLogo />
+                  <span>
+                    {oauthLoading === "google"
+                      ? copy.loading
+                      : copy.continueWithGoogle}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOAuth("apple")}
+                  disabled={busy}
+                  aria-label={copy.continueWithApple}
+                  className="w-full h-11 px-4 inline-flex items-center justify-center gap-3 rounded-[7px] border border-[#1A1A1A] bg-[#1A1A1A] text-white text-sm font-medium cursor-pointer disabled:opacity-60 hover:bg-[#2a2a2a] hover:border-[#2a2a2a] transition-colors duration-200"
+                >
+                  <AppleLogo />
+                  <span>
+                    {oauthLoading === "apple"
+                      ? copy.loading
+                      : copy.continueWithApple}
+                  </span>
+                </button>
+                <div className="relative flex items-center justify-center py-1">
+                  <div
+                    className="absolute inset-x-0 top-1/2 h-px bg-[#E5E5E5]"
+                    aria-hidden="true"
+                  />
+                  <span className="relative bg-white px-3 text-xs text-[#6B6B6B]">
+                    {copy.orEmail}
+                  </span>
+                </div>
+              </div>
+
+              {error && oauthLoading === null && !showLoginResend ? (
+                <p className="mb-4 text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E5E5]">
+                  {error}
+                </p>
+              ) : null}
 
               <form noValidate onSubmit={handleSubmit} className="space-y-4">
                 {mode === "register" && (
@@ -447,32 +527,33 @@ function AuthPageInner() {
                   </div>
                 )}
 
-                {error && (
-                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E2DC]">
-                    {error}
-                  </p>
-                )}
-
                 {info && (
-                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#6B6B6B] border border-[#E5E2DC]">
+                  <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#6B6B6B] border border-[#E5E5E5]">
                     {info}
                   </p>
                 )}
 
                 {showLoginResend && (
-                  <button
-                    type="button"
-                    onClick={handleResendConfirmation}
-                    disabled={resending}
-                    className="w-full py-2.5 rounded-[7px] text-sm font-medium border border-[#E5E2DC] text-[#1A1A1A] bg-transparent cursor-pointer disabled:opacity-60 hover:border-[#d5d0c8] transition-colors duration-200"
-                  >
-                    {resending ? copy.resending : copy.resend}
-                  </button>
+                  <>
+                    {error ? (
+                      <p className="text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E5E5]">
+                        {error}
+                      </p>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={handleResendConfirmation}
+                      disabled={resending}
+                      className="w-full py-2.5 rounded-[7px] text-sm font-medium border border-[#E5E5E5] text-[#1A1A1A] bg-transparent cursor-pointer disabled:opacity-60 hover:border-[#D4D4D4] transition-colors duration-200"
+                    >
+                      {resending ? copy.resending : copy.resend}
+                    </button>
+                  </>
                 )}
 
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={busy}
                   className="w-full py-3.5 rounded-[7px] font-medium text-white border-0 cursor-pointer disabled:opacity-60 transition-opacity duration-200 bg-[#E8634A]"
                 >
                   {loading
@@ -482,10 +563,6 @@ function AuthPageInner() {
                       : copy.submitRegister}
                 </button>
               </form>
-
-              <p className="text-center text-xs text-[#6B6B6B] mt-6 leading-relaxed">
-                {copy.footer}
-              </p>
             </>
           )}
         </div>
@@ -526,13 +603,13 @@ function EmailConfirmScreen({
       ) : null}
 
       {error ? (
-        <p className="mt-5 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E2DC] text-left">
+        <p className="mt-5 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#1A1A1A] border border-[#E5E5E5] text-left">
           {error}
         </p>
       ) : null}
 
       {info ? (
-        <p className="mt-5 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#6B6B6B] border border-[#E5E2DC] text-left">
+        <p className="mt-5 w-full text-sm rounded-[7px] px-3 py-2.5 bg-white text-[#6B6B6B] border border-[#E5E5E5] text-left">
           {info}
         </p>
       ) : null}
@@ -541,7 +618,7 @@ function EmailConfirmScreen({
         type="button"
         onClick={onResend}
         disabled={resending}
-        className="mt-8 w-full py-3 rounded-[7px] text-sm font-medium border border-[#E5E2DC] text-[#1A1A1A] bg-transparent cursor-pointer disabled:opacity-60 hover:border-[#d5d0c8] transition-colors duration-200"
+        className="mt-8 w-full py-3 rounded-[7px] text-sm font-medium border border-[#E5E5E5] text-[#1A1A1A] bg-transparent cursor-pointer disabled:opacity-60 hover:border-[#D4D4D4] transition-colors duration-200"
       >
         {resending ? copy.resending : copy.resend}
       </button>
@@ -552,7 +629,7 @@ function EmailConfirmScreen({
 function EnvelopeIcon() {
   return (
     <div
-      className="flex h-14 w-14 items-center justify-center rounded-[8px] border border-[#E5E2DC] bg-[#FAF8F4] text-[#1A1A1A]"
+      className="flex h-14 w-14 items-center justify-center rounded-[8px] border border-[#E5E5E5] bg-[#FFFFFF] text-[#1A1A1A]"
       aria-hidden="true"
     >
       <svg
@@ -569,6 +646,52 @@ function EnvelopeIcon() {
         <path d="M3 7l9 7 9-7" />
       </svg>
     </div>
+  );
+}
+
+/** Official multicolor Google "G" mark */
+function GoogleLogo() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 48 48"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="#EA4335"
+        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+      />
+      <path
+        fill="#4285F4"
+        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+      />
+      <path
+        fill="#34A853"
+        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+      />
+    </svg>
+  );
+}
+
+/** Apple logo (monochrome, inherits button text color) */
+function AppleLogo() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+      fill="currentColor"
+    >
+      <path d="M16.365 1.43c0 1.14-.42 2.23-1.18 3.1-.79.92-2.1 1.63-3.3 1.53-.14-1.1.41-2.25 1.16-3.1.8-.92 2.2-1.62 3.32-1.53zM20.9 17.2c-.55 1.27-.82 1.84-1.53 2.96-.99 1.55-2.39 3.48-4.12 3.49-1.54.02-1.94-.98-4.04-.97-2.1.01-2.54.99-4.08.97-1.73-.01-3.05-1.76-4.04-3.31C1.3 17.1-.2 12.3 1.7 9.05c1.15-1.96 2.97-3.2 4.7-3.2 1.76 0 2.87 1.03 4.33 1.03 1.42 0 2.29-1.04 4.34-1.04 1.55 0 3.19.84 4.34 2.3-3.81 2.09-3.19 7.53.49 9.06z" />
+    </svg>
   );
 }
 
@@ -595,4 +718,4 @@ function LegalCheckbox({
 }
 
 const inputClass =
-  "w-full rounded-[7px] px-4 py-3 text-base border border-[#E5E2DC] outline-none transition-colors focus:border-[#2D7B7B] bg-white text-[#1A1A1A] placeholder:text-[#9a9590]";
+  "w-full rounded-[7px] px-4 py-3 text-base border border-[#E5E5E5] outline-none transition-colors focus:border-[#2D7B7B] bg-white text-[#1A1A1A] placeholder:text-[#9CA3AF]";

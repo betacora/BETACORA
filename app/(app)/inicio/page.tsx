@@ -71,7 +71,7 @@ export default function InicioPage() {
           {archetype ? (
             <Link
               href="/perfil"
-              className="w-full text-center px-6 py-3.5 rounded-[7px] border border-[#E5E2DC] bg-white text-[#1A1A1A] font-medium text-base no-underline hover:border-[#d5d0c8] transition-colors"
+              className="w-full text-center px-6 py-3.5 rounded-[7px] border border-[#E5E5E5] bg-white text-[#1A1A1A] font-medium text-base no-underline hover:border-[#D4D4D4] transition-colors"
             >
               {copy.viewProfile}
             </Link>

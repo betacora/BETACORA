@@ -150,7 +150,7 @@ function MiniMap({
       <h2 className="text-[0.65rem] tracking-[0.16em] uppercase text-[#6B6B6B] font-medium mb-4">
         {label}
       </h2>
-      <div className="relative rounded-[8px] border border-[#E5E2DC] bg-white overflow-hidden h-48">
+      <div className="relative rounded-[8px] border border-[#E5E5E5] bg-white overflow-hidden h-48">
         <svg viewBox="0 0 100 56" className="absolute inset-0 w-full h-full" aria-hidden>
           <defs>
             <radialGradient id="g1" cx="50%" cy="40%" r="60%">
@@ -208,8 +208,8 @@ export default async function SharedTripPage({
   const places = Array.isArray(trip.places) ? trip.places : [];
 
   return (
-    <main className="min-h-screen bg-[#FAF8F4] text-[#1A1A1A]">
-      <header className="w-full px-5 py-5 sm:px-8 md:px-12 flex items-center justify-between gap-4 border-b border-[#E5E2DC]">
+    <main className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+      <header className="w-full px-5 py-5 sm:px-8 md:px-12 flex items-center justify-between gap-4 border-b border-[#E5E5E5]">
         <Link href="/" className="flex items-center gap-2.5 no-underline text-[#1A1A1A]">
           <img
             src="/icon-512.png?v=4"
@@ -222,7 +222,7 @@ export default async function SharedTripPage({
         </Link>
         <Link
           href="/auth?next=/explorar"
-          className="text-sm font-medium text-[#E8634A] no-underline hover:opacity-80"
+          className="text-sm font-medium text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity duration-200"
         >
           {copy.back}
         </Link>
@@ -239,13 +239,13 @@ export default async function SharedTripPage({
         <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#6B6B6B] leading-relaxed">
           {trip.duration_label ? (
             <span>
-              <span className="text-[#9a9590]">{copy.duration}: </span>
+              <span className="text-[#9CA3AF]">{copy.duration}: </span>
               {trip.duration_label}
             </span>
           ) : null}
           {trip.profile_type ? (
             <span>
-              <span className="text-[#9a9590]">{copy.archetype}: </span>
+              <span className="text-[#9CA3AF]">{copy.archetype}: </span>
               {trip.profile_type}
             </span>
           ) : null}
@@ -260,7 +260,7 @@ export default async function SharedTripPage({
               {highlights.map((h) => (
                 <li
                   key={h}
-                  className="rounded-[7px] border border-[#E5E2DC] bg-white px-4 py-3.5 text-[0.95rem] leading-snug"
+                  className="rounded-[7px] border border-[#E5E5E5] bg-white px-4 py-3.5 text-[0.95rem] leading-snug"
                 >
                   {h}
                 </li>
@@ -278,7 +278,7 @@ export default async function SharedTripPage({
           />
         ) : null}
 
-        <div className="mt-16 pt-10 border-t border-[#E5E2DC] text-center">
+        <div className="mt-16 pt-10 border-t border-[#E5E5E5] text-center">
           <p className="text-sm text-[#6B6B6B] mb-5 leading-relaxed">{copy.cta}</p>
           <Link
             href="/auth?next=/explorar"

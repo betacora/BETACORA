@@ -10,7 +10,7 @@ type Props = {
 
 export function AppHeader({ title, showWordmark = true }: Props) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[#E5E2DC] bg-[#FAF8F4]/90 backdrop-blur-md px-4 py-3.5 flex items-center justify-between gap-3">
+    <header className="sticky top-0 z-40 w-full border-b border-[#E5E5E5] bg-[#FFFFFF]/90 backdrop-blur-md px-4 py-3.5 flex items-center justify-between gap-3">
       <Link
         href="/inicio"
         className="flex items-center gap-2 no-underline min-w-0"

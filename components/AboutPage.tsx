@@ -17,11 +17,11 @@ export function AboutPage({ lang }: { lang: AppLang }) {
   return (
     <main
       lang={lang}
-      className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#1A1A1A]"
+      className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#1A1A1A]"
     >
       <HtmlLang lang={lang} />
 
-      <header className="w-full px-5 py-5 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-4 border-b border-[#E5E2DC]">
+      <header className="w-full px-5 py-5 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-4 border-b border-[#E5E5E5]">
         <Link
           href="/"
           className="flex items-center gap-2.5 no-underline text-[#1A1A1A]"
@@ -69,7 +69,7 @@ export function AboutPage({ lang }: { lang: AppLang }) {
 
         {copy.sections.map((section) => (
           <section key={section.heading} className="mt-10 sm:mt-12">
-            <h2 className="text-[1.15rem] sm:text-xl font-medium tracking-tight text-[#1A1A1A] mb-4 pb-2 border-b border-[#E5E2DC]">
+            <h2 className="text-[1.15rem] sm:text-xl font-medium tracking-tight text-[#1A1A1A] mb-4 pb-2 border-b border-[#E5E5E5]">
               {section.heading}
             </h2>
             {section.paragraphs.map((p) => (
@@ -90,7 +90,7 @@ export function AboutPage({ lang }: { lang: AppLang }) {
               className={index === 0 ? undefined : "mt-10 sm:mt-12"}
             >
               {index === 0 ? (
-                <h2 className="text-[1.15rem] sm:text-xl font-medium tracking-tight text-[#1A1A1A] mb-4 pb-2 border-b border-[#E5E2DC]">
+                <h2 className="text-[1.15rem] sm:text-xl font-medium tracking-tight text-[#1A1A1A] mb-4 pb-2 border-b border-[#E5E5E5]">
                   {item.question}
                 </h2>
               ) : (
@@ -105,7 +105,7 @@ export function AboutPage({ lang }: { lang: AppLang }) {
           ))}
         </section>
 
-        <div className="mt-12 pt-8 border-t border-[#E5E2DC] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        <div className="mt-12 pt-8 border-t border-[#E5E5E5] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
           <Link
             href="/"
             className="text-sm text-[#6B6B6B] no-underline hover:text-[#1A1A1A]"

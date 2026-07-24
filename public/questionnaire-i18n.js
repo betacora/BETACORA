@@ -284,6 +284,7 @@
         },
         map: {
           day: 'Día',
+          takeMe: 'Llévame aquí',
         },
         banners: {
           limitGuest: 'Regístrate gratis para guardar tu bitácora y generar más itinerarios',
@@ -896,6 +897,7 @@
         },
         map: {
           day: 'Day',
+          takeMe: 'Take me there',
         },
         banners: {
           limitGuest: 'Sign up free to save your logbook and generate more itineraries',
@@ -1508,6 +1510,7 @@
         },
         map: {
           day: 'Jour',
+          takeMe: "M'y emmener",
         },
         banners: {
           limitGuest: 'Inscrivez-vous gratuitement pour enregistrer votre carnet et générer plus d\'itinéraires',

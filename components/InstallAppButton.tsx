@@ -109,8 +109,8 @@ export function InstallAppButton({
   // Ghost/secondary only — one coral primary CTA per screen (landing hero / auth submit)
   const btnClass =
     variant === "header"
-      ? `inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-[6px] border border-[#E5E2DC] bg-transparent text-[#1A1A1A] font-medium text-[0.68rem] tracking-wide cursor-pointer hover:border-[#d5d0c8] transition-colors duration-200 whitespace-nowrap shrink-0 ${className}`
-      : `inline-flex items-center justify-center gap-2 w-full max-w-xs px-7 py-3.5 rounded-[7px] border border-[#E5E2DC] bg-transparent text-[#1A1A1A] font-medium text-base cursor-pointer hover:border-[#d5d0c8] transition-colors duration-200 ${className}`;
+      ? `inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-[6px] border border-[#E5E5E5] bg-transparent text-[#1A1A1A] font-medium text-[0.68rem] tracking-wide cursor-pointer hover:border-[#D4D4D4] transition-colors duration-200 whitespace-nowrap shrink-0 ${className}`
+      : `inline-flex items-center justify-center gap-2 w-full max-w-xs px-7 py-3.5 rounded-[7px] border border-[#E5E5E5] bg-transparent text-[#1A1A1A] font-medium text-base cursor-pointer hover:border-[#D4D4D4] transition-colors duration-200 ${className}`;
 
   return (
     <>
@@ -128,7 +128,7 @@ export function InstallAppButton({
           onClick={() => setShowIosOverlay(false)}
         >
           <div
-            className="w-full max-w-sm rounded-[8px] bg-[#FAF8F4] border border-[#E5E2DC] p-6 shadow-none"
+            className="w-full max-w-sm rounded-[8px] bg-[#FFFFFF] border border-[#E5E5E5] p-6 shadow-none"
             onClick={(e) => e.stopPropagation()}
           >
             <p
@@ -138,9 +138,9 @@ export function InstallAppButton({
               {copy.iosTitle}
             </p>
 
-            <div className="mt-6 flex items-center justify-center gap-3 py-6 px-3 rounded-[8px] bg-white border border-[#E5E2DC]">
+            <div className="mt-6 flex items-center justify-center gap-3 py-6 px-3 rounded-[8px] bg-white border border-[#E5E5E5]">
               <div className="flex flex-col items-center gap-1.5 min-w-[4.5rem]">
-                <span className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[#E5E2DC] bg-[#FAF8F4] text-[#1A1A1A]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[#E5E5E5] bg-[#FFFFFF] text-[#1A1A1A]">
                   <IosShareGlyph />
                 </span>
                 <span className="text-[0.65rem] text-[#6B6B6B] font-normal text-center leading-tight">
@@ -151,7 +151,7 @@ export function InstallAppButton({
               <ArrowGlyph />
 
               <div className="flex flex-col items-center gap-1.5 min-w-[4.5rem]">
-                <span className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[#E5E2DC] bg-[#FAF8F4] text-[#1A1A1A]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[#E5E5E5] bg-[#FFFFFF] text-[#1A1A1A]">
                   <HomeAddGlyph />
                 </span>
                 <span className="text-[0.65rem] text-[#6B6B6B] font-normal text-center leading-tight">

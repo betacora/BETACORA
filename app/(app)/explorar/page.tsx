@@ -71,7 +71,7 @@ function ExplorarInner() {
   if (authLoading || !ready) {
     return (
       <main
-        className="bg-[#FAF8F4] flex items-center justify-center"
+        className="bg-[#FFFFFF] flex items-center justify-center"
         style={{
           position: "fixed",
           top: 0,
@@ -88,7 +88,7 @@ function ExplorarInner() {
 
   return (
     <main
-      className="bg-[#FAF8F4]"
+      className="bg-[#FFFFFF]"
       style={{
         position: "fixed",
         top: 0,
@@ -117,7 +117,7 @@ export default function ExplorarPage() {
     <Suspense
       fallback={
         <main
-          className="bg-[#FAF8F4]"
+          className="bg-[#FFFFFF]"
           style={{
             position: "fixed",
             top: 0,

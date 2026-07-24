@@ -27,7 +27,7 @@ export function BottomNav({ lang }: Props) {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-50 border-t border-[#E5E2DC] bg-[#FAF8F4]/80 backdrop-blur-md"
+      className="fixed bottom-0 inset-x-0 z-50 border-t border-[#E5E5E5] bg-[#FFFFFF]/80 backdrop-blur-md"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Main"
     >
@@ -41,7 +41,7 @@ export function BottomNav({ lang }: Props) {
             <li key={id} className="flex-1 min-w-0">
               <Link
                 href={href}
-                className={`flex flex-col items-center justify-center gap-0.5 py-1.5 no-underline transition-colors ${
+                className={`flex flex-col items-center justify-center gap-0.5 py-1.5 no-underline transition-colors duration-200 ${
                   active ? "text-[#E8634A]" : "text-[#6B6B6B] hover:text-[#1A1A1A]"
                 }`}
                 aria-current={active ? "page" : undefined}

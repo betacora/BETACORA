@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2D7B7B",
+  themeColor: "#FFFFFF",
 };
 
 const jsonLd = buildJsonLd();
@@ -39,11 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="h-full antialiased" style={{ background: "#FAF8F4" }}>
+    <html lang="es" className="h-full antialiased" style={{ background: "#FFFFFF" }}>
       <head>
         <style
           dangerouslySetInnerHTML={{
-            __html: `#app-splash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#FAF8F4}html,body{background:#FAF8F4}`,
+            __html: `#app-splash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#FFFFFF}html,body{background:#FFFFFF}`,
           }}
         />
         <link rel="manifest" href="/manifest.json" />
@@ -57,7 +57,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[#FAF8F4]">
+      <body className="min-h-full flex flex-col font-sans bg-[#FFFFFF]">
         <SplashScreen />
         <SwRegister />
         {children}

@@ -1,11 +1,16 @@
 /**
  * Client geo search for the questionnaire.
  * Backed by /api/geo/search (country-state-city, offline, no API key).
+ * Session Map caches identical queries so keystrokes don't re-hit the network.
  */
 (function (global) {
   var MIN_LEN = 2;
   var DEFAULT_LIMIT = 20;
   var DEBOUNCE_MS = 220;
+  var SESSION_CACHE_MAX = 120;
+
+  /** @type {Map<string, {countries: any[], cities: any[]}>} */
+  var sessionCache = new Map();
 
   function normalizeLang(lang) {
     return lang === "en" || lang === "fr" ? lang : "es";
@@ -18,11 +23,44 @@
     return name[L] || name.en || name.es || "";
   }
 
+  function cacheKey(query, lang, type, limit) {
+    return [
+      String(query || "").trim().toLowerCase(),
+      normalizeLang(lang),
+      type || "all",
+      String(limit || DEFAULT_LIMIT),
+    ].join("|");
+  }
+
+  function getSession(key) {
+    if (!sessionCache.has(key)) return null;
+    var value = sessionCache.get(key);
+    // Refresh LRU order
+    sessionCache.delete(key);
+    sessionCache.set(key, value);
+    return value;
+  }
+
+  function setSession(key, value) {
+    if (sessionCache.has(key)) sessionCache.delete(key);
+    sessionCache.set(key, value);
+    while (sessionCache.size > SESSION_CACHE_MAX) {
+      var oldest = sessionCache.keys().next().value;
+      if (oldest === undefined) break;
+      sessionCache.delete(oldest);
+    }
+  }
+
   async function fetchSearch(query, lang, type, limit) {
     var q = (query || "").trim();
     if (q.length < MIN_LEN) {
       return { countries: [], cities: [] };
     }
+
+    var key = cacheKey(q, lang, type, limit);
+    var hit = getSession(key);
+    if (hit) return hit;
+
     var params = new URLSearchParams({
       q: q,
       lang: normalizeLang(lang),
@@ -31,7 +69,13 @@
     });
     var res = await fetch("/api/geo/search?" + params.toString());
     if (!res.ok) throw new Error("geo search failed");
-    return res.json();
+    var data = await res.json();
+    var normalized = {
+      countries: data.countries || [],
+      cities: data.cities || [],
+    };
+    setSession(key, normalized);
+    return normalized;
   }
 
   /**

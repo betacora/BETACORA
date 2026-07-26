@@ -423,7 +423,11 @@
         <div class="ti-slide ti-invite" data-ti-slide="invite">
           <div class="ti-kicker ti-wordmark" aria-label="BeTacora"><span class="logo-syl-be">Be</span><span class="logo-syl-ta">Ta</span><span class="logo-syl-co">co</span><span class="logo-syl-ra">ra</span></div>
           <h2 class="ti-invite-title">${escapeHtml(copy.inviteTitle || '')}</h2>
-          <p class="ti-invite-cta">${escapeHtml(copy.inviteCta || shareCtaLabel())}</p>
+          ${
+            copy.inviteCta
+              ? `<p class="ti-invite-cta">${escapeHtml(copy.inviteCta)}</p>`
+              : ''
+          }
           <div class="ti-invite-url">${escapeHtml(formatShareCopy(copy.cta || '{site}'))}</div>
         </div>`,
     });

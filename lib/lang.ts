@@ -31,21 +31,21 @@ export const LANDING_COPY: Record<
 > = {
   es: {
     tagline: "Tu bitácora inteligente de viajes",
-    sub: "Descubre tu perfil viajero y genera itinerarios a tu medida. Todo queda en tu bitácora.",
+    sub: "Itinerarios a tu medida a partir de cómo viajas de verdad. Todo queda en tu bitácora.",
     cta: "Descubre tu perfil viajero",
     ctaReturning: "Empezar nuevo viaje",
     about: "Sobre nosotros",
   },
   en: {
     tagline: "Your smart travel logbook",
-    sub: "Discover your traveler profile and get itineraries made for you.",
+    sub: "Itineraries shaped by how you actually travel — kept in one place.",
     cta: "Discover your traveler profile",
     ctaReturning: "Start a new trip",
     about: "About",
   },
   fr: {
     tagline: "Votre carnet de voyage intelligent",
-    sub: "Découvrez votre profil voyageur et des itinéraires sur mesure.",
+    sub: "Des itinéraires fidèles à votre façon de voyager, réunis au même endroit.",
     cta: "Découvrez votre profil voyageur",
     ctaReturning: "Commencer un nouveau voyage",
     about: "À propos",

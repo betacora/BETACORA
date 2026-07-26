@@ -86,6 +86,7 @@ const QV_ICONS = {
   "act:ciclismo": "bike",
   "act:kayak": "sailboat",
   "act:yoga": "flower-2",
+  "act:gym": "dumbbell",
   "act:safari": "binoculars",
   "act:esqui": "snowflake",
   "act:parapente": "parachute",

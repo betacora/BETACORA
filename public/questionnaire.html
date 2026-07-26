@@ -56,6 +56,7 @@ body.qt-active .submit-wrap,
 body.qt-active #tripSection > .section-header,
 body.qt-active .qt-hide-in-trip { display: none !important; }
 body.qt-active .container > #accomSection,
+body.qt-active .container > #actSection,
 body.qt-active .container > #misionSection,
 body.qt-active .container > #tripSection { display: none !important; }
 body.qt-active .container { padding-top: 1.25rem; max-width: 720px; }
@@ -70,6 +71,60 @@ body.qt-active.qt-panel-open { overflow: hidden; }
   padding: 1.5rem 1.5rem 0.5rem;
 }
 body.qt-active .qt-hero { display: block; }
+
+/* After successful generation: collapse form, show results only */
+body.itinerary-ready .progress-wrap,
+body.itinerary-ready .submit-wrap,
+body.itinerary-ready .container > .section,
+body.itinerary-ready .qt-hero {
+  display: none !important;
+}
+body.itinerary-ready .results-toolbar {
+  display: flex;
+}
+.results-toolbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+}
+.results-toolbar-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  flex: 1 1 12rem;
+  order: 2;
+}
+.new-trip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  order: 1;
+  background: var(--coral);
+  color: #fff;
+  border: 1px solid var(--coral);
+  padding: 0.55rem 1.1rem;
+  border-radius: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s, background 0.2s;
+}
+.new-trip-btn:hover {
+  opacity: 0.92;
+}
+body.qt-active.itinerary-ready .container { padding-top: 0.5rem; }
+
 .qt-hero-kicker {
   font-size: 0.72rem; font-weight: 400; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem;
@@ -625,11 +680,32 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   50% { opacity: 1; }
 }
 .itinerary-loading-title {
-  font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: -0.01em;
+  font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.85rem;
+  letter-spacing: -0.01em; min-height: 1.5em;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.itinerary-loading-title.is-swap {
+  opacity: 0; transform: translateY(4px);
+}
+.itinerary-loading-track {
+  width: min(16rem, 72%); height: 3px; margin: 0 auto 1rem;
+  background: var(--border); border-radius: 99px; overflow: hidden;
+}
+.itinerary-loading-fill {
+  height: 100%; width: 12%; border-radius: 99px;
+  background: var(--ink); opacity: 0.35;
+  transition: width 0.7s ease;
+}
+.itinerary-loading-fill.is-waiting {
+  animation: btItinFillWait 1.6s ease-in-out infinite;
+}
+@keyframes btItinFillWait {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.5; }
 }
 .itinerary-loading-sub {
-  font-size: 0.9rem; color: var(--muted); font-weight: 400; line-height: 1.6;
-  max-width: 26rem; margin: 0 auto;
+  font-size: 0.875rem; color: var(--muted); font-weight: 400; line-height: 1.6;
+  max-width: 24rem; margin: 0 auto;
 }
 .bitacora-header { background: var(--white); padding: 2rem 1.5rem; color: var(--ink); text-align: center; border-bottom: 1px solid var(--border); }
 .bitacora-header-eyebrow { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; font-weight: 400; }
@@ -649,6 +725,51 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   display: block; width: 12px; height: 12px; border-radius: 50%;
   border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
 }
+
+/* Duffel flight offers (vanilla mount into data-bt-flight-offers) */
+.bt-flight-offers { margin: 0.85rem 0 1.1rem; }
+.bt-flight-offers__head { margin-bottom: 0.75rem; }
+.bt-flight-offers__title {
+  font-size: 1rem; font-weight: 600; color: var(--ink); margin: 0 0 0.25rem;
+}
+.bt-flight-offers__sub {
+  font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.4;
+}
+.bt-flight-offers__status {
+  font-size: 0.88rem; color: var(--muted); margin: 0.5rem 0; line-height: 1.45;
+}
+.bt-flight-offers__status--err { color: var(--coral); }
+.bt-flight-offers__status--ok { color: var(--teal-dark); }
+.bt-flight-offers__list {
+  list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem;
+}
+.bt-flight-offer {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  text-align: left; cursor: pointer; font: inherit; color: inherit;
+  background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.85rem 1rem; transition: border-color 0.15s, background 0.15s;
+}
+.bt-flight-offer:hover { border-color: var(--teal); }
+.bt-flight-offer.is-selected {
+  border-color: var(--teal); background: #f3fafa;
+}
+.bt-flight-offer__main { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.bt-flight-offer__airline { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+.bt-flight-offer__code { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
+.bt-flight-offer__times { font-size: 0.9rem; color: var(--ink); }
+.bt-flight-offer__meta { font-size: 0.78rem; color: var(--muted); }
+.bt-flight-offer__side { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; flex-shrink: 0; }
+.bt-flight-offer__price { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.bt-flight-offer__cta { font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--teal); }
+.bt-flight-offer.is-selected .bt-flight-offer__cta { color: var(--teal-dark); }
+.bt-flight-offers__note {
+  font-size: 0.72rem; color: var(--fog); margin: 0.65rem 0 0; line-height: 1.4;
+}
+.bt-flight-offers__login a {
+  color: var(--teal); font-weight: 500; text-decoration: none;
+}
+.bt-flight-offers__login a:hover { text-decoration: underline; }
+
 .bt-map-popup { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; line-height: 1.35; }
 .bt-map-popup strong { display: block; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
 .bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.45rem; }
@@ -1093,7 +1214,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   <div class="section" data-flow="personality">
     <div class="section-header">
       <span class="section-num">V</span>
-      <div><div class="section-title">Cultura y Actividades</div><div class="section-sub">Lo que despierta tu curiosidad</div></div>
+      <div><div class="section-title">Cultura</div><div class="section-sub">Lo que despierta tu curiosidad</div></div>
     </div>
 
     <div class="qblock">
@@ -1125,11 +1246,19 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="qblock">
+  <!-- Activities — trip-specific in returning-user flow (same pattern as #accomSection) -->
+  <div class="section" data-flow="trip" id="actSection">
+    <div class="section-header">
+      <span class="section-num">V·</span>
+      <div><div class="section-title">Actividades</div><div class="section-sub">Lo que quieres vivir en este viaje</div></div>
+    </div>
+
+    <div class="qblock" id="actBlock">
       <div class="qlabel">¿Qué actividades te interesan?</div>
       <span class="multi-badge">Selección libre</span>
-      <div class="grid4">
+      <div class="grid4" id="actOptionsGrid">
         <button class="opt" data-q="act" data-v="trekking" onclick="toggle(this)"><span class="em">🥾</span>Trekking</button>
         <button class="opt" data-q="act" data-v="buceo" onclick="toggle(this)"><span class="em">🤿</span>Buceo</button>
         <button class="opt" data-q="act" data-v="surf" onclick="toggle(this)"><span class="em">🏄</span>Surf</button>
@@ -1137,6 +1266,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
         <button class="opt" data-q="act" data-v="ciclismo" onclick="toggle(this)"><span class="em">🚴</span>Ciclismo</button>
         <button class="opt" data-q="act" data-v="kayak" onclick="toggle(this)"><span class="em">🛶</span>Kayak</button>
         <button class="opt" data-q="act" data-v="yoga" onclick="toggle(this)"><span class="em">🧘</span>Yoga</button>
+        <button class="opt" data-q="act" data-v="gym" onclick="toggle(this)"><span class="em">💪</span>Gym</button>
         <button class="opt" data-q="act" data-v="safari" onclick="toggle(this)"><span class="em">🦁</span>Safari</button>
         <button class="opt" data-q="act" data-v="esqui" onclick="toggle(this)"><span class="em">⛷️</span>Esquí</button>
         <button class="opt" data-q="act" data-v="parapente" onclick="toggle(this)"><span class="em">🪂</span>Parapente</button>
@@ -1409,6 +1539,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
     </div>
   </div>
 
+  <!-- Shown after itinerary success: reopen form for another trip -->
+  <div class="results-toolbar" id="resultsToolbar" hidden>
+    <button type="button" class="new-trip-btn" id="newTripBtn">Nuevo viaje</button>
+    <p class="results-toolbar-hint" id="resultsToolbarHint">Formulario bloqueado — tus datos ya están guardados. Mira tu perfil e itinerario abajo.</p>
+  </div>
+
   <!-- PROFILE -->
   <div class="profile-card" id="profileCard">
     <div class="profile-top">
@@ -1518,6 +1654,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
 <script src="questionnaire-icons.js"></script>
 <script src="geo-data.js"></script>
 <script src="bt-auth.js"></script>
+<script src="flight-format.js"></script>
 <script src="questionnaire-i18n.js"></script>
 <script src="archetypes.js"></script>
 <script src="travel-identity.js"></script>
@@ -1786,6 +1923,7 @@ const LANG = {
     if (el('tiNext') && locale.ui.travelIdentity?.next) el('tiNext').setAttribute('aria-label', locale.ui.travelIdentity.next);
     applyTripShareLabels();
     if (typeof applyQuickTripLabels === 'function') applyQuickTripLabels();
+    if (typeof applyResultsViewLabels === 'function') applyResultsViewLabels();
     if (document.getElementById('shareableCard')?.classList.contains('show') && aiProfile) renderShareableCard(aiProfile);
     if (document.getElementById('tripShareCard')?.classList.contains('show') && lastTripShare) {
       renderTripShareCard(lastTripShare);
@@ -1904,7 +2042,7 @@ const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'ru
 const SPORT_THIS_TRIP_OPTS = ['yes', 'no', 'maybe'];
 /** Non-sport activity interests that get “¿En este viaje?” (sports already covered in Misión). */
 const ACTIVITY_THIS_TRIP_KEYS = new Set([
-  'cocina_c', 'safari', 'nightlife', 'yoga', 'playa', 'globo', 'caballo', 'foto_t', 'urbano', 'kayak', 'parapente',
+  'cocina_c', 'safari', 'nightlife', 'yoga', 'gym', 'playa', 'globo', 'caballo', 'foto_t', 'urbano', 'kayak', 'parapente',
 ]);
 const SPORT_EMOJI = {
   surf: '🏄', golf: '⛳', tennis: '🎾', padel: '🏸', buceo: '🤿', kitesurf: '🪁',
@@ -1912,7 +2050,7 @@ const SPORT_EMOJI = {
 };
 const ACT_EMOJI = {
   trekking: '🥾', buceo: '🤿', surf: '🏄', escalada: '🧗', ciclismo: '🚴', kayak: '🛶',
-  yoga: '🧘', safari: '🦁', esqui: '⛷️', parapente: '🪂', playa: '🏖️', globo: '🎈',
+  yoga: '🧘', gym: '💪', safari: '🦁', esqui: '⛷️', parapente: '🪂', playa: '🏖️', globo: '🎈',
   caballo: '🐴', foto_t: '📷', cocina_c: '👨‍🍳', urbano: '🏙️', nightlife: '🌙',
 };
 const selectedOrigin = [];
@@ -2405,6 +2543,8 @@ function selMisionSport(row) {
     document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
     document.getElementById('misionEventDate').value = '';
     renderSportThisTripPanel();
+  } else if (typeof prioritizeActsFromDna === 'function') {
+    prioritizeActsFromDna();
   }
   updateMisionSportIntentVisibility();
   updateProgress();
@@ -2799,18 +2939,77 @@ async function ensureArchetypesReady(timeoutMs = 2500) {
   });
 }
 
+let itineraryLoadingTimer = null;
+let itineraryLoadingStep = 0;
+
+function stopItineraryLoadingTicker() {
+  if (itineraryLoadingTimer) {
+    clearInterval(itineraryLoadingTimer);
+    itineraryLoadingTimer = null;
+  }
+  itineraryLoadingStep = 0;
+}
+
 function showItineraryLoading() {
+  stopItineraryLoadingTicker();
   const section = document.getElementById('itinerarySection');
   const copy = (L().ui.itineraryLoading) || {};
-  const title = copy.title || 'Diseñando tu bitácora...';
-  const sub = copy.sub || 'Tu perfil ya está listo. Estamos creando el itinerario personalizado.';
+  const steps = Array.isArray(copy.steps) && copy.steps.length
+    ? copy.steps
+    : [
+        'Analizando tu perfil...',
+        'Diseñando tu itinerario...',
+        'Añadiendo los últimos detalles...',
+      ];
+  const hint = copy.hint || copy.sub || '';
+
   section.innerHTML = `
     <div class="itinerary-loading" role="status" aria-live="polite">
       <img class="itinerary-loading-mark" src="/icon-512.png?v=4" alt="" width="44" height="44" />
-      <div class="itinerary-loading-title">${escapeHtml(title)}</div>
-      <div class="itinerary-loading-sub">${escapeHtml(sub)}</div>
+      <div class="itinerary-loading-title" id="itinLoadingMsg">${escapeHtml(steps[0])}</div>
+      <div class="itinerary-loading-track" aria-hidden="true">
+        <div class="itinerary-loading-fill" id="itinLoadingFill"></div>
+      </div>
+      ${hint ? `<div class="itinerary-loading-sub">${escapeHtml(hint)}</div>` : ''}
     </div>`;
   section.classList.add('show', 'is-loading');
+
+  const msgEl = document.getElementById('itinLoadingMsg');
+  const fillEl = document.getElementById('itinLoadingFill');
+  const STEP_MS = 3200;
+
+  function applyStep(immediate) {
+    const msg = steps[itineraryLoadingStep] || steps[steps.length - 1];
+    const pct = Math.min(90, ((itineraryLoadingStep + 1) / steps.length) * 90);
+    if (fillEl) {
+      fillEl.style.width = pct + '%';
+      fillEl.classList.toggle('is-waiting', itineraryLoadingStep >= steps.length - 1);
+    }
+    if (!msgEl) return;
+    if (immediate) {
+      msgEl.textContent = msg;
+      msgEl.classList.remove('is-swap');
+      return;
+    }
+    msgEl.classList.add('is-swap');
+    window.setTimeout(() => {
+      if (!msgEl.isConnected) return;
+      msgEl.textContent = msg;
+      msgEl.classList.remove('is-swap');
+    }, 280);
+  }
+
+  itineraryLoadingStep = 0;
+  applyStep(true);
+
+  itineraryLoadingTimer = window.setInterval(() => {
+    if (itineraryLoadingStep < steps.length - 1) {
+      itineraryLoadingStep += 1;
+      applyStep(false);
+    } else if (fillEl) {
+      fillEl.classList.add('is-waiting');
+    }
+  }, STEP_MS);
 }
 
 function stripQuoteMarks(text) {
@@ -3708,7 +3907,267 @@ function wrapItineraryInCards(html) {
   return wrap.innerHTML;
 }
 
+function firstAnswerPlace(value) {
+  if (!value) return '';
+  if (Array.isArray(value)) {
+    const first = value[0];
+    if (!first) return '';
+    if (typeof first === 'string') return first.trim();
+    if (typeof first === 'object') {
+      return String(first.city || first.name || first.label || '').trim();
+    }
+    return '';
+  }
+  if (typeof value === 'string') return value.trim();
+  return '';
+}
+
+function getFlightSearchParamsFromAnswers() {
+  const origin =
+    firstAnswerPlace(answers.origin) ||
+    (typeof selectedOrigin !== 'undefined' && selectedOrigin[0]
+      ? String(selectedOrigin[0].city || '').trim()
+      : '');
+  const destination =
+    firstAnswerPlace(answers.destinations) ||
+    (typeof selectedDest !== 'undefined' && selectedDest[0]
+      ? String(selectedDest[0].city || '').trim()
+      : '');
+  const departureDate = String(answers.dateFrom || '').trim();
+  const returnDate = String(answers.dateTo || '').trim() || null;
+  return { origin, destination, departureDate, returnDate };
+}
+
+function flightCopy() {
+  return (L().ui && L().ui.flights) || {};
+}
+
+function mountFlightOffers(root) {
+  const hosts = Array.from(
+    (root || document).querySelectorAll('[data-bt-flight-offers]'),
+  ).filter((el) => !el.getAttribute('data-bt-flight-mounted'));
+
+  if (!hosts.length) return;
+
+  const params = getFlightSearchParamsFromAnswers();
+  hosts.forEach((host) => {
+    host.setAttribute('data-bt-flight-mounted', '1');
+    fillFlightOffersHost(host, params);
+  });
+}
+
+async function fillFlightOffersHost(host, params) {
+  const copy = flightCopy();
+  const fmt = window.BTFlightFormat || {};
+
+  host.innerHTML = `
+    <section class="bt-flight-offers" aria-label="${escapeHtml(copy.title || 'Flights')}">
+      <header class="bt-flight-offers__head">
+        <h3 class="bt-flight-offers__title">${escapeHtml(copy.title || '')}</h3>
+        <p class="bt-flight-offers__sub">${escapeHtml(copy.subtitle || '')}</p>
+      </header>
+      <p class="bt-flight-offers__status" aria-busy="true">${escapeHtml(copy.loading || '…')}</p>
+    </section>`;
+
+  const section = host.querySelector('.bt-flight-offers');
+  if (!params.origin || !params.destination || !params.departureDate) {
+    const status = section.querySelector('.bt-flight-offers__status');
+    if (status) {
+      status.classList.add('bt-flight-offers__status--err');
+      status.removeAttribute('aria-busy');
+      status.textContent = copy.missingParams || '';
+    }
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/duffel/search-offers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        origin: params.origin,
+        destination: params.destination,
+        departureDate: params.departureDate,
+        returnDate: params.returnDate,
+        passengers: 1,
+        limit: 8,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || copy.error || 'search_failed');
+    }
+
+    const offers = Array.isArray(data.offers) ? data.offers : [];
+    const routeLabel =
+      data.search && data.search.origin && data.search.destination
+        ? `${data.search.origin} → ${data.search.destination}`
+        : '';
+
+    if (!offers.length) {
+      section.innerHTML = `
+        <header class="bt-flight-offers__head">
+          <h3 class="bt-flight-offers__title">${escapeHtml(copy.title || '')}</h3>
+          <p class="bt-flight-offers__sub">${escapeHtml(
+            routeLabel ? `${copy.subtitle || ''} · ${routeLabel}` : copy.subtitle || '',
+          )}</p>
+        </header>
+        <p class="bt-flight-offers__status bt-flight-offers__status--err">${escapeHtml(
+          copy.empty || '',
+        )}</p>
+        <p class="bt-flight-offers__note">${escapeHtml(copy.sandboxNote || '')}</p>`;
+      return;
+    }
+
+    const stopLabels = {
+      direct: copy.direct || 'Direct',
+      stop: copy.stop || '1 stop',
+      stops: copy.stops || '{n} stops',
+    };
+
+    const listHtml = offers
+      .map((offer, idx) => {
+        const airline = escapeHtml(offer.airline || '');
+        const code = offer.airlineCode
+          ? ` <span class="bt-flight-offer__code">${escapeHtml(offer.airlineCode)}</span>`
+          : '';
+        const times = `${escapeHtml(
+          (fmt.formatFlightTime && fmt.formatFlightTime(offer.departureAt)) || '—',
+        )} <span aria-hidden="true"> → </span> ${escapeHtml(
+          (fmt.formatFlightTime && fmt.formatFlightTime(offer.arrivalAt)) || '—',
+        )}`;
+        const meta = `${escapeHtml(
+          (fmt.formatFlightDuration && fmt.formatFlightDuration(offer.duration)) || '—',
+        )} · ${escapeHtml(
+          (fmt.formatStops && fmt.formatStops(offer.stops, stopLabels)) || '',
+        )}`;
+        const price = escapeHtml(
+          (fmt.formatFlightPrice &&
+            fmt.formatFlightPrice(offer.price, offer.currency)) ||
+            `${offer.price || ''} ${offer.currency || ''}`,
+        );
+        return `
+          <li>
+            <button type="button" class="bt-flight-offer" data-offer-idx="${idx}" data-offer-id="${escapeHtml(offer.id)}" aria-pressed="false">
+              <div class="bt-flight-offer__main">
+                <span class="bt-flight-offer__airline">${airline}${code}</span>
+                <span class="bt-flight-offer__times">${times}</span>
+                <span class="bt-flight-offer__meta">${meta}</span>
+              </div>
+              <div class="bt-flight-offer__side">
+                <span class="bt-flight-offer__price">${price}</span>
+                <span class="bt-flight-offer__cta">${escapeHtml(copy.select || '')}</span>
+              </div>
+            </button>
+          </li>`;
+      })
+      .join('');
+
+    section.innerHTML = `
+      <header class="bt-flight-offers__head">
+        <h3 class="bt-flight-offers__title">${escapeHtml(copy.title || '')}</h3>
+        <p class="bt-flight-offers__sub">${escapeHtml(
+          routeLabel ? `${copy.subtitle || ''} · ${routeLabel}` : copy.subtitle || '',
+        )}</p>
+      </header>
+      <ul class="bt-flight-offers__list">${listHtml}</ul>
+      <p class="bt-flight-offers__status" hidden></p>
+      <p class="bt-flight-offers__note">${escapeHtml(copy.sandboxNote || '')}</p>`;
+
+    const statusEl = section.querySelector('.bt-flight-offers__status');
+    section.querySelectorAll('.bt-flight-offer').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-offer-idx'));
+        const offer = offers[idx];
+        if (!offer) return;
+        handleFlightOfferSelect(section, statusEl, offer, copy);
+      });
+    });
+  } catch (err) {
+    console.warn('[BeTacora] flight offers search failed:', err);
+    section.innerHTML = `
+      <header class="bt-flight-offers__head">
+        <h3 class="bt-flight-offers__title">${escapeHtml(copy.title || '')}</h3>
+        <p class="bt-flight-offers__sub">${escapeHtml(copy.subtitle || '')}</p>
+      </header>
+      <p class="bt-flight-offers__status bt-flight-offers__status--err">${escapeHtml(
+        copy.error || '',
+      )}</p>
+      <p class="bt-flight-offers__note">${escapeHtml(copy.sandboxNote || '')}</p>`;
+  }
+}
+
+async function handleFlightOfferSelect(section, statusEl, offer, copy) {
+  section.querySelectorAll('.bt-flight-offer').forEach((btn) => {
+    const isSel = btn.getAttribute('data-offer-id') === offer.id;
+    btn.classList.toggle('is-selected', isSel);
+    btn.setAttribute('aria-pressed', isSel ? 'true' : 'false');
+    const cta = btn.querySelector('.bt-flight-offer__cta');
+    if (cta) cta.textContent = isSel ? (copy.selected || '') : (copy.select || '');
+  });
+
+  const itineraryId = lastSavedItineraryId;
+  if (!itineraryId) {
+    if (statusEl) {
+      statusEl.className = 'bt-flight-offers__status bt-flight-offers__login';
+      statusEl.innerHTML = `${escapeHtml(copy.loginToSave || '')} <a href="/auth?next=${encodeURIComponent('/explorar')}">${escapeHtml(copy.loginCta || '')}</a>`;
+      statusEl.hidden = false;
+    }
+    return;
+  }
+
+  if (statusEl) {
+    statusEl.className = 'bt-flight-offers__status';
+    statusEl.textContent = copy.saving || '';
+    statusEl.hidden = false;
+  }
+
+  try {
+    const token =
+      window.btAuth && typeof window.btAuth.getAccessToken === 'function'
+        ? await window.btAuth.getAccessToken()
+        : null;
+
+    if (!token) {
+      if (statusEl) {
+        statusEl.className = 'bt-flight-offers__status bt-flight-offers__login';
+        statusEl.innerHTML = `${escapeHtml(copy.loginToSave || '')} <a href="/auth?next=${encodeURIComponent('/explorar')}">${escapeHtml(copy.loginCta || '')}</a>`;
+      }
+      return;
+    }
+
+    const res = await fetch('/api/flights/select', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        itinerary_id: itineraryId,
+        offer,
+      }),
+    });
+    const data = await res.json();
+    if (statusEl) {
+      if (res.ok && data.ok) {
+        statusEl.className = 'bt-flight-offers__status bt-flight-offers__status--ok';
+        statusEl.textContent = copy.saved || '';
+      } else {
+        statusEl.className = 'bt-flight-offers__status bt-flight-offers__status--err';
+        statusEl.textContent = copy.saveError || data.error || '';
+      }
+    }
+  } catch (err) {
+    console.warn('[BeTacora] flight selection save failed:', err);
+    if (statusEl) {
+      statusEl.className = 'bt-flight-offers__status bt-flight-offers__status--err';
+      statusEl.textContent = copy.saveError || '';
+    }
+  }
+}
+
 function renderItineraryHtml(html, serverArchetype) {
+  stopItineraryLoadingTicker();
   const { places, cleanHtml } = extractPlacesBlock(html);
   const { profile, itineraryHtml } = splitResponseHtml(cleanHtml);
 
@@ -3809,12 +4268,19 @@ function renderItineraryHtml(html, serverArchetype) {
   // Travel Identity carousel needs itinerary DOM for anticipation slide
   if (aiProfile) renderShareableCard(aiProfile);
 
-  setTimeout(() => {
-    try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
-  }, 600);
+  mountFlightOffers(section);
+
+  if (typeof enterResultsView === 'function') {
+    enterResultsView();
+  } else {
+    setTimeout(() => {
+      try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
+    }, 600);
+  }
 }
 
 function showItineraryError(message) {
+  stopItineraryLoadingTicker();
   const section = document.getElementById('itinerarySection');
   const err = L().ui.errors;
   section.innerHTML = `<div class="itinerary-error"><strong>${err.title}</strong>${escapeHtml(message)}</div>`;
@@ -4083,6 +4549,7 @@ async function handleGenerate() {
       await window.btAuth.init();
       const limit = await window.btAuth.checkLimit();
       if (!limit.allowed) {
+        stopItineraryLoadingTicker();
         const section = document.getElementById('itinerarySection');
         section.innerHTML = '';
         section.classList.remove('show', 'is-loading');
@@ -4236,6 +4703,141 @@ let savedTravelerProfile = null;
 let quickTripActive = false;
 const qtHomes = new Map(); // id -> { parent, nextSibling }
 
+function resultsViewCopy() {
+  const ui = (L().ui && L().ui.resultsView) || {};
+  const lang = LANG.current || 'es';
+  const fallback = {
+    es: {
+      newTrip: 'Nuevo viaje',
+      hint: 'Formulario bloqueado — tus datos ya están guardados. Mira tu perfil e itinerario abajo.',
+      hintQuick: 'Detalles del viaje bloqueados. Mira tu perfil e itinerario abajo.',
+    },
+    en: {
+      newTrip: 'New trip',
+      hint: 'Form locked — your answers are saved. See your profile and itinerary below.',
+      hintQuick: 'Trip details locked. See your profile and itinerary below.',
+    },
+    fr: {
+      newTrip: 'Nouveau voyage',
+      hint: 'Formulaire verrouillé — vos réponses sont enregistrées. Voir profil et itinéraire ci-dessous.',
+      hintQuick: 'Détails du voyage verrouillés. Voir profil et itinéraire ci-dessous.',
+    },
+  };
+  return { ...(fallback[lang] || fallback.es), ...ui };
+}
+
+function applyResultsViewLabels() {
+  const copy = resultsViewCopy();
+  const btn = document.getElementById('newTripBtn');
+  const hint = document.getElementById('resultsToolbarHint');
+  if (btn) btn.textContent = copy.newTrip;
+  if (hint) {
+    hint.textContent = document.body.classList.contains('qt-active')
+      ? copy.hintQuick
+      : copy.hint;
+  }
+}
+
+/**
+ * After a successful itinerary: collapse/lock the questionnaire (or quick-trip
+ * hero + details panel) and scroll so profile + itinerary are in view.
+ */
+function enterResultsView() {
+  if (typeof closeTripPanel === 'function') closeTripPanel();
+
+  document.body.classList.add('itinerary-ready');
+
+  const toolbar = document.getElementById('resultsToolbar');
+  if (toolbar) {
+    toolbar.hidden = false;
+  }
+  applyResultsViewLabels();
+
+  // Collapse removes form from layout — scroll to the start of results.
+  const target =
+    document.getElementById('resultsToolbar') ||
+    document.getElementById('profileCard') ||
+    document.getElementById('itinerarySection');
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      try {
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {
+        console.error('BeTacora results scroll error:', e);
+      }
+    }, 80);
+  });
+}
+
+/**
+ * Re-open the form for another trip in this session (does not clear personality DNA).
+ */
+function startNewTrip() {
+  document.body.classList.remove('itinerary-ready');
+
+  const toolbar = document.getElementById('resultsToolbar');
+  if (toolbar) toolbar.hidden = true;
+
+  if (typeof closeTripPanel === 'function') closeTripPanel();
+
+  // Clear this trip's visual results so the form is the focus again
+  const section = document.getElementById('itinerarySection');
+  if (section) {
+    section.innerHTML = '';
+    section.classList.remove('show', 'is-loading');
+  }
+  destroyItineraryMap?.();
+  lastItineraryHtml = '';
+  lastTripPlaces = [];
+  lastSavedItineraryId = null;
+
+  document.getElementById('shareableCard')?.classList.remove('show');
+  document.getElementById('tripShareCard')?.classList.remove('show');
+  document.getElementById('profileCard')?.classList.remove('show');
+  hideSaveBanner?.();
+  hideLimitBanner?.();
+
+  if (typeof resetGenerateButtons === 'function') resetGenerateButtons();
+
+  if (quickTripActive || document.body.classList.contains('qt-active')) {
+    // Short flow: back to destination hero; clear dest so they pick again
+    try {
+      while (selectedDest.length) {
+        const d = selectedDest[0];
+        const slug = d.kind === 'country'
+          ? `country-${slugify(d.country)}`
+          : `city-${slugify(d.city)}`;
+        removePlace(slug, 'dest');
+      }
+    } catch (e) {
+      selectedDest.length = 0;
+      if (typeof syncDestAnswers === 'function') syncDestAnswers();
+    }
+    const hero = document.getElementById('qtHero');
+    try {
+      hero?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) { /* ignore */ }
+  } else {
+    // Full flow: reopen questionnaire; jump to trip details
+    const trip = document.getElementById('tripSection') || document.querySelector('.container > .section');
+    try {
+      (trip || document.querySelector('.progress-wrap'))?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    } catch (e) { /* ignore */ }
+  }
+}
+
+let resultsToolbarWired = false;
+function wireResultsToolbar() {
+  if (resultsToolbarWired) return;
+  resultsToolbarWired = true;
+  const btn = document.getElementById('newTripBtn');
+  if (btn) btn.addEventListener('click', startNewTrip);
+}
+
 function qtCopy() {
   const ui = (L().ui && L().ui.quickTrip) || {};
   const lang = LANG.current || 'es';
@@ -4341,10 +4943,9 @@ function hydrateDomFromAnswers(src, keys) {
     if (val === undefined || val === null || val === '') return;
     answers[key] = val;
     if (Array.isArray(val)) {
-      val.forEach((v) => {
-        document.querySelectorAll(`[data-q="${key}"]`).forEach((el) => {
-          if (el.dataset.v === String(v)) el.classList.add('sel');
-        });
+      const set = new Set(val.map(String));
+      document.querySelectorAll(`[data-q="${key}"]`).forEach((el) => {
+        el.classList.toggle('sel', set.has(String(el.dataset.v)));
       });
     } else {
       document.querySelectorAll(`[data-q="${key}"]`).forEach((el) => {
@@ -4376,7 +4977,8 @@ function applyTripDefaults(profile) {
 function mergeSavedPersonalityForTrip() {
   if (!quickTripActive || !savedTravelerProfile?.traveler_answers) return;
   const saved = { ...savedTravelerProfile.traveler_answers };
-  const panelKeys = ['accom', 'accom_location', 'accom_priority', 'amenity'];
+  // Same pattern as lodging: panel keys keep this-trip answers; other DNA keys restore from profile
+  const panelKeys = ['accom', 'accom_location', 'accom_priority', 'amenity', 'act'];
   const panelOverride = {};
   panelKeys.forEach((k) => {
     if (answers[k] !== undefined && answers[k] !== null && answers[k] !== '') {
@@ -4389,13 +4991,43 @@ function mergeSavedPersonalityForTrip() {
   }
 }
 
+/** Reorder option buttons so preferred values appear first (smart filter). */
+function prioritizeOptionButtons(selector, preferredValues) {
+  const preferred = Array.isArray(preferredValues)
+    ? preferredValues.map(String)
+    : [];
+  if (!preferred.length) return;
+  const prefSet = new Set(preferred);
+  document.querySelectorAll(selector).forEach((grid) => {
+    const buttons = Array.from(grid.querySelectorAll('.opt'));
+    if (buttons.length < 2) return;
+    const ranked = [
+      ...buttons.filter((b) => prefSet.has(b.dataset.v)),
+      ...buttons.filter((b) => !prefSet.has(b.dataset.v)),
+    ];
+    ranked.forEach((b) => grid.appendChild(b));
+  });
+}
+
+function prioritizeActsFromDna() {
+  const dnaActs =
+    (savedTravelerProfile?.traveler_answers?.act) ||
+    answers.act ||
+    [];
+  prioritizeOptionButtons('#actOptionsGrid, #actBlock .grid4', dnaActs);
+  // Mission sports: show practiced activities first when the detail grid is open
+  prioritizeOptionButtons('#misionSportDetail .grid4', dnaActs);
+}
+
 function openTripPanel() {
   if (!quickTripActive) return;
+  if (document.body.classList.contains('itinerary-ready')) return;
   const overlay = document.getElementById('qtOverlay');
   const body = document.getElementById('qtPanelBody');
   if (!overlay || !body) return;
 
   moveTo(document.getElementById('accomSection'), body);
+  moveTo(document.getElementById('actSection'), body);
   moveTo(document.getElementById('datesBlock'), body);
   moveTo(document.getElementById('budgetBlock'), body);
   moveTo(document.getElementById('misionSection'), body);
@@ -4407,12 +5039,14 @@ function openTripPanel() {
   answers.trip_type = 'destino';
   showTripType('destino');
 
-  // Prefill lodging from DNA as defaults (user can change for this trip)
+  // Prefill lodging + activities from DNA as defaults (user can change for this trip)
   if (savedTravelerProfile?.traveler_answers) {
     hydrateDomFromAnswers(savedTravelerProfile.traveler_answers, [
-      'accom', 'accom_location', 'accom_priority', 'amenity',
+      'accom', 'accom_location', 'accom_priority', 'amenity', 'act',
     ]);
   }
+  prioritizeActsFromDna();
+  if (typeof syncActivityThisTrip === 'function') syncActivityThisTrip();
 
   overlay.classList.add('open');
   overlay.setAttribute('aria-hidden', 'false');
@@ -4434,6 +5068,7 @@ function closeTripPanel() {
 
 function onQuickTripDestSelected() {
   if (!quickTripActive) return;
+  if (document.body.classList.contains('itinerary-ready')) return;
   if (selectedDest.length > 0) openTripPanel();
 }
 
@@ -4573,6 +5208,7 @@ try {
   }
   LANG.apply();
   if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
+  if (typeof wireResultsToolbar === 'function') wireResultsToolbar();
   updateSlider();
   updateProgress();
   initFlowMode();

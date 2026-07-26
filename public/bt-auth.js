@@ -45,6 +45,13 @@
     return data.user ?? null;
   }
 
+  async function getAccessToken() {
+    const client = await init();
+    if (!client) return null;
+    const { data } = await client.auth.getSession();
+    return data?.session?.access_token || null;
+  }
+
   async function checkLimit() {
     const client = await init();
     if (client) {
@@ -120,6 +127,60 @@
 
     await saveTravelerProfile(client, user.id, payload);
 
+    return { ok: true, id: data?.id ?? null };
+  }
+
+  /**
+   * Persist a Duffel offer selection (no payment / no Duffel order).
+   * payload: { itinerary_id, duffel_offer_id, price, currency, airline? }
+   * or { itinerary_id, offer: SimplifiedFlightOffer }
+   */
+  async function saveFlightSelection(payload) {
+    const client = await init();
+    if (!client) return { ok: false, error: "no_client" };
+
+    const user = await getUser();
+    if (!user) return { ok: false, error: "not_logged_in" };
+
+    const offer = payload?.offer && typeof payload.offer === "object" ? payload.offer : null;
+    const itineraryId = String(payload?.itinerary_id || "").trim();
+    const offerId = String(
+      payload?.duffel_offer_id || payload?.offer_id || offer?.id || "",
+    ).trim();
+    const price = String(payload?.price ?? offer?.price ?? "").trim();
+    const currency = String(payload?.currency || offer?.currency || "USD")
+      .trim()
+      .toUpperCase();
+    const airline = payload?.airline ?? offer?.airline ?? null;
+
+    if (!itineraryId) return { ok: false, error: "itinerary_id_required" };
+    if (!offerId) return { ok: false, error: "duffel_offer_id_required" };
+    if (!price) return { ok: false, error: "price_required" };
+
+    const { data: itinerary, error: itineraryError } = await client
+      .from("itineraries")
+      .select("id")
+      .eq("id", itineraryId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (itineraryError) return { ok: false, error: itineraryError.message };
+    if (!itinerary) return { ok: false, error: "itinerary_not_found" };
+
+    const { data, error } = await client
+      .from("flight_selections")
+      .insert({
+        user_id: user.id,
+        itinerary_id: itineraryId,
+        duffel_offer_id: offerId,
+        airline,
+        price,
+        currency,
+      })
+      .select("id")
+      .single();
+
+    if (error) return { ok: false, error: error.message };
     return { ok: true, id: data?.id ?? null };
   }
 
@@ -349,8 +410,10 @@
       checkLimit,
       incrementCount,
       saveItinerary,
+      saveFlightSelection,
       savePostTripFeedback,
       getTravelerProfile,
+      getAccessToken,
     },
     window.btAuth || {},
   );

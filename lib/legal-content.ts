@@ -301,9 +301,18 @@ export const TERMS_DOC: LegalDoc = {
       type: "ul",
       items: [
         'El software, diseño, marca "BeTacora", logotipos y contenidos propios de la App son propiedad de [NOMBRE LEGAL DE LA EMPRESA] o de sus licenciantes, y están protegidos por la normativa de propiedad intelectual aplicable.',
-        "Los itinerarios generados para tu uso personal puedes utilizarlos y compartirlos libremente para tus propios viajes.",
         "No se permite copiar, modificar o distribuir el software o diseño de la App sin autorización previa por escrito.",
       ],
+    },
+    { type: "h3", text: "7.1 Contenido generado por IA (tu itinerario)" },
+    {
+      type: "p",
+      text: 'Los itinerarios generados específicamente para ti a partir de tus respuestas puedes utilizarlos y compartirlos libremente para tus propios viajes, incluyendo el carrusel de "Identidad Viajera". [NOTA LEGAL: la titularidad de derechos de autor sobre contenido generado por IA es un área legal todavía en desarrollo en muchas jurisdicciones y varía según el país; recomendamos que un abogado revise esta cláusula antes de publicar, especialmente si en el futuro se monetiza directamente este contenido o se usa con fines distintos al uso personal del viajero].',
+    },
+    { type: "h3", text: "7.2 Contenido e imágenes de terceros" },
+    {
+      type: "p",
+      text: "Algunos elementos visuales, mapas o referencias mostrados en la App (por ejemplo, enlaces a Google Maps, imágenes de actividades de Viator, u otras fuentes de terceros) pertenecen a sus respectivos titulares y se usan conforme a sus licencias correspondientes. [COMPLETAR: lista aquí cualquier fuente de imágenes o contenido de terceros que uséis hoy en la app, y confirma que tenéis derecho de uso/licencia válida para cada una].",
     },
     { type: "h2", text: "8. Limitación de responsabilidad" },
     {

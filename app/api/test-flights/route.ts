@@ -7,6 +7,11 @@ import { searchFlights } from "@/lib/duffel";
  *
  * GET /api/test-flights
  * Hardcoded sample: LHR → JFK, ~45 days out, 1 adult.
+ *
+ * To persist a chosen offer (no payment / no Duffel order):
+ * POST /api/flights/select with Authorization: Bearer <supabase access_token>
+ * and body { itinerary_id, offer: <one offer from this response> }
+ * or client: window.btAuth.saveFlightSelection({ itinerary_id, offer })
  */
 export async function GET() {
   try {
@@ -31,7 +36,7 @@ export async function GET() {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    const missingKey = message.includes("DUFFEL_TEST_API_KEY is not set");
+    const missingKey = message.includes("DUFFEL_API_KEY is not set");
 
     return NextResponse.json(
       {
@@ -39,7 +44,7 @@ export async function GET() {
         mode: "test",
         error: message,
         hint: missingKey
-          ? "Add DUFFEL_TEST_API_KEY=duffel_test_... to .env.local (from Duffel dashboard → Developer test mode), then restart next dev."
+          ? "Add DUFFEL_API_KEY=duffel_test_... to .env.local (from Duffel dashboard → Developer test mode), then restart next dev."
           : undefined,
       },
       { status: missingKey ? 503 : 502 },

@@ -178,6 +178,23 @@ export const NAV_COPY: Record<
       openTrip: string;
       untitled: string;
       loading: string;
+      flights: {
+        title: string;
+        subtitle: string;
+        loading: string;
+        empty: string;
+        error: string;
+        select: string;
+        selected: string;
+        direct: string;
+        stop: string;
+        stops: string;
+        sandboxNote: string;
+        missingParams: string;
+        saving: string;
+        saved: string;
+        saveError: string;
+      };
     };
     perfil: {
       title: string;
@@ -228,6 +245,25 @@ export const NAV_COPY: Record<
       openTrip: "Ver itinerario",
       untitled: "Viaje sin destino",
       loading: "Cargando viajes…",
+      flights: {
+        title: "Vuelos reales",
+        subtitle: "Elige una oferta (sin reserva ni pago todavía)",
+        loading: "Buscando vuelos…",
+        empty: "No encontramos ofertas para estas fechas.",
+        error: "No pudimos cargar ofertas de vuelo. Inténtalo de nuevo.",
+        select: "Elegir",
+        selected: "Seleccionado",
+        direct: "Directo",
+        stop: "1 escala",
+        stops: "{n} escalas",
+        sandboxNote:
+          "Modo prueba Duffel — precios y horarios pueden ser irreales. Sin reserva ni pago.",
+        missingParams:
+          "Faltan origen, destino o fecha de salida para buscar vuelos.",
+        saving: "Guardando selección…",
+        saved: "Oferta guardada en tu viaje.",
+        saveError: "No se pudo guardar la selección.",
+      },
     },
     perfil: {
       title: "Perfil",
@@ -277,6 +313,25 @@ export const NAV_COPY: Record<
       openTrip: "View itinerary",
       untitled: "Trip without destination",
       loading: "Loading trips…",
+      flights: {
+        title: "Real flights",
+        subtitle: "Pick an offer (no booking or payment yet)",
+        loading: "Searching flights…",
+        empty: "No offers found for these dates.",
+        error: "We couldn't load flight offers. Please try again.",
+        select: "Select",
+        selected: "Selected",
+        direct: "Direct",
+        stop: "1 stop",
+        stops: "{n} stops",
+        sandboxNote:
+          "Duffel test mode — prices and times may be unrealistic. No booking or payment.",
+        missingParams:
+          "Origin, destination, or departure date is missing for flight search.",
+        saving: "Saving selection…",
+        saved: "Offer saved to your trip.",
+        saveError: "Could not save the selection.",
+      },
     },
     perfil: {
       title: "Profile",
@@ -326,6 +381,25 @@ export const NAV_COPY: Record<
       openTrip: "Voir l'itinéraire",
       untitled: "Voyage sans destination",
       loading: "Chargement…",
+      flights: {
+        title: "Vols réels",
+        subtitle: "Choisis une offre (pas de réservation ni paiement pour l'instant)",
+        loading: "Recherche de vols…",
+        empty: "Aucune offre trouvée pour ces dates.",
+        error: "Impossible de charger les offres de vol. Réessaie.",
+        select: "Choisir",
+        selected: "Sélectionné",
+        direct: "Direct",
+        stop: "1 escale",
+        stops: "{n} escales",
+        sandboxNote:
+          "Mode test Duffel — prix et horaires peuvent être irréalistes. Pas de réservation ni paiement.",
+        missingParams:
+          "Origine, destination ou date de départ manquante pour la recherche de vols.",
+        saving: "Enregistrement de la sélection…",
+        saved: "Offre enregistrée dans ton voyage.",
+        saveError: "Impossible d'enregistrer la sélection.",
+      },
     },
     perfil: {
       title: "Profil",

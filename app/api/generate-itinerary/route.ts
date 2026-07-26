@@ -64,7 +64,8 @@ Genera esto en HTML limpio:
 <p>[Cuántos días, distribución general, qué se puede ajustar]</p>
 
 <h2>✈️ {{how_to_get_there}}</h2>
-<p>[Aerolíneas recomendadas, precio estimado, mejor momento para reservar]</p>
+<div data-bt-flight-offers></div>
+<p>[Opcional — SOLO contexto útil para el día 1: aeropuerto preferido de llegada, si conviene volar mañana/tarde, traslado aeropuerto→alojamiento. PROHIBIDO inventar aerolíneas, números de vuelo o precios del vuelo principal de ida/vuelta: BeTacora muestra ofertas reales aparte.]</p>
 
 <h2>🏨 {{where_to_stay}}</h2>
 [Para cada opción:]
@@ -82,7 +83,7 @@ Genera esto en HTML limpio:
 <p><strong>{{local_tip}}</strong> [algo que no aparece en las guías turísticas]</p>
 
 <h2>💰 {{budget_estimate}}</h2>
-<p>[Desglose limpio: vuelos, alojamiento, comida diaria, actividades, total]</p>
+<p>[Desglose limpio: alojamiento, comida diaria, actividades, total en destino. Para vuelos escribe exactamente "Vuelos: ver ofertas reales" — NO inventes un precio de vuelo.]</p>
 
 <h2>⚠️ {{what_nobody_tells}}</h2>
 <ul>[Advertencias honestas, máximo 4]</ul>

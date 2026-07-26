@@ -10,3 +10,6 @@ export const ABOUT_PATH: Record<"es" | "en" | "fr", string> = {
   en: "/about",
   fr: "/a-propos",
 };
+
+export const PRIVACY_PATH = "/privacidad";
+export const TERMS_PATH = "/terminos";

@@ -1,5 +1,10 @@
 import type { MetadataRoute } from "next";
-import { ABOUT_PATH, SITE_URL } from "@/lib/site";
+import {
+  ABOUT_PATH,
+  PRIVACY_PATH,
+  SITE_URL,
+  TERMS_PATH,
+} from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -57,6 +62,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
       alternates: aboutAlternates,
+    },
+    {
+      url: `${SITE_URL}${PRIVACY_PATH}`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
+    {
+      url: `${SITE_URL}${TERMS_PATH}`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
     },
   ];
 }

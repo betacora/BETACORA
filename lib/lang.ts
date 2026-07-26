@@ -27,7 +27,15 @@ export function persistLang(lang: AppLang): void {
 
 export const LANDING_COPY: Record<
   AppLang,
-  { tagline: string; sub: string; cta: string; ctaReturning: string; about: string }
+  {
+    tagline: string;
+    sub: string;
+    cta: string;
+    ctaReturning: string;
+    about: string;
+    privacy: string;
+    terms: string;
+  }
 > = {
   es: {
     tagline: "Tu bitácora inteligente de viajes",
@@ -35,6 +43,8 @@ export const LANDING_COPY: Record<
     cta: "Descubre tu perfil viajero",
     ctaReturning: "Empezar nuevo viaje",
     about: "Sobre nosotros",
+    privacy: "Privacidad",
+    terms: "Términos",
   },
   en: {
     tagline: "Your smart travel logbook",
@@ -42,6 +52,8 @@ export const LANDING_COPY: Record<
     cta: "Discover your traveler profile",
     ctaReturning: "Start a new trip",
     about: "About",
+    privacy: "Privacy",
+    terms: "Terms",
   },
   fr: {
     tagline: "Votre carnet de voyage intelligent",
@@ -49,6 +61,8 @@ export const LANDING_COPY: Record<
     cta: "Découvrez votre profil voyageur",
     ctaReturning: "Commencer un nouveau voyage",
     about: "À propos",
+    privacy: "Confidentialité",
+    terms: "Conditions",
   },
 };
 

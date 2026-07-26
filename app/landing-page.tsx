@@ -11,7 +11,7 @@ import {
   LANDING_COPY,
   type AppLang,
 } from "@/lib/lang";
-import { ABOUT_PATH } from "@/lib/site";
+import { ABOUT_PATH, PRIVACY_PATH, TERMS_PATH } from "@/lib/site";
 import { useAuth } from "@/lib/useAuth";
 import { getTravelerProfile } from "@/lib/travelerProfile";
 import { supabase } from "@/lib/supabase";
@@ -173,17 +173,31 @@ export function LandingPage() {
       </section>
 
       <footer className="w-full px-6 py-8 sm:px-8 md:px-12 border-t border-[#E5E5E5] text-center">
-        <p className="text-sm text-[#6B6B6B] leading-relaxed">
+        <p className="text-sm text-[#6B6B6B] leading-relaxed flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
           <Link
             href={ABOUT_PATH[lang]}
             className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
           >
             {copy.about}
           </Link>
-          <span className="mx-2 text-[#E5E5E5]" aria-hidden="true">
+          <span className="text-[#E5E5E5]" aria-hidden="true">
             ·
           </span>
-          <span>{copy.tagline}</span>
+          <Link
+            href={PRIVACY_PATH}
+            className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
+          >
+            {copy.privacy}
+          </Link>
+          <span className="text-[#E5E5E5]" aria-hidden="true">
+            ·
+          </span>
+          <Link
+            href={TERMS_PATH}
+            className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
+          >
+            {copy.terms}
+          </Link>
         </p>
       </footer>
     </main>

@@ -51,7 +51,9 @@ function isHtmlRequest(request, url) {
     path === "/questionnaire" ||
     path === "/sobre-nosotros" ||
     path === "/about" ||
-    path === "/a-propos"
+    path === "/a-propos" ||
+    path === "/privacidad" ||
+    path === "/terminos"
   );
 }
 

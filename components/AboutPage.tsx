@@ -106,12 +106,32 @@ export function AboutPage({ lang }: { lang: AppLang }) {
         </section>
 
         <div className="mt-12 pt-8 border-t border-[#E5E5E5] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-          <Link
-            href="/"
-            className="text-sm text-[#6B6B6B] no-underline hover:text-[#1A1A1A]"
-          >
-            ← {copy.homeLabel}
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            <Link
+              href="/"
+              className="text-[#6B6B6B] no-underline hover:text-[#1A1A1A]"
+            >
+              ← {copy.homeLabel}
+            </Link>
+            <span className="text-[#E5E5E5]" aria-hidden="true">
+              ·
+            </span>
+            <Link
+              href="/privacidad"
+              className="text-[#2D7B7B] no-underline hover:opacity-80"
+            >
+              Privacidad
+            </Link>
+            <span className="text-[#E5E5E5]" aria-hidden="true">
+              ·
+            </span>
+            <Link
+              href="/terminos"
+              className="text-[#2D7B7B] no-underline hover:opacity-80"
+            >
+              Términos
+            </Link>
+          </div>
           <Link
             href={copy.ctaHref}
             className="inline-flex justify-center px-8 py-3.5 rounded-[7px] bg-[#E8634A] text-white font-medium text-sm no-underline hover:opacity-90"

@@ -496,12 +496,52 @@ function AuthPageInner() {
                     <LegalCheckbox
                       checked={terms}
                       onChange={setTerms}
-                      label={copy.terms}
+                      label={
+                        <>
+                          {lang === "en"
+                            ? "I accept the "
+                            : lang === "fr"
+                              ? "J'accepte les "
+                              : "Acepto los "}
+                          <Link
+                            href="/terminos"
+                            className="text-[#2D7B7B] underline-offset-2 hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {lang === "en"
+                              ? "Terms of Use"
+                              : lang === "fr"
+                                ? "conditions d'utilisation"
+                                : "Términos de Uso"}
+                          </Link>
+                        </>
+                      }
                     />
                     <LegalCheckbox
                       checked={privacy}
                       onChange={setPrivacy}
-                      label={copy.privacy}
+                      label={
+                        <>
+                          {lang === "en"
+                            ? "I accept the "
+                            : lang === "fr"
+                              ? "J'accepte la "
+                              : "Acepto la "}
+                          <Link
+                            href="/privacidad"
+                            className="text-[#2D7B7B] underline-offset-2 hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {lang === "en"
+                              ? "Privacy Policy"
+                              : lang === "fr"
+                                ? "politique de confidentialité"
+                                : "Política de Privacidad"}
+                          </Link>
+                        </>
+                      }
                     />
                     <LegalCheckbox
                       checked={age18}
@@ -670,7 +710,7 @@ function LegalCheckbox({
 }: {
   checked: boolean;
   onChange: (value: boolean) => void;
-  label: string;
+  label: React.ReactNode;
 }) {
   return (
     <label className="flex items-start gap-2.5 cursor-pointer text-sm text-[#6B6B6B]">

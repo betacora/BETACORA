@@ -175,7 +175,7 @@ function simplifyOffer(offer: OfferLike): SimplifiedFlightOffer {
  * Preferred form:
  *   searchFlights({ origin, destination, departureDate, returnDate?, passengers?, cabinClass? })
  *
- * Legacy positional form (used by /api/test-flights):
+ * Legacy positional form (kept for convenience):
  *   searchFlights(origin, destination, departureDate, passengers)
  */
 export async function searchFlights(

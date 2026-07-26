@@ -28,6 +28,7 @@ export function LandingPage() {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const [hasProfile, setHasProfile] = useState(false);
   const [profileReady, setProfileReady] = useState(false);
+  const [accountDeleted, setAccountDeleted] = useState(false);
 
   useEffect(() => {
     const detected = detectLang("en");
@@ -40,6 +41,18 @@ export function LandingPage() {
       trackFunnel(FunnelEvent.LandingPageView, { lang: detected });
     }, 0);
     return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("account") === "deleted") {
+      setAccountDeleted(true);
+      params.delete("account");
+      const next = params.toString();
+      const clean = `${window.location.pathname}${next ? `?${next}` : ""}${window.location.hash}`;
+      window.history.replaceState({}, "", clean);
+    }
   }, []);
 
   // If Site URL still points at `/`, Supabase drops hash tokens on the landing
@@ -137,6 +150,14 @@ export function LandingPage() {
       </header>
 
       <section className="flex-1 flex flex-col items-center justify-center px-6 pb-24 sm:px-8 md:px-12 text-center">
+        {accountDeleted ? (
+          <p
+            role="status"
+            className="mb-8 max-w-sm text-sm text-[#2D7B7B] leading-relaxed m-0 px-4 py-3 rounded-[7px] border border-[#E5E5E5] bg-[#FAFAFA]"
+          >
+            {copy.accountDeleted}
+          </p>
+        ) : null}
         <img
           src="/icon-512.png?v=4"
           alt="BeTacora — bitácora inteligente de viajes"

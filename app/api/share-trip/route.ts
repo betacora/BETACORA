@@ -92,6 +92,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Optional owner for GDPR account deletion (guest shares stay user_id null)
+  let ownerUserId: string | null = null;
+  const authHeader = req.headers.get("Authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const {
+      data: { user },
+    } = await userClient.auth.getUser();
+    ownerUserId = user?.id ?? null;
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();
@@ -151,6 +165,7 @@ export async function POST(req: NextRequest) {
       places,
       itinerary_html: itineraryHtml,
       lang,
+      ...(ownerUserId ? { user_id: ownerUserId } : {}),
     });
 
     if (!error) {

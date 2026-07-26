@@ -42,10 +42,6 @@ export default function InicioPage() {
   }, [authLoading, isLoggedIn, user?.id]);
 
   const copy = NAV_COPY[lang].inicio;
-  const greeting =
-    archetype && !loadingProfile
-      ? copy.greetingNamed.replace("{name}", archetype)
-      : copy.greetingGeneric;
 
   return (
     <>
@@ -54,7 +50,7 @@ export default function InicioPage() {
         <div className="flex flex-col items-start">
           <BrandWordmark className="text-2xl font-medium tracking-tight" />
           <h1 className="mt-6 text-[1.65rem] sm:text-[1.85rem] font-medium tracking-tight leading-snug text-[#1A1A1A] m-0">
-            {authLoading || loadingProfile ? "…" : greeting}
+            {copy.greetingGeneric}
           </h1>
           <p className="mt-3 text-[0.95rem] text-[#6B6B6B] leading-relaxed m-0">
             {copy.sub}

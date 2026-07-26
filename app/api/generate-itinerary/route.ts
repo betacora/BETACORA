@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { isAuthed, requireSupabaseUser } from "@/lib/apiAuth";
 import {
@@ -415,9 +416,6 @@ function extractText(message: Anthropic.Message): string {
     .map((block) => block.text)
     .join("\n");
 }
-
-import type { SupabaseClient } from "@supabase/supabase-js";
-import { isAuthed, requireSupabaseUser } from "@/lib/apiAuth";
 
 async function enforceGenerationQuota(
   supabase: SupabaseClient,

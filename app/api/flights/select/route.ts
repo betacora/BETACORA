@@ -7,7 +7,7 @@ import {
 } from "@/lib/flightSelections";
 import type { SimplifiedFlightOffer } from "@/lib/duffel";
 import {
-  checkRateLimit,
+  checkMemoryRateLimit,
   clientIp,
   rateLimitResponse,
 } from "@/lib/rateLimit";
@@ -25,7 +25,7 @@ import {
  */
 export async function POST(request: Request) {
   try {
-    const limited = checkRateLimit({
+    const limited = checkMemoryRateLimit({
       key: `flights-select:${clientIp(request)}`,
       limit: 30,
       windowMs: 60 * 60 * 1000,

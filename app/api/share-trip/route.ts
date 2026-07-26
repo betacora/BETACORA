@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import {
-  checkRateLimit,
+  checkMemoryRateLimit,
   clientIp,
   rateLimitResponse,
 } from "@/lib/rateLimit";
@@ -74,7 +74,7 @@ function normalizePlaces(value: unknown) {
  * Gracefully fails if shared_trips table is not yet migrated.
  */
 export async function POST(req: NextRequest) {
-  const limited = checkRateLimit({
+  const limited = checkMemoryRateLimit({
     key: `share-trip:${clientIp(req)}`,
     limit: 20,
     windowMs: 60 * 60 * 1000,

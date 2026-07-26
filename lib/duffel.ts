@@ -4,6 +4,11 @@
  * Uses the official `@duffel/api` SDK.
  * Auth: DUFFEL_API_KEY must be a test token (starts with `duffel_test_`).
  * No order creation or payments.
+ *
+ * When adding order creation + DNI/passport collection: follow
+ * `.cursor/rules/flight-travel-documents.mdc` — prefer pass-through to Duffel
+ * with no Supabase persistence; encrypt + short TTL if temporary storage is
+ * unavoidable; mask IDs in UI; legal review before launch.
  */
 
 import { Duffel } from "@duffel/api";

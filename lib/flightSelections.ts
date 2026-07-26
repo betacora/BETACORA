@@ -19,6 +19,7 @@ export type FlightSelectionResult =
 /**
  * Persist a Duffel offer selection for the current user.
  * Does NOT create a Duffel order or process payment.
+ * Must never store DNI/passport — see `.cursor/rules/flight-travel-documents.mdc`.
  */
 export async function saveFlightSelection(
   supabase: SupabaseClient,

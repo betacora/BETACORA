@@ -1,0 +1,48 @@
+---
+description: Privacy rules for DNI/passport when booking Duffel flights — do not store plaintext ID docs in Supabase
+globs: lib/duffel.ts,lib/flightSelections.ts,app/api/duffel/**/*,app/api/flights/**/*,components/**/Flight*.tsx
+alwaysApply: false
+---
+
+# Flight booking — travel document (DNI / passport) data
+
+Applies when collecting government ID for Duffel order creation. This is more sensitive than other BeTacora data. **Legal review is required before shipping any ID-collection UI or API.**
+
+## Default: do not persist
+
+- Prefer sending passport/DNI fields **directly to Duffel** in the order-create request only.
+- Do **not** write full document numbers, issue/expiry dates, nationality pages, or scans to Supabase (or logs, analytics, Sentry breadcrumbs, etc.) unless strictly required.
+
+```ts
+// ✅ GOOD — memory → Duffel only
+await duffel.orders.create({ ...passengersWithDocuments });
+
+// ❌ BAD — plaintext ID in our DB
+await supabase.from("passengers").insert({ passport_number: raw });
+```
+
+## If temporary storage is unavoidable
+
+Only while a booking is in flight (e.g. multi-step checkout, webhook retry):
+
+1. **Encrypt at rest** (app-level encryption before insert; never store plaintext columns).
+2. **Restrict access** — service role / narrow RLS; no client read of ciphertext or plaintext.
+3. **Auto-delete** soon after success **or** failure (short TTL, e.g. hours not days). Prefer scheduled purge + delete-on-terminal-status.
+4. Store at most a **masked** display form if the UI needs a reminder (`***4567`), never the full number after submit.
+
+```ts
+// ✅ Mask for UI after submit
+function maskDoc(n: string) {
+  const digits = n.replace(/\s/g, "");
+  return "***" + digits.slice(-4);
+}
+```
+
+## UI
+
+- Never show the full DNI/passport number again after it has been submitted/saved.
+- Do not echo full IDs in emails, itinerary HTML, or share cards.
+
+## Out of scope today
+
+Search/select flows (`searchFlights`, `/api/duffel/search-offers`, `/api/flights/select`) must stay **offer-only** — no travel-document fields on those payloads.

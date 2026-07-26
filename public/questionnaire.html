@@ -1464,7 +1464,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
     <div class="qblock qt-hide-in-trip" id="extraBlock">
       <div class="qlabel">¿Algo más que BeTacora deba saber?</div>
       <div class="qhint">La pregunta que ninguna app te ha hecho antes</div>
-      <textarea class="txt-input" rows="3" id="extra" placeholder="Experiencias pasadas, sueños de viaje, miedos, condiciones especiales..." oninput="updateProgress()"></textarea>
+      <textarea class="txt-input" rows="3" id="extra" maxlength="500" placeholder="Experiencias pasadas, sueños de viaje, miedos, condiciones especiales..." oninput="updateProgress()"></textarea>
     </div>
   </div>
 
@@ -3837,7 +3837,7 @@ function collectAllAnswers() {
     delete answers['budgetMonthly'];
     delete answers['budget_monthly_r'];
   }
-  const extra = document.getElementById('extra').value.trim();
+  const extra = document.getElementById('extra').value.trim().slice(0, 500);
   if (extra) answers['extra'] = extra;
   answers['currency'] = document.getElementById('currencySelect').value;
   answers['ui_lang'] = LANG.current;
@@ -4168,7 +4168,11 @@ async function handleFlightOfferSelect(section, statusEl, offer, copy) {
 
 function renderItineraryHtml(html, serverArchetype) {
   stopItineraryLoadingTicker();
-  const { places, cleanHtml } = extractPlacesBlock(html);
+  const safeHtml =
+    typeof window.btSanitizeItineraryHtml === 'function'
+      ? window.btSanitizeItineraryHtml(html, { keepPlacesScript: true, stripUntrustedUrlsInText: true })
+      : html;
+  const { places, cleanHtml } = extractPlacesBlock(safeHtml);
   const { profile, itineraryHtml } = splitResponseHtml(cleanHtml);
 
   // Sync profile card: prefer rich AI profile; fall back to server archetype name for consistency
@@ -4324,6 +4328,9 @@ function showSaveBanner(type) {
   if (type === 'saved') {
     el.textContent = t.saved || '';
     el.classList.add('show', 'saved');
+  } else if (type === 'save_failed') {
+    el.textContent = t.saveFailed || t.saved || '';
+    el.classList.add('show', 'prompt');
   } else {
     el.innerHTML = `${escapeHtml(t.savePrompt || '')}<br><a class="auth-banner-btn" href="/auth?next=${encodeURIComponent('/explorar')}">${escapeHtml(t.createAccount || '')}</a>`;
     el.classList.add('show', 'prompt');
@@ -4333,6 +4340,142 @@ function showSaveBanner(type) {
 /** Id of the itinerary row just saved for the current result (post-trip feedback). */
 let lastSavedItineraryId = null;
 let postTripWouldReturn = null;
+
+const ACTIVE_ITINERARY_KEY = 'bt_active_itinerary_id';
+const ITINERARY_DRAFT_KEY = 'bt_itinerary_draft';
+
+function stashItineraryDraft(payload) {
+  try {
+    const draft = {
+      id: payload.id || null,
+      html: payload.html || '',
+      destination: payload.destination || null,
+      profile_type: payload.profile_type || null,
+      profile_essence: payload.profile_essence || null,
+      questionnaire_answers: payload.questionnaire_answers || null,
+      savedAt: Date.now(),
+    };
+    sessionStorage.setItem(ITINERARY_DRAFT_KEY, JSON.stringify(draft));
+    if (draft.id) {
+      localStorage.setItem(ACTIVE_ITINERARY_KEY, draft.id);
+    }
+  } catch (e) {
+    console.warn('[BeTacora] draft stash skipped:', e);
+  }
+}
+
+function clearItineraryDraft() {
+  try {
+    sessionStorage.removeItem(ITINERARY_DRAFT_KEY);
+    localStorage.removeItem(ACTIVE_ITINERARY_KEY);
+  } catch (e) { /* ignore */ }
+}
+
+function readItineraryDraft() {
+  try {
+    const raw = sessionStorage.getItem(ITINERARY_DRAFT_KEY);
+    if (!raw) return null;
+    const draft = JSON.parse(raw);
+    if (!draft?.html || typeof draft.html !== 'string') return null;
+    // Drop stale drafts (> 12h)
+    if (draft.savedAt && Date.now() - draft.savedAt > 12 * 60 * 60 * 1000) {
+      sessionStorage.removeItem(ITINERARY_DRAFT_KEY);
+      return null;
+    }
+    return draft;
+  } catch (e) {
+    return null;
+  }
+}
+
+function applyRestoredProfile(row) {
+  if (!row) return;
+  const type = row.profile_type || null;
+  const essence = row.profile_essence || null;
+  if (type) {
+    const nameEl = document.getElementById('pName');
+    if (nameEl) nameEl.textContent = type;
+  }
+  const pEssence = document.getElementById('pEssence');
+  if (pEssence && essence) pEssence.textContent = essence;
+  aiProfile = {
+    type: type || aiProfile?.type || '',
+    essence: essence || aiProfile?.essence || '',
+    quote: aiProfile?.quote || '',
+    superpower: '',
+    animal: '',
+    stats: [],
+    provisional: false,
+  };
+  const card = document.getElementById('profileCard');
+  if (card) card.classList.add('show');
+  if (aiProfile?.type) renderShareableCard(aiProfile);
+}
+
+async function restoreSavedItineraryResult() {
+  if (!window.btAuth) return false;
+  if (document.body.classList.contains('itinerary-ready')) return false;
+
+  const draft = readItineraryDraft();
+  let row = null;
+
+  try {
+    const activeId =
+      (draft && draft.id) ||
+      localStorage.getItem(ACTIVE_ITINERARY_KEY) ||
+      null;
+    if (activeId && typeof window.btAuth.getItineraryById === 'function') {
+      row = await window.btAuth.getItineraryById(activeId);
+    }
+    if (!row?.itinerary_html && typeof window.btAuth.getLatestItinerary === 'function') {
+      // Only auto-restore latest if we have an active marker / draft (results refresh)
+      if (activeId || draft) {
+        row = await window.btAuth.getLatestItinerary();
+      }
+    }
+  } catch (e) {
+    console.warn('[BeTacora] restore fetch failed:', e);
+  }
+
+  const html = row?.itinerary_html || draft?.html;
+  if (!html) return false;
+
+  if (row?.id) {
+    lastSavedItineraryId = row.id;
+    try { localStorage.setItem(ACTIVE_ITINERARY_KEY, row.id); } catch (e) { /* ignore */ }
+  } else if (draft?.id) {
+    lastSavedItineraryId = draft.id;
+  }
+
+  applyRestoredProfile(row || draft);
+  renderItineraryHtml(html, row?.profile_type ? { nombre: row.profile_type } : null);
+  if (row?.id || draft?.id) {
+    showSaveBanner('saved');
+  } else {
+    // Draft not yet persisted — retry save in background for logged-in users
+    try {
+      const user = await window.btAuth.getUser();
+      if (user && draft?.html) {
+        const saved = await window.btAuth.saveItinerary({
+          destination: draft.destination || getDestinationForSave(),
+          profile_type: draft.profile_type || aiProfile?.type || null,
+          profile_essence: draft.profile_essence || aiProfile?.essence || null,
+          questionnaire_answers: draft.questionnaire_answers || collectAllAnswers(),
+          itinerary_html: draft.html,
+        });
+        if (saved?.ok && saved.id) {
+          lastSavedItineraryId = saved.id;
+          stashItineraryDraft({ ...draft, id: saved.id, html: draft.html });
+          showSaveBanner('saved');
+        }
+      }
+    } catch (e) {
+      console.warn('[BeTacora] draft re-save failed:', e);
+    }
+  }
+  console.log('[BeTacora] restored itinerary result', lastSavedItineraryId || 'draft');
+  return true;
+}
 
 function buildPostTripHtml() {
   const t = L().ui.postTrip || {};
@@ -4597,29 +4740,55 @@ async function handleGenerate() {
       flow: document.body.classList.contains('qt-active') ? 'quick_trip' : 'full',
     });
 
+    // Survive refresh before/while Supabase save completes
+    const answersSnapshot = collectAllAnswers();
+    stashItineraryDraft({
+      html: data.html,
+      destination: getDestinationForSave(),
+      profile_type: aiProfile?.type ?? null,
+      profile_essence: aiProfile?.essence ?? null,
+      questionnaire_answers: answersSnapshot,
+    });
+
     if (window.btAuth) {
       try {
         await window.btAuth.incrementCount();
         const user = await window.btAuth.getUser();
         if (user) {
+          console.log('[BeTacora] persisting itinerary for', user.id);
           const saved = await window.btAuth.saveItinerary({
             destination: getDestinationForSave(),
             profile_type: aiProfile?.type ?? null,
             profile_essence: aiProfile?.essence ?? null,
-            questionnaire_answers: collectAllAnswers(),
+            questionnaire_answers: answersSnapshot,
             itinerary_html: data.html,
           });
           if (saved?.ok && saved.id) {
             lastSavedItineraryId = saved.id;
+            stashItineraryDraft({
+              id: saved.id,
+              html: data.html,
+              destination: getDestinationForSave(),
+              profile_type: aiProfile?.type ?? null,
+              profile_essence: aiProfile?.essence ?? null,
+              questionnaire_answers: answersSnapshot,
+            });
+            showSaveBanner('saved');
+            console.log('[BeTacora] itinerary + profile persisted', saved.id);
+          } else {
+            console.warn('[BeTacora] saveItinerary failed:', saved?.error);
+            showSaveBanner('save_failed');
           }
-          showSaveBanner('saved');
         } else {
           lastSavedItineraryId = null;
           showSaveBanner('prompt');
         }
       } catch (e) {
         console.warn('[BeTacora] post-generation save skipped:', e);
+        showSaveBanner('save_failed');
       }
+    } else {
+      showSaveBanner('prompt');
     }
   } catch (errCaught) {
     showItineraryError(err.network);
@@ -4796,6 +4965,7 @@ function startNewTrip() {
   lastItineraryHtml = '';
   lastTripPlaces = [];
   lastSavedItineraryId = null;
+  clearItineraryDraft();
 
   document.getElementById('shareableCard')?.classList.remove('show');
   document.getElementById('tripShareCard')?.classList.remove('show');
@@ -5173,7 +5343,10 @@ async function initFlowMode() {
         } else {
           window.location.href = target;
         }
+        return;
       }
+      // Guests: still restore in-tab draft after refresh (no DB persistence)
+      await restoreSavedItineraryResult();
       return;
     }
 
@@ -5188,6 +5361,9 @@ async function initFlowMode() {
         }
       }
     }
+
+    // Re-show last generated result after refresh (draft / active id / DB)
+    await restoreSavedItineraryResult();
   } catch (e) {
     console.warn('[BeTacora] flow mode init skipped:', e);
   }

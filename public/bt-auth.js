@@ -52,6 +52,60 @@
     return data?.session?.access_token || null;
   }
 
+  /**
+   * itineraries.user_id → profiles(id). OAuth / email-confirm users may lack a
+   * profiles row; create a minimal one so inserts and DNA updates succeed.
+   */
+  async function ensureProfile(client, user) {
+    if (!client || !user?.id) return { ok: false, error: "no_user" };
+
+    const { data: existing, error: readErr } = await client
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (readErr) {
+      console.warn("[BeTacora] ensureProfile read:", readErr.message);
+    }
+    if (existing?.id) return { ok: true, created: false };
+
+    const email =
+      (typeof user.email === "string" && user.email.trim()) ||
+      `${user.id}@users.invalid`;
+    const meta = user.user_metadata || {};
+    const fullName =
+      (typeof meta.full_name === "string" && meta.full_name.trim()) ||
+      (typeof meta.name === "string" && meta.name.trim()) ||
+      null;
+    const nationality =
+      (typeof meta.nationality === "string" && meta.nationality.trim()) || null;
+
+    const { error: insertErr } = await client.from("profiles").upsert(
+      {
+        id: user.id,
+        email,
+        full_name: fullName,
+        nationality,
+      },
+      { onConflict: "id" },
+    );
+
+    if (insertErr) {
+      // Minimal fallback if optional columns differ in older DBs
+      const { error: minimalErr } = await client.from("profiles").upsert(
+        { id: user.id, email },
+        { onConflict: "id" },
+      );
+      if (minimalErr) {
+        console.warn("[BeTacora] ensureProfile upsert:", insertErr.message, minimalErr.message);
+        return { ok: false, error: minimalErr.message };
+      }
+    }
+    console.log("[BeTacora] ensureProfile created row for", user.id);
+    return { ok: true, created: true };
+  }
+
   async function checkLimit() {
     const client = await init();
     if (client) {
@@ -110,6 +164,12 @@
     const user = await getUser();
     if (!user) return { ok: false, error: "not_logged_in" };
 
+    const ensured = await ensureProfile(client, user);
+    if (!ensured.ok) {
+      console.warn("[BeTacora] saveItinerary blocked: no profiles row", ensured.error);
+      return { ok: false, error: ensured.error || "profile_missing" };
+    }
+
     const { data, error } = await client
       .from("itineraries")
       .insert({
@@ -117,15 +177,20 @@
         destination: payload.destination ?? null,
         profile_type: payload.profile_type ?? null,
         profile_essence: payload.profile_essence ?? null,
-        questionnaire_answers: payload.questionnaire_answers,
+        questionnaire_answers: payload.questionnaire_answers ?? {},
         itinerary_html: payload.itinerary_html,
+        is_active: true,
       })
       .select("id")
       .single();
 
-    if (error) return { ok: false, error: error.message };
+    if (error) {
+      console.warn("[BeTacora] saveItinerary insert failed:", error.message, error.code);
+      return { ok: false, error: error.message };
+    }
 
     await saveTravelerProfile(client, user.id, payload);
+    console.log("[BeTacora] saveItinerary ok", data?.id);
 
     return { ok: true, id: data?.id ?? null };
   }
@@ -230,9 +295,10 @@
       payload.questionnaire_answers || {},
     );
     if (!payload.profile_type && Object.keys(traveler_answers).length === 0) {
-      return;
+      return { ok: true, skipped: true };
     }
-    const { error } = await client
+
+    const { data, error } = await client
       .from("profiles")
       .update({
         profile_type: payload.profile_type ?? null,
@@ -240,7 +306,10 @@
         traveler_answers,
         profile_updated_at: new Date().toISOString(),
       })
-      .eq("id", userId);
+      .eq("id", userId)
+      .select("id, profile_type")
+      .maybeSingle();
+
     if (error) {
       const missing =
         error.code === "PGRST204" ||
@@ -250,8 +319,67 @@
         );
       if (!missing) {
         console.warn("[BeTacora] save traveler profile:", error.message);
+      } else {
+        console.warn(
+          "[BeTacora] traveler DNA columns missing — run supabase/traveler_profile.sql",
+        );
       }
+      return { ok: false, error: error.message };
     }
+
+    if (!data?.id) {
+      console.warn("[BeTacora] save traveler profile: no row updated for", userId);
+      return { ok: false, error: "profile_row_missing" };
+    }
+
+    console.log("[BeTacora] traveler profile saved", data.profile_type);
+    return { ok: true };
+  }
+
+  async function getItineraryById(id) {
+    const client = await init();
+    if (!client) return null;
+    const user = await getUser();
+    if (!user || !id) return null;
+
+    const { data, error } = await client
+      .from("itineraries")
+      .select(
+        "id, destination, profile_type, profile_essence, itinerary_html, questionnaire_answers, created_at",
+      )
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.warn("[BeTacora] getItineraryById:", error.message);
+      return null;
+    }
+    return data || null;
+  }
+
+  async function getLatestItinerary() {
+    const client = await init();
+    if (!client) return null;
+    const user = await getUser();
+    if (!user) return null;
+
+    const { data, error } = await client
+      .from("itineraries")
+      .select(
+        "id, destination, profile_type, profile_essence, itinerary_html, questionnaire_answers, created_at",
+      )
+      .eq("user_id", user.id)
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.warn("[BeTacora] getLatestItinerary:", error.message);
+      return null;
+    }
+    return data || null;
   }
 
   async function getTravelerProfile() {
@@ -288,16 +416,19 @@
       currency: lastAnswers.currency ?? null,
     };
 
-    if (
-      !profileError &&
-      profile?.profile_type &&
-      profile.traveler_answers &&
-      typeof profile.traveler_answers === "object"
-    ) {
+    if (!profileError && profile?.profile_type) {
+      const fromProfile =
+        profile.traveler_answers && typeof profile.traveler_answers === "object"
+          ? extractPersonality(profile.traveler_answers)
+          : {};
+      const merged =
+        Object.keys(fromProfile).length > 0
+          ? fromProfile
+          : extractPersonality(lastAnswers);
       return {
         profile_type: profile.profile_type,
         profile_essence: profile.profile_essence ?? null,
-        traveler_answers: extractPersonality(profile.traveler_answers),
+        traveler_answers: merged,
         source: "profiles",
         trip_defaults: tripDefaults,
       };
@@ -414,6 +545,9 @@
       savePostTripFeedback,
       getTravelerProfile,
       getAccessToken,
+      ensureProfile,
+      getItineraryById,
+      getLatestItinerary,
     },
     window.btAuth || {},
   );

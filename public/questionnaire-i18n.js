@@ -321,6 +321,7 @@
           limitReached: 'Has alcanzado tu límite gratuito. Próximamente planes premium disponibles.',
           saved: 'Viaje guardado en tu bitácora',
           savePrompt: '¿Quieres guardar este viaje? Crea tu cuenta gratis — tarda 30 segundos',
+          saveFailed: 'No pudimos guardar este viaje. Revisa tu conexión e inténtalo de nuevo.',
           createAccount: 'Crear cuenta',
         },
         duration: {
@@ -965,6 +966,7 @@
           limitReached: 'You’ve reached your free limit. Premium plans coming soon.',
           saved: 'Trip saved to your logbook',
           savePrompt: 'Want to save this trip? Create a free account — it takes 30 seconds',
+          saveFailed: 'We couldn’t save this trip. Check your connection and try again.',
           createAccount: 'Create account',
         },
         duration: {
@@ -1609,6 +1611,7 @@
           limitReached: 'Vous avez atteint votre limite gratuite. Plans premium bientôt disponibles.',
           saved: 'Voyage enregistré dans votre carnet',
           savePrompt: 'Envie de garder ce voyage ? Créez un compte gratuit — 30 secondes',
+          saveFailed: 'Impossible d\'enregistrer ce voyage. Vérifiez votre connexion et réessayez.',
           createAccount: 'Créer un compte',
         },
         duration: {

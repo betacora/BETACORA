@@ -90,6 +90,32 @@ export async function saveItinerary(
     return { ok: false, error: "not_logged_in" };
   }
 
+  // FK: itineraries.user_id → profiles(id)
+  const { data: existingProfile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (!existingProfile?.id) {
+    const { error: profileErr } = await supabase.from("profiles").upsert(
+      {
+        id: user.id,
+        email: user.email || `${user.id}@users.invalid`,
+        full_name:
+          (typeof user.user_metadata?.full_name === "string" &&
+            user.user_metadata.full_name) ||
+          (typeof user.user_metadata?.name === "string" &&
+            user.user_metadata.name) ||
+          null,
+      },
+      { onConflict: "id" },
+    );
+    if (profileErr) {
+      console.warn("[BeTacora] ensure profile before itinerary:", profileErr.message);
+      return { ok: false, error: profileErr.message };
+    }
+  }
+
   const { data, error } = await supabase
     .from("itineraries")
     .insert({
@@ -99,6 +125,7 @@ export async function saveItinerary(
       profile_essence: payload.profile_essence ?? null,
       questionnaire_answers: payload.questionnaire_answers,
       itinerary_html: payload.itinerary_html,
+      is_active: true,
     })
     .select("id")
     .single();
@@ -113,6 +140,7 @@ export async function saveItinerary(
       profile_type: payload.profile_type,
       profile_essence: payload.profile_essence,
       questionnaire_answers: payload.questionnaire_answers,
+      email: user.email,
     });
   } catch (e) {
     console.warn("[BeTacora] traveler profile mirror skipped:", e);

@@ -113,14 +113,15 @@ function AuthPageInner() {
     // On success the browser navigates away to the provider.
   }
 
-  async function saveProfile(userId: string) {
+  async function saveProfile(userId: string, userEmail?: string | null) {
     const { error: profileError } = await supabase.from("profiles").upsert(
       {
         id: userId,
-        name: name.trim(),
-        nationality: nationality.trim(),
+        email: (userEmail || email).trim() || `${userId}@users.invalid`,
+        full_name: name.trim() || null,
+        nationality: nationality.trim() || null,
       },
-      { onConflict: "id" }
+      { onConflict: "id" },
     );
     if (profileError) console.warn("Profile save:", profileError.message);
   }
@@ -247,7 +248,7 @@ function AuthPageInner() {
       }
 
       if (data.user) {
-        await saveProfile(data.user.id);
+        await saveProfile(data.user.id, data.user.email);
       }
       router.push(nextPath);
       return;
@@ -284,8 +285,8 @@ function AuthPageInner() {
 
     if (data.user) {
       const meta = data.user.user_metadata;
-      if (meta?.name || meta?.nationality) {
-        await saveProfile(data.user.id);
+      if (meta?.name || meta?.full_name || meta?.nationality) {
+        await saveProfile(data.user.id, data.user.email);
       }
     }
     router.push(nextPath);

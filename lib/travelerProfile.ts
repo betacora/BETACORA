@@ -100,18 +100,21 @@ export async function getTravelerProfile(
       typeof lastAnswers.currency === "string" ? lastAnswers.currency : null,
   };
 
-  if (
-    !profileError &&
-    profile?.profile_type &&
-    profile.traveler_answers &&
-    typeof profile.traveler_answers === "object"
-  ) {
+  if (!profileError && profile?.profile_type) {
+    const fromProfile =
+      profile.traveler_answers && typeof profile.traveler_answers === "object"
+        ? extractPersonalityAnswers(
+            profile.traveler_answers as Record<string, unknown>,
+          )
+        : {};
+    const merged =
+      Object.keys(fromProfile).length > 0
+        ? fromProfile
+        : extractPersonalityAnswers(lastAnswers);
     return {
       profile_type: profile.profile_type,
       profile_essence: profile.profile_essence ?? null,
-      traveler_answers: extractPersonalityAnswers(
-        profile.traveler_answers as Record<string, unknown>,
-      ),
+      traveler_answers: merged,
       source: "profiles",
       updated_at: profile.profile_updated_at ?? null,
       trip_defaults,
@@ -177,6 +180,7 @@ export async function saveTravelerProfileToUser(
     profile_type?: string | null;
     profile_essence?: string | null;
     questionnaire_answers: Record<string, unknown>;
+    email?: string | null;
   },
 ): Promise<void> {
   const traveler_answers = extractPersonalityAnswers(
@@ -186,7 +190,27 @@ export async function saveTravelerProfileToUser(
     return;
   }
 
-  const { error } = await supabase
+  // Ensure profiles row exists (OAuth / confirm flows may skip signup upsert)
+  const { data: existing } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (!existing?.id) {
+    const email =
+      (payload.email && payload.email.trim()) || `${userId}@users.invalid`;
+    const { error: createErr } = await supabase.from("profiles").upsert(
+      { id: userId, email },
+      { onConflict: "id" },
+    );
+    if (createErr) {
+      console.warn("[BeTacora] ensure profile before DNA save:", createErr.message);
+      return;
+    }
+  }
+
+  const { data, error } = await supabase
     .from("profiles")
     .update({
       profile_type: payload.profile_type ?? null,
@@ -194,7 +218,9 @@ export async function saveTravelerProfileToUser(
       traveler_answers,
       profile_updated_at: new Date().toISOString(),
     })
-    .eq("id", userId);
+    .eq("id", userId)
+    .select("id")
+    .maybeSingle();
 
   if (error) {
     const missingCol =
@@ -206,5 +232,10 @@ export async function saveTravelerProfileToUser(
     if (!missingCol) {
       console.warn("[BeTacora] save traveler profile failed:", error.message);
     }
+    return;
+  }
+
+  if (!data?.id) {
+    console.warn("[BeTacora] save traveler profile: no row updated for", userId);
   }
 }

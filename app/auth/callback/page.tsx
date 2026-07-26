@@ -117,6 +117,32 @@ function AuthCallbackInner() {
         return;
       }
 
+      // Ensure profiles row exists (OAuth + email confirm never hit signup upsert)
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user?.id) {
+          const meta = user.user_metadata || {};
+          await supabase.from("profiles").upsert(
+            {
+              id: user.id,
+              email: user.email || `${user.id}@users.invalid`,
+              full_name:
+                (typeof meta.full_name === "string" && meta.full_name) ||
+                (typeof meta.name === "string" && meta.name) ||
+                null,
+              nationality:
+                (typeof meta.nationality === "string" && meta.nationality) ||
+                null,
+            },
+            { onConflict: "id" },
+          );
+        }
+      } catch (e) {
+        console.warn("[BeTacora] callback profile ensure skipped:", e);
+      }
+
       const createdAt = userCreatedAt ? new Date(userCreatedAt).getTime() : 0;
       const isNewUser = createdAt > 0 && Date.now() - createdAt < 120_000;
       if (isNewUser || isEmailConfirm) {

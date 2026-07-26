@@ -51,6 +51,8 @@ export const PRIVACY_DOC: LegalDoc = {
       type: "ul",
       items: [
         'Datos de cuenta: nombre, email, contraseña (si te registras con email) o identificador de tu cuenta de Google (si usas "Continuar con Google").',
+        "Datos de perfil: nombre, apellidos, fecha de nacimiento (si los proporcionas en tu perfil).",
+        "Datos de identidad para reservas (cuando esté disponible el flujo de reserva completa): DNI, número de pasaporte u otro documento de identidad, únicamente en el momento de completar una reserva que lo requiera (por ejemplo, vuelos), y solo para transmitirlo a la aerolínea o proveedor correspondiente a través de nuestros socios tecnológicos (ej. Duffel). Este dato recibe un tratamiento de seguridad reforzado: se transmite cifrado, el acceso está restringido, y no lo conservamos más tiempo del estrictamente necesario para completar la reserva, salvo que la ley nos obligue a conservarlo por motivos fiscales o de otro tipo.",
         "Respuestas del cuestionario de perfil de viajero: ritmo de viaje, energía, motivaciones, estilo de exploración, preferencias de comida, cultura, tipo de alojamiento, actividades e intereses, presupuesto, con quién sueles viajar, y demás respuestas que configuran tu arquetipo de viajero.",
         "Datos de cada viaje: destino, fechas, presupuesto, número de acompañantes, actividades específicas para ese viaje.",
         "Selecciones de servicios: ofertas de vuelos u otros servicios que selecciones dentro de la app.",
@@ -63,7 +65,8 @@ export const PRIVACY_DOC: LegalDoc = {
       items: [
         "Datos técnicos: dirección IP, tipo de navegador/dispositivo, sistema operativo, identificadores de instalación de la app.",
         "Datos de uso: páginas o pantallas visitadas, itinerarios generados, interacciones dentro de la app, fecha y hora de acceso.",
-        "Cookies y tecnologías similares: utilizamos cookies esenciales para el funcionamiento del servicio (por ejemplo, mantener tu sesión iniciada). [Completa esta sección si en el futuro añades cookies de analítica o marketing, y añade un banner de consentimiento de cookies conforme a la normativa de tu país].",
+        "Cookies y tecnologías similares: utilizamos cookies esenciales para el funcionamiento del servicio (por ejemplo, mantener tu sesión iniciada).",
+        'Cookies/herramientas de analítica: [SI USAS GOOGLE ANALYTICS U OTRA HERRAMIENTA, DESCRIBE AQUÍ QUÉ DATOS RECOGE — por ejemplo: "Utilizamos Google Analytics para entender cómo se usa la app (páginas visitadas, tiempo de uso, dispositivo), con el fin de mejorar el Servicio. Estos datos se recogen de forma agregada y, en la medida de lo posible, sin identificarte directamente."]. Importante: este tipo de cookies NO son esenciales, por lo que requieren tu consentimiento explícito antes de activarse. Al entrar por primera vez a BeTacora, te mostraremos un aviso de cookies donde podrás aceptar o rechazar las cookies de analítica; podrás cambiar tu decisión en cualquier momento desde [ubicación del ajuste, ej. "Ajustes de privacidad" en tu perfil].',
       ],
     },
     { type: "h3", text: "3.3 Datos de terceros (login social)" },
@@ -112,6 +115,11 @@ export const PRIVACY_DOC: LegalDoc = {
       type: "p",
       text: "No utilizamos tus datos para entrenar modelos de inteligencia artificial propios ni de terceros sin tu consentimiento explícito adicional.",
     },
+    { type: "h3", text: "5.1 Naturaleza y límites del contenido generado por IA" },
+    {
+      type: "p",
+      text: "Los itinerarios que genera BeTacora son creados mediante inteligencia artificial a partir de tu perfil de viajero y de información disponible públicamente, y tienen carácter orientativo. No garantizamos la exactitud absoluta de horarios, precios estimados (salvo las ofertas reales de vuelos/actividades mostradas explícitamente como tales, provenientes de nuestros proveedores integrados) o disponibilidad de los lugares mencionados. Te recomendamos siempre verificar la información crítica (horarios oficiales, condiciones de acceso, seguridad) antes de tu viaje. No presentamos el contenido generado por IA como verificado por un humano o por fuentes oficiales, salvo que se indique expresamente.",
+    },
     { type: "h2", text: "6. Con quién compartimos tus datos" },
     {
       type: "p",
@@ -130,6 +138,10 @@ export const PRIVACY_DOC: LegalDoc = {
         ["Resend", "Envío de emails transaccionales"],
         ["Vercel", "Alojamiento (hosting) de la aplicación"],
         ["Cloudflare", "Gestión de DNS y seguridad de red"],
+        [
+          "Google Analytics (si está activo)",
+          "Medición de uso de la app, únicamente si diste tu consentimiento a cookies de analítica",
+        ],
       ],
     },
     {

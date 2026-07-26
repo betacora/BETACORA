@@ -107,7 +107,6 @@ export type AuthCopy = {
   tabLogin: string;
   tabRegister: string;
   continueWithGoogle: string;
-  continueWithApple: string;
   orEmail: string;
   fullName: string;
   namePlaceholder: string;
@@ -355,7 +354,6 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     tabLogin: "Entrar",
     tabRegister: "Registrarse",
     continueWithGoogle: "Continuar con Google",
-    continueWithApple: "Continuar con Apple",
     orEmail: "o con email",
     fullName: "Nombre completo",
     namePlaceholder: "Tu nombre",
@@ -406,7 +404,6 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     tabLogin: "Sign in",
     tabRegister: "Sign up",
     continueWithGoogle: "Continue with Google",
-    continueWithApple: "Continue with Apple",
     orEmail: "or with email",
     fullName: "Full name",
     namePlaceholder: "Your name",
@@ -457,7 +454,6 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     tabLogin: "Connexion",
     tabRegister: "S'inscrire",
     continueWithGoogle: "Continuer avec Google",
-    continueWithApple: "Continuer avec Apple",
     orEmail: "ou avec email",
     fullName: "Nom complet",
     namePlaceholder: "Votre nom",

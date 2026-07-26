@@ -4753,20 +4753,25 @@ function enterResultsView() {
   }
   applyResultsViewLabels();
 
-  // Collapse removes form from layout — scroll to the start of results.
-  const target =
-    document.getElementById('resultsToolbar') ||
-    document.getElementById('profileCard') ||
-    document.getElementById('itinerarySection');
+  // After collapse the results sit at the top of the page. Scrolling to an
+  // element *before* reflow overshoots; pin to top after layout settles.
+  // Use instant jump — smooth scroll races with layout collapse and overshoots.
+  const pinResultsTop = () => {
+    try {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    } catch (e) {
+      console.error('BeTacora results scroll error:', e);
+    }
+  };
 
   requestAnimationFrame(() => {
-    setTimeout(() => {
-      try {
-        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } catch (e) {
-        console.error('BeTacora results scroll error:', e);
-      }
-    }, 80);
+    requestAnimationFrame(() => {
+      pinResultsTop();
+      setTimeout(pinResultsTop, 50);
+      setTimeout(pinResultsTop, 200);
+    });
   });
 }
 

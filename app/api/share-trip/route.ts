@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import {
+  checkRateLimit,
+  clientIp,
+  rateLimitResponse,
+} from "@/lib/rateLimit";
+import {
+  sanitizeItineraryHtml,
+  scanShareableContent,
+} from "@/lib/sanitize-itinerary-html";
 
 export const runtime = "nodejs";
 
@@ -65,6 +74,15 @@ function normalizePlaces(value: unknown) {
  * Gracefully fails if shared_trips table is not yet migrated.
  */
 export async function POST(req: NextRequest) {
+  const limited = checkRateLimit({
+    key: `share-trip:${clientIp(req)}`,
+    limit: 20,
+    windowMs: 60 * 60 * 1000,
+  });
+  if (!limited.ok) {
+    return rateLimitResponse(limited.retryAfterSec);
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!supabaseUrl || !supabaseAnonKey) {
@@ -87,10 +105,36 @@ export async function POST(req: NextRequest) {
   const lang = truncate(body.lang, 8) || "es";
   const highlights = asStringArray(body.highlights, 5, 140);
   const places = normalizePlaces(body.places);
-  const itineraryHtml = truncate(body.itinerary_html, 500_000);
+  const rawHtml = truncate(body.itinerary_html, 500_000);
+  const itineraryHtml = rawHtml
+    ? sanitizeItineraryHtml(rawHtml, {
+        keepPlacesScript: false,
+        stripUntrustedUrlsInText: true,
+      })
+    : null;
 
   if (!destination && !itineraryHtml) {
     return NextResponse.json({ error: "empty_trip" }, { status: 400 });
+  }
+
+  const safety = scanShareableContent(
+    destination,
+    durationLabel,
+    profileType,
+    highlights.join("\n"),
+    itineraryHtml,
+    JSON.stringify(places),
+  );
+  if (!safety.ok) {
+    return NextResponse.json(
+      {
+        error: "share_blocked",
+        reason: safety.reason,
+        detail: "Content failed public share safety scan",
+        imageOnly: true,
+      },
+      { status: 422 },
+    );
   }
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey);

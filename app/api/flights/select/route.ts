@@ -6,6 +6,11 @@ import {
   type FlightSelectionPayload,
 } from "@/lib/flightSelections";
 import type { SimplifiedFlightOffer } from "@/lib/duffel";
+import {
+  checkRateLimit,
+  clientIp,
+  rateLimitResponse,
+} from "@/lib/rateLimit";
 
 /**
  * Save a Duffel flight offer selection for the authenticated user.
@@ -20,6 +25,15 @@ import type { SimplifiedFlightOffer } from "@/lib/duffel";
  */
 export async function POST(request: Request) {
   try {
+    const limited = checkRateLimit({
+      key: `flights-select:${clientIp(request)}`,
+      limit: 30,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (!limited.ok) {
+      return rateLimitResponse(limited.retryAfterSec);
+    }
+
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json(

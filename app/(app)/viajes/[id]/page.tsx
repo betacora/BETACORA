@@ -8,6 +8,7 @@ import { LoginPrompt } from "@/components/LoginPrompt";
 import { detectLang, NAV_COPY, type AppLang } from "@/lib/lang";
 import { useAuth } from "@/lib/useAuth";
 import { getItineraryById, type SavedItinerary } from "@/lib/itineraries";
+import { sanitizeItineraryHtml } from "@/lib/sanitize-itinerary-html";
 import { supabase } from "@/lib/supabase";
 
 export default function ViajeDetailPage() {
@@ -88,7 +89,12 @@ export default function ViajeDetailPage() {
             {trip.itinerary_html ? (
               <div
                 className="prose-viaje mt-8"
-                dangerouslySetInnerHTML={{ __html: trip.itinerary_html }}
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeItineraryHtml(trip.itinerary_html, {
+                    keepPlacesScript: false,
+                    stripUntrustedUrlsInText: true,
+                  }),
+                }}
               />
             ) : (
               <p className="mt-8 text-sm text-[#6B6B6B]">{copy.emptyBody}</p>

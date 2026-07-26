@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthed, requireSupabaseUser } from "@/lib/apiAuth";
+import {
+  enforceAnonIpSafetyNet,
+  enforceRateLimit,
+} from "@/lib/rateLimit";
 import { searchActivities, type ViatorSort, type ViatorSortOrder } from "@/lib/viator";
 
 export const runtime = "nodejs";
+
+const USER_HOURLY_LIMIT = 30;
 
 type SearchBody = {
   /** City name (e.g. "Paris") or numeric Viator destinationId */
@@ -21,8 +28,29 @@ type SearchBody = {
   count?: number;
 };
 
+async function gate(req: NextRequest): Promise<Response | null> {
+  const auth = await requireSupabaseUser(req);
+  if (!isAuthed(auth)) {
+    const anonBlock = await enforceAnonIpSafetyNet(req, "viator");
+    if (anonBlock) return anonBlock;
+    return auth;
+  }
+
+  const limited = await enforceRateLimit({
+    key: `user:${auth.user.id}`,
+    limit: USER_HOURLY_LIMIT,
+    window: "1 h",
+    failMode: "closed",
+    label: "viator-search",
+    message:
+      "Has alcanzado el límite de búsquedas de actividades por ahora, inténtalo en unos minutos.",
+  });
+  return limited;
+}
+
 /**
  * Affiliate product search via Viator Partner API (read-only — no bookings).
+ * Requires Supabase session (Authorization: Bearer …).
  *
  * POST /api/viator/search-activities
  * Body: { destination, startDate?, endDate?, tags?, currency?, language?, limit? }
@@ -30,6 +58,8 @@ type SearchBody = {
  * GET  /api/viator/search-activities?destination=Paris&limit=5
  */
 export async function POST(req: NextRequest) {
+  const blocked = await gate(req);
+  if (blocked) return blocked;
   try {
     const body = (await req.json()) as SearchBody;
     return NextResponse.json(await runSearch(body));
@@ -39,6 +69,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const blocked = await gate(req);
+  if (blocked) return blocked;
   try {
     const q = req.nextUrl.searchParams;
     const tagsRaw = q.get("tags");

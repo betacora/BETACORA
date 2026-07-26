@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import { BrandWordmark } from "@/components/BrandWordmark";
+import { sanitizeItineraryHtml } from "@/lib/sanitize-itinerary-html";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -204,8 +205,16 @@ export default async function SharedTripPage({
 
   const lang = resolveLang(trip.lang);
   const copy = COPY[lang];
-  const highlights = Array.isArray(trip.highlights) ? trip.highlights.filter(Boolean) : [];
+  const highlights = Array.isArray(trip.highlights)
+    ? trip.highlights.filter(Boolean).map((h) => String(h).slice(0, 200))
+    : [];
   const places = Array.isArray(trip.places) ? trip.places : [];
+  const safeItineraryHtml = trip.itinerary_html
+    ? sanitizeItineraryHtml(trip.itinerary_html, {
+        keepPlacesScript: false,
+        stripUntrustedUrlsInText: true,
+      })
+    : null;
 
   return (
     <main className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
@@ -271,10 +280,10 @@ export default async function SharedTripPage({
 
         <MiniMap places={places} label={copy.map} />
 
-        {trip.itinerary_html ? (
+        {safeItineraryHtml ? (
           <section
             className="mt-12 prose-viaje"
-            dangerouslySetInnerHTML={{ __html: trip.itinerary_html }}
+            dangerouslySetInnerHTML={{ __html: safeItineraryHtml }}
           />
         ) : null}
 

@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthed, requireSupabaseUser } from "@/lib/apiAuth";
 import { resolveSearchAirports } from "@/lib/cityAirports";
 import { searchFlights, type DuffelPassengerInput } from "@/lib/duffel";
+import {
+  enforceAnonIpSafetyNet,
+  enforceRateLimit,
+} from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
+
+const USER_HOURLY_LIMIT = 30;
 
 type SearchBody = {
   /** IATA code or city name (e.g. MAD or "Madrid") */
@@ -19,8 +26,29 @@ type SearchBody = {
   limit?: number;
 };
 
+async function gate(req: NextRequest): Promise<Response | null> {
+  const auth = await requireSupabaseUser(req);
+  if (!isAuthed(auth)) {
+    const anonBlock = await enforceAnonIpSafetyNet(req, "duffel");
+    if (anonBlock) return anonBlock;
+    return auth;
+  }
+
+  const limited = await enforceRateLimit({
+    key: `user:${auth.user.id}`,
+    limit: USER_HOURLY_LIMIT,
+    window: "1 h",
+    failMode: "closed",
+    label: "duffel-search",
+    message:
+      "Has alcanzado el límite de búsquedas de vuelos por ahora, inténtalo en unos minutos.",
+  });
+  return limited;
+}
+
 /**
  * Sandbox-only flight offer search via Duffel (read-only — no orders/payments).
+ * Requires Supabase session (Authorization: Bearer …).
  *
  * POST /api/duffel/search-offers
  * Body: { origin, destination, departureDate, returnDate?, passengers?, cabinClass? }
@@ -28,6 +56,8 @@ type SearchBody = {
  * GET  /api/duffel/search-offers?origin=MAD&destination=LIS&departureDate=2026-09-15&passengers=1
  */
 export async function POST(req: NextRequest) {
+  const blocked = await gate(req);
+  if (blocked) return blocked;
   try {
     const body = (await req.json()) as SearchBody;
     return NextResponse.json(await runSearch(body));
@@ -37,6 +67,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const blocked = await gate(req);
+  if (blocked) return blocked;
   try {
     const q = req.nextUrl.searchParams;
     const passengersRaw = q.get("passengers");

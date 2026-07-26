@@ -71,6 +71,16 @@ CREATE POLICY "Users update own itineraries"
   ON itineraries FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users delete own itineraries" ON itineraries;
+CREATE POLICY "Users delete own itineraries"
+  ON itineraries FOR DELETE
+  USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users delete own profile" ON profiles;
+CREATE POLICY "Users delete own profile"
+  ON profiles FOR DELETE
+  USING (auth.uid() = id);
+
 -- Public share snapshots for "Compartir viaje" links (read-only views)
 CREATE TABLE IF NOT EXISTS shared_trips (
   slug TEXT PRIMARY KEY,

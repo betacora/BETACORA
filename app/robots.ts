@@ -1,5 +1,10 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site";
+import {
+  ABOUT_PATH,
+  PRIVACY_PATH,
+  SITE_URL,
+  TERMS_PATH,
+} from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -11,9 +16,11 @@ export default function robots(): MetadataRoute.Robots {
           "/explorar",
           "/questionnaire",
           "/auth",
-          "/sobre-nosotros",
-          "/about",
-          "/a-propos",
+          ABOUT_PATH.es,
+          ABOUT_PATH.en,
+          ABOUT_PATH.fr,
+          PRIVACY_PATH,
+          TERMS_PATH,
         ],
         disallow: ["/api/", "/viaje/", "/viajes/", "/inicio/", "/perfil/", "/guia/"],
       },

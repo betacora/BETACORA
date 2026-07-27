@@ -124,7 +124,7 @@ export function buildPageMetadata(
   };
 }
 
-/** JSON-LD for Organization + WebApplication (schema.org). */
+/** JSON-LD for Organization + WebSite + WebApplication (schema.org). */
 export function buildJsonLd(): Record<string, unknown> {
   const description =
     "BeTacora es tu bitácora inteligente de viajes: planifica itinerarios personalizados con IA a partir de tu perfil viajero real.";
@@ -140,9 +140,20 @@ export function buildJsonLd(): Record<string, unknown> {
         logo: {
           "@type": "ImageObject",
           url: SITE_LOGO_URL,
+          width: 512,
+          height: 512,
         },
+        image: SITE_LOGO_URL,
         description,
-        sameAs: [],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: SITE_NAME,
+        description,
+        publisher: { "@id": `${SITE_URL}/#organization` },
+        inLanguage: ["es", "en", "fr"],
       },
       {
         "@type": "WebApplication",
@@ -158,15 +169,7 @@ export function buildJsonLd(): Record<string, unknown> {
           priceCurrency: "EUR",
         },
         publisher: { "@id": `${SITE_URL}/#organization` },
-        inLanguage: ["es", "en", "fr"],
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        url: SITE_URL,
-        name: SITE_NAME,
-        description,
-        publisher: { "@id": `${SITE_URL}/#organization` },
+        isPartOf: { "@id": `${SITE_URL}/#website` },
         inLanguage: ["es", "en", "fr"],
       },
       {

@@ -1,0 +1,43 @@
+---
+description: Multi-agent territory — Legal/compliance (privacy, terms, cookies, consent copy)
+globs: lib/legal-content.ts,app/**/privacidad/**/*,app/**/terminos/**/*,components/**/Legal*.tsx,components/**/Cookie*.tsx
+alwaysApply: false
+---
+
+# Dominio: Legal / Cumplimiento
+
+Rama tipo: `cursor/legal-<tema>`
+
+## Puede tocar
+
+- `lib/legal-content.ts`
+- Páginas `/privacidad` y `/terminos`
+- Banners de cookies y textos de consentimiento
+
+## No puede tocar
+
+- Lógica de autenticación
+- Esquema de base de datos
+- Rate limiting / seguridad de APIs
+
+## Regla especial — datos legales reales
+
+- **Nunca** rellenar nombre de empresa, NIF/CIF, dirección u otros datos legales reales sin que el humano los proporcione explícitamente.
+- Dejar placeholders `[...]` hasta recibir el dato.
+
+## Gobernanza (obligatoria)
+
+- Una rama por tarea; el nombre debe coincidir con el contenido real del primer commit.
+- Antes de trabajar en paralelo: verificar que no se solapan archivos con otros agentes.
+- Prioridades solo desde el Checklist Maestro BeTacora.
+- **`npm run build` limpio ANTES de cualquier commit.**
+- Commit en rama propia; nunca push directo a `main`. Push a producción solo con confirmación explícita del humano.
+
+## ZONA DE EXCLUSIÓN TOTAL (todos los agentes)
+
+Sin autorización explícita caso por caso, **prohibido** tocar:
+
+- Esquema de Supabase / políticas RLS (solo lectura y diagnóstico)
+- Lógica de autenticación / OAuth
+- Cualquier cosa relacionada con pagos o dinero real
+- Variables de entorno de producción (Vercel)

@@ -1,0 +1,36 @@
+---
+description: Multi-agent territory — DevOps/quality (tests, CI checks, verification scripts)
+globs: scripts/**/*,.github/**/*,vercel.json,**/*.{test,spec}.{ts,tsx,js,mjs},playwright.config.*
+alwaysApply: false
+---
+
+# Dominio: DevOps / Calidad
+
+Rama tipo: `cursor/devops-<tema>`
+
+## Puede tocar
+
+- Configuración de tests
+- GitHub Actions / checks de Vercel (config de CI, no secretos de producción)
+- Scripts de verificación (`scripts/verify-*.mjs`, etc.)
+
+## No puede tocar
+
+- Lógica de producto (cuestionario, itinerarios, APIs de negocio)
+
+## Gobernanza (obligatoria)
+
+- Una rama por tarea; el nombre debe coincidir con el contenido real del primer commit.
+- Antes de trabajar en paralelo: verificar solapamiento de archivos con otros agentes.
+- Prioridades solo desde el Checklist Maestro BeTacora.
+- **`npm run build` limpio ANTES de cualquier commit.**
+- Commit en rama propia; nunca push directo a `main`. Push a producción solo con confirmación explícita del humano.
+
+## ZONA DE EXCLUSIÓN TOTAL (todos los agentes)
+
+Sin autorización explícita caso por caso, **prohibido** tocar:
+
+- Esquema de Supabase / políticas RLS (solo lectura y diagnóstico)
+- Lógica de autenticación / OAuth
+- Cualquier cosa relacionada con pagos o dinero real
+- Variables de entorno de producción (Vercel) — no rotar ni editar secretos de prod

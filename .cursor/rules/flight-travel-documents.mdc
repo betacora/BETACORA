@@ -1,7 +1,42 @@
 ---
-description: Privacy rules for DNI/passport when booking Duffel flights — do not store plaintext ID docs in Supabase
-globs: lib/duffel.ts,lib/flightSelections.ts,app/api/duffel/**/*,app/api/flights/**/*,components/**/Flight*.tsx
+description: Multi-agent territory — Flights/bookings (Duffel, Viator) plus DNI/passport privacy rules
+globs: lib/duffel.ts,lib/viator.ts,lib/flightSelections.ts,lib/flightFormat.ts,lib/cityAirports.ts,app/api/duffel/**/*,app/api/viator/**/*,app/api/flights/**/*,components/**/Flight*.tsx
 alwaysApply: false
+---
+
+# Dominio: Vuelos / Reservas (Duffel · Viator)
+
+Rama tipo: `cursor/flights-<tema>` · `cursor/duffel-<tema>` · `cursor/viator-<tema>`
+
+## Puede tocar
+
+- `lib/duffel.ts`, `lib/viator.ts`, `lib/flightSelections.ts` (y helpers de formato/aeropuertos relacionados)
+- Endpoints `/api/duffel/`, `/api/viator/`, `/api/flights/`
+- UI de ofertas de vuelo / actividades **solo** en componentes de ese dominio
+
+## No puede tocar
+
+- Autenticación general (OAuth, login, sesión)
+- Contenido legal
+- Pagos / dinero real (salvo pasarela de booking acordada y autorizada explícitamente)
+
+## Gobernanza (obligatoria)
+
+- Una rama por tarea; el nombre debe coincidir con el contenido real del primer commit.
+- Antes de trabajar en paralelo: verificar solapamiento (sobre todo `lib/duffel.ts` y rutas API).
+- Prioridades solo desde el Checklist Maestro BeTacora.
+- **`npm run build` limpio ANTES de cualquier commit.**
+- Commit en rama propia; nunca push directo a `main`. Push a producción solo con confirmación explícita del humano.
+
+## ZONA DE EXCLUSIÓN TOTAL (todos los agentes)
+
+Sin autorización explícita caso por caso, **prohibido** tocar:
+
+- Esquema de Supabase / políticas RLS (solo lectura y diagnóstico)
+- Lógica de autenticación / OAuth
+- Cualquier cosa relacionada con pagos o dinero real
+- Variables de entorno de producción (Vercel)
+
 ---
 
 # Flight booking — travel document (DNI / passport) data

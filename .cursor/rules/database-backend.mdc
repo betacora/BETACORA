@@ -1,0 +1,39 @@
+---
+description: Multi-agent territory — Database/backend (new migrations, indexes, Supabase functions; never destroy without approval)
+globs: supabase/**/*,lib/supabase.ts,lib/itineraries.ts,lib/travelerProfile.ts
+alwaysApply: false
+---
+
+# Dominio: Backend / Base de datos
+
+Rama tipo: `cursor/db-<tema>`
+
+## Puede tocar
+
+- Migraciones **nuevas** (nunca modificar una migración ya aplicada en producción)
+- Índices
+- Funciones de Supabase
+
+## No puede tocar
+
+- Activar/desactivar RLS por su cuenta
+- Borrar tablas o columnas existentes **sin aprobación explícita** del humano
+
+## Gobernanza (obligatoria)
+
+- Una rama por tarea; el nombre debe coincidir con el contenido real del primer commit.
+- Antes de trabajar en paralelo: verificar solapamiento de archivos con otros agentes.
+- Prioridades solo desde el Checklist Maestro BeTacora.
+- **`npm run build` limpio ANTES de cualquier commit.**
+- Commit en rama propia; nunca push directo a `main`.
+- Cambios destructivos requieren **prueba manual humana** antes de fusionar.
+- Push a producción solo con confirmación explícita del humano.
+
+## ZONA DE EXCLUSIÓN TOTAL (todos los agentes)
+
+Sin autorización explícita caso por caso, **prohibido** tocar:
+
+- Esquema de Supabase / políticas RLS (solo lectura y diagnóstico — excepto migraciones nuevas **autorizadas** y nunca “arreglar” RLS a ciegas)
+- Lógica de autenticación / OAuth
+- Cualquier cosa relacionada con pagos o dinero real
+- Variables de entorno de producción (Vercel)

@@ -1,0 +1,39 @@
+---
+description: Multi-agent territory — Security domain (rate limits, sanitize, headers, RLS only with explicit OK)
+globs: lib/rateLimit.ts,lib/apiAuth.ts,lib/sanitize-itinerary-html.ts,middleware.ts,middleware.js,next.config.js,next.config.ts,next.config.mjs
+alwaysApply: false
+---
+
+# Dominio: Seguridad
+
+Rama tipo: `cursor/security-<tema>`
+
+## Puede tocar
+
+- `lib/rateLimit.ts`, `lib/apiAuth.ts`, `lib/sanitize-itinerary-html.ts`
+- Middleware de seguridad
+- Headers de seguridad en `next.config.*`
+- Políticas RLS de Supabase **solo con OK explícito** del humano (caso por caso)
+
+## No puede tocar
+
+- Lógica de negocio de UI
+- Contenido legal / copy de marketing
+- Flujos de producto (cuestionario, Explorar, Inicio) salvo sanitización/hardening puntual acordado
+
+## Gobernanza (obligatoria)
+
+- Una rama por tarea; el nombre debe coincidir con el contenido real del primer commit.
+- Antes de trabajar en paralelo: verificar que no se solapan archivos con otros agentes.
+- Prioridades solo desde el Checklist Maestro BeTacora — no inventar prioridades.
+- **`npm run build` limpio ANTES de cualquier commit.** Build roto = no commit.
+- Commit en rama propia; nunca push directo a `main`. Push a producción solo con confirmación explícita del humano.
+
+## ZONA DE EXCLUSIÓN TOTAL (todos los agentes)
+
+Sin autorización explícita caso por caso, **prohibido** tocar:
+
+- Esquema de Supabase / políticas RLS (solo lectura y diagnóstico, salvo OK explícito arriba)
+- Lógica de autenticación / OAuth
+- Cualquier cosa relacionada con pagos o dinero real
+- Variables de entorno de producción (Vercel)

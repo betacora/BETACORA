@@ -35,6 +35,7 @@ export const LANDING_COPY: Record<
     about: string;
     privacy: string;
     terms: string;
+    accountDeleted: string;
   }
 > = {
   es: {
@@ -45,6 +46,7 @@ export const LANDING_COPY: Record<
     about: "Sobre nosotros",
     privacy: "Privacidad",
     terms: "Términos",
+    accountDeleted: "Tu cuenta se ha eliminado correctamente.",
   },
   en: {
     tagline: "Your smart travel logbook",
@@ -54,6 +56,7 @@ export const LANDING_COPY: Record<
     about: "About",
     privacy: "Privacy",
     terms: "Terms",
+    accountDeleted: "Your account has been deleted successfully.",
   },
   fr: {
     tagline: "Votre carnet de voyage intelligent",
@@ -63,6 +66,7 @@ export const LANDING_COPY: Record<
     about: "À propos",
     privacy: "Confidentialité",
     terms: "Conditions",
+    accountDeleted: "Votre compte a bien été supprimé.",
   },
 };
 
@@ -221,6 +225,19 @@ export const NAV_COPY: Record<
       loginCta: string;
       loading: string;
       logout: string;
+      deleteAccount: string;
+      deleteTitle: string;
+      deleteBody: string;
+      deleteListProfile: string;
+      deleteListTrips: string;
+      deleteListFlights: string;
+      deleteListShares: string;
+      deleteConfirmLabel: string;
+      deleteConfirmPhrase: string;
+      deleteConfirmCta: string;
+      deleteCancel: string;
+      deleteWorking: string;
+      deleteError: string;
       statMotiv: string;
       statEnergy: string;
       statPace: string;
@@ -290,6 +307,20 @@ export const NAV_COPY: Record<
       loginCta: "Iniciar sesión",
       loading: "Cargando perfil…",
       logout: "Cerrar sesión",
+      deleteAccount: "Eliminar cuenta",
+      deleteTitle: "¿Eliminar tu cuenta de BeTacora?",
+      deleteBody:
+        "Esta acción es permanente. Se borrarán de forma irreversible:",
+      deleteListProfile: "Tu perfil viajero y preferencias",
+      deleteListTrips: "Todos tus itinerarios guardados",
+      deleteListFlights: "Selecciones de vuelos guardadas",
+      deleteListShares: "Enlaces públicos de viaje asociados a tu cuenta",
+      deleteConfirmLabel: "Escribe ELIMINAR para confirmar",
+      deleteConfirmPhrase: "ELIMINAR",
+      deleteConfirmCta: "Eliminar mi cuenta definitivamente",
+      deleteCancel: "Cancelar",
+      deleteWorking: "Eliminando…",
+      deleteError: "No se pudo eliminar la cuenta. Inténtalo de nuevo.",
       statMotiv: "Motivación",
       statEnergy: "Energía",
       statPace: "Ritmo",
@@ -358,6 +389,19 @@ export const NAV_COPY: Record<
       loginCta: "Sign in",
       loading: "Loading profile…",
       logout: "Sign out",
+      deleteAccount: "Delete account",
+      deleteTitle: "Delete your BeTacora account?",
+      deleteBody: "This cannot be undone. We will permanently erase:",
+      deleteListProfile: "Your traveler profile and preferences",
+      deleteListTrips: "All saved itineraries",
+      deleteListFlights: "Saved flight selections",
+      deleteListShares: "Public trip links tied to your account",
+      deleteConfirmLabel: "Type ELIMINAR to confirm",
+      deleteConfirmPhrase: "ELIMINAR",
+      deleteConfirmCta: "Permanently delete my account",
+      deleteCancel: "Cancel",
+      deleteWorking: "Deleting…",
+      deleteError: "We could not delete the account. Please try again.",
       statMotiv: "Motivation",
       statEnergy: "Energy",
       statPace: "Pace",
@@ -426,6 +470,20 @@ export const NAV_COPY: Record<
       loginCta: "Se connecter",
       loading: "Chargement…",
       logout: "Se déconnecter",
+      deleteAccount: "Supprimer le compte",
+      deleteTitle: "Supprimer votre compte BeTacora ?",
+      deleteBody:
+        "Cette action est définitive. Seront effacés de façon irréversible :",
+      deleteListProfile: "Votre profil voyageur et préférences",
+      deleteListTrips: "Tous vos itinéraires enregistrés",
+      deleteListFlights: "Sélections de vols enregistrées",
+      deleteListShares: "Liens publics de voyage liés à votre compte",
+      deleteConfirmLabel: "Tapez ELIMINAR pour confirmer",
+      deleteConfirmPhrase: "ELIMINAR",
+      deleteConfirmCta: "Supprimer mon compte définitivement",
+      deleteCancel: "Annuler",
+      deleteWorking: "Suppression…",
+      deleteError: "Impossible de supprimer le compte. Réessayez.",
       statMotiv: "Motivation",
       statEnergy: "Énergie",
       statPace: "Rythme",

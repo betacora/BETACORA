@@ -91,8 +91,13 @@ CREATE TABLE IF NOT EXISTS shared_trips (
   places JSONB DEFAULT '[]'::jsonb,
   itinerary_html TEXT,
   lang TEXT DEFAULT 'es',
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  -- Optional owner for account deletion / GDPR (nullable for legacy guest shares)
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS shared_trips_user_id_idx
+  ON shared_trips (user_id);
 
 ALTER TABLE shared_trips ENABLE ROW LEVEL SECURITY;
 
@@ -106,6 +111,11 @@ DROP POLICY IF EXISTS "Anyone can read shared trips" ON shared_trips;
 CREATE POLICY "Anyone can read shared trips"
   ON shared_trips FOR SELECT
   USING (true);
+
+DROP POLICY IF EXISTS "Users delete own shared trips" ON shared_trips;
+CREATE POLICY "Users delete own shared trips"
+  ON shared_trips FOR DELETE
+  USING (auth.uid() IS NOT NULL AND auth.uid() = user_id);
 
 -- Duffel flight offer selections (intent only — no payment / no Duffel order yet)
 CREATE TABLE IF NOT EXISTS flight_selections (

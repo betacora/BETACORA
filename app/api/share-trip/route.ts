@@ -44,6 +44,7 @@ type PlaceIn = {
   lat?: unknown;
   lng?: unknown;
   type?: unknown;
+  note?: unknown;
 };
 
 function normalizePlaces(value: unknown) {
@@ -63,7 +64,10 @@ function normalizePlaces(value: unknown) {
           : Number.isFinite(Number(dayRaw))
             ? Number(dayRaw)
             : truncate(dayRaw, 16);
-      return { name, lat, lng, type, day };
+      const note = truncate(p?.note, 160);
+      return note
+        ? { name, lat, lng, type, day, note }
+        : { name, lat, lng, type, day };
     })
     .filter(Boolean);
 }

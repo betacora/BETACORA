@@ -772,7 +772,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
 
 .bt-map-popup { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; line-height: 1.35; }
 .bt-map-popup strong { display: block; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
-.bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.45rem; }
+.bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.35rem; }
+.bt-map-popup .bt-map-note { color: var(--ink); font-size: 0.78rem; line-height: 1.35; margin-bottom: 0.45rem; opacity: 0.9; }
 .bt-map-popup .bt-take-me { margin-top: 0.15rem; }
 
 .bt-take-me {
@@ -3100,12 +3101,15 @@ function normalizePlacesList(list) {
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
       if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
       const type = String(p.type || '').toLowerCase();
+      const noteRaw = typeof p.note === 'string' ? p.note.trim() : '';
+      const note = noteRaw ? noteRaw.slice(0, 160) : null;
       return {
         name: String(p.name || '').trim() || 'Lugar',
         day: Number.isFinite(Number(p.day)) ? Math.max(1, Math.round(Number(p.day))) : null,
         lat,
         lng,
         type: BT_PLACE_TYPES.has(type) ? type : 'sight',
+        ...(note ? { note } : {}),
       };
     })
     .filter(Boolean);
@@ -3327,9 +3331,12 @@ function renderItineraryMap(container, places) {
       const dayLabel = p.day != null
         ? `<div class="bt-map-day">${escapeHtml(dayPrefix)} ${escapeHtml(String(p.day))}</div>`
         : '';
+      const noteLabel = p.note
+        ? `<div class="bt-map-note">${escapeHtml(String(p.note))}</div>`
+        : '';
       const takeMe = buildTakeMeAnchorHtml(p.lat, p.lng);
       marker.bindPopup(
-        `<div class="bt-map-popup"><strong>${escapeHtml(p.name)}</strong>${dayLabel}${takeMe}</div>`
+        `<div class="bt-map-popup"><strong>${escapeHtml(p.name)}</strong>${dayLabel}${noteLabel}${takeMe}</div>`
       );
       bounds.push([p.lat, p.lng]);
     });

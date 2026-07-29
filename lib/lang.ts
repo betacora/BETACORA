@@ -28,10 +28,26 @@ export function persistLang(lang: AppLang): void {
 export const LANDING_COPY: Record<
   AppLang,
   {
+    login: string;
+    start: string;
     tagline: string;
     sub: string;
     cta: string;
     ctaReturning: string;
+    scrollMore: string;
+    piecesEyebrow: string;
+    piecesTitle: string;
+    dnaTitle: string;
+    dnaBody: string;
+    itineraryTitle: string;
+    itineraryBody: string;
+    guidesTitle: string;
+    guidesBody: string;
+    bookingTitle: string;
+    bookingBody: string;
+    finalTitle: string;
+    finalBody: string;
+    finalCta: string;
     about: string;
     privacy: string;
     terms: string;
@@ -39,30 +55,93 @@ export const LANDING_COPY: Record<
   }
 > = {
   es: {
-    tagline: "Tu bitácora inteligente de viajes",
-    sub: "Itinerarios a tu medida a partir de cómo viajas de verdad. Todo queda en tu bitácora.",
-    cta: "Descubre tu perfil viajero",
+    login: "Iniciar sesión",
+    start: "Empezar",
+    tagline: "Primero te entendemos.\nDespués planificamos.",
+    sub: "BeTacora construye tu perfil psicológico de viajero — tu Travel DNA — y genera itinerarios narrativos a tu medida. No es un chat genérico: es tu bitácora inteligente.",
+    cta: "Empieza tu perfil",
     ctaReturning: "Empezar nuevo viaje",
+    scrollMore: "Saber más",
+    piecesEyebrow: "Cómo funciona",
+    piecesTitle: "Las piezas de tu bitácora",
+    dnaTitle: "Travel DNA",
+    dnaBody:
+      "Un cuestionario que captura ritmo, motivación, alojamiento, comida y misión. Asignamos un arquetipo psicológico real — no una plantilla de destino — y lo guardamos en tu perfil.",
+    itineraryTitle: "Itinerarios narrativos",
+    itineraryBody:
+      "Día a día con títulos de capítulo, nombres reales, ritmo realista y razones explícitas de por qué cada propuesta encaja contigo. Logística, tips locales y mapa incluidos.",
+    guidesTitle: "Guías",
+    guidesBody:
+      "Contexto del destino calibrado a tu forma de viajar: qué priorizar, qué evitar y cómo moverte sin copiar la guía genérica de siempre.",
+    bookingTitle: "Reservas",
+    bookingBody:
+      "Cuando toque volar o elegir, conectamos la planificación con opciones reales — sin perder el hilo de tu perfil ni de tu bitácora.",
+    finalTitle: "Empieza por quién eres como viajero",
+    finalBody:
+      "Descubre tu perfil, genera tu primer itinerario y guarda todo en un solo lugar. Disponible en español, inglés y francés.",
+    finalCta: "Empieza tu perfil",
     about: "Sobre nosotros",
     privacy: "Privacidad",
     terms: "Términos",
     accountDeleted: "Tu cuenta se ha eliminado correctamente.",
   },
   en: {
-    tagline: "Your smart travel logbook",
-    sub: "Itineraries shaped by how you actually travel — kept in one place.",
-    cta: "Discover your traveler profile",
+    login: "Log in",
+    start: "Get started",
+    tagline: "First we understand you.\nThen we plan.",
+    sub: "BeTacora builds your psychological traveler profile — your Travel DNA — then creates narrative itineraries shaped around you. Not a generic chat: your smart travel logbook.",
+    cta: "Start your profile",
     ctaReturning: "Start a new trip",
+    scrollMore: "Learn more",
+    piecesEyebrow: "How it works",
+    piecesTitle: "The pieces of your logbook",
+    dnaTitle: "Travel DNA",
+    dnaBody:
+      "A questionnaire that captures pace, motivation, stays, food, and mission. We assign a real psychological archetype — not a destination template — and keep it in your profile.",
+    itineraryTitle: "Narrative itineraries",
+    itineraryBody:
+      "Day-by-day chapters with real names, realistic pacing, and explicit reasons each pick fits you. Logistics, local tips, and a map included.",
+    guidesTitle: "Guides",
+    guidesBody:
+      "Destination context calibrated to how you travel: what to prioritize, what to skip, and how to move without copying a generic guidebook.",
+    bookingTitle: "Bookings",
+    bookingBody:
+      "When it’s time to fly or choose, planning connects to real options — without losing your profile or your logbook thread.",
+    finalTitle: "Start with who you are as a traveler",
+    finalBody:
+      "Discover your profile, generate your first itinerary, and keep everything in one place. Available in Spanish, English, and French.",
+    finalCta: "Start your profile",
     about: "About",
     privacy: "Privacy",
     terms: "Terms",
     accountDeleted: "Your account has been deleted successfully.",
   },
   fr: {
-    tagline: "Votre carnet de voyage intelligent",
-    sub: "Des itinéraires fidèles à votre façon de voyager, réunis au même endroit.",
-    cta: "Découvrez votre profil voyageur",
+    login: "Se connecter",
+    start: "Commencer",
+    tagline: "D’abord on vous comprend.\nEnsuite on planifie.",
+    sub: "BeTacora construit votre profil psychologique de voyageur — votre Travel DNA — puis crée des itinéraires narratifs à votre mesure. Pas un chat générique : votre carnet de voyage intelligent.",
+    cta: "Créez votre profil",
     ctaReturning: "Commencer un nouveau voyage",
+    scrollMore: "En savoir plus",
+    piecesEyebrow: "Comment ça marche",
+    piecesTitle: "Les pièces de votre carnet",
+    dnaTitle: "Travel DNA",
+    dnaBody:
+      "Un questionnaire qui capture rythme, motivation, hébergement, cuisine et mission. Nous assignons un vrai archétype psychologique — pas un modèle de destination — et le gardons dans votre profil.",
+    itineraryTitle: "Itinéraires narratifs",
+    itineraryBody:
+      "Jour après jour avec des titres de chapitre, des noms réels, un rythme réaliste et des raisons explicites. Logistique, conseils locaux et carte inclus.",
+    guidesTitle: "Guides",
+    guidesBody:
+      "Le contexte de la destination calibré à votre façon de voyager : quoi prioriser, quoi éviter, et comment bouger sans recopier un guide générique.",
+    bookingTitle: "Réservations",
+    bookingBody:
+      "Quand il faut voler ou choisir, la planification se connecte à de vraies options — sans perdre votre profil ni le fil de votre carnet.",
+    finalTitle: "Commencez par qui vous êtes en voyage",
+    finalBody:
+      "Découvrez votre profil, générez votre premier itinéraire et gardez tout au même endroit. Disponible en espagnol, anglais et français.",
+    finalCta: "Créez votre profil",
     about: "À propos",
     privacy: "Confidentialité",
     terms: "Conditions",

@@ -1,0 +1,236 @@
+/* Warm public-landing palette — scoped to .lp-warm only.
+   Does not affect the post-login neutral app chrome. */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap");
+
+.lp-warm {
+  --lp-ink: #1f1410;
+  --lp-muted: #6e5344;
+  --lp-sand: #f3e6d8;
+  --lp-clay: #e5d0bc;
+  --lp-paper: #fff8f0;
+  --lp-sunset: #d85a38;
+  --lp-ember: #b34428;
+  --lp-moss: #2f5d50;
+  --lp-glow: rgba(216, 90, 56, 0.22);
+  --lp-shadow: rgba(31, 20, 16, 0.14);
+  color: var(--lp-ink);
+  background: var(--lp-sand);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.lp-warm .lp-display {
+  font-family: "Fraunces", "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.lp-warm-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 55% at 85% 20%, var(--lp-glow), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(47, 93, 80, 0.12), transparent 50%),
+    linear-gradient(155deg, #f7ebe0 0%, #efd8c4 48%, #e4c4a8 100%);
+  border-bottom: 1px solid rgba(31, 20, 16, 0.08);
+}
+
+.lp-warm-hero::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 38%;
+  background: linear-gradient(180deg, transparent, rgba(31, 20, 16, 0.06));
+  pointer-events: none;
+}
+
+.lp-warm-header {
+  background: rgba(255, 248, 240, 0.72);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(31, 20, 16, 0.08);
+}
+
+.lp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  background: var(--lp-ink);
+  color: var(--lp-paper);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.lp-btn-primary:hover {
+  background: var(--lp-ember);
+  transform: translateY(-1px);
+}
+
+.lp-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--lp-ink);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: 1.5px solid rgba(31, 20, 16, 0.2);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.lp-btn-secondary:hover {
+  border-color: var(--lp-ink);
+  background: rgba(255, 248, 240, 0.5);
+}
+
+.lp-btn-coral {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.95rem 1.75rem;
+  border-radius: 999px;
+  background: var(--lp-sunset);
+  color: #fff;
+  font-weight: 550;
+  font-size: 1.05rem;
+  text-decoration: none;
+  border: 0;
+  box-shadow: 0 12px 28px var(--lp-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+.lp-btn-coral:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px var(--lp-shadow);
+  opacity: 0.95;
+}
+
+.lp-visual {
+  position: relative;
+  min-height: 280px;
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(145deg, rgba(255, 248, 240, 0.55), rgba(229, 208, 188, 0.35)),
+    linear-gradient(210deg, #d9b896 0%, #c98862 55%, #2f5d50 160%);
+  box-shadow: 0 24px 48px var(--lp-shadow);
+  overflow: hidden;
+}
+
+.lp-visual-panel {
+  position: absolute;
+  border-radius: 0.85rem;
+  background: rgba(255, 248, 240, 0.92);
+  border: 1px solid rgba(31, 20, 16, 0.08);
+  box-shadow: 0 10px 24px rgba(31, 20, 16, 0.1);
+  padding: 0.85rem 1rem;
+  backdrop-filter: blur(4px);
+  animation: lp-float 7s ease-in-out infinite;
+}
+
+.lp-visual-panel:nth-child(2) {
+  animation-delay: -2.2s;
+}
+
+.lp-visual-panel:nth-child(3) {
+  animation-delay: -4.1s;
+}
+
+@keyframes lp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.lp-piece {
+  border-radius: 1.25rem;
+  padding: 1.75rem 1.5rem;
+  background: var(--lp-paper);
+  border: 1px solid rgba(31, 20, 16, 0.08);
+  box-shadow: 0 8px 24px rgba(31, 20, 16, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lp-piece:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(31, 20, 16, 0.09);
+}
+
+.lp-piece-mark {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.85rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+}
+
+.lp-piece-mark--dna {
+  background: rgba(216, 90, 56, 0.14);
+  color: var(--lp-ember);
+}
+
+.lp-piece-mark--itin {
+  background: rgba(47, 93, 80, 0.14);
+  color: var(--lp-moss);
+}
+
+.lp-piece-mark--guides {
+  background: rgba(184, 132, 74, 0.18);
+  color: #8a5a28;
+}
+
+.lp-piece-mark--book {
+  background: rgba(31, 20, 16, 0.08);
+  color: var(--lp-ink);
+}
+
+.lp-final {
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 0%, rgba(216, 90, 56, 0.18), transparent 60%),
+    linear-gradient(180deg, #1f1410 0%, #3a2418 100%);
+  color: var(--lp-paper);
+}
+
+.lp-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--lp-muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.lp-scroll:hover {
+  color: var(--lp-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-visual-panel,
+  .lp-btn-primary,
+  .lp-btn-coral,
+  .lp-piece {
+    animation: none;
+    transition: none;
+  }
+}

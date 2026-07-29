@@ -647,8 +647,8 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
 };
 
 /**
- * PLACEHOLDER COPY — first-time post-login welcome (/bienvenida).
- * Review with Rodrigo before considering final; keys marked [PLACEHOLDER].
+ * First-time post-login welcome (/bienvenida).
+ * ES is source of truth; EN/FR follow the same meaning.
  */
 export type OnboardingWelcomeCopy = {
   kicker: string;
@@ -663,33 +663,33 @@ export type OnboardingWelcomeCopy = {
 
 export const ONBOARDING_WELCOME_COPY: Record<AppLang, OnboardingWelcomeCopy> = {
   es: {
-    kicker: "[PLACEHOLDER] Antes de tu primer viaje",
-    title: "[PLACEHOLDER] BeTacora empieza por conocerte",
-    body: "[PLACEHOLDER] No es una lista genérica de atracciones. Primero entendemos cómo viajas — ritmo, motivaciones, lo que te importa — y con eso armamos una bitácora a tu medida.",
-    bullet1: "[PLACEHOLDER] Un cuestionario corto sobre tu forma de viajar",
-    bullet2: "[PLACEHOLDER] Un perfil viajero que puedes reutilizar en cada viaje",
-    bullet3: "[PLACEHOLDER] Un itinerario concreto, no un catálogo infinito",
-    cta: "[PLACEHOLDER] Empezar el cuestionario",
+    kicker: "Antes de tu primer viaje",
+    title: "BeTacora empieza por conocerte",
+    body: "No es una lista genérica de atracciones. Primero entendemos cómo viajas — ritmo, motivaciones, lo que te importa — y con eso armamos una bitácora a tu medida.",
+    bullet1: "Un cuestionario corto sobre tu forma de viajar",
+    bullet2: "Un perfil viajero que evoluciona contigo en cada viaje",
+    bullet3: "Un itinerario concreto, no un catálogo infinito",
+    cta: "Empezar el cuestionario",
     loading: "…",
   },
   en: {
-    kicker: "[PLACEHOLDER] Before your first trip",
-    title: "[PLACEHOLDER] BeTacora starts by getting to know you",
-    body: "[PLACEHOLDER] This isn’t a generic attraction list. First we learn how you travel — pace, motivations, what matters — then we build a logbook that fits.",
-    bullet1: "[PLACEHOLDER] A short questionnaire about how you travel",
-    bullet2: "[PLACEHOLDER] A traveler profile you can reuse on every trip",
-    bullet3: "[PLACEHOLDER] A concrete itinerary, not an endless catalog",
-    cta: "[PLACEHOLDER] Start the questionnaire",
+    kicker: "Before your first trip",
+    title: "BeTacora starts by getting to know you",
+    body: "This isn’t a generic attraction list. First we learn how you travel — pace, motivations, what matters — then we build a logbook that fits.",
+    bullet1: "A short questionnaire about how you travel",
+    bullet2: "A traveler profile that evolves with you on every trip",
+    bullet3: "A concrete itinerary, not an endless catalog",
+    cta: "Start the questionnaire",
     loading: "…",
   },
   fr: {
-    kicker: "[PLACEHOLDER] Avant votre premier voyage",
-    title: "[PLACEHOLDER] BeTacora commence par apprendre à vous connaître",
-    body: "[PLACEHOLDER] Ce n’est pas une liste générique d’attractions. D’abord nous comprenons comment vous voyagez — rythme, motivations, ce qui compte — puis nous construisons un carnet à votre mesure.",
-    bullet1: "[PLACEHOLDER] Un court questionnaire sur votre façon de voyager",
-    bullet2: "[PLACEHOLDER] Un profil voyageur réutilisable à chaque voyage",
-    bullet3: "[PLACEHOLDER] Un itinéraire concret, pas un catalogue infini",
-    cta: "[PLACEHOLDER] Commencer le questionnaire",
+    kicker: "Avant votre premier voyage",
+    title: "BeTacora commence par apprendre à vous connaître",
+    body: "Ce n’est pas une liste générique d’attractions. D’abord nous comprenons comment vous voyagez — rythme, motivations, ce qui compte — puis nous construisons un carnet à votre mesure.",
+    bullet1: "Un court questionnaire sur votre façon de voyager",
+    bullet2: "Un profil voyageur qui évolue avec vous à chaque voyage",
+    bullet3: "Un itinéraire concret, pas un catalogue infini",
+    cta: "Commencer le questionnaire",
     loading: "…",
   },
 };

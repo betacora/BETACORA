@@ -8,6 +8,7 @@ export const FunnelEvent = {
   ItineraryGenerated: "itinerary_generated",
   RegistrationStarted: "registration_started",
   RegistrationCompleted: "registration_completed",
+  OnboardingWelcomeViewed: "onboarding_welcome_viewed",
 } as const;
 
 export type FunnelEventName = (typeof FunnelEvent)[keyof typeof FunnelEvent];

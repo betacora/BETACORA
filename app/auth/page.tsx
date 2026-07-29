@@ -10,6 +10,7 @@ import { BrandWordmark } from "@/components/BrandWordmark";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
 import { getAuthOrigin, getEmailConfirmRedirectTo } from "@/lib/authRedirect";
+import { resolvePostAuthPath } from "@/lib/onboardingWelcome";
 import { safeNextPath } from "@/lib/safeNextPath";
 
 type Mode = "login" | "register";
@@ -72,9 +73,10 @@ function AuthPageInner() {
     setReady(true);
 
     let cancelled = false;
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       if (cancelled || !data.user) return;
-      router.replace(nextPath);
+      const path = await resolvePostAuthPath(supabase, nextPath);
+      if (!cancelled) router.replace(path);
     });
     return () => {
       cancelled = true;
@@ -250,7 +252,8 @@ function AuthPageInner() {
       if (data.user) {
         await saveProfile(data.user.id, data.user.email);
       }
-      router.push(nextPath);
+      const path = await resolvePostAuthPath(supabase, nextPath);
+      router.push(path);
       return;
     }
 
@@ -289,7 +292,8 @@ function AuthPageInner() {
         await saveProfile(data.user.id, data.user.email);
       }
     }
-    router.push(nextPath);
+    const path = await resolvePostAuthPath(supabase, nextPath);
+    router.push(path);
   }
 
   const showLoginResend =

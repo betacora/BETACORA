@@ -75,6 +75,20 @@ CAPÍTULOS DEL DÍA A DÍA (viajes cortos — CRÍTICO):
 - Justo debajo del <h3>, un <p class="day-meta"> con la info práctica: <strong>{{day_n}} [N]</strong> — [fecha]. La fecha debe calcularse a partir de dateFrom/date_depart + índice del día cuando existan en el perfil; si no hay fechas, omite la fecha y deja solo <strong>{{day_n}} [N]</strong>
 - El título debe poder entenderse sin leer el cuerpo, pero debe sentirse auténtico a ese día concreto (no un eslogan vacío)
 
+NIVEL DE DETALLE POR PARADA (guía de viaje real — CRÍTICO):
+Cada lugar nombrado (sight, museo, templo, mercado, actividad, restaurante cuando aporte) debe leerse como una guía que ya estuvo ahí, no como una lista genérica de atracciones.
+Por parada, cuando aplique, incluye en la misma frase o en 1–2 frases cortas:
+1. Nombre del lugar (siempre)
+2. Un dato práctico de dominio público estable (precio orientativo de entrada, horario típico) — SOLO si es información ampliamente conocida y verificable vía web_search o conocimiento estable. Omite el dato práctico si no tienes certeza razonable, en vez de inventar una cifra.
+3. Una frase breve de contexto histórico/cultural (1 línea, no un párrafo): consejo genuino de quien ya estuvo, no ficha de Wikipedia
+Patrón de tono (NO copies literal; es solo el nivel de detalle esperado):
+"Catedral Metropolitana: erigida en 1535 sobre un antiguo lugar de culto inca. Contiene 13 capillas y la tumba del fundador de la ciudad. Entrada ~3€. Abierta L-S 9h-17h, domingos 13h-17h."
+Reglas anti-invención (precios/horarios):
+- Si no estás razonablemente seguro del precio u horario, OMÍTELO. Nunca inventes cifras específicas no verificables.
+- Prefiere rangos orientativos ("entrada ~5–8€", "abre por la mañana") a falsas precisiones ("entrada 4,70€") cuando la fuente no sea clara.
+- Usa web_search para contrastar precios/horarios de atracciones principales antes de citarlos.
+- Restaurantes: precio orientativo del plato típico solo si es realista y conocido; si no, describe qué pedir sin cifra.
+
 FUENTES DE INFORMACIÓN:
 
 Usa la herramienta web_search para investigar el destino desde múltiples ángulos antes de generar el itinerario:
@@ -115,10 +129,10 @@ Genera esto en HTML limpio:
 [Para cada día — OBLIGATORIO este formato exacto:]
 <h3>[Título-capítulo evocador de 3 a 6 palabras]</h3>
 <p class="day-meta"><strong>{{day_n}} [N]</strong> — [fecha concreta si se conoce, p. ej. 12 mar / 12 Mar / 12 mars; si no hay fecha, solo {{day_n}} [N]]</p>
-<p><strong>{{morning}}</strong> [actividad específica con nombre real del lugar]</p>
-<p><strong>{{afternoon}}</strong> [actividad específica]</p>
-<p><strong>{{evening}}</strong> [plan nocturno]</p>
-<p><strong>{{where_to_eat}}</strong> [nombre real del restaurante o mercado, qué pedir, precio]</p>
+<p><strong>{{morning}}</strong> [parada(s) con nombre real + 1 línea de contexto + dato práctico SOLO si es seguro; ver NIVEL DE DETALLE POR PARADA]</p>
+<p><strong>{{afternoon}}</strong> [igual: nombre + contexto breve + precio/horario solo si verificable]</p>
+<p><strong>{{evening}}</strong> [plan nocturno con el mismo nivel de detalle cuando aplique]</p>
+<p><strong>{{where_to_eat}}</strong> [nombre real del restaurante o mercado, qué pedir, precio orientativo solo si es realista]</p>
 <p><strong>{{local_tip}}</strong> [algo que no aparece en las guías turísticas]</p>
 
 <h2>💰 {{budget_estimate}}</h2>
@@ -140,7 +154,7 @@ Genera esto en HTML limpio:
 
 <h3>{{what_to_see}}</h3>
 <ul>
-<li><strong>[Nombre específico]:</strong> [por qué, cuánto tiempo, precio si aplica]</li>
+<li><strong>[Nombre específico]:</strong> [1 línea de contexto histórico/cultural + dato práctico (precio/horario) SOLO si es de dominio público conocido; omitir cifra si no hay certeza — ver NIVEL DE DETALLE POR PARADA]</li>
 </ul>
 
 <h3>{{where_to_stay}}</h3>
@@ -187,13 +201,13 @@ Usa la misma estructura que viaje medio pero:
 
 REGLAS DE ORO:
 1. Nombres reales siempre — restaurantes, hostels, transportes, mercados
-2. Precios actualizados y realistas en la moneda del viajero
+2. Precios actualizados y realistas en la moneda del viajero — omite el dato práctico (precio/horario de entrada) si no tienes certeza razonable, en vez de inventar una cifra
 3. Idioma y moneda local para CADA país visitado
 4. Dónde cambiar dinero de forma segura y dónde NO
 5. Seguridad específica por zona, no genérica
 6. Máximo 1 tip por sección — que sea bueno de verdad
 7. Nunca menciones TripAdvisor ni Booking como fuente
-8. El resultado debe leerse como un artículo de una revista de viajes premium
+8. El resultado debe leerse como una guía de viaje real / revista premium: contexto breve por parada, no lista genérica de atracciones
 
 REGLAS DE DISTRIBUCIÓN DE TIEMPO:
 
@@ -318,7 +332,7 @@ MAPA DE LUGARES (OBLIGATORIO — al FINAL absoluto de toda la respuesta, despué
 Después de todo el HTML del perfil e itinerario, añade EXACTAMENTE este bloque machine-readable (única excepción a la regla de no-JSON). No lo envuelvas en markdown ni lo comentes.
 
 <script type="application/json" id="bt-places">
-{"places":[{"name":"...","day":1,"lat":00.0000,"lng":00.0000,"type":"hotel|food|activity|sight"}]}
+{"places":[{"name":"...","day":1,"lat":00.0000,"lng":00.0000,"type":"hotel|food|activity|sight","note":"..."}]}
 </script>
 
 Reglas del bloque:
@@ -327,10 +341,11 @@ Reglas del bloque:
 3. day: número de día del itinerario donde aparece (entero ≥ 1). Si es alojamiento base de varios días, usa el primer día de estancia
 4. type: exactamente uno de: "hotel" | "food" | "activity" | "sight"
 5. name: el mismo nombre legible que en el itinerario (sin emojis)
-6. Un solo objeto JSON válido, sin trailing commas, sin texto fuera del <script>
-7. Si un lugar aparece varios días, una sola entrada (primer día)
-8. Mínimo: todos los alojamientos + todos los restaurantes nombrados + los sights/actividades principales
-9. Compacto: JSON en el menor espacio posible (idealmente una sola línea). CIERRA siempre el </script> — nunca dejes el bloque a medias. Si te quedas corto de espacio, acorta el texto narrativo, no el mapa`;
+6. note (opcional, string corto ≤160 caracteres): la misma frase de contexto (+ dato práctico si aplica) que usaste en el HTML para ese lugar. Omite "note" si no aporta. Sin URLs.
+7. Un solo objeto JSON válido, sin trailing commas, sin texto fuera del <script>
+8. Si un lugar aparece varios días, una sola entrada (primer día)
+9. Mínimo: todos los alojamientos + todos los restaurantes nombrados + los sights/actividades principales
+10. Compacto: JSON en el menor espacio posible (idealmente una sola línea). CIERRA siempre el </script> — nunca dejes el bloque a medias. Si te quedas corto de espacio, acorta el texto narrativo, no el mapa`;
 
 function buildSystemPrompt(labels: ItineraryLabels): string {
   return SYSTEM_PROMPT_TEMPLATE.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
@@ -572,7 +587,9 @@ OBLIGATORIO en el itinerario: incluye exactamente 2-3 explicaciones en <em> cone
 
 OBLIGATORIO en viajes cortos (día a día): cada día con <h3> título-capítulo evocador (3-6 palabras, sin número de día) + <p class="day-meta"> con ${labels.day_n} N y fecha si se conoce.
 
-OBLIGATORIO al final absoluto: el bloque <script type="application/json" id="bt-places"> con todos los lugares nombrados y coordenadas (ver MAPA DE LUGARES).
+OBLIGATORIO por parada: nombre + 1 línea de contexto histórico/cultural + dato práctico (precio/horario) SOLO si es de dominio público conocido. Omite el dato práctico si no tienes certeza razonable, en vez de inventar una cifra.
+
+OBLIGATORIO al final absoluto: el bloque <script type="application/json" id="bt-places"> con todos los lugares nombrados, coordenadas y "note" opcional (ver MAPA DE LUGARES).
 
 ${webSearchInstruction} Responde solo con HTML + el script bt-places al final. Sin markdown ni fences.`;
 

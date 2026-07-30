@@ -172,6 +172,10 @@ export const NAV_COPY: Record<
   AppLang,
   {
     tabs: Record<NavTabId, string>;
+    sidebar: {
+      navLabel: string;
+      newTrip: string;
+    };
     inicio: {
       greetingNamed: string;
       greetingGeneric: string;
@@ -251,6 +255,10 @@ export const NAV_COPY: Record<
       guia: "Guía",
       viajes: "Mis Viajes",
       perfil: "Perfil",
+    },
+    sidebar: {
+      navLabel: "Navegación",
+      newTrip: "Nuevo viaje",
     },
     inicio: {
       greetingNamed: "Hola, {name}",
@@ -334,6 +342,10 @@ export const NAV_COPY: Record<
       viajes: "My Trips",
       perfil: "Profile",
     },
+    sidebar: {
+      navLabel: "Navigation",
+      newTrip: "New trip",
+    },
     inicio: {
       greetingNamed: "Hello, {name}",
       greetingGeneric: "Welcome to BeTacora",
@@ -414,6 +426,10 @@ export const NAV_COPY: Record<
       guia: "Guide",
       viajes: "Mes Voyages",
       perfil: "Profil",
+    },
+    sidebar: {
+      navLabel: "Navigation",
+      newTrip: "Nouveau voyage",
     },
     inicio: {
       greetingNamed: "Bonjour, {name}",

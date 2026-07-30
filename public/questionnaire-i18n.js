@@ -152,6 +152,47 @@
           eyebrow: '✦ Tu Bitácora Inteligente',
           title: 'Tu viaje, diseñado para ti',
         },
+        previewPaywall: {
+          lockedLabel: 'Día bloqueado',
+          lockedAria: 'Contenido del día bloqueado en la vista previa',
+          effortEyebrow: 'Tiempo estimado',
+          effortTitle: 'Lo que suele costar organizar esto a mano',
+          effortMeta:
+            'Calculado para este itinerario: {stops} paradas · {hotels} alojamientos · {flights} tramos de vuelo.',
+          effortFallback:
+            'Organizar esto por tu cuenta: varias horas repartidas en días. Con BeTacora: minutos.',
+          effortBands: {
+            light: {
+              diy: 'Organizar esto por tu cuenta: una tarde de pestañas, mapas y reseñas.',
+              withBt: 'Con BeTacora: minutos — respondes el cuestionario y tienes el plan.',
+            },
+            medium: {
+              diy: 'Organizar esto por tu cuenta: varias horas repartidas en días.',
+              withBt: 'Con BeTacora: minutos — el perfil y la bitácora ya están armados.',
+            },
+            heavy: {
+              diy: 'Organizar esto por tu cuenta: bastantes horas entre paradas, vuelos y alojamientos.',
+              withBt: 'Con BeTacora: minutos frente a ese trabajo de investigación.',
+            },
+          },
+          includesEyebrow: 'Qué incluye',
+          includesTitle: 'Tu bitácora BeTacora',
+          includesItems: [
+            'Perfil viajero e itinerario personalizados según tus respuestas',
+            'Capítulos día a día con lugares, comidas y actividades con nombre',
+            'Mapa de paradas del viaje (vista previa del Día 1)',
+            'Ofertas de vuelo vía Duffel — sin reserva ni pago en BeTacora todavía',
+            'Opción de guardar la bitácora en tu cuenta cuando inicies sesión',
+          ],
+          unlockEyebrow: 'Vista previa',
+          unlockTitle: 'Desbloquea el resto del viaje',
+          unlockBody:
+            'El Día 1 es tuyo. Los capítulos siguientes están listos — desbloquéalos cuando quieras ver el plan completo.',
+          unlockCta: 'Desbloquear itinerario completo',
+          unlockNote: 'Sin cobro todavía — estamos midiendo interés. El pago llegará más adelante.',
+          unlockPlaceholder:
+            'Gracias — registramos tu interés. El desbloqueo de pago llegará pronto.',
+        },
         itineraryLoading: {
           title: 'Diseñando tu bitácora...',
           hint: 'Esto puede tardar un momento. Estamos personalizando cada detalle.',
@@ -797,6 +838,47 @@
           eyebrow: '✦ Your Smart Logbook',
           title: 'Your trip, designed for you',
         },
+        previewPaywall: {
+          lockedLabel: 'Locked day',
+          lockedAria: 'Day content locked in preview',
+          effortEyebrow: 'Estimated time',
+          effortTitle: 'What organizing this by hand usually takes',
+          effortMeta:
+            'Based on this itinerary: {stops} stops · {hotels} stays · {flights} flight segments.',
+          effortFallback:
+            'Doing this yourself: several hours spread over days. With BeTacora: minutes.',
+          effortBands: {
+            light: {
+              diy: 'Doing this yourself: an afternoon of tabs, maps, and reviews.',
+              withBt: 'With BeTacora: minutes — answer the questionnaire and you have the plan.',
+            },
+            medium: {
+              diy: 'Doing this yourself: several hours spread over days.',
+              withBt: 'With BeTacora: minutes — your profile and logbook are already built.',
+            },
+            heavy: {
+              diy: 'Doing this yourself: many hours across stops, flights, and stays.',
+              withBt: 'With BeTacora: minutes instead of that research grind.',
+            },
+          },
+          includesEyebrow: 'What’s included',
+          includesTitle: 'Your BeTacora logbook',
+          includesItems: [
+            'Traveler profile and itinerary personalized from your answers',
+            'Day-by-day chapters with named places, food, and activities',
+            'Trip stops map (Day 1 preview)',
+            'Flight offers via Duffel — no booking or payment in BeTacora yet',
+            'Option to save the logbook to your account when signed in',
+          ],
+          unlockEyebrow: 'Preview',
+          unlockTitle: 'Unlock the rest of the trip',
+          unlockBody:
+            'Day 1 is yours. The next chapters are ready — unlock them when you want the full plan.',
+          unlockCta: 'Unlock full itinerary',
+          unlockNote: 'No charge yet — we’re measuring interest. Payment comes later.',
+          unlockPlaceholder:
+            'Thanks — we recorded your interest. Paid unlock is coming soon.',
+        },
         itineraryLoading: {
           title: 'Designing your logbook...',
           hint: 'This can take a moment. We are personalizing every detail.',
@@ -1441,6 +1523,48 @@
         bitacora: {
           eyebrow: '✦ Votre Bitácora Intelligente',
           title: 'Votre voyage, conçu pour vous',
+        },
+        previewPaywall: {
+          lockedLabel: 'Jour verrouillé',
+          lockedAria: 'Contenu du jour verrouillé en aperçu',
+          effortEyebrow: 'Temps estimé',
+          effortTitle: 'Ce que cela prend souvent de s’organiser seul',
+          effortMeta:
+            'Calculé pour cet itinéraire : {stops} étapes · {hotels} hébergements · {flights} segments de vol.',
+          effortFallback:
+            'Le faire soi-même : plusieurs heures réparties sur des jours. Avec BeTacora : quelques minutes.',
+          effortBands: {
+            light: {
+              diy: 'Le faire soi-même : un après-midi d’onglets, de cartes et d’avis.',
+              withBt: 'Avec BeTacora : quelques minutes — le questionnaire, et le plan est là.',
+            },
+            medium: {
+              diy: 'Le faire soi-même : plusieurs heures réparties sur des jours.',
+              withBt: 'Avec BeTacora : quelques minutes — profil et carnet déjà construits.',
+            },
+            heavy: {
+              diy: 'Le faire soi-même : beaucoup d’heures entre étapes, vols et hébergements.',
+              withBt: 'Avec BeTacora : quelques minutes face à ce travail de recherche.',
+            },
+          },
+          includesEyebrow: 'Ce qui est inclus',
+          includesTitle: 'Votre bitácora BeTacora',
+          includesItems: [
+            'Profil voyageur et itinéraire personnalisés selon vos réponses',
+            'Chapitres jour par jour avec lieux, repas et activités nommés',
+            'Carte des étapes (aperçu du Jour 1)',
+            'Offres de vol via Duffel — pas encore de réservation ni paiement dans BeTacora',
+            'Possibilité d’enregistrer la bitácora sur votre compte une fois connecté',
+          ],
+          unlockEyebrow: 'Aperçu',
+          unlockTitle: 'Débloquez le reste du voyage',
+          unlockBody:
+            'Le Jour 1 est à vous. Les chapitres suivants sont prêts — débloquez-les pour le plan complet.',
+          unlockCta: 'Débloquer l’itinéraire complet',
+          unlockNote:
+            'Pas de paiement pour l’instant — nous mesurons l’intérêt. Le paiement viendra plus tard.',
+          unlockPlaceholder:
+            'Merci — nous avons enregistré votre intérêt. Le déblocage payant arrive bientôt.',
         },
         itineraryLoading: {
           title: 'Conception de votre carnet…',

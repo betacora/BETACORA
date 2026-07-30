@@ -6,6 +6,8 @@ export const FunnelEvent = {
   QuestionnaireStarted: "questionnaire_started",
   QuestionnaireCompleted: "questionnaire_completed",
   ItineraryGenerated: "itinerary_generated",
+  ItineraryPaywallView: "itinerary_paywall_view",
+  ItineraryPaywallUnlockClick: "itinerary_paywall_unlock_click",
   RegistrationStarted: "registration_started",
   RegistrationCompleted: "registration_completed",
   OnboardingWelcomeViewed: "onboarding_welcome_viewed",
@@ -38,6 +40,8 @@ export const AnalyticsEvents = {
   QUESTIONNAIRE_STARTED: FunnelEvent.QuestionnaireStarted,
   QUESTIONNAIRE_COMPLETED: FunnelEvent.QuestionnaireCompleted,
   ITINERARY_GENERATED: FunnelEvent.ItineraryGenerated,
+  ITINERARY_PAYWALL_VIEW: FunnelEvent.ItineraryPaywallView,
+  ITINERARY_PAYWALL_UNLOCK_CLICK: FunnelEvent.ItineraryPaywallUnlockClick,
   REGISTRATION_STARTED: FunnelEvent.RegistrationStarted,
   REGISTRATION_COMPLETED: FunnelEvent.RegistrationCompleted,
 } as const;

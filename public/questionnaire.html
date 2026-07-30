@@ -811,6 +811,179 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   background: transparent; letter-spacing: -0.01em;
 }
 .bitacora-article h3:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+/* Progressive preview: locked days (blur + lock) — never on free Day 1 */
+.bt-day-locked {
+  position: relative;
+  margin: 0.35rem 0 1.1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.bt-day-locked__body {
+  filter: blur(7px);
+  opacity: 0.5;
+  pointer-events: none;
+  max-height: 10.5rem;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+.bt-day-locked__veil {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 1rem;
+  background: linear-gradient(
+    180deg,
+    rgba(252, 249, 248, 0.15) 0%,
+    rgba(252, 249, 248, 0.72) 42%,
+    rgba(252, 249, 248, 0.94) 100%
+  );
+  pointer-events: none;
+}
+.bt-day-locked__lock {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--teal-dark);
+  box-shadow: 0 6px 18px rgba(28, 27, 27, 0.06);
+}
+.bt-day-locked__lock svg { width: 1rem; height: 1rem; display: block; }
+.bt-day-locked__label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-align: center;
+}
+.bt-preview-paywall {
+  max-width: 720px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.bt-preview-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.35rem 1.35rem 1.25rem;
+}
+.bt-preview-card__eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 500;
+  margin: 0 0 0.45rem;
+}
+.bt-preview-card__title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 0.55rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.bt-preview-card__body {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 0.75rem;
+}
+.bt-preview-card__meta {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+.bt-preview-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0.35rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.bt-preview-checklist li {
+  position: relative;
+  padding: 0.15rem 0 0.15rem 1.55rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.bt-preview-checklist li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: rgba(45, 123, 123, 0.12);
+  color: var(--teal-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.bt-preview-unlock {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+}
+.bt-preview-unlock__btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  background: var(--coral);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.bt-preview-unlock__btn:hover { opacity: 0.92; }
+.bt-preview-unlock__btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+.bt-preview-unlock__note {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  text-align: center;
+}
+.bt-preview-unlock__status {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--teal-dark);
+  margin: 0;
+  text-align: center;
+  display: none;
+}
+.bt-preview-unlock__status.show { display: block; }
+@media (max-width: 640px) {
+  .bt-preview-paywall { padding: 0 0.85rem; }
+  .bt-preview-card { padding: 1.1rem 1rem; }
+}
 /* Practical day label under chapter title */
 .bitacora-article p.day-meta {
   font-size: 0.78rem; line-height: 1.4; color: var(--muted); font-weight: 400;
@@ -3876,6 +4049,201 @@ function escapeHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+/** Parse day index from <p class="day-meta"><strong>Día N</strong>… */
+function parseDayMetaNumber(metaEl) {
+  if (!metaEl) return null;
+  const strong = metaEl.querySelector('strong');
+  const text = (strong?.textContent || metaEl.textContent || '').trim();
+  const m = text.match(/(\d{1,2})/);
+  if (!m) return null;
+  const n = Number(m[1]);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+function estimateFlightLegsFromAnswers(ans) {
+  const a = ans || {};
+  const origin = firstAnswerPlace(a.origin);
+  const dest = firstAnswerPlace(a.destinations);
+  const destCount = Array.isArray(a.destinations)
+    ? a.destinations.filter(Boolean).length
+    : dest
+      ? 1
+      : 0;
+  if (a.trip_type === 'nomada') {
+    return Math.max(destCount, origin || dest ? 1 : 0);
+  }
+  if (!origin && !dest) return 0;
+  const hasReturn = Boolean(String(a.dateTo || a.date_return || '').trim());
+  if (hasReturn && origin && dest) return 2;
+  return 1;
+}
+
+/**
+ * Qualitative planning-effort band from THIS itinerary's stops / hotels / flights.
+ * Avoids fake exact hour counts.
+ */
+function estimatePlanningEffort(places, ans) {
+  const list = Array.isArray(places) ? places : [];
+  const hotels = list.filter((p) => p.type === 'hotel').length;
+  const stops = list.filter((p) => p.type !== 'hotel').length;
+  const flights = estimateFlightLegsFromAnswers(ans);
+  const units = stops + hotels * 2 + flights * 2;
+  let band = 'medium';
+  if (units <= 6) band = 'light';
+  else if (units >= 15) band = 'heavy';
+  return { stops, hotels, flights, units, band };
+}
+
+function placesForFreePreview(places) {
+  const list = Array.isArray(places) ? places : [];
+  const tagged = list.filter((p) => p.day != null);
+  if (!tagged.length) return list;
+  return list.filter((p) => !p.day || p.day <= 1);
+}
+
+function lockIconSvg() {
+  return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V6zm7 13H7v-9h10v9zm-5-3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>`;
+}
+
+/**
+ * Keep Day 1 (title + meta + body) readable. Later days: title + day-meta visible,
+ * body blurred with lock. Anti-select / no context menu only on locked bodies.
+ */
+function applyItineraryDayPaywall(article) {
+  if (!article) return { lockedDays: 0, totalDays: 0 };
+  const metas = Array.from(article.querySelectorAll('p.day-meta'));
+  let lockedDays = 0;
+  let totalDays = 0;
+  const t = (L().ui && L().ui.previewPaywall) || {};
+
+  metas.forEach((meta, idx) => {
+    const dayNum = parseDayMetaNumber(meta) || idx + 1;
+    totalDays = Math.max(totalDays, dayNum);
+    if (dayNum <= 1) return;
+
+    const nodes = [];
+    let node = meta.nextSibling;
+    while (node) {
+      const next = node.nextSibling;
+      if (node.nodeType === 1) {
+        const el = node;
+        if (
+          el.matches('h2, h3, p.day-meta, .bt-day-locked, .section-card') ||
+          el.classList?.contains('bt-day-locked')
+        ) {
+          break;
+        }
+      }
+      if (node.nodeType === 3 && !String(node.textContent || '').trim()) {
+        node = next;
+        continue;
+      }
+      nodes.push(node);
+      node = next;
+    }
+    if (!nodes.length) return;
+
+    lockedDays += 1;
+    const wrap = document.createElement('div');
+    wrap.className = 'bt-day-locked';
+    wrap.setAttribute('data-bt-locked-day', String(dayNum));
+    wrap.setAttribute('aria-label', t.lockedAria || 'Contenido bloqueado');
+
+    const body = document.createElement('div');
+    body.className = 'bt-day-locked__body';
+    nodes.forEach((n) => body.appendChild(n));
+
+    const veil = document.createElement('div');
+    veil.className = 'bt-day-locked__veil';
+    veil.setAttribute('aria-hidden', 'true');
+    veil.innerHTML = `<span class="bt-day-locked__lock">${lockIconSvg()}</span><span class="bt-day-locked__label">${escapeHtml(t.lockedLabel || '')}</span>`;
+
+    wrap.appendChild(body);
+    wrap.appendChild(veil);
+    meta.parentNode.insertBefore(wrap, meta.nextSibling);
+  });
+
+  article.addEventListener('contextmenu', (ev) => {
+    if (ev.target && ev.target.closest && ev.target.closest('.bt-day-locked')) {
+      ev.preventDefault();
+    }
+  });
+
+  return { lockedDays, totalDays: totalDays || metas.length };
+}
+
+function formatPreviewTemplate(str, vars) {
+  return String(str || '').replace(/\{(\w+)\}/g, (_, k) =>
+    vars[k] != null ? String(vars[k]) : '',
+  );
+}
+
+function buildPreviewPaywallHtml(effort, lockedDays) {
+  const t = (L().ui && L().ui.previewPaywall) || {};
+  const band = t.effortBands && t.effortBands[effort.band] ? t.effortBands[effort.band] : {};
+  const diy = band.diy || t.effortFallback || '';
+  const withBt = band.withBt || '';
+  const meta = formatPreviewTemplate(t.effortMeta || '', {
+    stops: effort.stops,
+    hotels: effort.hotels,
+    flights: effort.flights,
+  });
+  const items = Array.isArray(t.includesItems) ? t.includesItems : [];
+  const list = items
+    .map((item) => `<li>${escapeHtml(item)}</li>`)
+    .join('');
+
+  const unlockBlock =
+    lockedDays > 0
+      ? `<div class="bt-preview-card bt-preview-unlock" id="btPreviewUnlock">
+        <div class="bt-preview-card__eyebrow">${escapeHtml(t.unlockEyebrow || '')}</div>
+        <h3 class="bt-preview-card__title">${escapeHtml(t.unlockTitle || '')}</h3>
+        <p class="bt-preview-card__body">${escapeHtml(t.unlockBody || '')}</p>
+        <button type="button" class="bt-preview-unlock__btn" id="btPreviewUnlockBtn">${escapeHtml(t.unlockCta || '')}</button>
+        <p class="bt-preview-unlock__note">${escapeHtml(t.unlockNote || '')}</p>
+        <p class="bt-preview-unlock__status" id="btPreviewUnlockStatus" role="status"></p>
+      </div>`
+      : '';
+
+  return `<aside class="bt-preview-paywall" id="btPreviewPaywall" data-locked-days="${lockedDays}">
+    <div class="bt-preview-card" id="btPreviewEffort">
+      <div class="bt-preview-card__eyebrow">${escapeHtml(t.effortEyebrow || '')}</div>
+      <h3 class="bt-preview-card__title">${escapeHtml(t.effortTitle || '')}</h3>
+      <p class="bt-preview-card__body">${escapeHtml(diy)}</p>
+      <p class="bt-preview-card__body">${escapeHtml(withBt)}</p>
+      <p class="bt-preview-card__meta">${escapeHtml(meta)}</p>
+    </div>
+    <div class="bt-preview-card" id="btPreviewIncludes">
+      <div class="bt-preview-card__eyebrow">${escapeHtml(t.includesEyebrow || '')}</div>
+      <h3 class="bt-preview-card__title">${escapeHtml(t.includesTitle || '')}</h3>
+      <ul class="bt-preview-checklist">${list}</ul>
+    </div>
+    ${unlockBlock}
+  </aside>`;
+}
+
+function bindPreviewPaywallUi(effort, lockedDays) {
+  const btn = document.getElementById('btPreviewUnlockBtn');
+  if (!btn) return;
+  const t = (L().ui && L().ui.previewPaywall) || {};
+  btn.addEventListener('click', () => {
+    btTrack('itinerary_paywall_unlock_click', {
+      locked_days: lockedDays,
+      stops: effort.stops,
+      hotels: effort.hotels,
+      flights: effort.flights,
+      band: effort.band,
+      placeholder: true,
+    });
+    const status = document.getElementById('btPreviewUnlockStatus');
+    if (status) {
+      status.textContent = t.unlockPlaceholder || '';
+      status.classList.add('show');
+    }
+    btn.disabled = true;
+  });
+}
+
 /** Group itinerary HTML into white section-cards by each h2 block. */
 function wrapItineraryInCards(html) {
   if (!html || !html.trim()) return '';
@@ -4234,7 +4602,9 @@ function renderItineraryHtml(html, serverArchetype) {
 
   const section = document.getElementById('itinerarySection');
   const header = L().ui.bitacora;
-  const mapHtml = places.length
+  const effort = estimatePlanningEffort(places, typeof answers !== 'undefined' ? answers : {});
+  const mapPlaces = placesForFreePreview(places);
+  const mapHtml = mapPlaces.length
     ? `<div class="bt-itinerary-map-wrap"><div class="bt-itinerary-map" id="btItineraryMap" role="img" aria-label="Mapa del itinerario"></div></div>`
     : '';
   section.innerHTML = `
@@ -4244,6 +4614,7 @@ function renderItineraryHtml(html, serverArchetype) {
     </div>
     ${mapHtml}
     <div class="bitacora-article">${wrapItineraryInCards(itineraryHtml)}</div>
+    <div id="btPreviewPaywallMount"></div>
     ${buildPostTripHtml()}`;
   section.classList.remove('is-loading');
   section.classList.add('show');
@@ -4254,9 +4625,26 @@ function renderItineraryHtml(html, serverArchetype) {
     injectTakeMeLinks(article, places);
   }
 
-  if (places.length) {
+  const paywallStats = article
+    ? applyItineraryDayPaywall(article)
+    : { lockedDays: 0, totalDays: 0 };
+  const paywallMount = document.getElementById('btPreviewPaywallMount');
+  if (paywallMount) {
+    paywallMount.outerHTML = buildPreviewPaywallHtml(effort, paywallStats.lockedDays);
+    bindPreviewPaywallUi(effort, paywallStats.lockedDays);
+    btTrack('itinerary_paywall_view', {
+      locked_days: paywallStats.lockedDays,
+      total_days: paywallStats.totalDays,
+      stops: effort.stops,
+      hotels: effort.hotels,
+      flights: effort.flights,
+      band: effort.band,
+    });
+  }
+
+  if (mapPlaces.length) {
     const mapEl = document.getElementById('btItineraryMap');
-    if (!renderItineraryMap(mapEl, places) && mapEl) {
+    if (!renderItineraryMap(mapEl, mapPlaces) && mapEl) {
       const wrap = mapEl.closest('.bt-itinerary-map-wrap');
       if (wrap) wrap.remove();
     }
@@ -4284,9 +4672,9 @@ function renderItineraryHtml(html, serverArchetype) {
   if (typeof enterResultsView === 'function') {
     enterResultsView();
   } else {
-    setTimeout(() => {
-      try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
-    }, 600);
+  setTimeout(() => {
+    try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
+  }, 600);
   }
 }
 

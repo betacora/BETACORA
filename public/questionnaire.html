@@ -563,6 +563,15 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   font-size: 0.68rem; color: var(--muted); letter-spacing: 0.04em; white-space: nowrap;
 }
 .shareable-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 0.85rem; }
+.tsc-feed-optin {
+  display: flex; align-items: flex-start; gap: 0.55rem;
+  width: 100%; max-width: 28rem; margin: 0 auto 0.35rem;
+  font-size: 0.78rem; line-height: 1.4; color: var(--muted); text-align: left;
+  cursor: pointer;
+}
+.tsc-feed-optin input {
+  margin-top: 0.15rem; accent-color: var(--teal); flex-shrink: 0;
+}
 .sc-action-btn {
   display: inline-flex; align-items: center; gap: 0.4rem;
   background: var(--coral); color: white; border: none;
@@ -1426,31 +1435,37 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   <div class="section" data-flow="trip" id="actSection">
     <div class="section-header">
       <span class="section-num">V·</span>
-      <div><div class="section-title">Actividades</div><div class="section-sub">Lo que quieres vivir en este viaje</div></div>
+      <div><div class="section-title">Actividades</div><div class="section-sub">Actividades y deportes que te interesan</div></div>
     </div>
 
     <div class="qblock" id="actBlock">
       <div class="qlabel">¿Qué actividades te interesan?</div>
       <span class="multi-badge">Selección libre</span>
       <div class="grid4" id="actOptionsGrid">
-        <button class="opt" data-q="act" data-v="trekking" onclick="toggle(this)"><span class="em">🥾</span>Trekking</button>
+        <button class="opt" data-q="act" data-v="trekking" onclick="toggle(this)"><span class="em">🥾</span>Senderismo</button>
         <button class="opt" data-q="act" data-v="buceo" onclick="toggle(this)"><span class="em">🤿</span>Buceo</button>
         <button class="opt" data-q="act" data-v="surf" onclick="toggle(this)"><span class="em">🏄</span>Surf</button>
+        <button class="opt" data-q="act" data-v="kitesurf" onclick="toggle(this)"><span class="em">🪁</span>Kitesurf</button>
+        <button class="opt" data-q="act" data-v="kayak" onclick="toggle(this)"><span class="em">🛶</span>Kayak</button>
         <button class="opt" data-q="act" data-v="escalada" onclick="toggle(this)"><span class="em">🧗</span>Escalada</button>
         <button class="opt" data-q="act" data-v="ciclismo" onclick="toggle(this)"><span class="em">🚴</span>Ciclismo</button>
-        <button class="opt" data-q="act" data-v="kayak" onclick="toggle(this)"><span class="em">🛶</span>Kayak</button>
+        <button class="opt" data-q="act" data-v="running" onclick="toggle(this)"><span class="em">🏃</span>Running</button>
+        <button class="opt" data-q="act" data-v="esqui" onclick="toggle(this)"><span class="em">⛷️</span>Esquí</button>
+        <button class="opt" data-q="act" data-v="golf" onclick="toggle(this)"><span class="em">⛳</span>Golf</button>
+        <button class="opt" data-q="act" data-v="tennis" onclick="toggle(this)"><span class="em">🎾</span>Tenis</button>
+        <button class="opt" data-q="act" data-v="padel" onclick="toggle(this)"><span class="em">🏸</span>Pádel</button>
+        <button class="opt" data-q="act" data-v="parapente" onclick="toggle(this)"><span class="em">🪂</span>Parapente</button>
+        <button class="opt" data-q="act" data-v="caballo" onclick="toggle(this)"><span class="em">🐴</span>A caballo</button>
         <button class="opt" data-q="act" data-v="yoga" onclick="toggle(this)"><span class="em">🧘</span>Yoga</button>
         <button class="opt" data-q="act" data-v="gym" onclick="toggle(this)"><span class="em">💪</span>Gym</button>
         <button class="opt" data-q="act" data-v="safari" onclick="toggle(this)"><span class="em">🦁</span>Safari</button>
-        <button class="opt" data-q="act" data-v="esqui" onclick="toggle(this)"><span class="em">⛷️</span>Esquí</button>
-        <button class="opt" data-q="act" data-v="parapente" onclick="toggle(this)"><span class="em">🪂</span>Parapente</button>
         <button class="opt" data-q="act" data-v="playa" onclick="toggle(this)"><span class="em">🏖️</span>Playa</button>
         <button class="opt" data-q="act" data-v="globo" onclick="toggle(this)"><span class="em">🎈</span>Globo aerostático</button>
-        <button class="opt" data-q="act" data-v="caballo" onclick="toggle(this)"><span class="em">🐴</span>A caballo</button>
         <button class="opt" data-q="act" data-v="foto_t" onclick="toggle(this)"><span class="em">📷</span>Tours fotográficos</button>
         <button class="opt" data-q="act" data-v="cocina_c" onclick="toggle(this)"><span class="em">👨‍🍳</span>Clases de cocina</button>
         <button class="opt" data-q="act" data-v="urbano" onclick="toggle(this)"><span class="em">🏙️</span>Urbanas</button>
         <button class="opt" data-q="act" data-v="nightlife" onclick="toggle(this)"><span class="em">🌙</span>Vida nocturna</button>
+        <button class="opt" data-q="act" data-v="otro" onclick="toggle(this)"><span class="em">✨</span>Otro</button>
       </div>
       <div id="activityThisTripPanel" class="sport-trip-panel" aria-live="polite"></div>
     </div>
@@ -1664,41 +1679,16 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <div class="qblock" id="misionSportBlock">
-      <div class="qlabel">¿Practicarás algún deporte específico?</div>
-      <div class="opt-list" style="margin-bottom:0.5rem">
-        <div class="opt-row" data-q="mision_sport" data-v="no" onclick="selMisionSport(this)"><span class="em2">🚫</span><span class="txt">No</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_sport" data-v="yes" onclick="selMisionSport(this)"><span class="em2">🎯</span><span class="txt">Sí</span><span class="dot"></span></div>
+    <!-- Sports list unified into #actSection; competition/pleasure follow-up when relevant -->
+    <div class="qblock" id="misionSportIntentBlock" style="display:none">
+      <div class="qlabel" style="margin-bottom:0.5rem">¿Es por competición o por placer?</div>
+      <div class="opt-list">
+        <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Competición</span><span class="dot"></span></div>
+        <div class="opt-row" data-q="mision_sport_intent" data-v="placer" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Placer</span><span class="dot"></span></div>
       </div>
-
-      <div id="misionSportDetail" style="display:none">
-        <div class="grid4" style="margin-top:0.75rem">
-          <button class="opt" data-q="mision_sports" data-v="surf" onclick="toggleMisionSport(this)"><span class="em">🏄</span>Surf</button>
-          <button class="opt" data-q="mision_sports" data-v="golf" onclick="toggleMisionSport(this)"><span class="em">⛳</span>Golf</button>
-          <button class="opt" data-q="mision_sports" data-v="tennis" onclick="toggleMisionSport(this)"><span class="em">🎾</span>Tenis</button>
-          <button class="opt" data-q="mision_sports" data-v="padel" onclick="toggleMisionSport(this)"><span class="em">🏸</span>Pádel</button>
-          <button class="opt" data-q="mision_sports" data-v="buceo" onclick="toggleMisionSport(this)"><span class="em">🤿</span>Buceo</button>
-          <button class="opt" data-q="mision_sports" data-v="kitesurf" onclick="toggleMisionSport(this)"><span class="em">🪁</span>Kitesurf</button>
-          <button class="opt" data-q="mision_sports" data-v="trekking" onclick="toggleMisionSport(this)"><span class="em">🥾</span>Senderismo</button>
-          <button class="opt" data-q="mision_sports" data-v="escalada" onclick="toggleMisionSport(this)"><span class="em">🧗</span>Escalada</button>
-          <button class="opt" data-q="mision_sports" data-v="esqui" onclick="toggleMisionSport(this)"><span class="em">⛷️</span>Esquí</button>
-          <button class="opt" data-q="mision_sports" data-v="ciclismo" onclick="toggleMisionSport(this)"><span class="em">🚴</span>Ciclismo</button>
-          <button class="opt" data-q="mision_sports" data-v="running" onclick="toggleMisionSport(this)"><span class="em">🏃</span>Running</button>
-          <button class="opt" data-q="mision_sports" data-v="otro" onclick="toggleMisionSport(this)"><span class="em">✨</span>Otro</button>
-        </div>
-        <div id="sportThisTripPanel" class="sport-trip-panel" aria-live="polite"></div>
-      </div>
-
-      <div id="misionSportIntentBlock" style="display:none;margin-top:1rem">
-        <div class="qlabel" style="margin-bottom:0.5rem">¿Es por competición o por placer?</div>
-        <div class="opt-list">
-          <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Competición</span><span class="dot"></span></div>
-          <div class="opt-row" data-q="mision_sport_intent" data-v="placer" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Placer</span><span class="dot"></span></div>
-        </div>
-        <div class="mision-event-wrap" id="misionEventDateWrap">
-          <label class="date-label" for="misionEventDate" id="misionEventDateLabel">Fecha del evento o carrera</label>
-          <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
-        </div>
+      <div class="mision-event-wrap" id="misionEventDateWrap">
+        <label class="date-label" for="misionEventDate" id="misionEventDateLabel">Fecha del evento o carrera</label>
+        <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
       </div>
     </div>
 
@@ -1787,6 +1777,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
     <div class="shareable-actions">
+      <label class="tsc-feed-optin" for="tscShowInFeed">
+        <input type="checkbox" id="tscShowInFeed" />
+        <span id="tscShowInFeedLabel">También publicar en Descubre (feed público de viajeros)</span>
+      </label>
       <button type="button" class="sc-action-btn" id="tscShare" onclick="shareTripCard()">Compartir viaje</button>
       <button type="button" class="sc-action-btn secondary" id="tscDownload" onclick="downloadTripCard()">Descargar imagen</button>
       <button type="button" class="sc-action-btn secondary tsc-copy-link" id="tscCopyLink" onclick="copyTripShareLink()">Copiar enlace</button>
@@ -2214,18 +2208,21 @@ const misionViaje = {
 
 const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking', 'tennis', 'padel', 'golf']);
 const SPORT_THIS_TRIP_OPTS = ['yes', 'no', 'maybe'];
-/** Non-sport activity interests that get “¿En este viaje?” (sports already covered in Misión). */
-const ACTIVITY_THIS_TRIP_KEYS = new Set([
-  'cocina_c', 'safari', 'nightlife', 'yoga', 'gym', 'playa', 'globo', 'caballo', 'foto_t', 'urbano', 'kayak', 'parapente',
+/** Sport-like keys kept under mision_viaje.sports for backward compatibility with old answers/prompts. */
+const SPORT_ACT_KEYS = new Set([
+  'surf', 'golf', 'tennis', 'padel', 'buceo', 'kitesurf', 'trekking', 'escalada', 'esqui', 'ciclismo', 'running', 'otro',
 ]);
-const SPORT_EMOJI = {
-  surf: '🏄', golf: '⛳', tennis: '🎾', padel: '🏸', buceo: '🤿', kitesurf: '🪁',
-  trekking: '🥾', escalada: '🧗', esqui: '⛷️', ciclismo: '🚴', running: '🏃', otro: '✨',
-};
+/** All unified activity/sport keys — in trip mode every selected card gets Sí/No/Depende. */
+const ACTIVITY_THIS_TRIP_KEYS = new Set([
+  'trekking', 'buceo', 'surf', 'kitesurf', 'kayak', 'escalada', 'ciclismo', 'running', 'esqui',
+  'golf', 'tennis', 'padel', 'parapente', 'caballo', 'yoga', 'gym', 'safari', 'playa', 'globo',
+  'foto_t', 'cocina_c', 'urbano', 'nightlife', 'otro',
+]);
 const ACT_EMOJI = {
-  trekking: '🥾', buceo: '🤿', surf: '🏄', escalada: '🧗', ciclismo: '🚴', kayak: '🛶',
-  yoga: '🧘', gym: '💪', safari: '🦁', esqui: '⛷️', parapente: '🪂', playa: '🏖️', globo: '🎈',
-  caballo: '🐴', foto_t: '📷', cocina_c: '👨‍🍳', urbano: '🏙️', nightlife: '🌙',
+  trekking: '🥾', buceo: '🤿', surf: '🏄', kitesurf: '🪁', kayak: '🛶', escalada: '🧗', ciclismo: '🚴',
+  running: '🏃', esqui: '⛷️', golf: '⛳', tennis: '🎾', padel: '🏸', parapente: '🪂', caballo: '🐴',
+  yoga: '🧘', gym: '💪', safari: '🦁', playa: '🏖️', globo: '🎈', foto_t: '📷', cocina_c: '👨‍🍳',
+  urbano: '🏙️', nightlife: '🌙', otro: '✨',
 };
 const selectedOrigin = [];
 const selectedDest = [];
@@ -2701,107 +2698,44 @@ function toggleMisionFocus(btn) {
   updateProgress();
 }
 
-function selMisionSport(row) {
-  const q = row.dataset.q;
-  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
-  row.classList.add('sel');
-  misionViaje.sport_mode = row.dataset.v;
-  const showDetail = row.dataset.v === 'yes';
-  document.getElementById('misionSportDetail').style.display = showDetail ? 'block' : 'none';
-  if (!showDetail) {
-    document.querySelectorAll('[data-q="mision_sports"]').forEach(b => b.classList.remove('sel'));
-    misionViaje.sports = [];
-    misionViaje.sport_this_trip = {};
-    misionViaje.sport_intent = null;
-    misionViaje.sport_event_date = null;
-    document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
-    document.getElementById('misionEventDate').value = '';
-    renderSportThisTripPanel();
-  } else if (typeof prioritizeActsFromDna === 'function') {
-    prioritizeActsFromDna();
-  }
-  updateMisionSportIntentVisibility();
-  updateProgress();
+function isTripThisTripContext() {
+  return !!(typeof quickTripActive !== 'undefined' && quickTripActive) ||
+    document.body.classList.contains('qt-active');
 }
 
-function toggleMisionSport(btn) {
-  btn.classList.toggle('sel');
-  const sport = btn.dataset.v;
-  misionViaje.sports = [...document.querySelectorAll('[data-q="mision_sports"].sel')].map(b => b.dataset.v);
-  if (!btn.classList.contains('sel')) {
-    delete misionViaje.sport_this_trip[sport];
-  }
-  // Drop answers for sports no longer selected
-  Object.keys(misionViaje.sport_this_trip).forEach((k) => {
-    if (!misionViaje.sports.includes(k)) delete misionViaje.sport_this_trip[k];
+function syncSportsFromActs() {
+  const selected = answers.act || [];
+  const sports = selected.filter((a) => SPORT_ACT_KEYS.has(a));
+  misionViaje.sports = sports;
+  misionViaje.sport_mode = sports.length ? 'yes' : 'no';
+  Object.keys(misionViaje.sport_this_trip || {}).forEach((k) => {
+    if (!sports.includes(k)) delete misionViaje.sport_this_trip[k];
   });
-  renderSportThisTripPanel();
-  updateMisionSportIntentVisibility();
-  updateProgress();
-}
-
-function sportThisTripLabel(key) {
-  const ui = L().ui.sportThisTrip || {};
-  return ui[key] || key;
-}
-
-function sportDisplayName(sport) {
-  const entry = L().opt?.mision_sports?.[sport];
-  return entry?.label || sport;
-}
-
-function sportEmoji(sport) {
-  return SPORT_EMOJI[sport] || '';
-}
-
-function renderSportThisTripPanel() {
-  const panel = document.getElementById('sportThisTripPanel');
-  if (!panel) return;
-  const sports = misionViaje.sports || [];
-  if (!sports.length) {
-    panel.innerHTML = '';
-    return;
-  }
-  const qLabel = sportThisTripLabel('question');
-  panel.innerHTML = sports.map((sport) => {
-    const current = misionViaje.sport_this_trip[sport] || '';
-    const opts = SPORT_THIS_TRIP_OPTS.map((v) => {
-      const sel = current === v ? ' sel' : '';
-      return `<button type="button" class="sport-trip-opt${sel}" data-sport="${sport}" data-v="${v}" onclick="selSportThisTrip(this)">${sportThisTripLabel(v)}</button>`;
-    }).join('');
-    return `<div class="sport-trip-row" data-sport="${sport}">
-      <div class="sport-trip-top">
-        <span class="sport-trip-name"><span aria-hidden="true">${sportEmoji(sport)}</span>${sportDisplayName(sport)}</span>
-        <span class="sport-trip-q">${qLabel}</span>
-      </div>
-      <div class="sport-trip-opts">${opts}</div>
-    </div>`;
-  }).join('');
-}
-
-function selSportThisTrip(btn) {
-  const sport = btn.dataset.sport;
-  const val = btn.dataset.v;
-  if (!sport || !SPORT_THIS_TRIP_OPTS.includes(val)) return;
-  misionViaje.sport_this_trip[sport] = val;
-  const row = btn.closest('.sport-trip-row');
-  if (row) {
-    row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
-  }
-  updateProgress();
+  sports.forEach((s) => {
+    if (misionViaje.activity_this_trip[s]) {
+      misionViaje.sport_this_trip[s] = misionViaje.activity_this_trip[s];
+    }
+  });
 }
 
 function updateMisionSportIntentVisibility() {
-  const hasComp = misionViaje.sports.some(s => COMPETITION_SPORTS.has(s));
-  const show = misionViaje.sport_mode === 'yes' && hasComp;
+  const selected = answers.act || [];
+  const relevant = selected.filter((s) => COMPETITION_SPORTS.has(s));
+  let show = relevant.length > 0;
+  if (show && isTripThisTripContext()) {
+    show = relevant.some((s) => misionViaje.activity_this_trip[s] !== 'no');
+  }
   const block = document.getElementById('misionSportIntentBlock');
+  if (!block) return;
   block.style.display = show ? 'block' : 'none';
   if (!show) {
     misionViaje.sport_intent = null;
     misionViaje.sport_event_date = null;
     document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
-    document.getElementById('misionEventDateWrap').classList.remove('show');
-    document.getElementById('misionEventDate').value = '';
+    const wrap = document.getElementById('misionEventDateWrap');
+    if (wrap) wrap.classList.remove('show');
+    const dateEl = document.getElementById('misionEventDate');
+    if (dateEl) dateEl.value = '';
   }
 }
 
@@ -2863,7 +2797,11 @@ function toggle(btn) {
   document.querySelectorAll(`[data-q="${q}"].sel`).forEach(b => vals.push(b.dataset.v));
   answers[q] = vals;
   if (q === 'cultura') updateMuseumTypePanel();
-  if (q === 'act') syncActivityThisTrip();
+  if (q === 'act') {
+    syncActivityThisTrip();
+    syncSportsFromActs();
+    updateMisionSportIntentVisibility();
+  }
   updateProgress();
 }
 
@@ -2906,11 +2844,18 @@ function syncActivityThisTrip() {
     if (!selected.includes(k)) delete misionViaje.activity_this_trip[k];
   });
   renderActivityThisTripPanel();
+  syncSportsFromActs();
+  updateMisionSportIntentVisibility();
 }
 
 function renderActivityThisTripPanel() {
   const panel = document.getElementById('activityThisTripPanel');
   if (!panel) return;
+  // Profile / full DNA: interest-only. Trip mode: Sí/No/Depende on every selected card.
+  if (!isTripThisTripContext()) {
+    panel.innerHTML = '';
+    return;
+  }
   const acts = (answers.act || []).filter((a) => ACTIVITY_THIS_TRIP_KEYS.has(a));
   if (!acts.length) {
     panel.innerHTML = '';
@@ -2940,10 +2885,12 @@ function selActivityThisTrip(btn) {
   if (!act || !SPORT_THIS_TRIP_OPTS.includes(val)) return;
   if (!misionViaje.activity_this_trip) misionViaje.activity_this_trip = {};
   misionViaje.activity_this_trip[act] = val;
+  if (SPORT_ACT_KEYS.has(act)) misionViaje.sport_this_trip[act] = val;
   const row = btn.closest('.sport-trip-row');
   if (row) {
     row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
   }
+  updateMisionSportIntentVisibility();
   updateProgress();
 }
 
@@ -3634,6 +3581,7 @@ function applyTripShareLabels() {
   set('tscShare', t.share);
   set('tscDownload', t.download);
   set('tscCopyLink', t.copyLink);
+  set('tscShowInFeedLabel', t.showInFeed);
   set('tscCta', formatShareCopy((L().ui.shareableCard || {}).cta || '{site}'));
   const map = document.getElementById('tscMap');
   if (map && t.mapLabel) map.setAttribute('aria-label', t.mapLabel);
@@ -3877,9 +3825,18 @@ async function ensureTripShareLink(data) {
   if (data.shareUrl) return data.shareUrl;
   try {
     const article = document.querySelector('#itinerarySection .bitacora-article');
+    const showInFeed = !!document.getElementById('tscShowInFeed')?.checked;
+    const headers = { 'Content-Type': 'application/json' };
+    try {
+      const token =
+        typeof window.BTAuth?.getAccessToken === 'function'
+          ? await window.BTAuth.getAccessToken()
+          : null;
+      if (token) headers.Authorization = `Bearer ${token}`;
+    } catch (_) { /* guest share */ }
     const res = await fetch('/api/share-trip', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         destination: data.destination,
         duration_label: data.durationLabel,
@@ -3888,12 +3845,14 @@ async function ensureTripShareLink(data) {
         places: (data.places || []).slice(0, 30),
         itinerary_html: article ? article.innerHTML : lastItineraryHtml,
         lang: LANG.current,
+        show_in_feed: showInFeed,
       }),
     });
     const json = await res.json().catch(() => ({}));
     if (res.ok && json.url) {
       data.shareUrl = json.url;
       data.slug = json.slug || null;
+      data.showInFeed = showInFeed;
       lastTripShare = data;
       const copyBtn = document.getElementById('tscCopyLink');
       if (copyBtn) {
@@ -4021,13 +3980,20 @@ function collectAllAnswers() {
   if (extra) answers['extra'] = extra;
   answers['currency'] = document.getElementById('currencySelect').value;
   answers['ui_lang'] = LANG.current;
+  syncSportsFromActs();
   const mv = {};
   if (misionViaje.focus.length) mv.focus = misionViaje.focus;
-  if (misionViaje.sport_mode) mv.sport_mode = misionViaje.sport_mode;
-  if (misionViaje.sports.length) mv.sports = misionViaje.sports;
+  // Derive sports from unified act list (compat with old mision_viaje.sports shape)
+  if (misionViaje.sports.length) {
+    mv.sports = [...misionViaje.sports];
+    mv.sport_mode = 'yes';
+  } else if (misionViaje.sport_mode === 'no') {
+    mv.sport_mode = 'no';
+  }
   const tripMap = {};
   (misionViaje.sports || []).forEach((s) => {
-    if (misionViaje.sport_this_trip[s]) tripMap[s] = misionViaje.sport_this_trip[s];
+    const v = misionViaje.activity_this_trip[s] || misionViaje.sport_this_trip[s];
+    if (v) tripMap[s] = v;
   });
   if (Object.keys(tripMap).length) mv.sport_this_trip = tripMap;
   if (misionViaje.sport_intent) mv.sport_intent = misionViaje.sport_intent;
@@ -5579,14 +5545,57 @@ function prioritizeOptionButtons(selector, preferredValues) {
   });
 }
 
+function mergeLegacySportsIntoActList(list, profileAnswers) {
+  const out = [];
+  const seen = new Set();
+  const push = (v) => {
+    const key = String(v || '');
+    if (!key || seen.has(key)) return;
+    if (!ACTIVITY_THIS_TRIP_KEYS.has(key)) return;
+    seen.add(key);
+    out.push(key);
+  };
+  (Array.isArray(list) ? list : []).forEach(push);
+  const mv = profileAnswers?.mision_viaje;
+  if (mv && typeof mv === 'object') {
+    (Array.isArray(mv.sports) ? mv.sports : []).forEach(push);
+    const trip = mv.activity_this_trip || mv.sport_this_trip || {};
+    if (trip && typeof trip === 'object') {
+      Object.keys(trip).forEach(push);
+    }
+  }
+  return out;
+}
+
 function prioritizeActsFromDna() {
-  const dnaActs =
-    (savedTravelerProfile?.traveler_answers?.act) ||
-    answers.act ||
-    [];
+  const profileAnswers = savedTravelerProfile?.traveler_answers || {};
+  const dnaActs = mergeLegacySportsIntoActList(
+    profileAnswers.act || answers.act || [],
+    profileAnswers,
+  );
   prioritizeOptionButtons('#actOptionsGrid, #actBlock .grid4', dnaActs);
-  // Mission sports: show practiced activities first when the detail grid is open
-  prioritizeOptionButtons('#misionSportDetail .grid4', dnaActs);
+  if (!dnaActs.length) return;
+  const valid = new Set(
+    [...document.querySelectorAll('#actOptionsGrid [data-q="act"]')].map((b) => b.dataset.v),
+  );
+  const toSelect = dnaActs.filter((v) => valid.has(v));
+  if (!toSelect.length) return;
+  const set = new Set([...(answers.act || []).map(String), ...toSelect.map(String)]);
+  document.querySelectorAll('#actOptionsGrid [data-q="act"]').forEach((el) => {
+    el.classList.toggle('sel', set.has(String(el.dataset.v)));
+  });
+  answers.act = [...document.querySelectorAll('#actOptionsGrid [data-q="act"].sel')].map((b) => b.dataset.v);
+  // Restore this-trip answers from legacy maps when present
+  const mv = profileAnswers.mision_viaje;
+  if (mv && typeof mv === 'object') {
+    const legacy = { ...(mv.sport_this_trip || {}), ...(mv.activity_this_trip || {}) };
+    Object.entries(legacy).forEach(([k, v]) => {
+      if (set.has(k) && (v === 'yes' || v === 'no' || v === 'maybe')) {
+        misionViaje.activity_this_trip[k] = v;
+      }
+    });
+  }
+  syncActivityThisTrip();
 }
 
 function openTripPanel() {

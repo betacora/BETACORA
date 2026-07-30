@@ -645,3 +645,51 @@ export const AUTH_COPY: Record<AppLang, AuthCopy> = {
     },
   },
 };
+
+/**
+ * First-time post-login welcome (/bienvenida).
+ * ES is source of truth; EN/FR follow the same meaning.
+ */
+export type OnboardingWelcomeCopy = {
+  kicker: string;
+  title: string;
+  body: string;
+  bullet1: string;
+  bullet2: string;
+  bullet3: string;
+  cta: string;
+  loading: string;
+};
+
+export const ONBOARDING_WELCOME_COPY: Record<AppLang, OnboardingWelcomeCopy> = {
+  es: {
+    kicker: "Antes de tu primer viaje",
+    title: "BeTacora empieza por conocerte",
+    body: "No es una lista genérica de atracciones. Primero entendemos cómo viajas — ritmo, motivaciones, lo que te importa — y con eso armamos una bitácora a tu medida.",
+    bullet1: "Un cuestionario corto sobre tu forma de viajar",
+    bullet2: "Un perfil viajero que evoluciona contigo en cada viaje",
+    bullet3: "Un itinerario concreto, no un catálogo infinito",
+    cta: "Empezar el cuestionario",
+    loading: "…",
+  },
+  en: {
+    kicker: "Before your first trip",
+    title: "BeTacora starts by getting to know you",
+    body: "This isn’t a generic attraction list. First we learn how you travel — pace, motivations, what matters — then we build a logbook that fits.",
+    bullet1: "A short questionnaire about how you travel",
+    bullet2: "A traveler profile that evolves with you on every trip",
+    bullet3: "A concrete itinerary, not an endless catalog",
+    cta: "Start the questionnaire",
+    loading: "…",
+  },
+  fr: {
+    kicker: "Avant votre premier voyage",
+    title: "BeTacora commence par apprendre à vous connaître",
+    body: "Ce n’est pas une liste générique d’attractions. D’abord nous comprenons comment vous voyagez — rythme, motivations, ce qui compte — puis nous construisons un carnet à votre mesure.",
+    bullet1: "Un court questionnaire sur votre façon de voyager",
+    bullet2: "Un profil voyageur qui évolue avec vous à chaque voyage",
+    bullet3: "Un itinéraire concret, pas un catalogue infini",
+    cta: "Commencer le questionnaire",
+    loading: "…",
+  },
+};

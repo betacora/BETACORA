@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { resolvePostAuthPath } from "@/lib/onboardingWelcome";
 import { safeNextPath } from "@/lib/safeNextPath";
 import { AUTH_COPY, detectLang, type AppLang } from "@/lib/lang";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
@@ -156,12 +157,16 @@ function AuthCallbackInner() {
       if (isEmailConfirm) {
         setStatus("confirmed");
         redirectTimer = setTimeout(() => {
-          if (!cancelled) router.replace(nextPath);
+          void (async () => {
+            const path = await resolvePostAuthPath(supabase, nextPath);
+            if (!cancelled) router.replace(path);
+          })();
         }, 1800);
         return;
       }
 
-      router.replace(nextPath);
+      const path = await resolvePostAuthPath(supabase, nextPath);
+      if (!cancelled) router.replace(path);
     }
 
     void finishAuth();

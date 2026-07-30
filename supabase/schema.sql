@@ -93,11 +93,17 @@ CREATE TABLE IF NOT EXISTS shared_trips (
   lang TEXT DEFAULT 'es',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   -- Optional owner for account deletion / GDPR (nullable for legacy guest shares)
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  -- Explicit opt-in for Descubre public feed (NOT implied by creating a share link)
+  show_in_feed BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE INDEX IF NOT EXISTS shared_trips_user_id_idx
   ON shared_trips (user_id);
+
+CREATE INDEX IF NOT EXISTS shared_trips_show_in_feed_created_at_idx
+  ON shared_trips (created_at DESC)
+  WHERE show_in_feed = true;
 
 ALTER TABLE shared_trips ENABLE ROW LEVEL SECURITY;
 

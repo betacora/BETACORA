@@ -1,4 +1,4 @@
-import { BookOpen, Compass, Home, Map, UserRound, type LucideIcon } from "lucide-react";
+import { Compass, Home, Map, Sparkles, UserRound, type LucideIcon } from "lucide-react";
 import type { NavTabId } from "@/lib/lang";
 
 export type AppNavItem = {
@@ -11,7 +11,7 @@ export type AppNavItem = {
 export const APP_NAV_TABS: AppNavItem[] = [
   { id: "inicio", href: "/inicio", Icon: Home },
   { id: "explorar", href: "/explorar", Icon: Compass },
-  { id: "guia", href: "/guia", Icon: BookOpen },
+  { id: "descubre", href: "/descubre", Icon: Sparkles },
   { id: "viajes", href: "/viajes", Icon: Map },
   { id: "perfil", href: "/perfil", Icon: UserRound },
 ];
@@ -23,6 +23,7 @@ export function isAppNavActive(pathname: string, id: NavTabId, href: string): bo
   return (
     pathname === href ||
     pathname.startsWith(`${href}/`) ||
-    (id === "explorar" && pathname.startsWith("/questionnaire"))
+    (id === "explorar" && pathname.startsWith("/questionnaire")) ||
+    (id === "descubre" && pathname.startsWith("/guia"))
   );
 }

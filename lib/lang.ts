@@ -217,6 +217,21 @@ export const NAV_COPY: Record<
         saved: string;
         saveError: string;
       };
+      assistant: {
+        title: string;
+        subtitle: string;
+        open: string;
+        close: string;
+        placeholder: string;
+        send: string;
+        thinking: string;
+        emptyHint: string;
+        welcome: string;
+        errorGeneric: string;
+        errorAuth: string;
+        comingSoon: string;
+        suggestedPrompts: string[];
+      };
     };
     perfil: {
       title: string;
@@ -302,6 +317,28 @@ export const NAV_COPY: Record<
         saving: "Guardando selección…",
         saved: "Oferta guardada en tu viaje.",
         saveError: "No se pudo guardar la selección.",
+      },
+      assistant: {
+        title: "Asistente Inteligente",
+        subtitle: "En línea ahora",
+        open: "Asistente Inteligente",
+        close: "Cerrar asistente",
+        placeholder: "Pregúntame lo que sea…",
+        send: "Enviar",
+        thinking: "Pensando…",
+        emptyHint:
+          "Sugiero opciones según tu itinerario. No confirmo reservas ni disponibilidad en tiempo real.",
+        welcome:
+          "He revisado tu itinerario para {destination}. ¿Te ayudo con un restaurante, una zona o un plan alternativo?",
+        errorGeneric: "No pude responder ahora. Inténtalo de nuevo.",
+        errorAuth: "Tu sesión ha caducado. Vuelve a iniciar sesión.",
+        comingSoon:
+          "Próximamente — hemos registrado tu interés. Aún no hacemos reservas reales.",
+        suggestedPrompts: [
+          "Sugiéreme un restaurante local cerca del centro",
+          "¿Qué puedo hacer si llueve un día?",
+          "Dame un plan alternativo para la tarde del día 2",
+        ],
       },
     },
     perfil: {
@@ -389,6 +426,28 @@ export const NAV_COPY: Record<
         saved: "Offer saved to your trip.",
         saveError: "Could not save the selection.",
       },
+      assistant: {
+        title: "Smart Assistant",
+        subtitle: "Online now",
+        open: "Smart Assistant",
+        close: "Close assistant",
+        placeholder: "Ask me anything…",
+        send: "Send",
+        thinking: "Thinking…",
+        emptyHint:
+          "I suggest options from your itinerary. I don't confirm bookings or live availability.",
+        welcome:
+          "I've reviewed your itinerary for {destination}. Want help with a restaurant, an area, or an alternate plan?",
+        errorGeneric: "Couldn't reply right now. Please try again.",
+        errorAuth: "Your session expired. Please sign in again.",
+        comingSoon:
+          "Coming soon — we recorded your interest. We don't book yet.",
+        suggestedPrompts: [
+          "Suggest a local restaurant near the center",
+          "What can I do if it rains one day?",
+          "Give me an alternate afternoon plan for day 2",
+        ],
+      },
     },
     perfil: {
       title: "Profile",
@@ -473,6 +532,28 @@ export const NAV_COPY: Record<
         saving: "Enregistrement de la sélection…",
         saved: "Offre enregistrée dans ton voyage.",
         saveError: "Impossible d'enregistrer la sélection.",
+      },
+      assistant: {
+        title: "Assistant Intelligent",
+        subtitle: "En ligne maintenant",
+        open: "Assistant Intelligent",
+        close: "Fermer l'assistant",
+        placeholder: "Demande-moi ce que tu veux…",
+        send: "Envoyer",
+        thinking: "Réflexion…",
+        emptyHint:
+          "Je propose des options selon ton itinéraire. Je ne confirme pas de réservations ni de dispo en temps réel.",
+        welcome:
+          "J'ai passé en revue ton itinéraire pour {destination}. Je t'aide pour un resto, un quartier ou un plan alternatif ?",
+        errorGeneric: "Impossible de répondre pour le moment. Réessaie.",
+        errorAuth: "Session expirée. Reconnecte-toi.",
+        comingSoon:
+          "Bientôt — on a enregistré ton intérêt. Pas encore de réservation réelle.",
+        suggestedPrompts: [
+          "Suggère un restaurant local près du centre",
+          "Que faire s'il pleut un jour ?",
+          "Propose un plan alternatif pour l'après-midi du jour 2",
+        ],
       },
     },
     perfil: {

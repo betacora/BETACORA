@@ -11,6 +11,9 @@ export const FunnelEvent = {
   RegistrationStarted: "registration_started",
   RegistrationCompleted: "registration_completed",
   OnboardingWelcomeViewed: "onboarding_welcome_viewed",
+  AssistantChatOpen: "assistant_chat_open",
+  AssistantChatMessage: "assistant_chat_message",
+  AssistantActionClick: "assistant_action_click",
 } as const;
 
 export type FunnelEventName = (typeof FunnelEvent)[keyof typeof FunnelEvent];

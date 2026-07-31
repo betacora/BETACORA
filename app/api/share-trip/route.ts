@@ -123,6 +123,8 @@ export async function POST(req: NextRequest) {
   const lang = truncate(body.lang, 8) || "es";
   const highlights = asStringArray(body.highlights, 5, 140);
   const places = normalizePlaces(body.places);
+  // Explicit opt-in only — sharing a link must not auto-publish to Descubre
+  const showInFeed = body.show_in_feed === true;
   const rawHtml = truncate(body.itinerary_html, 500_000);
   const itineraryHtml = rawHtml
     ? sanitizeItineraryHtml(rawHtml, {
@@ -160,7 +162,7 @@ export async function POST(req: NextRequest) {
 
   for (let attempt = 0; attempt < 4; attempt++) {
     const slug = makeSlug(10);
-    const { error } = await supabase.from("shared_trips").insert({
+    const row = {
       slug,
       destination,
       duration_label: durationLabel,
@@ -169,14 +171,27 @@ export async function POST(req: NextRequest) {
       places,
       itinerary_html: itineraryHtml,
       lang,
+      show_in_feed: showInFeed,
       ...(ownerUserId ? { user_id: ownerUserId } : {}),
-    });
+    };
+
+    let { error } = await supabase.from("shared_trips").insert(row);
+
+    // Column not migrated yet — still allow link share without feed publish
+    if (
+      error &&
+      /show_in_feed|schema cache|column/i.test(error.message || "")
+    ) {
+      const { show_in_feed: _omit, ...withoutFeed } = row;
+      ({ error } = await supabase.from("shared_trips").insert(withoutFeed));
+    }
 
     if (!error) {
       const origin = req.nextUrl.origin;
       return NextResponse.json({
         slug,
         url: `${origin}/viaje/${slug}`,
+        show_in_feed: showInFeed,
       });
     }
 

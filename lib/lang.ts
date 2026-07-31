@@ -166,7 +166,7 @@ export type AuthCopy = {
   };
 };
 
-export type NavTabId = "inicio" | "explorar" | "guia" | "viajes" | "perfil";
+export type NavTabId = "inicio" | "explorar" | "descubre" | "viajes" | "perfil";
 
 export const NAV_COPY: Record<
   AppLang,
@@ -185,9 +185,16 @@ export const NAV_COPY: Record<
       viewProfile: string;
       myTrips: string;
     };
-    guia: {
+    descubre: {
       title: string;
-      body: string;
+      subtitle: string;
+      privacyNote: string;
+      emptyTitle: string;
+      emptyBody: string;
+      emptyCta: string;
+      openTrip: string;
+      untitled: string;
+      archetypeFallback: string;
     };
     viajes: {
       title: string;
@@ -267,7 +274,7 @@ export const NAV_COPY: Record<
     tabs: {
       inicio: "Inicio",
       explorar: "Explorar",
-      guia: "Guía",
+      descubre: "Descubre",
       viajes: "Mis Viajes",
       perfil: "Perfil",
     },
@@ -284,9 +291,19 @@ export const NAV_COPY: Record<
       viewProfile: "Ver mi perfil",
       myTrips: "Mis viajes",
     },
-    guia: {
-      title: "Próximamente: tu guía de viaje",
-      body: "Estamos preparando guías virtuales, híbridas y presenciales personalizadas para tu estilo de viajar.",
+    descubre: {
+      title: "Viajes de otros perfiles",
+      subtitle:
+        "Itinerarios publicados por viajeros BeTacora. Cada tarjeta muestra un arquetipo, no una identidad personal.",
+      privacyNote:
+        "Solo aparecen viajes con publicación explícita en Descubre. Compartir un enlace privado no basta.",
+      emptyTitle: "Aún no hay viajes en el feed",
+      emptyBody:
+        "Cuando alguien publique un itinerario en Descubre, lo verás aquí. Mientras tanto, crea el tuyo.",
+      emptyCta: "Crear mi viaje",
+      openTrip: "Ver viaje",
+      untitled: "Viaje BeTacora",
+      archetypeFallback: "Perfil viajero",
     },
     viajes: {
       title: "Mis Viajes",
@@ -375,7 +392,7 @@ export const NAV_COPY: Record<
     tabs: {
       inicio: "Home",
       explorar: "Explore",
-      guia: "Guide",
+      descubre: "Discover",
       viajes: "My Trips",
       perfil: "Profile",
     },
@@ -392,9 +409,19 @@ export const NAV_COPY: Record<
       viewProfile: "View my profile",
       myTrips: "My trips",
     },
-    guia: {
-      title: "Coming soon: your travel guide",
-      body: "We're building virtual, hybrid, and in-person guides tailored to how you travel.",
+    descubre: {
+      title: "Trips from other profiles",
+      subtitle:
+        "Itineraries published by BeTacora travelers. Each card shows an archetype, not a personal identity.",
+      privacyNote:
+        "Only trips explicitly published to Discover appear here. Sharing a private link is not enough.",
+      emptyTitle: "No trips in the feed yet",
+      emptyBody:
+        "When someone publishes an itinerary to Discover, you'll see it here. Meanwhile, create yours.",
+      emptyCta: "Create my trip",
+      openTrip: "View trip",
+      untitled: "BeTacora trip",
+      archetypeFallback: "Traveler profile",
     },
     viajes: {
       title: "My Trips",
@@ -482,7 +509,7 @@ export const NAV_COPY: Record<
     tabs: {
       inicio: "Accueil",
       explorar: "Explorer",
-      guia: "Guide",
+      descubre: "Découvrir",
       viajes: "Mes Voyages",
       perfil: "Profil",
     },
@@ -499,9 +526,19 @@ export const NAV_COPY: Record<
       viewProfile: "Voir mon profil",
       myTrips: "Mes voyages",
     },
-    guia: {
-      title: "Bientôt : votre guide de voyage",
-      body: "Nous préparons des guides virtuels, hybrides et en présentiel adaptés à votre façon de voyager.",
+    descubre: {
+      title: "Voyages d'autres profils",
+      subtitle:
+        "Itinéraires publiés par des voyageurs BeTacora. Chaque carte montre un archétype, pas une identité personnelle.",
+      privacyNote:
+        "Seuls les voyages publiés explicitement dans Découvrir apparaissent ici. Partager un lien privé ne suffit pas.",
+      emptyTitle: "Pas encore de voyages dans le fil",
+      emptyBody:
+        "Quand quelqu'un publiera un itinéraire dans Découvrir, vous le verrez ici. En attendant, créez le vôtre.",
+      emptyCta: "Créer mon voyage",
+      openTrip: "Voir le voyage",
+      untitled: "Voyage BeTacora",
+      archetypeFallback: "Profil voyageur",
     },
     viajes: {
       title: "Mes Voyages",

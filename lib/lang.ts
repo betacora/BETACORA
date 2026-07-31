@@ -226,6 +226,7 @@ export const NAV_COPY: Record<
         send: string;
         thinking: string;
         emptyHint: string;
+        welcome: string;
         errorGeneric: string;
         errorAuth: string;
         comingSoon: string;
@@ -319,20 +320,22 @@ export const NAV_COPY: Record<
       },
       assistant: {
         title: "Asistente Inteligente",
-        subtitle: "Preguntas sobre este viaje — sin inventar reservas.",
-        open: "Asistente",
+        subtitle: "En línea ahora",
+        open: "Asistente Inteligente",
         close: "Cerrar asistente",
-        placeholder: "Ej. sugiéreme un restaurante en el centro…",
+        placeholder: "Pregúntame lo que sea…",
         send: "Enviar",
         thinking: "Pensando…",
         emptyHint:
-          "Pregúntame por restaurantes, horarios orientativos o qué hacer en una zona. No confirmo reservas reales.",
+          "Sugiero opciones según tu itinerario. No confirmo reservas ni disponibilidad en tiempo real.",
+        welcome:
+          "He revisado tu itinerario para {destination}. ¿Te ayudo con un restaurante, una zona o un plan alternativo?",
         errorGeneric: "No pude responder ahora. Inténtalo de nuevo.",
         errorAuth: "Tu sesión ha caducado. Vuelve a iniciar sesión.",
         comingSoon:
           "Próximamente — hemos registrado tu interés. Aún no hacemos reservas reales.",
         suggestedPrompts: [
-          "Sugiéreme un restaurante cerca del centro",
+          "Sugiéreme un restaurante local cerca del centro",
           "¿Qué puedo hacer si llueve un día?",
           "Dame un plan alternativo para la tarde del día 2",
         ],
@@ -425,20 +428,22 @@ export const NAV_COPY: Record<
       },
       assistant: {
         title: "Smart Assistant",
-        subtitle: "Ask about this trip — we won't invent bookings.",
-        open: "Assistant",
+        subtitle: "Online now",
+        open: "Smart Assistant",
         close: "Close assistant",
-        placeholder: "E.g. suggest a restaurant downtown…",
+        placeholder: "Ask me anything…",
         send: "Send",
         thinking: "Thinking…",
         emptyHint:
-          "Ask about restaurants, typical hours, or what to do in an area. We don't confirm real bookings.",
+          "I suggest options from your itinerary. I don't confirm bookings or live availability.",
+        welcome:
+          "I've reviewed your itinerary for {destination}. Want help with a restaurant, an area, or an alternate plan?",
         errorGeneric: "Couldn't reply right now. Please try again.",
         errorAuth: "Your session expired. Please sign in again.",
         comingSoon:
           "Coming soon — we recorded your interest. We don't book yet.",
         suggestedPrompts: [
-          "Suggest a restaurant near the center",
+          "Suggest a local restaurant near the center",
           "What can I do if it rains one day?",
           "Give me an alternate afternoon plan for day 2",
         ],
@@ -530,20 +535,22 @@ export const NAV_COPY: Record<
       },
       assistant: {
         title: "Assistant Intelligent",
-        subtitle: "Questions sur ce voyage — sans inventer de réservations.",
-        open: "Assistant",
+        subtitle: "En ligne maintenant",
+        open: "Assistant Intelligent",
         close: "Fermer l'assistant",
-        placeholder: "Ex. suggère un restaurant dans le centre…",
+        placeholder: "Demande-moi ce que tu veux…",
         send: "Envoyer",
         thinking: "Réflexion…",
         emptyHint:
-          "Demande des restos, horaires indicatifs ou que faire dans un quartier. On ne confirme pas de vraies réservations.",
+          "Je propose des options selon ton itinéraire. Je ne confirme pas de réservations ni de dispo en temps réel.",
+        welcome:
+          "J'ai passé en revue ton itinéraire pour {destination}. Je t'aide pour un resto, un quartier ou un plan alternatif ?",
         errorGeneric: "Impossible de répondre pour le moment. Réessaie.",
         errorAuth: "Session expirée. Reconnecte-toi.",
         comingSoon:
           "Bientôt — on a enregistré ton intérêt. Pas encore de réservation réelle.",
         suggestedPrompts: [
-          "Suggère un restaurant près du centre",
+          "Suggère un restaurant local près du centre",
           "Que faire s'il pleut un jour ?",
           "Propose un plan alternatif pour l'après-midi du jour 2",
         ],

@@ -92,9 +92,7 @@
           act: { label: '¿Qué actividades te interesan?' },
           misionFocus: { label: '¿Cuál es el foco principal de este viaje?' },
           misionSport: { label: '¿Practicarás algún deporte específico?' },
-          misionSportIntent: { label: '¿Es por competición o por placer?' },
           misionLuxury: { label: '¿Qué tipo de lujo valoras?' },
-          misionEventDate: 'Fecha del evento o carrera',
           social: { label: '¿Cómo sueles viajar?' },
           social_e: { label: 'Tu energía social en un viaje' },
           budgetTotal: { label: 'Presupuesto máximo para este viaje', hint: 'Por persona incluyendo vuelo y alojamiento' },
@@ -625,10 +623,6 @@
           no: 'No',
           yes: 'Sí',
         },
-        mision_sport_intent: {
-          competir: 'Competición',
-          placer: 'Placer',
-        },
         mision_luxury: {
           comodidad: 'Confort total',
           discretas: 'Calidad discreta',
@@ -797,9 +791,7 @@
           act: { label: 'What activities interest you?' },
           misionFocus: { label: 'What is the main focus of this trip?' },
           misionSport: { label: 'Will you practice a specific sport?' },
-          misionSportIntent: { label: 'Is it for competition or pleasure?' },
           misionLuxury: { label: 'What kind of luxury do you value?' },
-          misionEventDate: 'Event or race date',
           social: { label: 'How do you usually travel?' },
           social_e: { label: 'Your social energy on a trip' },
           budgetTotal: { label: 'Maximum budget for this trip', hint: 'Per person, flights and lodging included' },
@@ -1330,10 +1322,6 @@
           no: 'No',
           yes: 'Yes',
         },
-        mision_sport_intent: {
-          competir: 'Competition',
-          placer: 'Pleasure',
-        },
         mision_luxury: {
           comodidad: 'Total comfort',
           discretas: 'Quiet quality',
@@ -1502,9 +1490,7 @@
           act: { label: 'Quelles activités vous intéressent ?' },
           misionFocus: { label: 'Quel est le focus principal de ce voyage ?' },
           misionSport: { label: 'Pratiquerez-vous un sport précis ?' },
-          misionSportIntent: { label: 'Est-ce pour la compétition ou pour le plaisir ?' },
           misionLuxury: { label: 'Quel type de luxe valorisez-vous ?' },
-          misionEventDate: 'Date de l\'événement ou de la course',
           social: { label: 'Comment voyagez-vous habituellement ?' },
           social_e: { label: 'Votre énergie sociale en voyage' },
           budgetTotal: { label: 'Budget maximum pour ce voyage', hint: 'Par personne, vol et hébergement inclus' },
@@ -2035,10 +2021,6 @@
         mision_sport: {
           no: 'Non',
           yes: 'Oui',
-        },
-        mision_sport_intent: {
-          competir: 'Compétition',
-          placer: 'Plaisir',
         },
         mision_luxury: {
           comodidad: 'Confort total',

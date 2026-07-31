@@ -441,8 +441,6 @@ body.qt-active.itinerary-ready .container { padding-top: 0.5rem; }
 }
 .follow-up-panel .grid3,
 .follow-up-panel .grid4 { margin-top: 0; }
-.mision-event-wrap { margin-top: 0.85rem; display: none; }
-.mision-event-wrap.show { display: block; }
 .section-divider {
   margin: 2.75rem 0 2rem; padding: 0;
   border-top: 1px solid var(--border);
@@ -1830,19 +1828,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <!-- Sports list unified into #actSection; competition/pleasure follow-up when relevant -->
-    <div class="qblock" id="misionSportIntentBlock" style="display:none">
-      <div class="qlabel" style="margin-bottom:0.5rem">¿Es por competición o por placer?</div>
-      <div class="opt-list">
-        <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Competición</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_sport_intent" data-v="placer" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Placer</span><span class="dot"></span></div>
-      </div>
-      <div class="mision-event-wrap" id="misionEventDateWrap">
-        <label class="date-label" for="misionEventDate" id="misionEventDateLabel">Fecha del evento o carrera</label>
-        <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
-      </div>
-    </div>
-
     <div class="qblock" id="misionLuxuryBlock" style="display:none">
       <div class="qlabel">¿Qué tipo de lujo valoras?</div>
       <div class="opt-list">
@@ -2156,7 +2141,6 @@ const LANG = {
       ['ui.questions.splurge.label',null],
       ['ui.questions.extra.label','ui.questions.extra.hint'],
       ['ui.questions.misionFocus.label',null],
-      ['ui.questions.misionSport.label',null],
       ['ui.questions.misionLuxury.label',null]
     ];
     document.querySelectorAll('.container > .section .qblock').forEach((qb, idx) => {
@@ -2185,9 +2169,6 @@ const LANG = {
     if (el('sportGroupWater')) el('sportGroupWater').textContent = locale.ui.misionSportGroups.water;
     if (el('sportGroupMountain')) el('sportGroupMountain').textContent = locale.ui.misionSportGroups.mountain;
     if (el('sportGroupOther')) el('sportGroupOther').textContent = locale.ui.misionSportGroups.other;
-    const misionIntentLabel = document.querySelector('#misionSportIntentBlock .qlabel');
-    if (misionIntentLabel) misionIntentLabel.textContent = locale.ui.questions.misionSportIntent.label;
-    if (el('misionEventDateLabel')) el('misionEventDateLabel').textContent = locale.ui.questions.misionEventDate;
     if (el('museumTypeLabel')) {
       el('museumTypeLabel').textContent = locale.ui.questions.museumType?.label || el('museumTypeLabel').textContent;
     }
@@ -2368,14 +2349,11 @@ const misionViaje = {
   sport_mode: null,
   sports: [],
   sport_this_trip: {},
-  sport_intent: null,
-  sport_event_date: null,
   luxury_style: null,
   museum_type: [],
   activity_this_trip: {},
 };
 
-const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking', 'tennis', 'padel', 'golf']);
 const SPORT_THIS_TRIP_OPTS = ['yes', 'no', 'maybe'];
 /** Sport-like keys kept under mision_viaje.sports for backward compatibility with old answers/prompts. */
 const SPORT_ACT_KEYS = new Set([
@@ -2887,48 +2865,6 @@ function syncSportsFromActs() {
   });
 }
 
-function updateMisionSportIntentVisibility() {
-  const selected = answers.act || [];
-  const relevant = selected.filter((s) => COMPETITION_SPORTS.has(s));
-  let show = relevant.length > 0;
-  if (show && isTripThisTripContext()) {
-    show = relevant.some((s) => misionViaje.activity_this_trip[s] !== 'no');
-  }
-  const block = document.getElementById('misionSportIntentBlock');
-  if (!block) return;
-  block.style.display = show ? 'block' : 'none';
-  if (!show) {
-    misionViaje.sport_intent = null;
-    misionViaje.sport_event_date = null;
-    document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
-    const wrap = document.getElementById('misionEventDateWrap');
-    if (wrap) wrap.classList.remove('show');
-    const dateEl = document.getElementById('misionEventDate');
-    if (dateEl) dateEl.value = '';
-  }
-}
-
-function selMisionSportIntent(row) {
-  const q = row.dataset.q;
-  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
-  row.classList.add('sel');
-  misionViaje.sport_intent = row.dataset.v;
-  const wrap = document.getElementById('misionEventDateWrap');
-  if (row.dataset.v === 'competir') {
-    wrap.classList.add('show');
-  } else {
-    wrap.classList.remove('show');
-    misionViaje.sport_event_date = null;
-    document.getElementById('misionEventDate').value = '';
-  }
-  updateProgress();
-}
-
-function onMisionEventDate() {
-  misionViaje.sport_event_date = document.getElementById('misionEventDate').value || null;
-  updateProgress();
-}
-
 function selMisionLuxury(row) {
   const q = row.dataset.q;
   document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
@@ -2969,7 +2905,6 @@ function toggle(btn) {
   if (q === 'act') {
     syncActivityThisTrip();
     syncSportsFromActs();
-    updateMisionSportIntentVisibility();
   }
   updateProgress();
 }
@@ -3014,7 +2949,6 @@ function syncActivityThisTrip() {
   });
   renderActivityThisTripPanel();
   syncSportsFromActs();
-  updateMisionSportIntentVisibility();
 }
 
 function renderActivityThisTripPanel() {
@@ -3059,7 +2993,6 @@ function selActivityThisTrip(btn) {
   if (row) {
     row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
   }
-  updateMisionSportIntentVisibility();
   updateProgress();
 }
 
@@ -4180,8 +4113,6 @@ function collectAllAnswers() {
     if (v) tripMap[s] = v;
   });
   if (Object.keys(tripMap).length) mv.sport_this_trip = tripMap;
-  if (misionViaje.sport_intent) mv.sport_intent = misionViaje.sport_intent;
-  if (misionViaje.sport_event_date) mv.sport_event_date = misionViaje.sport_event_date;
   if (misionViaje.luxury_style) mv.luxury_style = misionViaje.luxury_style;
   if ((misionViaje.museum_type || []).length) mv.museum_type = [...misionViaje.museum_type];
   const actTrip = {};
@@ -6043,7 +5974,6 @@ function convHasValue(q) {
   if (q === 'mision_focus') return (misionViaje.focus || []).length > 0;
   if (q === 'mision_sport') return !!misionViaje.sport_mode;
   if (q === 'mision_sports') return (misionViaje.sports || []).length > 0;
-  if (q === 'mision_sport_intent') return !!misionViaje.sport_intent;
   if (q === 'mision_luxury') return !!misionViaje.luxury_style;
   if (q === 'museum_type') return (misionViaje.museum_type || []).length > 0;
   const v = answers[q];
@@ -6080,7 +6010,6 @@ function convIsBlockAnswered(block) {
     if (!misionViaje.sport_mode) return false;
     if (misionViaje.sport_mode === 'no') return true;
     if (!(misionViaje.sports || []).length) return false;
-    // sport_this_trip optional per activity; intent only when competition sports
     return true;
   }
   if (block.querySelector('#energySlider')) {
@@ -6092,7 +6021,7 @@ function convIsBlockAnswered(block) {
   const keys = convPrimaryKeys(block).filter((k) => {
     // Nested optional follow-ups
     if (k === 'museum_type') return false;
-    if (k === 'mision_sports' || k === 'mision_sport_intent') return false;
+    if (k === 'mision_sports') return false;
     if (k === 'zona' || k === 'nomada_dur') return false;
     if (k === 'dur') return false;
     if (k === 'budget_r' || k === 'budget_monthly_r') return false;

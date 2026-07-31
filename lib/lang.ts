@@ -217,6 +217,20 @@ export const NAV_COPY: Record<
         saved: string;
         saveError: string;
       };
+      assistant: {
+        title: string;
+        subtitle: string;
+        open: string;
+        close: string;
+        placeholder: string;
+        send: string;
+        thinking: string;
+        emptyHint: string;
+        errorGeneric: string;
+        errorAuth: string;
+        comingSoon: string;
+        suggestedPrompts: string[];
+      };
     };
     perfil: {
       title: string;
@@ -302,6 +316,26 @@ export const NAV_COPY: Record<
         saving: "Guardando selección…",
         saved: "Oferta guardada en tu viaje.",
         saveError: "No se pudo guardar la selección.",
+      },
+      assistant: {
+        title: "Asistente Inteligente",
+        subtitle: "Preguntas sobre este viaje — sin inventar reservas.",
+        open: "Asistente",
+        close: "Cerrar asistente",
+        placeholder: "Ej. sugiéreme un restaurante en el centro…",
+        send: "Enviar",
+        thinking: "Pensando…",
+        emptyHint:
+          "Pregúntame por restaurantes, horarios orientativos o qué hacer en una zona. No confirmo reservas reales.",
+        errorGeneric: "No pude responder ahora. Inténtalo de nuevo.",
+        errorAuth: "Tu sesión ha caducado. Vuelve a iniciar sesión.",
+        comingSoon:
+          "Próximamente — hemos registrado tu interés. Aún no hacemos reservas reales.",
+        suggestedPrompts: [
+          "Sugiéreme un restaurante cerca del centro",
+          "¿Qué puedo hacer si llueve un día?",
+          "Dame un plan alternativo para la tarde del día 2",
+        ],
       },
     },
     perfil: {
@@ -389,6 +423,26 @@ export const NAV_COPY: Record<
         saved: "Offer saved to your trip.",
         saveError: "Could not save the selection.",
       },
+      assistant: {
+        title: "Smart Assistant",
+        subtitle: "Ask about this trip — we won't invent bookings.",
+        open: "Assistant",
+        close: "Close assistant",
+        placeholder: "E.g. suggest a restaurant downtown…",
+        send: "Send",
+        thinking: "Thinking…",
+        emptyHint:
+          "Ask about restaurants, typical hours, or what to do in an area. We don't confirm real bookings.",
+        errorGeneric: "Couldn't reply right now. Please try again.",
+        errorAuth: "Your session expired. Please sign in again.",
+        comingSoon:
+          "Coming soon — we recorded your interest. We don't book yet.",
+        suggestedPrompts: [
+          "Suggest a restaurant near the center",
+          "What can I do if it rains one day?",
+          "Give me an alternate afternoon plan for day 2",
+        ],
+      },
     },
     perfil: {
       title: "Profile",
@@ -473,6 +527,26 @@ export const NAV_COPY: Record<
         saving: "Enregistrement de la sélection…",
         saved: "Offre enregistrée dans ton voyage.",
         saveError: "Impossible d'enregistrer la sélection.",
+      },
+      assistant: {
+        title: "Assistant Intelligent",
+        subtitle: "Questions sur ce voyage — sans inventer de réservations.",
+        open: "Assistant",
+        close: "Fermer l'assistant",
+        placeholder: "Ex. suggère un restaurant dans le centre…",
+        send: "Envoyer",
+        thinking: "Réflexion…",
+        emptyHint:
+          "Demande des restos, horaires indicatifs ou que faire dans un quartier. On ne confirme pas de vraies réservations.",
+        errorGeneric: "Impossible de répondre pour le moment. Réessaie.",
+        errorAuth: "Session expirée. Reconnecte-toi.",
+        comingSoon:
+          "Bientôt — on a enregistré ton intérêt. Pas encore de réservation réelle.",
+        suggestedPrompts: [
+          "Suggère un restaurant près du centre",
+          "Que faire s'il pleut un jour ?",
+          "Propose un plan alternatif pour l'après-midi du jour 2",
+        ],
       },
     },
     perfil: {

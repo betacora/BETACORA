@@ -1329,7 +1329,21 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
 }
 </style>
 </head>
-<body>
+<body class="conv-active">
+<script>
+  /* Paint the conversational (one-question) layout on the first render.
+     Without this, the full long form is briefly visible until the async
+     flow init adds `conv-active`, causing a visible flicker. In trip mode
+     the discover nav must stay hidden until the trip panel opens, so mirror
+     the `qt-active` class that enterTripMode() sets later. */
+  (function () {
+    try {
+      if (new URLSearchParams(window.location.search).get('mode') === 'trip') {
+        document.body.classList.add('qt-active');
+      }
+    } catch (e) { /* URLSearchParams unavailable — conv-active default is safe */ }
+  })();
+</script>
 
 <header class="header">
   <a class="logo" href="/" aria-label="BeTacora">

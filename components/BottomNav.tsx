@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { APP_NAV_TABS, isAppNavActive } from "@/components/appNav";
@@ -13,6 +14,11 @@ type Props = {
 export function BottomNav({ lang }: Props) {
   const pathname = usePathname() || "";
   const copy = NAV_COPY[lang];
+  const [navReady, setNavReady] = useState(false);
+
+  useEffect(() => {
+    setNavReady(true);
+  }, []);
 
   return (
     <nav
@@ -22,7 +28,7 @@ export function BottomNav({ lang }: Props) {
     >
       <ul className="mx-auto flex max-w-lg items-stretch justify-between px-1 pt-1.5 pb-1">
         {APP_NAV_TABS.map(({ id, href, Icon }) => {
-          const active = isAppNavActive(pathname, id, href);
+          const active = navReady && isAppNavActive(pathname, id, href);
           return (
             <li key={id} className="flex-1 min-w-0">
               <Link

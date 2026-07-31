@@ -166,7 +166,16 @@ export type AuthCopy = {
   };
 };
 
-export type NavTabId = "inicio" | "explorar" | "guia" | "viajes" | "perfil";
+export type NavTabId =
+  | "inicio"
+  | "explorar"
+  | "inspiracion"
+  | "vuelos"
+  | "alojamientos"
+  | "guia"
+  | "descubre"
+  | "viajes"
+  | "perfil";
 
 export const NAV_COPY: Record<
   AppLang,
@@ -185,9 +194,34 @@ export const NAV_COPY: Record<
       viewProfile: string;
       myTrips: string;
     };
+    inspiracion: {
+      title: string;
+      body: string;
+    };
+    vuelos: {
+      title: string;
+      body: string;
+      ctaTrips: string;
+      ctaExplore: string;
+    };
+    alojamientos: {
+      title: string;
+      body: string;
+    };
     guia: {
       title: string;
       body: string;
+    };
+    descubre: {
+      title: string;
+      subtitle: string;
+      privacyNote: string;
+      emptyTitle: string;
+      emptyBody: string;
+      emptyCta: string;
+      openTrip: string;
+      untitled: string;
+      archetypeFallback: string;
     };
     viajes: {
       title: string;
@@ -252,7 +286,11 @@ export const NAV_COPY: Record<
     tabs: {
       inicio: "Inicio",
       explorar: "Explorar",
+      inspiracion: "Inspiración",
+      vuelos: "Vuelos",
+      alojamientos: "Alojamientos",
       guia: "Guía",
+      descubre: "Descubre",
       viajes: "Mis Viajes",
       perfil: "Perfil",
     },
@@ -269,9 +307,37 @@ export const NAV_COPY: Record<
       viewProfile: "Ver mi perfil",
       myTrips: "Mis viajes",
     },
+    inspiracion: {
+      title: "Próximamente: inspiración de viaje",
+      body: "Ideas, rutas y descubrimientos alineados con tu forma de viajar. Estamos preparando este espacio.",
+    },
+    vuelos: {
+      title: "Vuelos reales con Duffel",
+      body: "La búsqueda de ofertas vive dentro de tu itinerario. Abre un viaje o genera uno nuevo para comparar vuelos reales (sin reserva ni pago todavía).",
+      ctaTrips: "Ir a Mis Viajes",
+      ctaExplore: "Empezar un viaje",
+    },
+    alojamientos: {
+      title: "Próximamente: alojamientos",
+      body: "Estamos preparando la integración de alojamientos. Por ahora, planifica tu bitácora y reserva el hotel por tu cuenta.",
+    },
     guia: {
       title: "Próximamente: tu guía de viaje",
       body: "Estamos preparando guías virtuales, híbridas y presenciales personalizadas para tu estilo de viajar.",
+    },
+    descubre: {
+      title: "Viajes de otros perfiles",
+      subtitle:
+        "Itinerarios publicados por viajeros BeTacora. Cada tarjeta muestra un arquetipo, no una identidad personal.",
+      privacyNote:
+        "Solo aparecen viajes con publicación explícita en Descubre. Compartir un enlace privado no basta.",
+      emptyTitle: "Aún no hay viajes en el feed",
+      emptyBody:
+        "Cuando alguien publique un itinerario en Descubre, lo verás aquí. Mientras tanto, crea el tuyo.",
+      emptyCta: "Crear mi viaje",
+      openTrip: "Ver viaje",
+      untitled: "Viaje BeTacora",
+      archetypeFallback: "Perfil viajero",
     },
     viajes: {
       title: "Mis Viajes",
@@ -338,7 +404,11 @@ export const NAV_COPY: Record<
     tabs: {
       inicio: "Home",
       explorar: "Explore",
+      inspiracion: "Inspiration",
+      vuelos: "Flights",
+      alojamientos: "Stays",
       guia: "Guide",
+      descubre: "Discover",
       viajes: "My Trips",
       perfil: "Profile",
     },
@@ -355,9 +425,37 @@ export const NAV_COPY: Record<
       viewProfile: "View my profile",
       myTrips: "My trips",
     },
+    inspiracion: {
+      title: "Coming soon: travel inspiration",
+      body: "Ideas, routes, and discoveries matched to how you travel. We're preparing this space.",
+    },
+    vuelos: {
+      title: "Real flights with Duffel",
+      body: "Offer search lives inside your itinerary. Open a trip or start a new one to compare real flights (no booking or payment yet).",
+      ctaTrips: "Go to My Trips",
+      ctaExplore: "Start a trip",
+    },
+    alojamientos: {
+      title: "Coming soon: stays",
+      body: "We're preparing accommodations. For now, plan your logbook and book lodging on your own.",
+    },
     guia: {
       title: "Coming soon: your travel guide",
       body: "We're building virtual, hybrid, and in-person guides tailored to how you travel.",
+    },
+    descubre: {
+      title: "Trips from other profiles",
+      subtitle:
+        "Itineraries published by BeTacora travelers. Each card shows an archetype, not a personal identity.",
+      privacyNote:
+        "Only trips explicitly published to Discover appear here. Sharing a private link is not enough.",
+      emptyTitle: "No trips in the feed yet",
+      emptyBody:
+        "When someone publishes an itinerary to Discover, you'll see it here. Meanwhile, create yours.",
+      emptyCta: "Create my trip",
+      openTrip: "View trip",
+      untitled: "BeTacora trip",
+      archetypeFallback: "Traveler profile",
     },
     viajes: {
       title: "My Trips",
@@ -423,7 +521,11 @@ export const NAV_COPY: Record<
     tabs: {
       inicio: "Accueil",
       explorar: "Explorer",
+      inspiracion: "Inspiration",
+      vuelos: "Vols",
+      alojamientos: "Hébergements",
       guia: "Guide",
+      descubre: "Découvrir",
       viajes: "Mes Voyages",
       perfil: "Profil",
     },
@@ -440,9 +542,37 @@ export const NAV_COPY: Record<
       viewProfile: "Voir mon profil",
       myTrips: "Mes voyages",
     },
+    inspiracion: {
+      title: "Bientôt : inspiration voyage",
+      body: "Idées, itinéraires et découvertes alignés sur votre façon de voyager. Nous préparons cet espace.",
+    },
+    vuelos: {
+      title: "Vols réels avec Duffel",
+      body: "La recherche d'offres vit dans votre itinéraire. Ouvrez un voyage ou créez-en un pour comparer des vols réels (pas de réservation ni paiement pour l'instant).",
+      ctaTrips: "Aller à Mes Voyages",
+      ctaExplore: "Commencer un voyage",
+    },
+    alojamientos: {
+      title: "Bientôt : hébergements",
+      body: "Nous préparons l'intégration des hébergements. Pour l'instant, planifiez votre carnet et réservez le logement de votre côté.",
+    },
     guia: {
       title: "Bientôt : votre guide de voyage",
       body: "Nous préparons des guides virtuels, hybrides et en présentiel adaptés à votre façon de voyager.",
+    },
+    descubre: {
+      title: "Voyages d'autres profils",
+      subtitle:
+        "Itinéraires publiés par des voyageurs BeTacora. Chaque carte montre un archétype, pas une identité personnelle.",
+      privacyNote:
+        "Seuls les voyages publiés explicitement dans Découvrir apparaissent ici. Partager un lien privé ne suffit pas.",
+      emptyTitle: "Pas encore de voyages dans le fil",
+      emptyBody:
+        "Quand quelqu'un publie un itinéraire dans Découvrir, tu le verras ici. En attendant, crée le tien.",
+      emptyCta: "Créer mon voyage",
+      openTrip: "Voir le voyage",
+      untitled: "Voyage BeTacora",
+      archetypeFallback: "Profil voyageur",
     },
     viajes: {
       title: "Mes Voyages",

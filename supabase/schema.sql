@@ -95,7 +95,9 @@ CREATE TABLE IF NOT EXISTS shared_trips (
   -- Optional owner for account deletion / GDPR (nullable for legacy guest shares)
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   -- Explicit opt-in for Descubre public feed (NOT implied by creating a share link)
-  show_in_feed BOOLEAN NOT NULL DEFAULT false
+  show_in_feed BOOLEAN NOT NULL DEFAULT false,
+  -- Official BeTacora sample (not a real traveler). Show Ejemplo badge; easy to remove later.
+  is_example BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE INDEX IF NOT EXISTS shared_trips_user_id_idx
@@ -104,6 +106,10 @@ CREATE INDEX IF NOT EXISTS shared_trips_user_id_idx
 CREATE INDEX IF NOT EXISTS shared_trips_show_in_feed_created_at_idx
   ON shared_trips (created_at DESC)
   WHERE show_in_feed = true;
+
+CREATE INDEX IF NOT EXISTS shared_trips_is_example_idx
+  ON shared_trips (is_example)
+  WHERE is_example = true;
 
 ALTER TABLE shared_trips ENABLE ROW LEVEL SECURITY;
 

@@ -3,6 +3,11 @@ import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import { BrandWordmark } from "@/components/BrandWordmark";
+import {
+  EXAMPLE_BADGE,
+  isExampleSharedTrip,
+  resolveExampleBadgeLang,
+} from "@/lib/example-trips";
 import { sanitizeItineraryHtml } from "@/lib/sanitize-itinerary-html";
 
 export const runtime = "nodejs";
@@ -24,6 +29,7 @@ type SharedTrip = {
   itinerary_html: string | null;
   lang: string | null;
   created_at: string;
+  is_example?: boolean | null;
 };
 
 const COPY = {
@@ -75,12 +81,26 @@ async function fetchSharedTrip(slug: string): Promise<SharedTrip | null> {
   const { data, error } = await supabase
     .from("shared_trips")
     .select(
-      "slug, destination, duration_label, profile_type, highlights, places, itinerary_html, lang, created_at"
+      "slug, destination, duration_label, profile_type, highlights, places, itinerary_html, lang, created_at, is_example"
     )
     .eq("slug", slug)
     .maybeSingle();
 
-  if (error || !data) return null;
+  if (error || !data) {
+    // Column not migrated yet — fall back without is_example
+    if (error && /is_example|schema cache|column/i.test(error.message || "")) {
+      const retry = await supabase
+        .from("shared_trips")
+        .select(
+          "slug, destination, duration_label, profile_type, highlights, places, itinerary_html, lang, created_at"
+        )
+        .eq("slug", slug)
+        .maybeSingle();
+      if (retry.error || !retry.data) return null;
+      return { ...retry.data, is_example: false } as SharedTrip;
+    }
+    return null;
+  }
   return data as SharedTrip;
 }
 
@@ -205,6 +225,10 @@ export default async function SharedTripPage({
 
   const lang = resolveLang(trip.lang);
   const copy = COPY[lang];
+  const example = isExampleSharedTrip(trip);
+  const exampleBadge = example
+    ? EXAMPLE_BADGE[resolveExampleBadgeLang(trip.lang)]
+    : null;
   const highlights = Array.isArray(trip.highlights)
     ? trip.highlights.filter(Boolean).map((h) => String(h).slice(0, 200))
     : [];
@@ -239,8 +263,13 @@ export default async function SharedTripPage({
 
       <article className="max-w-2xl mx-auto px-5 py-12 sm:px-8 sm:py-16">
         <p className="text-[0.65rem] tracking-[0.16em] uppercase text-[#6B6B6B] font-medium mb-4">
-          {copy.eyebrow}
+          {exampleBadge ? exampleBadge.eyebrow : copy.eyebrow}
         </p>
+        {exampleBadge ? (
+          <span className="inline-flex mb-4 rounded-[4px] border border-[#2D7B7B]/30 bg-[#F7FAFA] px-2.5 py-1 text-[0.7rem] font-medium tracking-wide text-[#2D7B7B]">
+            {exampleBadge.full}
+          </span>
+        ) : null}
         <h1 className="text-[1.85rem] sm:text-[2.25rem] font-medium tracking-tight leading-[1.2]">
           {trip.destination || "BeTacora"}
         </h1>

@@ -1,0 +1,124 @@
+{
+  "slug": "ejemplonatura1",
+  "destination": "Patagonia Argentina — El Calafate y El Chaltén",
+  "duration_label": "6 días",
+  "profile_type": "El Guardián de los Hielos del Sur",
+  "highlights": [
+    "El Calafate — centro",
+    "Glaciar Perito Moreno — Pasarelas",
+    "Parque Nacional Los Glaciares — Zona Sur"
+  ],
+  "places": [
+    {
+      "name": "El Calafate — centro",
+      "day": 1,
+      "lat": -50.3397,
+      "lng": -72.2653,
+      "type": "sight",
+      "note": "Punto de base. Avenida del Libertador, cambio de moneda, gastronomía local."
+    },
+    {
+      "name": "Glaciar Perito Moreno — Pasarelas",
+      "day": 2,
+      "lat": -50.4969,
+      "lng": -73.0392,
+      "type": "sight",
+      "note": "Patrimonio UNESCO. Entrada $45.000 ARS extranjeros. Horario 8-18 hs en temporada."
+    },
+    {
+      "name": "Parque Nacional Los Glaciares — Zona Sur",
+      "day": 2,
+      "lat": -50.49,
+      "lng": -73.05,
+      "type": "sight",
+      "note": "Acceso por Ruta Provincial 11, a 80 km de El Calafate."
+    },
+    {
+      "name": "El Chaltén — pueblo",
+      "day": 3,
+      "lat": -49.3311,
+      "lng": -72.8868,
+      "type": "sight",
+      "note": "Capital Nacional del Trekking. Centro de Visitantes obligatorio al llegar."
+    },
+    {
+      "name": "Laguna Torre — sendero",
+      "day": 3,
+      "lat": -49.3067,
+      "lng": -72.9531,
+      "type": "sight",
+      "note": "18 km ida y vuelta. Dificultad baja-media. Vista al Cerro Torre."
+    },
+    {
+      "name": "La Tapera — restaurante",
+      "day": 3,
+      "lat": -49.3308,
+      "lng": -72.8855,
+      "type": "food",
+      "note": "Guisos de carne, trucha del Lago del Desierto, buena carta de vinos."
+    },
+    {
+      "name": "Laguna de los Tres — sendero",
+      "day": 4,
+      "lat": -49.2739,
+      "lng": -72.9908,
+      "type": "sight",
+      "note": "El gran trekking. 8-10 horas. Salida recomendada 7:00 hs. Vista directa al Fitz Roy."
+    },
+    {
+      "name": "Cerro Fitz Roy",
+      "day": 4,
+      "lat": -49.2719,
+      "lng": -72.9947,
+      "type": "sight",
+      "note": "La montaña más emblemática de la Patagonia argentina. 3.405 msnm."
+    },
+    {
+      "name": "Diadema Restó Chaltén",
+      "day": 4,
+      "lat": -49.3315,
+      "lng": -72.8862,
+      "type": "food",
+      "note": "Valoración 4,7 en Google. Abre 18-23 hs. Buenas porciones y ambiente acogedor."
+    },
+    {
+      "name": "Laguna Capri — sendero",
+      "day": 5,
+      "lat": -49.305,
+      "lng": -72.92,
+      "type": "sight",
+      "note": "5 km ida y vuelta. Vista del Fitz Roy reflejado. Ideal para día de ritmo bajo."
+    },
+    {
+      "name": "Cascada Chorrillo del Salto",
+      "day": 5,
+      "lat": -49.31,
+      "lng": -72.875,
+      "type": "sight",
+      "note": "A pocos minutos del pueblo hacia el norte. Bosques de lenga. Sin dificultad."
+    },
+    {
+      "name": "Reserva Natural Laguna Nimez",
+      "day": 6,
+      "lat": -50.335,
+      "lng": -72.27,
+      "type": "sight",
+      "note": "Santuario de aves. 80+ especies. Flamencos y cisnes. Senderos 2,5 km. Entrada económica."
+    },
+    {
+      "name": "Paseo costero Lago Argentino",
+      "day": 6,
+      "lat": -50.338,
+      "lng": -72.258,
+      "type": "sight",
+      "note": "3 km bordeando el lago. Miradores y bancos. Ideal para la última tarde en Calafate."
+    }
+  ],
+  "itinerary_html": "<div class=\"profile-result\">\n<h2>El Guardián de los Hielos del Sur</h2>\n<p>Hay viajeros que acumulan destinos y hay quienes dejan que el destino los cambie. Vos pertenecés al segundo tipo. No buscás checklist: buscás ese momento en que el silencio de un glaciar pesa más que cualquier conversación. Patagonia no es un escenario para vos — es una cita que tenías pendiente con algo mucho más grande que el turismo. Viajás en pareja porque ciertas maravillas se vuelven más reales cuando hay otra mirada que las confirma. Caminás despacio, no por falta de energía, sino porque sabés que el ritmo lento es el único idioma que entiende la montaña. La naturaleza extrema no te asusta: te ordena.</p>\n<p><strong>Tu superpoder:</strong> Encontrar silencio con sentido en lugares donde otros solo ven paisaje.</p>\n<p>\"El glaciar no se visita. Se escucha.\"</p>\n<p><strong>Si fueras un animal:</strong> Un cóndor andino — no porque sea el más obvio, sino porque domina alturas sin prisa, ve el territorio completo antes de moverse y prefiere las corrientes tranquilas a los aleteos frenéticos.</p>\n<div class=\"profile-stats\">\n<p><strong>Conexión con la naturaleza:</strong> 97</p>\n<p><strong>Ritmo pausado:</strong> 88</p>\n<p><strong>Vínculo compartido:</strong> 84</p>\n<p><strong>Tolerancia al lujo innecesario:</strong> 22</p>\n<p><strong>Resistencia a itinerarios sobrecargados:</strong> 91</p>\n<p><strong>Apertura a lo inesperado del clima:</strong> 79</p>\n</div>\n</div>\n\n<h2>Patagonia en noviembre: El Calafate y El Chaltén — 6 días</h2>\n\n<p>Noviembre es el inicio de la temporada alta austral: los senderos despiertan, los glaciares muestran su azul más limpio y el viento todavía no alcanza la ferocidad del verano pleno. Un momento perfecto para caminar despacio y sin multitudes.</p>\n\n<h3>Donde el mundo aún tiene bordes</h3>\n<p class=\"day-meta\"><strong>Día 1</strong> — jueves 5 de noviembre · Llegada a El Calafate</p>\n\n<p>El vuelo desde Buenos Aires aterriza en el Aeropuerto Internacional Malvinas Argentinas, a 23 km del centro. <strong>Reservá el traslado al alojamiento con anticipación</strong> — los remises del aeropuerto son la opción más cómoda y el precio se acuerda antes de subir.</p>\n\n<p>El primer día no pide más que instalarse. El Calafate es un pueblo pequeño atravesado por la Avenida del Libertador, su calle principal. \nAhí encontrarás tiendas de artesanías, chocolaterías, bares y restaurantes con arquitectura patagónica típica.\n Caminala de punta a punta al atardecer — dura veinte minutos y te ubica.</p>\n\n<p>Para la cena, buscá una parrilla de cordero patagónico. \nLa gastronomía local es el complemento perfecto después de un día de viaje; los restaurantes de la ciudad ofrecen platos típicos como el cordero patagónico, preparado con técnicas tradicionales que conservan todo su sabor.\n</p>\n\n<p>\nPara cambiar moneda extranjera por pesos argentinos, en la Avenida San Martín encontrarás bancos y casas de cambio.\n Conviene resolverlo esta tarde. \nSe recomienda llevar efectivo en pesos argentinos, ya que no aceptan ninguna divisa extranjera en los parques.\n</p>\n\n<p><em>Elegimos comenzar sin excursiones porque tu misión de viaje es explícita: caminar despacio, sin prisa de checklist. El primer día existe para respirar el aire patagónico, no para consumirlo.</em></p>\n\n<h3>Azul que no cabe en ninguna foto</h3>\n<p class=\"day-meta\"><strong>Día 2</strong> — viernes 6 de noviembre · Glaciar Perito Moreno — Pasarelas</p>\n\n<p>\nLa distancia entre El Calafate y el Glaciar Perito Moreno es de aproximadamente 80 km, a través de la Ruta Provincial 11, pavimentada.\n Salí antes de las 9:00 para aprovechar la luz de la mañana sobre el hielo.</p>\n\n<p>\nEl Calafate es la puerta de entrada al Parque Nacional Los Glaciares — Patrimonio Natural de la Humanidad UNESCO y hogar del famoso Glaciar Perito Moreno.\n El glaciar tiene 5 km de frente, 60 metros de pared sobre el agua y el azul más imposible que hayas visto en tu vida.</p>\n\n<p><strong>Entrada al parque:</strong> \nLa entrada al Parque Nacional Los Glaciares cuesta $45.000 ARS para visitantes extranjeros (aproximadamente US$30 al tipo de cambio de julio de 2026) y $15.000 ARS para residentes argentinos. Estas tarifas rigen desde enero de 2025 y aplican tanto para la Zona Sur (Glaciar Perito Moreno) como la Zona Norte (El Chaltén).\n</p>\n\n<p><strong>Horario de temporada:</strong> \nEn verano (del 1° de septiembre al 30 de abril), el ingreso es de 8 a 18 horas, con permanencia hasta las 20 horas.\n</p>\n\n<p>El sistema de pasarelas te lleva a distintos ángulos del frente glaciar sin necesidad de guía. Dedicá la mañana a caminar sin reloj — escuchá los crujidos del hielo, los desprendimientos que caen sin aviso, el sonido del agua que trabaja hace miles de años. Si una plaqueta cae al lago mientras estás ahí, es uno de los espectáculos más honestos que ofrece la naturaleza.</p>\n\n<p>Almorzá en el área del parque o llevá vianda desde El Calafate. De regreso, una copa de vino Malbec mendocino con vista al lago Argentino: la Patagonia tiene esa capacidad de hacer que el vino sepa diferente.</p>\n\n<h3>El camino más largo comienza al amanecer</h3>\n<p class=\"day-meta\"><strong>Día 3</strong> — sábado 7 de noviembre · Traslado a El Chaltén · Llegada y primera caminata</p>\n\n<p>\nSon 220 km y 2h30 de viaje entre El Calafate y El Chaltén.\n \nNoviembre marca el inicio de la temporada con mayor frecuencia de buses diarios entre ambos pueblos.\n Salí temprano — el bus de mañana llega a El Chaltén antes del mediodía.</p>\n\n<p>\nEl Chaltén es un pequeño pueblo ubicado en el acceso al impresionante sector norte del Parque Nacional Los Glaciares.\n \nEs conocido como la Capital Nacional del Trekking en Argentina.\n Al bajar del bus, pasá primero por el Centro de Visitantes: los guardaparques informan sobre el estado de los senderos del día y el registro de caminantes es obligatorio.</p>\n\n<p>La tarde del día de llegada está hecha para el sendero Laguna Torre — 18 km ida y vuelta, desnivel moderado. El Cerro Torre aparece al fondo con su aguja de granito cubierta de hielo. El recorrido es accesible y te da las piernas calentadas para los días siguientes.</p>\n\n<p><strong>Para cenar:</strong> \nLa Tapera es uno de los restaurantes más exclusivos de El Chaltén, ideal para degustar guisos de carne y trucha procedente del Lago del Desierto, con buena carta de vinos.\n Reservá mesa con anticipación en temporada.</p>\n\n<p><em>Dado que preferís alojamiento tipo cabaña o local, El Chaltén ofrece hostería-cabañas con vistas directas al Fitz Roy — una elección que refuerza la conexión con el paisaje desde el momento en que abrís la ventana.</em></p>\n\n<h3>Fitz Roy no se conquista, se visita</h3>\n<p class=\"day-meta\"><strong>Día 4</strong> — domingo 8 de noviembre · Laguna de los Tres — el gran día</p>\n\n<p>Este es el día central del viaje. \nEl Cerro Fitz Roy representa uno de los desafíos más gratificantes para los amantes del trekking. La ruta comienza en El Chaltén y lleva por un recorrido de dificultad media-alta con vistas espectaculares a la montaña más emblemática de la Patagonia.\n</p>\n\n<p>\nLa ruta completa puede llevar entre 8 y 10 horas, por lo que es fundamental planificar la salida temprano en la mañana y llevar suficiente agua y alimentos.\n \nCon salida a las 7:00, podés empezar el trekking antes de que llegue la mayoría de los visitantes.\n</p>\n\n<p>El último tramo — la subida final a la laguna — es empinado y de unos 400 metros de desnivel. Tarda entre 40 minutos y una hora. Pero arriba, cuando el agua refleja las torres del Fitz Roy, el esfuerzo no se recuerda como esfuerzo. Se recuerda como el motivo por el que vinieron.</p>\n\n<p><strong>Consejo práctico:</strong> \nEl Chaltén tiene fama de viento fuerte. Llevá cortaviento aunque el día empiece con sol. Las capas son tu mejor aliada.\n \nUn sándwich y snacks son clave si el trekking se alarga.\n</p>\n\n<p>Al regresar al pueblo, el cuerpo pide calor. \nDiadema Restó Chaltén tiene una valoración de 4,7 en Google, se come genial con buenos platos y buena cantidad. El restaurante es acogedor y abre de 18 a 23 horas.\n</p>\n\n<h3>Cuando el cuerpo pide quietud</h3>\n<p class=\"day-meta\"><strong>Día 5</strong> — lunes 9 de noviembre · El Chaltén — ritmo bajo</p>\n\n<p>Después de Laguna de los Tres, el cuerpo agradece un día más pausado. No significa parar: significa elegir mejor.</p>\n\n<p>Por la mañana, el sendero a la <strong>Laguna Capri</strong> — 5 km ida y vuelta, sin dificultad — ofrece quizás la vista más fotogénica del Fitz Roy reflejado en el agua, con mucho menos esfuerzo que el día anterior. Ideal para salir sin apuro y detenerse donde haga falta.</p>\n\n<p>Por la tarde, explorá la <strong>Cascada del Chorrillo del Salto</strong>, a pocos minutos del pueblo caminando hacia el norte. El agua cae entre bosques de lenga — esos árboles patagónicos de hojas pequeñas que en noviembre empiezan a vestirse de verde nuevo.</p>\n\n<p>El atardecer desde el mirador del pueblo pinta el Fitz Roy de naranja y rosa. No requiere esfuerzo. Solo estar ahí, juntos, mirando.</p>\n\n<p><em>Tu perfil social introvertido y de pareja hace que este día tenga más sentido que muchos \"días activos\": la naturaleza extrema se disfruta distinto cuando no hay prisa de volver a una agenda.</em></p>\n\n<p>\nEl Chaltén tiene cervecerías artesanales y miradores panorámicos a pocos minutos del centro — una opción tranquila para disfrutar el paisaje.\n La cervecería Chaltén Artesanal es el plan perfecto de cierre de día.</p>\n\n<h3>La última mirada siempre es la más clara</h3>\n<p class=\"day-meta\"><strong>Día 6</strong> — martes 10 de noviembre · Regreso a El Calafate · Vuelo a Buenos Aires</p>\n\n<p>El bus de regreso a El Calafate sale temprano. Antes de subir, una última vuelta por el pueblo que a esta hora, antes de que lleguen los turistas del día, se parece más a sí mismo.</p>\n\n<p>De regreso en El Calafate, según el horario del vuelo, hay tiempo para un último almuerzo con vista al lago Argentino. \nEl paseo costero de 3 km bordeando el lago ofrece vistas a las montañas, con bancos y miradores a lo largo del recorrido — ideal para atardeceres y últimas miradas.\n</p>\n\n<p>Si el vuelo es nocturno, considerá visitar la <strong>Reserva Natural Laguna Nimez</strong>, a pocas cuadras del centro. \nEs un santuario de aves con flamencos, cisnes, cauquenes y más de 80 especies, con senderos señalizados de 2,5 km y entrada económica.\n Un cierre suave, sin espectacularidad forzada — que es exactamente como cerrás los viajes que valen.</p>\n\n<ul>\n<li><strong>Noviembre y el viento:</strong> \nLa Patagonia es famosa por su cambiante clima y por los fuertes vientos durante el verano austral.\n Siempre llevá ropa de abrigo incluso en días de sol.</li>\n<li><strong>Reservas con anticipación:</strong> \nEl Chaltén cuenta con una reducida oferta de alojamientos que elevan sus precios en temporada alta. Lo ideal es reservar lo antes posible.\n</li>\n<li><strong>Comida en El Chaltén:</strong> \nEs aconsejable buscar un alojamiento con cocina. Además, las tiendecitas del pueblo dependen de un reparto intermitente y los alimentos frescos suelen agotarse.\n Llevá provisiones básicas desde El Calafate.</li>\n<li><strong>Entrada al parque:</strong> \nEl Flexipass 7 días permite acceso por 7 días pagando solo 3,5 días: $157.500 ARS para extranjeros y $52.500 ARS para argentinos\n — conveniente si visitás ambas zonas.</li>\n</ul>",
+  "lang": "es",
+  "user_id": null,
+  "show_in_feed": true,
+  "is_example": true,
+  "archetype_id": 15,
+  "archetype_nombre": "El Guardián Natural"
+}

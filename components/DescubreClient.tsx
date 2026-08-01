@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
+import {
+  EXAMPLE_BADGE,
+  resolveExampleBadgeLang,
+} from "@/lib/example-trips";
 import type { FeedTripCard, FeedTripPlace } from "@/lib/shared-trips-feed";
 import { detectLang, NAV_COPY, type AppLang } from "@/lib/lang";
 
@@ -79,6 +83,9 @@ function TripCard({
 }) {
   const destination = trip.destination || copy.untitled;
   const highlight = trip.highlights[0];
+  const badge = trip.is_example
+    ? EXAMPLE_BADGE[resolveExampleBadgeLang(trip.lang)].full
+    : null;
 
   return (
     <Link
@@ -86,7 +93,14 @@ function TripCard({
       className="group flex flex-col rounded-[10px] border border-[#E5E5E5] bg-white p-3.5 no-underline text-[#1A1A1A] transition-colors hover:border-[#D4D4D4]"
     >
       <CardMap places={trip.places} />
-      <p className="mt-3 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-[#2D7B7B] m-0">
+      {badge ? (
+        <span className="mt-3 inline-flex self-start rounded-[4px] border border-[#2D7B7B]/30 bg-[#F7FAFA] px-2 py-0.5 text-[0.65rem] font-medium tracking-wide text-[#2D7B7B]">
+          {badge}
+        </span>
+      ) : null}
+      <p
+        className={`${badge ? "mt-2" : "mt-3"} text-[0.65rem] font-medium uppercase tracking-[0.14em] text-[#2D7B7B] m-0`}
+      >
         {trip.profile_type || copy.archetypeFallback}
       </p>
       <h2 className="mt-1.5 text-[1.05rem] font-medium tracking-tight leading-snug m-0 group-hover:text-[#E8634A] transition-colors">

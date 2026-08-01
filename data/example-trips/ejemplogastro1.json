@@ -1,0 +1,148 @@
+{
+  "slug": "ejemplogastro1",
+  "destination": "Ciudad de México",
+  "duration_label": "5 días",
+  "profile_type": "El Navegante Gastronómico Chilango",
+  "highlights": [
+    "Colonia Roma Norte",
+    "Colonia Condesa",
+    "El Cardenal – Centro Histórico"
+  ],
+  "places": [
+    {
+      "name": "Colonia Roma Norte",
+      "day": 1,
+      "lat": 19.4194,
+      "lng": -99.1594,
+      "type": "sight",
+      "note": "Base de operaciones. Barrio gastronómico y bohemio, perfecto para primera tarde."
+    },
+    {
+      "name": "Colonia Condesa",
+      "day": 1,
+      "lat": 19.4116,
+      "lng": -99.1741,
+      "type": "sight",
+      "note": "Calles arboladas, cafés y restaurantes de barrio. Ideal para hotel boutique."
+    },
+    {
+      "name": "El Cardenal – Centro Histórico",
+      "day": 2,
+      "lat": 19.4326,
+      "lng": -99.1332,
+      "type": "food",
+      "note": "Desayuno institucional: chocolate caliente, natas y pan artesanal desde 1969."
+    },
+    {
+      "name": "Zócalo y Catedral Metropolitana",
+      "day": 2,
+      "lat": 19.4326,
+      "lng": -99.1332,
+      "type": "sight",
+      "note": "Corazón histórico de CDMX. Imprescindible para entender la ciudad."
+    },
+    {
+      "name": "Mercado de La Merced",
+      "day": 2,
+      "lat": 19.4236,
+      "lng": -99.1207,
+      "type": "sight",
+      "note": "El mercado más antiguo y auténtico del centro. Chiles, hierbas, colores sin filtro."
+    },
+    {
+      "name": "Palacio de Bellas Artes",
+      "day": 2,
+      "lat": 19.4352,
+      "lng": -99.1412,
+      "type": "sight",
+      "note": "Fusión Art Nouveau y Art Déco. Murales, cúpula dorada. Parada obligatoria."
+    },
+    {
+      "name": "El Jarocho – Coyoacán",
+      "day": 3,
+      "lat": 19.3502,
+      "lng": -99.1623,
+      "type": "food",
+      "note": "Café de olla histórico del barrio. El mejor arranque de mañana en Coyoacán."
+    },
+    {
+      "name": "Jardín Centenario",
+      "day": 3,
+      "lat": 19.3497,
+      "lng": -99.1627,
+      "type": "sight",
+      "note": "Plaza central de Coyoacán. Artistas callejeros, artesanías y ambiente local puro."
+    },
+    {
+      "name": "Mercado de Coyoacán",
+      "day": 3,
+      "lat": 19.3489,
+      "lng": -99.1614,
+      "type": "sight",
+      "note": "Frutas, flores, tostadas y antojitos. El más fotogénico y auténtico del sur."
+    },
+    {
+      "name": "Casa Azul – Museo Frida Kahlo",
+      "day": 3,
+      "lat": 19.3516,
+      "lng": -99.1624,
+      "type": "sight",
+      "note": "Reserva online obligatoria semanas antes. Contexto histórico imprescindible."
+    },
+    {
+      "name": "Museo Nacional de Antropología",
+      "day": 4,
+      "lat": 19.426,
+      "lng": -99.186,
+      "type": "sight",
+      "note": "Mínimo 2 horas. La Piedra del Sol y las culturas que crearon la cocina mexicana."
+    },
+    {
+      "name": "Nicos – Coacalco, Azcapotzalco",
+      "day": 4,
+      "lat": 19.482,
+      "lng": -99.177,
+      "type": "food",
+      "note": "Cocina casera mexicana desde 1957. Menú de temporada. El restaurante más honesto de CDMX."
+    },
+    {
+      "name": "Bosque de Chapultepec",
+      "day": 4,
+      "lat": 19.4199,
+      "lng": -99.1967,
+      "type": "sight",
+      "note": "El pulmón verde de CDMX. Domingo: familias, elotes, globeros. Lo más local del viaje."
+    },
+    {
+      "name": "Museo Soumaya – Polanco",
+      "day": 5,
+      "lat": 19.44,
+      "lng": -99.2049,
+      "type": "sight",
+      "note": "Arquitectura icónica. Arte europeo y mexicano. Entrada libre."
+    },
+    {
+      "name": "Contramar – Roma Norte",
+      "day": 5,
+      "lat": 19.4163,
+      "lng": -99.1639,
+      "type": "food",
+      "note": "Mariscos, terracita, ambiente. Uno de los restaurantes más queridos de CDMX. Reserva previa."
+    },
+    {
+      "name": "Máximo Bistrot – Roma Norte",
+      "day": 5,
+      "lat": 19.4171,
+      "lng": -99.1606,
+      "type": "food",
+      "note": "Cocina de temporada. Reconocido en la Guía México Gastronómico 2026. Cierre perfecto."
+    }
+  ],
+  "itinerary_html": "<div class=\"profile-result\">\n<h2>El Navegante Gastronómico Chilango</h2>\n<p>No buscas restaurantes: buscas historias que se sirven en plato. Tu brújula no apunta al norte, apunta al olor que sale de una cocina sin letrero. Viajas en pareja y eso lo cambia todo: el sabor compartido sabe el doble, la sorpresa de un mercado al alba tiene más gracia cuando hay alguien al lado que también abre los ojos. No necesitas el lujo ni la aventura extrema; necesitas lo auténtico con cierta comodidad, ese punto medio donde el guisado es de abuela pero la cama del hotel es decente. CDMX es tu destino perfecto: una ciudad que se entiende mejor desde el taburete de una fonda que desde cualquier mirador.</p>\n<p><strong>Tu superpoder:</strong> Detectar el mejor puesto de tacos de una calle con quince opciones.</p>\n<p>\"Un viaje se recuerda por el guisado que no pediste en el menú y te cambia la tarde.\"</p>\n<p><strong>Si fueras un animal:</strong> Un pulpo — adaptas cada tentáculo a un barrio distinto, procesas múltiples sabores a la vez y tu memoria es infallible con lo que comiste hace tres mercados.</p>\n<div class=\"profile-stats\">\n<p><strong>Radar gastronómico:</strong> 96</p>\n<p><strong>Tolerancia al caos urbano:</strong> 72</p>\n<p><strong>Complicidad de pareja en viaje:</strong> 88</p>\n<p><strong>Necesidad de itinerario fijo:</strong> 41</p>\n<p><strong>Conexión con cultura local:</strong> 85</p>\n<p><strong>Umbral de exigencia hotelera:</strong> 58</p>\n</div>\n</div>\n\n<h2>Ciudad de México — Comer donde comen los que saben</h2>\n<p>5 días · Septiembre 2026 · Pareja · Presupuesto medio · Hotel boutique</p>\n\n<h3>La ciudad que huele antes de verse</h3>\n<p class=\"day-meta\"><strong>Día 1</strong> — jueves, 10 de septiembre</p>\n<p>Llegas desde Madrid con ese primer impacto de altitud que CDMX regala a todos sus visitantes: \nsi es tu primera vez, respira. La ciudad se eleva a más de 2.240 metros sobre el nivel del mar, así que tómatelo con calma.\n El primer día no es de correr, es de calibrar.</p>\n<p>Instálate en tu hotel boutique en la colonia Roma o Condesa — las dos colonias más cómodas para moverse a pie y con mejor relación calidad-ambiente de la ciudad. \nLa capital tiene barrios maravillosamente seguros como Roma, Condesa o Coyoacán.\n</p>\n<p>Por la tarde, una primera caminata sin agenda por Roma Norte. \nLa colonia Roma se ha consolidado como uno de los puntos más atractivos para quienes buscan experiencias contemporáneas en la Ciudad de México. En sus calles se mezclan galerías, cafeterías, restaurantes y propuestas culturales innovadoras.\n Cena sin reserva: busca cualquier cantina con luz cálida y gente de barrio dentro. Es la prueba del algodón de cada colonia.</p>\n<p><em>Empezar en Roma-Condesa es una decisión directamente conectada a tu perfil: quieres entender la ciudad desde sus barrios, no desde las atracciones, y estas dos colonias son el epicentro de la escena gastronómica más viva y auténtica de CDMX.</em></p>\n\n<h3>El Centro que no descansa</h3>\n<p class=\"day-meta\"><strong>Día 2</strong> — viernes, 11 de septiembre</p>\n<p>El Centro Histórico requiere mañana entera y estómago vacío. \nAquí conviven templos, museos, palacios y calles llenas de comercio. El Zócalo, la Catedral Metropolitana y la Torre Latinoamericana son visitas obligatorias para entender la historia de la ciudad.\n</p>\n<p>Desayuno en <strong>El Cardenal</strong>, institución imprescindible. \nLa institución de cocina mexicana tradicional más reconocida del centro, abrió en 1969 en un edificio porfiriano de estilo francés. La cocina refleja guisos de toda la república, con tortillas y pan elaborados artesanalmente en casa.\n \nIncluido en la Guía México Gastronómico 2026, el desayuno es el momento más emblemático: chocolate caliente, natas frescas y pan dulce de casa.\n</p>\n<p>Después del desayuno, el <strong>Mercado de La Merced</strong> — el más antiguo y caótico del centro. \nLos mercados gastronómicos en CDMX funcionan como centros de abastecimiento y espacios de preservación cultural. Estos sitios ofrecen ingredientes técnicos, platos tradicionales y propuestas de importación.\n No compres, observa: los colores de los chiles secos, las pilas de hierbas, los olores que se superponen. Eso también es gastronomía.</p>\n<p>\nEl Palacio de Bellas Artes es una fusión de Art Nouveau y Art Déco que alberga exposiciones, conciertos, ballet y ópera. Sus murales, su cúpula dorada y su interior lleno de detalles arquitectónicos lo convierten en un lugar imperdible.\n Una parada obligatoria aunque sea veinte minutos.</p>\n<p>Comida en alguna de las fondas de los portales cercanos al Zócalo — tacos de guisado, arroz, frijoles. Nada pretencioso, todo real.</p>\n\n<h3>Coyoacán y el sabor de los patios</h3>\n<p class=\"day-meta\"><strong>Día 3</strong> — sábado, 12 de septiembre</p>\n<p>El día más tranquilo y más rico del viaje. \nCaminar por Coyoacán es sentir que has viajado a un pueblo mágico sin salir de la ciudad.\n \nConserva un ambiente tradicional que contrasta con la modernidad de otras zonas de la capital. Sus calles empedradas, plazas y mercados lo convierten en uno de los barrios favoritos tanto para turistas como para habitantes locales.\n</p>\n<p>Mañana: café de olla en <strong>El Jarocho</strong>, una de las cafeterías más antiguas y queridas del barrio. \nSus plazas, como el Jardín Centenario, están llenas de vida, vendedores de artesanías y artistas callejeros.\n Tómate el tiempo de sentaros en la plaza y ver pasar a la gente — ese es exactamente el tipo de momento que buscáis.</p>\n<p>Mercado de Coyoacán antes de mediodía: \nsi estás en Coyoacán, puedes acercarte al mercado que está a pocas calles del museo de Frida Kahlo, donde encontrarás frutas, verduras, flores, souvenirs, artesanías y, por supuesto, la parte gastronómica con platos típicos.\n Las tostadas de la zona son referencia obligada — elige el puesto con más lugareños esperando.</p>\n<p>La <strong>Casa Azul (Museo Frida Kahlo)</strong> merece una visita aunque no seas fan: el contexto histórico y humano es extraordinario. \nLa demanda es altísima. Debes comprar tus entradas por internet con semanas de anticipación, ya que no venden boletos en taquilla.\n Hazlo antes de salir de Madrid.</p>\n<p>Noche tranquila en alguna cantina del barrio con mezcal y botanas. Sábado en Coyoacán tiene su propio ritmo.</p>\n<p><em>Coyoacán es la elección perfecta para vosotros: combina mercado auténtico, gastronomía de barrio y una cadencia pausada que permite disfrutarlo a dos sin la presión de una agenda apretada.</em></p>\n\n<h3>Antropología, altura y Nicos</h3>\n<p class=\"day-meta\"><strong>Día 4</strong> — domingo, 13 de septiembre</p>\n<p>Mañana dedicada al <strong>Museo Nacional de Antropología</strong>, en Chapultepec. \nEs uno de los más buscados del mundo, exhibe el legado arqueológico de los pueblos de Mesoamérica y es un imprescindible para entender la historia del país. Dedícale al menos 2 horas y no te olvides de visitar la Piedra del Sol.\n Para quienes viajan por sabores, entender de dónde viene la cocina mexicana — sus ingredientes, sus rituales, sus culturas de origen — es parte del mismo viaje.</p>\n<p>Comida en <strong>Nicos</strong>, uno de los restaurantes más honestos de la ciudad. \nInstitución familiar de cocina mexicana casera desde 1957, el chef Gerardo Vázquez Lugo construye un menú de temporada con recetas de familia que cambian según lo que haya en el mercado.\n \nLa propuesta no busca sorprender con técnica: busca que el comensal reconozca sabores y se sienta bien alimentado.\n Es exactamente lo que pedisteis en vuestro perfil.</p>\n<p>Tarde libre en el <strong>Bosque de Chapultepec</strong> — el pulmón verde de la ciudad. Domingo por la tarde es el día más local de todos: familias, globeros, vendedores de elotes, parejas. El espectáculo está en la gente, no en los monumentos.</p>\n\n<h3>Polanco, despedida y último antojo</h3>\n<p class=\"day-meta\"><strong>Día 5</strong> — lunes, 14 de septiembre</p>\n<p>El último día tiene sabor a síntesis. Mañana pausada en el hotel, sin prisas. Después, una incursión a <strong>Polanco</strong> no para las boutiques de lujo, sino para el contraste: \nPolanco es uno de los barrios más elegantes y modernos de la ciudad. Su oferta gastronómica de alto nivel y espacios culturales, como el Museo Soumaya, lo convierten en un punto imprescindible.\n</p>\n<p>Si el presupuesto lo permite, comida de despedida en alguno de los grandes referentes que lleva años en conversación global. \nNombres emblemáticos como Pujol, Contramar, Máximo, Meroma y El Cardenal conviven con nuevas aperturas y propuestas contemporáneas que reflejan la diversidad de sabores, técnicas y estilos que hoy definen a la cocina mexicana.\n <strong>Contramar</strong> en Roma (mariscos, ambiente, terracita) o <strong>Máximo Bistrot</strong> son apuestas sólidas para cerrar el viaje con un recuerdo largo en el paladar.</p>\n<p>Vuelo nocturno o madrugada del día siguiente hacia Madrid. Llevas encima cinco días de guisados, mercados, mezcal y conversaciones. Eso no se olvida.</p>\n<p><em>Reservar la experiencia gastronómica más elaborada para el último día responde directamente a vuestra lógica de viajeros: primero entender la ciudad desde abajo (fondas, mercados, barrios), luego celebrarla desde arriba.</em></p>\n\n<h2>Notas prácticas antes de salir</h2>\n<ul>\n<li><strong>Altitud:</strong> CDMX está a 2.240 m. Los primeros días evitad el alcohol en exceso y los esfuerzos físicos bruscos. El cuerpo se adapta rápido.</li>\n<li><strong>Metro y movilidad:</strong> El metro es barato, seguro en horas no punta y muy útil entre el Centro y Coyoacán. Uber funciona bien para trayectos nocturnos o con lluvia.</li>\n<li><strong>Septiembre:</strong> Temporada de lluvias — los aguaceros son cortos e intensos, generalmente por la tarde. Llevad una capa impermeable ligera y ajustad las salidas de tarde a eso.</li>\n<li><strong>Mercados y horarios:</strong> \nConviene llegar en horarios fuertes, no al final de la jornada. Si vas muy tarde, algunos puestos ya estarán cerrando o trabajando con menos variedad.\n En CDMX el desayuno de mercado empieza a las 8h y la comida corrida termina a las 16h.</li>\n<li><strong>Casa Azul:</strong> Compra entradas online antes de salir de España. Sin reserva, no entras.</li>\n<li><strong>Seguridad:</strong> \nRoma, Condesa y Coyoacán son barrios maravillosamente seguros. La clave es evitar zonas periféricas de noche y usar siempre el sentido común.\n</li>\n</ul>",
+  "lang": "es",
+  "user_id": null,
+  "show_in_feed": true,
+  "is_example": true,
+  "archetype_id": 11,
+  "archetype_nombre": "El Navegante Gastronómico"
+}

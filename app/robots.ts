@@ -29,7 +29,6 @@ export default function robots(): MetadataRoute.Robots {
           "/inicio/",
           "/perfil/",
           "/guia/",
-          "/descubre/",
           "/inspiracion/",
           "/vuelos/",
           "/alojamientos/",

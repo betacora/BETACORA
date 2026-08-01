@@ -6,7 +6,6 @@ import {
   Lightbulb,
   Map,
   Plane,
-  Sparkles,
   UserRound,
   type LucideIcon,
 } from "lucide-react";
@@ -18,21 +17,18 @@ export type AppNavItem = {
   Icon: LucideIcon;
 };
 
-/**
- * Mobile bottom nav — core tabs only (fits the bar).
- * Descubre replaces Guía on mobile; Guía remains on desktop sidebar.
- */
+/** Mobile bottom nav — core tabs only (fits the bar). */
 export const APP_NAV_TABS: AppNavItem[] = [
   { id: "inicio", href: "/inicio", Icon: Home },
   { id: "explorar", href: "/explorar", Icon: Compass },
-  { id: "descubre", href: "/descubre", Icon: Sparkles },
+  { id: "guia", href: "/guia", Icon: BookOpen },
   { id: "viajes", href: "/viajes", Icon: Map },
   { id: "perfil", href: "/perfil", Icon: UserRound },
 ];
 
 /**
- * Desktop sidebar — full combined structure.
- * Guía and Descubre both appear here. Settings stay under Perfil.
+ * Desktop sidebar — full combined structure from design brief.
+ * Settings stay under Perfil (no separate Configuración tab).
  */
 export const APP_SIDEBAR_TABS: AppNavItem[] = [
   { id: "inicio", href: "/inicio", Icon: Home },
@@ -41,7 +37,6 @@ export const APP_SIDEBAR_TABS: AppNavItem[] = [
   { id: "vuelos", href: "/vuelos", Icon: Plane },
   { id: "alojamientos", href: "/alojamientos", Icon: BedDouble },
   { id: "guia", href: "/guia", Icon: BookOpen },
-  { id: "descubre", href: "/descubre", Icon: Sparkles },
   { id: "viajes", href: "/viajes", Icon: Map },
   { id: "perfil", href: "/perfil", Icon: UserRound },
 ];

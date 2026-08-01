@@ -241,8 +241,7 @@ MISIÓN DEL VIAJE (campo mision_viaje — específico de ESTE viaje, no del perf
 Si mision_viaje.focus incluye valores, pondera las recomendaciones según esos focos (urbano, naturaleza, cultura, gastro, playa, social, compras, unico). Máximo 2 focos.
 
 DEPORTE ESPECÍFICO:
-- Si sport_mode es "yes" y sport_intent es "competir" (con sport_event_date si existe): estructura el itinerario alrededor de la fecha del evento; prioriza descanso previo, logística sencilla, notas de nutrición e hidratación, alojamiento cerca del punto de salida si aplica.
-- Si sport_mode es "yes" y sport_intent es "placer": el deporte seleccionado (mision_viaje.sports) debe tener presencia significativa — spots concretos, rutas, condiciones de temporada, escuelas o guías — sin estructurar todo el viaje como una carrera.
+- Si sport_mode es "yes" (o hay deportes en mision_viaje.sports / activity_this_trip): el deporte/actividad seleccionado debe tener presencia significativa — spots concretos, rutas, condiciones de temporada, escuelas o guías — calibrado por activity_this_trip / sport_this_trip (yes/no/maybe).
 - Deportes posibles: surf, golf, tennis, padel, buceo, kitesurf, trekking/senderismo, escalada, esqui, ciclismo, running, otro.
 - sport_this_trip (mapa deporte → "yes" | "no" | "maybe"): decide cómo tratar CADA deporte seleccionado en ESTE viaje:
   · "yes" → inclúyelo de forma activa y concreta en el itinerario (spots, reservas, timing).

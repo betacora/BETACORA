@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { AppHeader } from "@/components/AppHeader";
+import { AssistantChatPanel } from "@/components/AssistantChatPanel";
 import { LoginPrompt } from "@/components/LoginPrompt";
 import { detectLang, NAV_COPY, type AppLang } from "@/lib/lang";
 import { useAuth } from "@/lib/useAuth";
@@ -72,7 +73,7 @@ export default function ViajeDetailPage() {
             </Link>
           </div>
         ) : (
-          <article>
+          <article className="pb-24 md:pb-8">
             {trip.profile_type ? (
               <p className="text-[0.65rem] tracking-[0.14em] uppercase text-[#2D7B7B] font-medium m-0 mb-2">
                 {trip.profile_type}
@@ -102,6 +103,14 @@ export default function ViajeDetailPage() {
           </article>
         )}
       </main>
+      {isLoggedIn && trip ? (
+        <AssistantChatPanel
+          itineraryId={trip.id}
+          destination={trip.destination}
+          lang={lang}
+          copy={copy.assistant}
+        />
+      ) : null}
     </>
   );
 }

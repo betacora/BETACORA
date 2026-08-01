@@ -16,6 +16,7 @@ export default function robots(): MetadataRoute.Robots {
           "/explorar",
           "/questionnaire",
           "/auth",
+          "/descubre",
           ABOUT_PATH.es,
           ABOUT_PATH.en,
           ABOUT_PATH.fr,

@@ -22,7 +22,6 @@ import {
   enforceRateLimit,
 } from "@/lib/rateLimit";
 import {
-  FREE_TEXT_MAX_LEN,
   MAX_PROFILE_JSON_BYTES,
   prepareProfileForModel,
   sanitizeItineraryHtml,
@@ -538,8 +537,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "JSON inválido" }, { status: 400 });
     }
 
-    if (typeof profile.extra === "string" && profile.extra.length > FREE_TEXT_MAX_LEN) {
-      profile = { ...profile, extra: profile.extra.slice(0, FREE_TEXT_MAX_LEN) };
+    // Drop free-text "extra" if a stale client still sends it (prompt-injection surface).
+    if ("extra" in profile) {
+      const { extra: _dropped, ...rest } = profile;
+      profile = rest;
     }
 
     const safeProfile = prepareProfileForModel(profile);

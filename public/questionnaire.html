@@ -1461,12 +1461,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
         <button class="opt" data-q="splurge" data-v="optimizo" onclick="toggle(this)"><span class="em">🧩</span>Optimizo todo</button>
       </div>
     </div>
-
-    <div class="qblock qt-hide-in-trip" id="extraBlock">
-      <div class="qlabel">¿Algo más que BeTacora deba saber?</div>
-      <div class="qhint">La pregunta que ninguna app te ha hecho antes</div>
-      <textarea class="txt-input" rows="3" id="extra" maxlength="500" placeholder="Experiencias pasadas, sueños de viaje, miedos, condiciones especiales..." oninput="updateProgress()"></textarea>
-    </div>
   </div>
 
   <!-- VII — Misión del Viaje -->
@@ -1818,7 +1812,6 @@ const LANG = {
       ['ui.questions.social.label',null], ['ui.questions.social_e.label',null],
       [null,null], // budgetBlock handled specially
       ['ui.questions.splurge.label',null],
-      ['ui.questions.extra.label','ui.questions.extra.hint'],
       ['ui.questions.misionFocus.label',null],
       ['ui.questions.misionSport.label',null],
       ['ui.questions.misionLuxury.label',null]
@@ -1905,7 +1898,6 @@ const LANG = {
     if (dateToLabel) dateToLabel.textContent = locale.ui.questions.dates.to;
     if (el('dateFormatHint')) el('dateFormatHint').textContent = locale.ui.dateFormatHint;
     if (el('crewDivider')) el('crewDivider').textContent = locale.ui.crewDivider;
-    if (el('extra')) el('extra').placeholder = locale.ui.questions.extra.placeholder;
 
     const profileEyebrow = document.querySelector('.profile-eyebrow');
     if (profileEyebrow) profileEyebrow.textContent = locale.ui.profile.eyebrow;
@@ -3844,8 +3836,6 @@ function collectAllAnswers() {
     delete answers['budgetMonthly'];
     delete answers['budget_monthly_r'];
   }
-  const extra = document.getElementById('extra').value.trim().slice(0, 500);
-  if (extra) answers['extra'] = extra;
   answers['currency'] = document.getElementById('currencySelect').value;
   answers['ui_lang'] = LANG.current;
   const mv = {};

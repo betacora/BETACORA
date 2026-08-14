@@ -102,11 +102,6 @@
             from: '📅 Fecha de salida',
             to: '🏠 Fecha de vuelta',
           },
-          extra: {
-            label: '¿Algo más que BeTacora deba saber?',
-            hint: 'La pregunta que ninguna app te ha hecho antes',
-            placeholder: 'Experiencias pasadas, sueños de viaje, miedos, condiciones especiales...',
-          },
         },
         sliderEnds: { low: '🛋️ Máximo descanso', high: '⛰️ Explorador extremo' },
         budget: {
@@ -747,11 +742,6 @@
             from: '📅 Departure date',
             to: '🏠 Return date',
           },
-          extra: {
-            label: 'Anything else BeTacora should know?',
-            hint: 'The question no travel app has asked you before',
-            placeholder: 'Past trips, travel dreams, fears, special needs...',
-          },
         },
         sliderEnds: { low: '🛋️ Maximum rest', high: '⛰️ Extreme explorer' },
         budget: {
@@ -1391,11 +1381,6 @@
             hint: 'Choisissez les dates ou une durée approximative',
             from: '📅 Date de départ',
             to: '🏠 Date de retour',
-          },
-          extra: {
-            label: 'Autre chose que BeTacora devrait savoir ?',
-            hint: 'La question qu\'aucune app ne vous a posée',
-            placeholder: 'Voyages passés, rêves, peurs, conditions particulières...',
           },
         },
         sliderEnds: { low: '🛋️ Repos absolu', high: '⛰️ Explorateur intrépide' },

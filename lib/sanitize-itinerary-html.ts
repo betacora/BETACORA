@@ -229,7 +229,6 @@ export const FREE_TEXT_MAX_LEN = 500;
 export const MAX_PROFILE_JSON_BYTES = 32_000;
 
 const FREE_TEXT_KEYS = new Set([
-  "extra",
   "notes",
   "comment",
   "comments",
@@ -238,6 +237,9 @@ const FREE_TEXT_KEYS = new Set([
   "mission",
   "mision",
 ]);
+
+/** Keys dropped entirely before the model (removed questionnaire free-text). */
+const DROPPED_PROFILE_KEYS = new Set(["extra"]);
 
 export function truncateFreeText(value: unknown, max = FREE_TEXT_MAX_LEN): string | undefined {
   if (value == null) return undefined;
@@ -259,6 +261,9 @@ function sanitizeProfileValue(value: unknown, depth: number): unknown {
   if (typeof value === "object") {
     const out: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(value as Record<string, unknown>).slice(0, 60)) {
+      if (DROPPED_PROFILE_KEYS.has(k.toLowerCase())) {
+        continue;
+      }
       if (FREE_TEXT_KEYS.has(k.toLowerCase())) {
         const t = truncateFreeText(v);
         if (t) out[k] = t;
@@ -285,8 +290,10 @@ export function prepareProfileForModel(profile: Record<string, unknown>): Record
 
   let json = JSON.stringify(out);
   if (json.length > MAX_PROFILE_JSON_BYTES) {
-    // Prefer dropping free-text if the payload is still huge
-    delete out.extra;
+    // Prefer dropping leftover free-text if the payload is still huge
+    for (const k of ["notes", "comment", "comments", "other", "description", "mission", "mision"]) {
+      delete out[k];
+    }
     json = JSON.stringify(out);
     if (json.length > MAX_PROFILE_JSON_BYTES) {
       return { truncated: true, trip_type: out.trip_type, ui_lang: out.ui_lang };

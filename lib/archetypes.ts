@@ -57,7 +57,7 @@ ${modifierBlock}
 
 REGLAS DE PERSONALIZACIÓN:
 1. Usa el arquetipo como ADN emocional; NO copies la esencia palabra por palabra.
-2. Escribe esencia final de 80-120 palabras combinando ADN + modificadores + detalles REALES del cuestionario (destino, act, accom, food, diet, extra, mision_viaje, exp, cultura).
+2. Escribe esencia final de 80-120 palabras combinando ADN + modificadores + detalles REALES del cuestionario (destino, act, accom, food, diet, mision_viaje, exp, cultura).
 3. Dos viajeros del mismo arquetipo con modificadores distintos DEBEN sonar notablemente diferentes.
 4. El nombre puede adaptarse ligeramente al destino (ej. "El Cazador de Vértigo Austral").
 5. La frase insignia puede inspirarse en la del arquetipo pero debe incorporar un detalle específico del viajero cuando sea posible.

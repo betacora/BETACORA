@@ -51,9 +51,9 @@ export default function ViajeDetailPage() {
   return (
     <>
       <AppHeader title={trip?.destination || copy.title} />
-      <main className="flex-1 px-4 py-6 sm:px-6 max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-4 py-6 sm:px-6 max-w-2xl mx-auto w-full bg-[#F9FAFB]">
         {authLoading || loading ? (
-          <p className="text-sm text-[#6B6B6B] text-center py-12 m-0">
+          <p className="text-sm text-[#6B7280] text-center py-12 m-0">
             {copy.loading}
           </p>
         ) : !isLoggedIn ? (
@@ -64,26 +64,26 @@ export default function ViajeDetailPage() {
           />
         ) : notFound || !trip ? (
           <div className="text-center py-12">
-            <p className="text-[#6B6B6B] m-0">{copy.emptyTitle}</p>
+            <p className="text-[#6B7280] m-0">{copy.emptyTitle}</p>
             <Link
               href="/viajes"
-            className="mt-4 inline-block text-sm text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity duration-200"
+              className="mt-4 inline-block text-sm text-[#6B7280] underline underline-offset-2 hover:text-[#111827] transition-colors duration-200"
             >
               ← {copy.title}
             </Link>
           </div>
         ) : (
-          <article className="pb-24 md:pb-8">
+          <article className="pb-24 md:pb-8 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-6 sm:px-6 sm:py-7">
             {trip.profile_type ? (
-              <p className="text-[0.65rem] tracking-[0.14em] uppercase text-[#2D7B7B] font-medium m-0 mb-2">
+              <p className="text-[0.65rem] tracking-[0.14em] uppercase text-[#6B7280] font-medium m-0 mb-2">
                 {trip.profile_type}
               </p>
             ) : null}
-            <h1 className="text-[1.65rem] font-medium tracking-tight text-[#1A1A1A] m-0 leading-snug">
+            <h1 className="text-[1.65rem] font-semibold tracking-tight text-[#111827] m-0 leading-snug">
               {trip.destination || copy.untitled}
             </h1>
             {trip.profile_essence ? (
-              <p className="mt-3 text-sm text-[#6B6B6B] leading-relaxed m-0">
+              <p className="mt-3 text-sm text-[#6B7280] leading-relaxed m-0">
                 {trip.profile_essence}
               </p>
             ) : null}
@@ -98,7 +98,7 @@ export default function ViajeDetailPage() {
                 }}
               />
             ) : (
-              <p className="mt-8 text-sm text-[#6B6B6B]">{copy.emptyBody}</p>
+              <p className="mt-8 text-sm text-[#6B7280]">{copy.emptyBody}</p>
             )}
           </article>
         )}

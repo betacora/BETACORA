@@ -85,16 +85,16 @@ async function main() {
   globalThis.fetch = async () =>
     new Response(
       JSON.stringify({
-        places: [
+        status: "OK",
+        results: [
           {
-            id: "places/ChIJdemo",
-            displayName: { text: "Museo del Prado" },
-            formattedAddress: "Madrid, Spain",
-            location: { latitude: 40.4138, longitude: -3.6921 },
+            place_id: "ChIJdemo",
+            name: "Museo del Prado",
+            formatted_address: "Madrid, Spain",
+            geometry: { location: { lat: 40.4138, lng: -3.6921 } },
             rating: 4.7,
-            userRatingCount: 1000,
+            user_ratings_total: 1000,
             types: ["museum"],
-            googleMapsUri: "https://maps.google.com/?cid=demo",
           },
         ],
       }),

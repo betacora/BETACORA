@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
+import { DescubrePlacesSearch } from "@/components/DescubrePlacesSearch";
 import type { FeedTripCard, FeedTripPlace } from "@/lib/shared-trips-feed";
 import { detectLang, NAV_COPY, type AppLang } from "@/lib/lang";
 
@@ -37,7 +38,11 @@ function CardMap({ places }: { places: FeedTripPlace[] }) {
 
   return (
     <div className="relative h-28 w-full overflow-hidden rounded-[8px] border border-[#E5E5E5] bg-white">
-      <svg viewBox="0 0 100 56" className="absolute inset-0 h-full w-full" aria-hidden>
+      <svg
+        viewBox="0 0 100 56"
+        className="absolute inset-0 h-full w-full"
+        aria-hidden
+      >
         <defs>
           <radialGradient id="feedMapGlow" cx="50%" cy="40%" r="60%">
             <stop offset="0%" stopColor="rgba(45,123,123,0.14)" />
@@ -116,9 +121,11 @@ export function DescubreClient({ trips }: { trips: FeedTripCard[] }) {
     <>
       <AppHeader title={NAV_COPY[lang].tabs.descubre} />
       <main className="flex-1 px-5 py-8 sm:px-8 max-w-3xl mx-auto w-full">
+        <DescubrePlacesSearch lang={lang} copy={copy.places} />
+
         <header className="mb-8">
           <h1 className="text-xl font-medium tracking-tight text-[#1A1A1A] m-0">
-            {copy.title}
+            {copy.places.feedTitle}
           </h1>
           <p className="mt-2 text-[0.9375rem] text-[#6B6B6B] leading-relaxed m-0">
             {copy.subtitle}

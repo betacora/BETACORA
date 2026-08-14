@@ -45,6 +45,157 @@ body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-se
 
 .container { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
 
+/* Conversational one-question flow (mindtrip-style presentation) */
+body.conv-active .container { padding-bottom: 7.5rem; max-width: 560px; }
+body.conv-active .submit-wrap { display: none !important; }
+body.conv-active #extraBlock { display: none !important; }
+body.conv-active .section { margin-bottom: 0; }
+body.conv-active .section-header { display: none; }
+body.conv-active .section.conv-section-active > .section-header {
+  display: flex;
+  margin-bottom: 1.25rem;
+}
+body.conv-active .section-divider { display: none !important; }
+body.conv-active .qblock {
+  display: none;
+  animation: convIn 0.28s ease;
+}
+body.conv-active .qblock.conv-current { display: block; }
+body.conv-active.conv-closing .qblock { display: none !important; }
+body.conv-active.conv-closing .section-header { display: none !important; }
+@keyframes convIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.conv-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.65rem;
+  font-weight: 500;
+}
+.conv-nav {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  padding: 0.85rem 1.25rem calc(0.85rem + env(safe-area-inset-bottom, 0));
+  background: rgba(255,255,255,0.96);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+body.conv-active:not(.conv-closing):not(.itinerary-ready) .conv-nav { display: block; }
+body.qt-active:not(.qt-panel-open) .conv-nav { display: none !important; }
+body.qt-panel-open .conv-nav { z-index: 450; }
+.conv-nav-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.conv-nav-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--ink);
+  min-width: 7.5rem;
+}
+.conv-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.conv-nav-btn.primary {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: #fff;
+  margin-left: auto;
+}
+.conv-nav-btn.primary:hover:not(:disabled) { opacity: 0.92; }
+.conv-nav-hint {
+  font-size: 0.78rem;
+  color: var(--coral);
+  flex: 1;
+  text-align: center;
+  min-height: 1.1em;
+}
+.conv-closing-screen {
+  display: none;
+  max-width: 560px;
+  margin: 2.5rem auto 6rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+body.conv-closing .conv-closing-screen {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  margin: 0;
+  max-width: none;
+  padding: 4rem 1.5rem 3rem;
+  background: var(--bg);
+  overflow: auto;
+}
+body.conv-closing .conv-closing-screen .conv-closing-title,
+body.conv-closing .conv-closing-screen .conv-closing-sub,
+body.conv-closing .conv-closing-screen .conv-closing-kicker {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+body.conv-closing .conv-closing-actions { max-width: 560px; margin: 0 auto; }
+.conv-closing-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+.conv-closing-title {
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+}
+.conv-closing-sub {
+  font-size: 0.975rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 1.75rem;
+}
+.conv-closing-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: center;
+}
+.conv-closing-actions .submit-btn { width: min(100%, 320px); }
+.conv-closing-back {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+body.qt-panel-open.conv-active .qt-panel-footer .submit-btn { display: none; }
+body.qt-panel-open.conv-closing .qt-panel-footer .submit-btn { display: none; }
+body.qt-panel-open.conv-active .qt-panel-body {
+  padding-bottom: 5.5rem;
+}
+body.itinerary-ready .conv-nav,
+body.itinerary-ready .conv-closing-screen { display: none !important; }
+
 .section { margin-bottom: 3.75rem; }
 .section-header { display: flex; align-items: flex-start; gap: 0.9rem; margin-bottom: 2rem; padding-bottom: 0; border-bottom: none; }
 .section-num { color: var(--muted); background: transparent; border: 1px solid var(--border); font-size: 0.62rem; font-weight: 500; padding: 0.22rem 0.5rem; border-radius: 4px; letter-spacing: 0.08em; line-height: 1.2; flex-shrink: 0; margin-top: 0.15rem; }
@@ -290,8 +441,6 @@ body.qt-active.itinerary-ready .container { padding-top: 0.5rem; }
 }
 .follow-up-panel .grid3,
 .follow-up-panel .grid4 { margin-top: 0; }
-.mision-event-wrap { margin-top: 0.85rem; display: none; }
-.mision-event-wrap.show { display: block; }
 .section-divider {
   margin: 2.75rem 0 2rem; padding: 0;
   border-top: 1px solid var(--border);
@@ -563,6 +712,15 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   font-size: 0.68rem; color: var(--muted); letter-spacing: 0.04em; white-space: nowrap;
 }
 .shareable-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 0.85rem; }
+.tsc-feed-optin {
+  display: flex; align-items: flex-start; gap: 0.55rem;
+  width: 100%; max-width: 28rem; margin: 0 auto 0.35rem;
+  font-size: 0.78rem; line-height: 1.4; color: var(--muted); text-align: left;
+  cursor: pointer;
+}
+.tsc-feed-optin input {
+  margin-top: 0.15rem; accent-color: var(--teal); flex-shrink: 0;
+}
 .sc-action-btn {
   display: inline-flex; align-items: center; gap: 0.4rem;
   background: var(--coral); color: white; border: none;
@@ -772,7 +930,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
 
 .bt-map-popup { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; line-height: 1.35; }
 .bt-map-popup strong { display: block; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
-.bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.45rem; }
+.bt-map-popup .bt-map-day { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.35rem; }
+.bt-map-popup .bt-map-note { color: var(--ink); font-size: 0.78rem; line-height: 1.35; margin-bottom: 0.45rem; opacity: 0.9; }
 .bt-map-popup .bt-take-me { margin-top: 0.15rem; }
 
 .bt-take-me {
@@ -810,6 +969,179 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   background: transparent; letter-spacing: -0.01em;
 }
 .bitacora-article h3:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+/* Progressive preview: locked days (blur + lock) — never on free Day 1 */
+.bt-day-locked {
+  position: relative;
+  margin: 0.35rem 0 1.1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.bt-day-locked__body {
+  filter: blur(7px);
+  opacity: 0.5;
+  pointer-events: none;
+  max-height: 10.5rem;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+.bt-day-locked__veil {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 1rem;
+  background: linear-gradient(
+    180deg,
+    rgba(252, 249, 248, 0.15) 0%,
+    rgba(252, 249, 248, 0.72) 42%,
+    rgba(252, 249, 248, 0.94) 100%
+  );
+  pointer-events: none;
+}
+.bt-day-locked__lock {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--teal-dark);
+  box-shadow: 0 6px 18px rgba(28, 27, 27, 0.06);
+}
+.bt-day-locked__lock svg { width: 1rem; height: 1rem; display: block; }
+.bt-day-locked__label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-align: center;
+}
+.bt-preview-paywall {
+  max-width: 720px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.bt-preview-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.35rem 1.35rem 1.25rem;
+}
+.bt-preview-card__eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 500;
+  margin: 0 0 0.45rem;
+}
+.bt-preview-card__title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 0.55rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.bt-preview-card__body {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 0.75rem;
+}
+.bt-preview-card__meta {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+.bt-preview-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0.35rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.bt-preview-checklist li {
+  position: relative;
+  padding: 0.15rem 0 0.15rem 1.55rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.bt-preview-checklist li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: rgba(45, 123, 123, 0.12);
+  color: var(--teal-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.bt-preview-unlock {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+}
+.bt-preview-unlock__btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  background: var(--coral);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.bt-preview-unlock__btn:hover { opacity: 0.92; }
+.bt-preview-unlock__btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+.bt-preview-unlock__note {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  text-align: center;
+}
+.bt-preview-unlock__status {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--teal-dark);
+  margin: 0;
+  text-align: center;
+  display: none;
+}
+.bt-preview-unlock__status.show { display: block; }
+@media (max-width: 640px) {
+  .bt-preview-paywall { padding: 0 0.85rem; }
+  .bt-preview-card { padding: 1.1rem 1rem; }
+}
 /* Practical day label under chapter title */
 .bitacora-article p.day-meta {
   font-size: 0.78rem; line-height: 1.4; color: var(--muted); font-weight: 400;
@@ -1252,31 +1584,37 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   <div class="section" data-flow="trip" id="actSection">
     <div class="section-header">
       <span class="section-num">V·</span>
-      <div><div class="section-title">Actividades</div><div class="section-sub">Lo que quieres vivir en este viaje</div></div>
+      <div><div class="section-title">Actividades</div><div class="section-sub">Actividades y deportes que te interesan</div></div>
     </div>
 
     <div class="qblock" id="actBlock">
       <div class="qlabel">¿Qué actividades te interesan?</div>
       <span class="multi-badge">Selección libre</span>
       <div class="grid4" id="actOptionsGrid">
-        <button class="opt" data-q="act" data-v="trekking" onclick="toggle(this)"><span class="em">🥾</span>Trekking</button>
+        <button class="opt" data-q="act" data-v="trekking" onclick="toggle(this)"><span class="em">🥾</span>Senderismo</button>
         <button class="opt" data-q="act" data-v="buceo" onclick="toggle(this)"><span class="em">🤿</span>Buceo</button>
         <button class="opt" data-q="act" data-v="surf" onclick="toggle(this)"><span class="em">🏄</span>Surf</button>
+        <button class="opt" data-q="act" data-v="kitesurf" onclick="toggle(this)"><span class="em">🪁</span>Kitesurf</button>
+        <button class="opt" data-q="act" data-v="kayak" onclick="toggle(this)"><span class="em">🛶</span>Kayak</button>
         <button class="opt" data-q="act" data-v="escalada" onclick="toggle(this)"><span class="em">🧗</span>Escalada</button>
         <button class="opt" data-q="act" data-v="ciclismo" onclick="toggle(this)"><span class="em">🚴</span>Ciclismo</button>
-        <button class="opt" data-q="act" data-v="kayak" onclick="toggle(this)"><span class="em">🛶</span>Kayak</button>
+        <button class="opt" data-q="act" data-v="running" onclick="toggle(this)"><span class="em">🏃</span>Running</button>
+        <button class="opt" data-q="act" data-v="esqui" onclick="toggle(this)"><span class="em">⛷️</span>Esquí</button>
+        <button class="opt" data-q="act" data-v="golf" onclick="toggle(this)"><span class="em">⛳</span>Golf</button>
+        <button class="opt" data-q="act" data-v="tennis" onclick="toggle(this)"><span class="em">🎾</span>Tenis</button>
+        <button class="opt" data-q="act" data-v="padel" onclick="toggle(this)"><span class="em">🏸</span>Pádel</button>
+        <button class="opt" data-q="act" data-v="parapente" onclick="toggle(this)"><span class="em">🪂</span>Parapente</button>
+        <button class="opt" data-q="act" data-v="caballo" onclick="toggle(this)"><span class="em">🐴</span>A caballo</button>
         <button class="opt" data-q="act" data-v="yoga" onclick="toggle(this)"><span class="em">🧘</span>Yoga</button>
         <button class="opt" data-q="act" data-v="gym" onclick="toggle(this)"><span class="em">💪</span>Gym</button>
         <button class="opt" data-q="act" data-v="safari" onclick="toggle(this)"><span class="em">🦁</span>Safari</button>
-        <button class="opt" data-q="act" data-v="esqui" onclick="toggle(this)"><span class="em">⛷️</span>Esquí</button>
-        <button class="opt" data-q="act" data-v="parapente" onclick="toggle(this)"><span class="em">🪂</span>Parapente</button>
         <button class="opt" data-q="act" data-v="playa" onclick="toggle(this)"><span class="em">🏖️</span>Playa</button>
         <button class="opt" data-q="act" data-v="globo" onclick="toggle(this)"><span class="em">🎈</span>Globo aerostático</button>
-        <button class="opt" data-q="act" data-v="caballo" onclick="toggle(this)"><span class="em">🐴</span>A caballo</button>
         <button class="opt" data-q="act" data-v="foto_t" onclick="toggle(this)"><span class="em">📷</span>Tours fotográficos</button>
         <button class="opt" data-q="act" data-v="cocina_c" onclick="toggle(this)"><span class="em">👨‍🍳</span>Clases de cocina</button>
         <button class="opt" data-q="act" data-v="urbano" onclick="toggle(this)"><span class="em">🏙️</span>Urbanas</button>
         <button class="opt" data-q="act" data-v="nightlife" onclick="toggle(this)"><span class="em">🌙</span>Vida nocturna</button>
+        <button class="opt" data-q="act" data-v="otro" onclick="toggle(this)"><span class="em">✨</span>Otro</button>
       </div>
       <div id="activityThisTripPanel" class="sport-trip-panel" aria-live="polite"></div>
     </div>
@@ -1490,44 +1828,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
 
-    <div class="qblock" id="misionSportBlock">
-      <div class="qlabel">¿Practicarás algún deporte específico?</div>
-      <div class="opt-list" style="margin-bottom:0.5rem">
-        <div class="opt-row" data-q="mision_sport" data-v="no" onclick="selMisionSport(this)"><span class="em2">🚫</span><span class="txt">No</span><span class="dot"></span></div>
-        <div class="opt-row" data-q="mision_sport" data-v="yes" onclick="selMisionSport(this)"><span class="em2">🎯</span><span class="txt">Sí</span><span class="dot"></span></div>
-      </div>
-
-      <div id="misionSportDetail" style="display:none">
-        <div class="grid4" style="margin-top:0.75rem">
-          <button class="opt" data-q="mision_sports" data-v="surf" onclick="toggleMisionSport(this)"><span class="em">🏄</span>Surf</button>
-          <button class="opt" data-q="mision_sports" data-v="golf" onclick="toggleMisionSport(this)"><span class="em">⛳</span>Golf</button>
-          <button class="opt" data-q="mision_sports" data-v="tennis" onclick="toggleMisionSport(this)"><span class="em">🎾</span>Tenis</button>
-          <button class="opt" data-q="mision_sports" data-v="padel" onclick="toggleMisionSport(this)"><span class="em">🏸</span>Pádel</button>
-          <button class="opt" data-q="mision_sports" data-v="buceo" onclick="toggleMisionSport(this)"><span class="em">🤿</span>Buceo</button>
-          <button class="opt" data-q="mision_sports" data-v="kitesurf" onclick="toggleMisionSport(this)"><span class="em">🪁</span>Kitesurf</button>
-          <button class="opt" data-q="mision_sports" data-v="trekking" onclick="toggleMisionSport(this)"><span class="em">🥾</span>Senderismo</button>
-          <button class="opt" data-q="mision_sports" data-v="escalada" onclick="toggleMisionSport(this)"><span class="em">🧗</span>Escalada</button>
-          <button class="opt" data-q="mision_sports" data-v="esqui" onclick="toggleMisionSport(this)"><span class="em">⛷️</span>Esquí</button>
-          <button class="opt" data-q="mision_sports" data-v="ciclismo" onclick="toggleMisionSport(this)"><span class="em">🚴</span>Ciclismo</button>
-          <button class="opt" data-q="mision_sports" data-v="running" onclick="toggleMisionSport(this)"><span class="em">🏃</span>Running</button>
-          <button class="opt" data-q="mision_sports" data-v="otro" onclick="toggleMisionSport(this)"><span class="em">✨</span>Otro</button>
-        </div>
-        <div id="sportThisTripPanel" class="sport-trip-panel" aria-live="polite"></div>
-      </div>
-
-      <div id="misionSportIntentBlock" style="display:none;margin-top:1rem">
-        <div class="qlabel" style="margin-bottom:0.5rem">¿Es por competición o por placer?</div>
-        <div class="opt-list">
-          <div class="opt-row" data-q="mision_sport_intent" data-v="competir" onclick="selMisionSportIntent(this)"><span class="em2">🏁</span><span class="txt">Competición</span><span class="dot"></span></div>
-          <div class="opt-row" data-q="mision_sport_intent" data-v="placer" onclick="selMisionSportIntent(this)"><span class="em2">🌊</span><span class="txt">Placer</span><span class="dot"></span></div>
-        </div>
-        <div class="mision-event-wrap" id="misionEventDateWrap">
-          <label class="date-label" for="misionEventDate" id="misionEventDateLabel">Fecha del evento o carrera</label>
-          <input type="date" class="date-input" id="misionEventDate" onchange="onMisionEventDate()">
-        </div>
-      </div>
-    </div>
-
     <div class="qblock" id="misionLuxuryBlock" style="display:none">
       <div class="qlabel">¿Qué tipo de lujo valoras?</div>
       <div class="opt-list">
@@ -1613,6 +1913,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
       </div>
     </div>
     <div class="shareable-actions">
+      <label class="tsc-feed-optin" for="tscShowInFeed">
+        <input type="checkbox" id="tscShowInFeed" />
+        <span id="tscShowInFeedLabel">También publicar en Descubre (feed público de viajeros)</span>
+      </label>
       <button type="button" class="sc-action-btn" id="tscShare" onclick="shareTripCard()">Compartir viaje</button>
       <button type="button" class="sc-action-btn secondary" id="tscDownload" onclick="downloadTripCard()">Descargar imagen</button>
       <button type="button" class="sc-action-btn secondary tsc-copy-link" id="tscCopyLink" onclick="copyTripShareLink()">Copiar enlace</button>
@@ -1627,7 +1931,25 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
     <div class="submit-note">BeTacora diseñará tu viaje personalizado · beta-cora.com</div>
   </div>
 
+  <div class="conv-closing-screen" id="convClosingScreen" hidden>
+    <div class="conv-closing-kicker" id="convClosingKicker">Bitácora lista</div>
+    <h2 class="conv-closing-title" id="convClosingTitle">Ya está — empezamos a trazar tu viaje</h2>
+    <p class="conv-closing-sub" id="convClosingSub">Tu perfil viajero está completo. BeTacora diseñará ahora tu bitácora inteligente con el mismo criterio que alguien que ya estuvo ahí.</p>
+    <div class="conv-closing-actions">
+      <button type="button" class="submit-btn" id="convClosingGenerate" onclick="handleGenerate()">Generar mi Bitácora Inteligente</button>
+      <button type="button" class="conv-closing-back" id="convClosingBack" onclick="convExitClosing()">Revisar una respuesta</button>
+    </div>
+  </div>
+
 </div>
+
+<nav class="conv-nav" id="convNav" aria-label="Navegación del cuestionario" hidden>
+  <div class="conv-nav-inner">
+    <button type="button" class="conv-nav-btn" id="convBackBtn" onclick="convBack()">Atrás</button>
+    <span class="conv-nav-hint" id="convNavHint" aria-live="polite"></span>
+    <button type="button" class="conv-nav-btn primary" id="convNextBtn" onclick="convNext()">Siguiente</button>
+  </div>
+</nav>
 
 <!-- Returning-user trip details sheet -->
 <div class="qt-overlay" id="qtOverlay" aria-hidden="true">
@@ -1819,7 +2141,6 @@ const LANG = {
       ['ui.questions.splurge.label',null],
       ['ui.questions.extra.label','ui.questions.extra.hint'],
       ['ui.questions.misionFocus.label',null],
-      ['ui.questions.misionSport.label',null],
       ['ui.questions.misionLuxury.label',null]
     ];
     document.querySelectorAll('.container > .section .qblock').forEach((qb, idx) => {
@@ -1848,9 +2169,6 @@ const LANG = {
     if (el('sportGroupWater')) el('sportGroupWater').textContent = locale.ui.misionSportGroups.water;
     if (el('sportGroupMountain')) el('sportGroupMountain').textContent = locale.ui.misionSportGroups.mountain;
     if (el('sportGroupOther')) el('sportGroupOther').textContent = locale.ui.misionSportGroups.other;
-    const misionIntentLabel = document.querySelector('#misionSportIntentBlock .qlabel');
-    if (misionIntentLabel) misionIntentLabel.textContent = locale.ui.questions.misionSportIntent.label;
-    if (el('misionEventDateLabel')) el('misionEventDateLabel').textContent = locale.ui.questions.misionEventDate;
     if (el('museumTypeLabel')) {
       el('museumTypeLabel').textContent = locale.ui.questions.museumType?.label || el('museumTypeLabel').textContent;
     }
@@ -2031,27 +2349,27 @@ const misionViaje = {
   sport_mode: null,
   sports: [],
   sport_this_trip: {},
-  sport_intent: null,
-  sport_event_date: null,
   luxury_style: null,
   museum_type: [],
   activity_this_trip: {},
 };
 
-const COMPETITION_SPORTS = new Set(['surf', 'kitesurf', 'esqui', 'ciclismo', 'running', 'escalada', 'trekking', 'tennis', 'padel', 'golf']);
 const SPORT_THIS_TRIP_OPTS = ['yes', 'no', 'maybe'];
-/** Non-sport activity interests that get “¿En este viaje?” (sports already covered in Misión). */
-const ACTIVITY_THIS_TRIP_KEYS = new Set([
-  'cocina_c', 'safari', 'nightlife', 'yoga', 'gym', 'playa', 'globo', 'caballo', 'foto_t', 'urbano', 'kayak', 'parapente',
+/** Sport-like keys kept under mision_viaje.sports for backward compatibility with old answers/prompts. */
+const SPORT_ACT_KEYS = new Set([
+  'surf', 'golf', 'tennis', 'padel', 'buceo', 'kitesurf', 'trekking', 'escalada', 'esqui', 'ciclismo', 'running', 'otro',
 ]);
-const SPORT_EMOJI = {
-  surf: '🏄', golf: '⛳', tennis: '🎾', padel: '🏸', buceo: '🤿', kitesurf: '🪁',
-  trekking: '🥾', escalada: '🧗', esqui: '⛷️', ciclismo: '🚴', running: '🏃', otro: '✨',
-};
+/** All unified activity/sport keys — in trip mode every selected card gets Sí/No/Depende. */
+const ACTIVITY_THIS_TRIP_KEYS = new Set([
+  'trekking', 'buceo', 'surf', 'kitesurf', 'kayak', 'escalada', 'ciclismo', 'running', 'esqui',
+  'golf', 'tennis', 'padel', 'parapente', 'caballo', 'yoga', 'gym', 'safari', 'playa', 'globo',
+  'foto_t', 'cocina_c', 'urbano', 'nightlife', 'otro',
+]);
 const ACT_EMOJI = {
-  trekking: '🥾', buceo: '🤿', surf: '🏄', escalada: '🧗', ciclismo: '🚴', kayak: '🛶',
-  yoga: '🧘', gym: '💪', safari: '🦁', esqui: '⛷️', parapente: '🪂', playa: '🏖️', globo: '🎈',
-  caballo: '🐴', foto_t: '📷', cocina_c: '👨‍🍳', urbano: '🏙️', nightlife: '🌙',
+  trekking: '🥾', buceo: '🤿', surf: '🏄', kitesurf: '🪁', kayak: '🛶', escalada: '🧗', ciclismo: '🚴',
+  running: '🏃', esqui: '⛷️', golf: '⛳', tennis: '🎾', padel: '🏸', parapente: '🪂', caballo: '🐴',
+  yoga: '🧘', gym: '💪', safari: '🦁', playa: '🏖️', globo: '🎈', foto_t: '📷', cocina_c: '👨‍🍳',
+  urbano: '🏙️', nightlife: '🌙', otro: '✨',
 };
 const selectedOrigin = [];
 const selectedDest = [];
@@ -2527,129 +2845,24 @@ function toggleMisionFocus(btn) {
   updateProgress();
 }
 
-function selMisionSport(row) {
-  const q = row.dataset.q;
-  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
-  row.classList.add('sel');
-  misionViaje.sport_mode = row.dataset.v;
-  const showDetail = row.dataset.v === 'yes';
-  document.getElementById('misionSportDetail').style.display = showDetail ? 'block' : 'none';
-  if (!showDetail) {
-    document.querySelectorAll('[data-q="mision_sports"]').forEach(b => b.classList.remove('sel'));
-    misionViaje.sports = [];
-    misionViaje.sport_this_trip = {};
-    misionViaje.sport_intent = null;
-    misionViaje.sport_event_date = null;
-    document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
-    document.getElementById('misionEventDate').value = '';
-    renderSportThisTripPanel();
-  } else if (typeof prioritizeActsFromDna === 'function') {
-    prioritizeActsFromDna();
-  }
-  updateMisionSportIntentVisibility();
-  updateProgress();
+function isTripThisTripContext() {
+  return !!(typeof quickTripActive !== 'undefined' && quickTripActive) ||
+    document.body.classList.contains('qt-active');
 }
 
-function toggleMisionSport(btn) {
-  btn.classList.toggle('sel');
-  const sport = btn.dataset.v;
-  misionViaje.sports = [...document.querySelectorAll('[data-q="mision_sports"].sel')].map(b => b.dataset.v);
-  if (!btn.classList.contains('sel')) {
-    delete misionViaje.sport_this_trip[sport];
-  }
-  // Drop answers for sports no longer selected
-  Object.keys(misionViaje.sport_this_trip).forEach((k) => {
-    if (!misionViaje.sports.includes(k)) delete misionViaje.sport_this_trip[k];
+function syncSportsFromActs() {
+  const selected = answers.act || [];
+  const sports = selected.filter((a) => SPORT_ACT_KEYS.has(a));
+  misionViaje.sports = sports;
+  misionViaje.sport_mode = sports.length ? 'yes' : 'no';
+  Object.keys(misionViaje.sport_this_trip || {}).forEach((k) => {
+    if (!sports.includes(k)) delete misionViaje.sport_this_trip[k];
   });
-  renderSportThisTripPanel();
-  updateMisionSportIntentVisibility();
-  updateProgress();
-}
-
-function sportThisTripLabel(key) {
-  const ui = L().ui.sportThisTrip || {};
-  return ui[key] || key;
-}
-
-function sportDisplayName(sport) {
-  const entry = L().opt?.mision_sports?.[sport];
-  return entry?.label || sport;
-}
-
-function sportEmoji(sport) {
-  return SPORT_EMOJI[sport] || '';
-}
-
-function renderSportThisTripPanel() {
-  const panel = document.getElementById('sportThisTripPanel');
-  if (!panel) return;
-  const sports = misionViaje.sports || [];
-  if (!sports.length) {
-    panel.innerHTML = '';
-    return;
-  }
-  const qLabel = sportThisTripLabel('question');
-  panel.innerHTML = sports.map((sport) => {
-    const current = misionViaje.sport_this_trip[sport] || '';
-    const opts = SPORT_THIS_TRIP_OPTS.map((v) => {
-      const sel = current === v ? ' sel' : '';
-      return `<button type="button" class="sport-trip-opt${sel}" data-sport="${sport}" data-v="${v}" onclick="selSportThisTrip(this)">${sportThisTripLabel(v)}</button>`;
-    }).join('');
-    return `<div class="sport-trip-row" data-sport="${sport}">
-      <div class="sport-trip-top">
-        <span class="sport-trip-name"><span aria-hidden="true">${sportEmoji(sport)}</span>${sportDisplayName(sport)}</span>
-        <span class="sport-trip-q">${qLabel}</span>
-      </div>
-      <div class="sport-trip-opts">${opts}</div>
-    </div>`;
-  }).join('');
-}
-
-function selSportThisTrip(btn) {
-  const sport = btn.dataset.sport;
-  const val = btn.dataset.v;
-  if (!sport || !SPORT_THIS_TRIP_OPTS.includes(val)) return;
-  misionViaje.sport_this_trip[sport] = val;
-  const row = btn.closest('.sport-trip-row');
-  if (row) {
-    row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
-  }
-  updateProgress();
-}
-
-function updateMisionSportIntentVisibility() {
-  const hasComp = misionViaje.sports.some(s => COMPETITION_SPORTS.has(s));
-  const show = misionViaje.sport_mode === 'yes' && hasComp;
-  const block = document.getElementById('misionSportIntentBlock');
-  block.style.display = show ? 'block' : 'none';
-  if (!show) {
-    misionViaje.sport_intent = null;
-    misionViaje.sport_event_date = null;
-    document.querySelectorAll('[data-q="mision_sport_intent"]').forEach(r => r.classList.remove('sel'));
-    document.getElementById('misionEventDateWrap').classList.remove('show');
-    document.getElementById('misionEventDate').value = '';
-  }
-}
-
-function selMisionSportIntent(row) {
-  const q = row.dataset.q;
-  document.querySelectorAll(`[data-q="${q}"]`).forEach(r => r.classList.remove('sel'));
-  row.classList.add('sel');
-  misionViaje.sport_intent = row.dataset.v;
-  const wrap = document.getElementById('misionEventDateWrap');
-  if (row.dataset.v === 'competir') {
-    wrap.classList.add('show');
-  } else {
-    wrap.classList.remove('show');
-    misionViaje.sport_event_date = null;
-    document.getElementById('misionEventDate').value = '';
-  }
-  updateProgress();
-}
-
-function onMisionEventDate() {
-  misionViaje.sport_event_date = document.getElementById('misionEventDate').value || null;
-  updateProgress();
+  sports.forEach((s) => {
+    if (misionViaje.activity_this_trip[s]) {
+      misionViaje.sport_this_trip[s] = misionViaje.activity_this_trip[s];
+    }
+  });
 }
 
 function selMisionLuxury(row) {
@@ -2689,7 +2902,10 @@ function toggle(btn) {
   document.querySelectorAll(`[data-q="${q}"].sel`).forEach(b => vals.push(b.dataset.v));
   answers[q] = vals;
   if (q === 'cultura') updateMuseumTypePanel();
-  if (q === 'act') syncActivityThisTrip();
+  if (q === 'act') {
+    syncActivityThisTrip();
+    syncSportsFromActs();
+  }
   updateProgress();
 }
 
@@ -2732,11 +2948,17 @@ function syncActivityThisTrip() {
     if (!selected.includes(k)) delete misionViaje.activity_this_trip[k];
   });
   renderActivityThisTripPanel();
+  syncSportsFromActs();
 }
 
 function renderActivityThisTripPanel() {
   const panel = document.getElementById('activityThisTripPanel');
   if (!panel) return;
+  // Profile / full DNA: interest-only. Trip mode: Sí/No/Depende on every selected card.
+  if (!isTripThisTripContext()) {
+    panel.innerHTML = '';
+    return;
+  }
   const acts = (answers.act || []).filter((a) => ACTIVITY_THIS_TRIP_KEYS.has(a));
   if (!acts.length) {
     panel.innerHTML = '';
@@ -2766,6 +2988,7 @@ function selActivityThisTrip(btn) {
   if (!act || !SPORT_THIS_TRIP_OPTS.includes(val)) return;
   if (!misionViaje.activity_this_trip) misionViaje.activity_this_trip = {};
   misionViaje.activity_this_trip[act] = val;
+  if (SPORT_ACT_KEYS.has(act)) misionViaje.sport_this_trip[act] = val;
   const row = btn.closest('.sport-trip-row');
   if (row) {
     row.querySelectorAll('.sport-trip-opt').forEach((b) => b.classList.toggle('sel', b.dataset.v === val));
@@ -2828,6 +3051,19 @@ function calcDuration() {
 }
 
 function updateProgress() {
+  if (window.__btConv?.active && !document.body.classList.contains('conv-closing')) {
+    const total = Math.max(1, window.__btConv.steps.length);
+    const idx = Math.min(window.__btConv.index + 1, total);
+    const pct = Math.min(100, Math.round((idx / total) * 100));
+    document.getElementById('pFill').style.width = pct + '%';
+    const pLabel = document.getElementById('pLabel');
+    const conv = L().ui?.conv || {};
+    pLabel.textContent = (conv.stepOf || '{current} de {total}')
+      .replace('{current}', String(idx))
+      .replace('{total}', String(total));
+    pLabel.dataset.i18nState = 'progress';
+    return;
+  }
   const filled = Object.keys(answers).filter(k => {
     const v = answers[k];
     if (Array.isArray(v)) return v.length > 0;
@@ -3100,12 +3336,15 @@ function normalizePlacesList(list) {
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
       if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
       const type = String(p.type || '').toLowerCase();
+      const noteRaw = typeof p.note === 'string' ? p.note.trim() : '';
+      const note = noteRaw ? noteRaw.slice(0, 160) : null;
       return {
         name: String(p.name || '').trim() || 'Lugar',
         day: Number.isFinite(Number(p.day)) ? Math.max(1, Math.round(Number(p.day))) : null,
         lat,
         lng,
         type: BT_PLACE_TYPES.has(type) ? type : 'sight',
+        ...(note ? { note } : {}),
       };
     })
     .filter(Boolean);
@@ -3327,9 +3566,12 @@ function renderItineraryMap(container, places) {
       const dayLabel = p.day != null
         ? `<div class="bt-map-day">${escapeHtml(dayPrefix)} ${escapeHtml(String(p.day))}</div>`
         : '';
+      const noteLabel = p.note
+        ? `<div class="bt-map-note">${escapeHtml(String(p.note))}</div>`
+        : '';
       const takeMe = buildTakeMeAnchorHtml(p.lat, p.lng);
       marker.bindPopup(
-        `<div class="bt-map-popup"><strong>${escapeHtml(p.name)}</strong>${dayLabel}${takeMe}</div>`
+        `<div class="bt-map-popup"><strong>${escapeHtml(p.name)}</strong>${dayLabel}${noteLabel}${takeMe}</div>`
       );
       bounds.push([p.lat, p.lng]);
     });
@@ -3454,6 +3696,7 @@ function applyTripShareLabels() {
   set('tscShare', t.share);
   set('tscDownload', t.download);
   set('tscCopyLink', t.copyLink);
+  set('tscShowInFeedLabel', t.showInFeed);
   set('tscCta', formatShareCopy((L().ui.shareableCard || {}).cta || '{site}'));
   const map = document.getElementById('tscMap');
   if (map && t.mapLabel) map.setAttribute('aria-label', t.mapLabel);
@@ -3697,9 +3940,18 @@ async function ensureTripShareLink(data) {
   if (data.shareUrl) return data.shareUrl;
   try {
     const article = document.querySelector('#itinerarySection .bitacora-article');
+    const showInFeed = !!document.getElementById('tscShowInFeed')?.checked;
+    const headers = { 'Content-Type': 'application/json' };
+    try {
+      const token =
+        typeof window.BTAuth?.getAccessToken === 'function'
+          ? await window.BTAuth.getAccessToken()
+          : null;
+      if (token) headers.Authorization = `Bearer ${token}`;
+    } catch (_) { /* guest share */ }
     const res = await fetch('/api/share-trip', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         destination: data.destination,
         duration_label: data.durationLabel,
@@ -3708,12 +3960,14 @@ async function ensureTripShareLink(data) {
         places: (data.places || []).slice(0, 30),
         itinerary_html: article ? article.innerHTML : lastItineraryHtml,
         lang: LANG.current,
+        show_in_feed: showInFeed,
       }),
     });
     const json = await res.json().catch(() => ({}));
     if (res.ok && json.url) {
       data.shareUrl = json.url;
       data.slug = json.slug || null;
+      data.showInFeed = showInFeed;
       lastTripShare = data;
       const copyBtn = document.getElementById('tscCopyLink');
       if (copyBtn) {
@@ -3827,7 +4081,7 @@ async function shareTripCard() {
 }
 
 function collectAllAnswers() {
-  const budgetVal = document.getElementById('budgetMax').value;
+  const budgetVal = document.getElementById('budgetMax')?.value;
   if (answers['trip_type'] === 'nomada') {
     if (budgetVal) answers['budgetMonthly'] = budgetVal;
     delete answers['budgetMax'];
@@ -3837,21 +4091,28 @@ function collectAllAnswers() {
     delete answers['budgetMonthly'];
     delete answers['budget_monthly_r'];
   }
-  const extra = document.getElementById('extra').value.trim().slice(0, 500);
+  const extraEl = document.getElementById('extra');
+  const extra = extraEl ? extraEl.value.trim().slice(0, 500) : '';
   if (extra) answers['extra'] = extra;
+  else delete answers['extra'];
   answers['currency'] = document.getElementById('currencySelect').value;
   answers['ui_lang'] = LANG.current;
+  syncSportsFromActs();
   const mv = {};
   if (misionViaje.focus.length) mv.focus = misionViaje.focus;
-  if (misionViaje.sport_mode) mv.sport_mode = misionViaje.sport_mode;
-  if (misionViaje.sports.length) mv.sports = misionViaje.sports;
+  // Derive sports from unified act list (compat with old mision_viaje.sports shape)
+  if (misionViaje.sports.length) {
+    mv.sports = [...misionViaje.sports];
+    mv.sport_mode = 'yes';
+  } else if (misionViaje.sport_mode === 'no') {
+    mv.sport_mode = 'no';
+  }
   const tripMap = {};
   (misionViaje.sports || []).forEach((s) => {
-    if (misionViaje.sport_this_trip[s]) tripMap[s] = misionViaje.sport_this_trip[s];
+    const v = misionViaje.activity_this_trip[s] || misionViaje.sport_this_trip[s];
+    if (v) tripMap[s] = v;
   });
   if (Object.keys(tripMap).length) mv.sport_this_trip = tripMap;
-  if (misionViaje.sport_intent) mv.sport_intent = misionViaje.sport_intent;
-  if (misionViaje.sport_event_date) mv.sport_event_date = misionViaje.sport_event_date;
   if (misionViaje.luxury_style) mv.luxury_style = misionViaje.luxury_style;
   if ((misionViaje.museum_type || []).length) mv.museum_type = [...misionViaje.museum_type];
   const actTrip = {};
@@ -3867,6 +4128,201 @@ function collectAllAnswers() {
 function escapeHtml(str) {
   if (str == null) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/** Parse day index from <p class="day-meta"><strong>Día N</strong>… */
+function parseDayMetaNumber(metaEl) {
+  if (!metaEl) return null;
+  const strong = metaEl.querySelector('strong');
+  const text = (strong?.textContent || metaEl.textContent || '').trim();
+  const m = text.match(/(\d{1,2})/);
+  if (!m) return null;
+  const n = Number(m[1]);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+function estimateFlightLegsFromAnswers(ans) {
+  const a = ans || {};
+  const origin = firstAnswerPlace(a.origin);
+  const dest = firstAnswerPlace(a.destinations);
+  const destCount = Array.isArray(a.destinations)
+    ? a.destinations.filter(Boolean).length
+    : dest
+      ? 1
+      : 0;
+  if (a.trip_type === 'nomada') {
+    return Math.max(destCount, origin || dest ? 1 : 0);
+  }
+  if (!origin && !dest) return 0;
+  const hasReturn = Boolean(String(a.dateTo || a.date_return || '').trim());
+  if (hasReturn && origin && dest) return 2;
+  return 1;
+}
+
+/**
+ * Qualitative planning-effort band from THIS itinerary's stops / hotels / flights.
+ * Avoids fake exact hour counts.
+ */
+function estimatePlanningEffort(places, ans) {
+  const list = Array.isArray(places) ? places : [];
+  const hotels = list.filter((p) => p.type === 'hotel').length;
+  const stops = list.filter((p) => p.type !== 'hotel').length;
+  const flights = estimateFlightLegsFromAnswers(ans);
+  const units = stops + hotels * 2 + flights * 2;
+  let band = 'medium';
+  if (units <= 6) band = 'light';
+  else if (units >= 15) band = 'heavy';
+  return { stops, hotels, flights, units, band };
+}
+
+function placesForFreePreview(places) {
+  const list = Array.isArray(places) ? places : [];
+  const tagged = list.filter((p) => p.day != null);
+  if (!tagged.length) return list;
+  return list.filter((p) => !p.day || p.day <= 1);
+}
+
+function lockIconSvg() {
+  return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V6zm7 13H7v-9h10v9zm-5-3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>`;
+}
+
+/**
+ * Keep Day 1 (title + meta + body) readable. Later days: title + day-meta visible,
+ * body blurred with lock. Anti-select / no context menu only on locked bodies.
+ */
+function applyItineraryDayPaywall(article) {
+  if (!article) return { lockedDays: 0, totalDays: 0 };
+  const metas = Array.from(article.querySelectorAll('p.day-meta'));
+  let lockedDays = 0;
+  let totalDays = 0;
+  const t = (L().ui && L().ui.previewPaywall) || {};
+
+  metas.forEach((meta, idx) => {
+    const dayNum = parseDayMetaNumber(meta) || idx + 1;
+    totalDays = Math.max(totalDays, dayNum);
+    if (dayNum <= 1) return;
+
+    const nodes = [];
+    let node = meta.nextSibling;
+    while (node) {
+      const next = node.nextSibling;
+      if (node.nodeType === 1) {
+        const el = node;
+        if (
+          el.matches('h2, h3, p.day-meta, .bt-day-locked, .section-card') ||
+          el.classList?.contains('bt-day-locked')
+        ) {
+          break;
+        }
+      }
+      if (node.nodeType === 3 && !String(node.textContent || '').trim()) {
+        node = next;
+        continue;
+      }
+      nodes.push(node);
+      node = next;
+    }
+    if (!nodes.length) return;
+
+    lockedDays += 1;
+    const wrap = document.createElement('div');
+    wrap.className = 'bt-day-locked';
+    wrap.setAttribute('data-bt-locked-day', String(dayNum));
+    wrap.setAttribute('aria-label', t.lockedAria || 'Contenido bloqueado');
+
+    const body = document.createElement('div');
+    body.className = 'bt-day-locked__body';
+    nodes.forEach((n) => body.appendChild(n));
+
+    const veil = document.createElement('div');
+    veil.className = 'bt-day-locked__veil';
+    veil.setAttribute('aria-hidden', 'true');
+    veil.innerHTML = `<span class="bt-day-locked__lock">${lockIconSvg()}</span><span class="bt-day-locked__label">${escapeHtml(t.lockedLabel || '')}</span>`;
+
+    wrap.appendChild(body);
+    wrap.appendChild(veil);
+    meta.parentNode.insertBefore(wrap, meta.nextSibling);
+  });
+
+  article.addEventListener('contextmenu', (ev) => {
+    if (ev.target && ev.target.closest && ev.target.closest('.bt-day-locked')) {
+      ev.preventDefault();
+    }
+  });
+
+  return { lockedDays, totalDays: totalDays || metas.length };
+}
+
+function formatPreviewTemplate(str, vars) {
+  return String(str || '').replace(/\{(\w+)\}/g, (_, k) =>
+    vars[k] != null ? String(vars[k]) : '',
+  );
+}
+
+function buildPreviewPaywallHtml(effort, lockedDays) {
+  const t = (L().ui && L().ui.previewPaywall) || {};
+  const band = t.effortBands && t.effortBands[effort.band] ? t.effortBands[effort.band] : {};
+  const diy = band.diy || t.effortFallback || '';
+  const withBt = band.withBt || '';
+  const meta = formatPreviewTemplate(t.effortMeta || '', {
+    stops: effort.stops,
+    hotels: effort.hotels,
+    flights: effort.flights,
+  });
+  const items = Array.isArray(t.includesItems) ? t.includesItems : [];
+  const list = items
+    .map((item) => `<li>${escapeHtml(item)}</li>`)
+    .join('');
+
+  const unlockBlock =
+    lockedDays > 0
+      ? `<div class="bt-preview-card bt-preview-unlock" id="btPreviewUnlock">
+        <div class="bt-preview-card__eyebrow">${escapeHtml(t.unlockEyebrow || '')}</div>
+        <h3 class="bt-preview-card__title">${escapeHtml(t.unlockTitle || '')}</h3>
+        <p class="bt-preview-card__body">${escapeHtml(t.unlockBody || '')}</p>
+        <button type="button" class="bt-preview-unlock__btn" id="btPreviewUnlockBtn">${escapeHtml(t.unlockCta || '')}</button>
+        <p class="bt-preview-unlock__note">${escapeHtml(t.unlockNote || '')}</p>
+        <p class="bt-preview-unlock__status" id="btPreviewUnlockStatus" role="status"></p>
+      </div>`
+      : '';
+
+  return `<aside class="bt-preview-paywall" id="btPreviewPaywall" data-locked-days="${lockedDays}">
+    <div class="bt-preview-card" id="btPreviewEffort">
+      <div class="bt-preview-card__eyebrow">${escapeHtml(t.effortEyebrow || '')}</div>
+      <h3 class="bt-preview-card__title">${escapeHtml(t.effortTitle || '')}</h3>
+      <p class="bt-preview-card__body">${escapeHtml(diy)}</p>
+      <p class="bt-preview-card__body">${escapeHtml(withBt)}</p>
+      <p class="bt-preview-card__meta">${escapeHtml(meta)}</p>
+    </div>
+    <div class="bt-preview-card" id="btPreviewIncludes">
+      <div class="bt-preview-card__eyebrow">${escapeHtml(t.includesEyebrow || '')}</div>
+      <h3 class="bt-preview-card__title">${escapeHtml(t.includesTitle || '')}</h3>
+      <ul class="bt-preview-checklist">${list}</ul>
+    </div>
+    ${unlockBlock}
+  </aside>`;
+}
+
+function bindPreviewPaywallUi(effort, lockedDays) {
+  const btn = document.getElementById('btPreviewUnlockBtn');
+  if (!btn) return;
+  const t = (L().ui && L().ui.previewPaywall) || {};
+  btn.addEventListener('click', () => {
+    btTrack('itinerary_paywall_unlock_click', {
+      locked_days: lockedDays,
+      stops: effort.stops,
+      hotels: effort.hotels,
+      flights: effort.flights,
+      band: effort.band,
+      placeholder: true,
+    });
+    const status = document.getElementById('btPreviewUnlockStatus');
+    if (status) {
+      status.textContent = t.unlockPlaceholder || '';
+      status.classList.add('show');
+    }
+    btn.disabled = true;
+  });
 }
 
 /** Group itinerary HTML into white section-cards by each h2 block. */
@@ -4227,7 +4683,9 @@ function renderItineraryHtml(html, serverArchetype) {
 
   const section = document.getElementById('itinerarySection');
   const header = L().ui.bitacora;
-  const mapHtml = places.length
+  const effort = estimatePlanningEffort(places, typeof answers !== 'undefined' ? answers : {});
+  const mapPlaces = placesForFreePreview(places);
+  const mapHtml = mapPlaces.length
     ? `<div class="bt-itinerary-map-wrap"><div class="bt-itinerary-map" id="btItineraryMap" role="img" aria-label="Mapa del itinerario"></div></div>`
     : '';
   section.innerHTML = `
@@ -4237,6 +4695,7 @@ function renderItineraryHtml(html, serverArchetype) {
     </div>
     ${mapHtml}
     <div class="bitacora-article">${wrapItineraryInCards(itineraryHtml)}</div>
+    <div id="btPreviewPaywallMount"></div>
     ${buildPostTripHtml()}`;
   section.classList.remove('is-loading');
   section.classList.add('show');
@@ -4247,9 +4706,26 @@ function renderItineraryHtml(html, serverArchetype) {
     injectTakeMeLinks(article, places);
   }
 
-  if (places.length) {
+  const paywallStats = article
+    ? applyItineraryDayPaywall(article)
+    : { lockedDays: 0, totalDays: 0 };
+  const paywallMount = document.getElementById('btPreviewPaywallMount');
+  if (paywallMount) {
+    paywallMount.outerHTML = buildPreviewPaywallHtml(effort, paywallStats.lockedDays);
+    bindPreviewPaywallUi(effort, paywallStats.lockedDays);
+    btTrack('itinerary_paywall_view', {
+      locked_days: paywallStats.lockedDays,
+      total_days: paywallStats.totalDays,
+      stops: effort.stops,
+      hotels: effort.hotels,
+      flights: effort.flights,
+      band: effort.band,
+    });
+  }
+
+  if (mapPlaces.length) {
     const mapEl = document.getElementById('btItineraryMap');
-    if (!renderItineraryMap(mapEl, places) && mapEl) {
+    if (!renderItineraryMap(mapEl, mapPlaces) && mapEl) {
       const wrap = mapEl.closest('.bt-itinerary-map-wrap');
       if (wrap) wrap.remove();
     }
@@ -4277,9 +4753,9 @@ function renderItineraryHtml(html, serverArchetype) {
   if (typeof enterResultsView === 'function') {
     enterResultsView();
   } else {
-    setTimeout(() => {
-      try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
-    }, 600);
+  setTimeout(() => {
+    try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { console.error('BeTacora scroll error:', e); }
+  }, 600);
   }
 }
 
@@ -4913,6 +5389,7 @@ function applyResultsViewLabels() {
  */
 function enterResultsView() {
   if (typeof closeTripPanel === 'function') closeTripPanel();
+  if (typeof stopConversationalFlow === 'function') stopConversationalFlow();
 
   document.body.classList.add('itinerary-ready');
 
@@ -4994,14 +5471,22 @@ function startNewTrip() {
       hero?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (e) { /* ignore */ }
   } else {
-    // Full flow: reopen questionnaire; jump to trip details
-    const trip = document.getElementById('tripSection') || document.querySelector('.container > .section');
-    try {
-      (trip || document.querySelector('.progress-wrap'))?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    } catch (e) { /* ignore */ }
+    // Full flow: reopen conversational questionnaire from the start of trip details or first step
+    if (typeof startConversationalFlow === 'function') {
+      // Jump near trip section index if possible, else reset
+      startConversationalFlow({ reset: true });
+      rebuildConvSteps();
+      const tripIdx = window.__btConv.steps.findIndex((el) => el.id === 'originBlock' || el.id === 'tripTypeBlock');
+      if (tripIdx >= 0) convShowStep(tripIdx);
+    } else {
+      const trip = document.getElementById('tripSection') || document.querySelector('.container > .section');
+      try {
+        (trip || document.querySelector('.progress-wrap'))?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      } catch (e) { /* ignore */ }
+    }
   }
 }
 
@@ -5184,14 +5669,57 @@ function prioritizeOptionButtons(selector, preferredValues) {
   });
 }
 
+function mergeLegacySportsIntoActList(list, profileAnswers) {
+  const out = [];
+  const seen = new Set();
+  const push = (v) => {
+    const key = String(v || '');
+    if (!key || seen.has(key)) return;
+    if (!ACTIVITY_THIS_TRIP_KEYS.has(key)) return;
+    seen.add(key);
+    out.push(key);
+  };
+  (Array.isArray(list) ? list : []).forEach(push);
+  const mv = profileAnswers?.mision_viaje;
+  if (mv && typeof mv === 'object') {
+    (Array.isArray(mv.sports) ? mv.sports : []).forEach(push);
+    const trip = mv.activity_this_trip || mv.sport_this_trip || {};
+    if (trip && typeof trip === 'object') {
+      Object.keys(trip).forEach(push);
+    }
+  }
+  return out;
+}
+
 function prioritizeActsFromDna() {
-  const dnaActs =
-    (savedTravelerProfile?.traveler_answers?.act) ||
-    answers.act ||
-    [];
+  const profileAnswers = savedTravelerProfile?.traveler_answers || {};
+  const dnaActs = mergeLegacySportsIntoActList(
+    profileAnswers.act || answers.act || [],
+    profileAnswers,
+  );
   prioritizeOptionButtons('#actOptionsGrid, #actBlock .grid4', dnaActs);
-  // Mission sports: show practiced activities first when the detail grid is open
-  prioritizeOptionButtons('#misionSportDetail .grid4', dnaActs);
+  if (!dnaActs.length) return;
+  const valid = new Set(
+    [...document.querySelectorAll('#actOptionsGrid [data-q="act"]')].map((b) => b.dataset.v),
+  );
+  const toSelect = dnaActs.filter((v) => valid.has(v));
+  if (!toSelect.length) return;
+  const set = new Set([...(answers.act || []).map(String), ...toSelect.map(String)]);
+  document.querySelectorAll('#actOptionsGrid [data-q="act"]').forEach((el) => {
+    el.classList.toggle('sel', set.has(String(el.dataset.v)));
+  });
+  answers.act = [...document.querySelectorAll('#actOptionsGrid [data-q="act"].sel')].map((b) => b.dataset.v);
+  // Restore this-trip answers from legacy maps when present
+  const mv = profileAnswers.mision_viaje;
+  if (mv && typeof mv === 'object') {
+    const legacy = { ...(mv.sport_this_trip || {}), ...(mv.activity_this_trip || {}) };
+    Object.entries(legacy).forEach(([k, v]) => {
+      if (set.has(k) && (v === 'yes' || v === 'no' || v === 'maybe')) {
+        misionViaje.activity_this_trip[k] = v;
+      }
+    });
+  }
+  syncActivityThisTrip();
 }
 
 function openTripPanel() {
@@ -5228,6 +5756,7 @@ function openTripPanel() {
   document.body.classList.add('qt-panel-open');
   applyQuickTripLabels();
   if (typeof initQuestionnaireIcons === 'function') initQuestionnaireIcons();
+  if (typeof startConversationalFlow === 'function') startConversationalFlow({ reset: true });
   updateProgress();
 }
 
@@ -5369,6 +5898,266 @@ async function initFlowMode() {
   }
 }
 
+/* ── Conversational presentation (one question at a time) ── */
+window.__btConv = { active: false, index: 0, steps: [], closing: false };
+
+function convCopy() {
+  return (L().ui && L().ui.conv) || {};
+}
+
+function convApplyLabels() {
+  const c = convCopy();
+  const back = document.getElementById('convBackBtn');
+  const next = document.getElementById('convNextBtn');
+  const kicker = document.getElementById('convClosingKicker');
+  const title = document.getElementById('convClosingTitle');
+  const sub = document.getElementById('convClosingSub');
+  const gen = document.getElementById('convClosingGenerate');
+  const rev = document.getElementById('convClosingBack');
+  if (back) back.textContent = c.back || 'Atrás';
+  if (next) next.textContent = c.next || 'Siguiente';
+  if (kicker) kicker.textContent = c.closingKicker || 'Bitácora lista';
+  if (title) title.textContent = c.closingTitle || 'Ya está — empezamos a trazar tu viaje';
+  if (sub) sub.textContent = c.closingSub || '';
+  if (gen) gen.textContent = (L().ui?.submit?.btn) || 'Generar mi Bitácora Inteligente';
+  if (rev) rev.textContent = c.closingBack || 'Revisar una respuesta';
+}
+
+function convStepRoot() {
+  if (window.__btFlowMode === 'trip' && document.body.classList.contains('qt-panel-open')) {
+    return document.getElementById('qtPanelBody') || document.querySelector('.container');
+  }
+  return document.querySelector('.container');
+}
+
+function convIsStepCandidate(el) {
+  if (!el || !el.classList.contains('qblock')) return false;
+  if (el.id === 'extraBlock') return false; // free-text removed from UX
+  if (el.id === 'misionLuxuryBlock') {
+    const br = answers['budget_r'];
+    if (!(br === 'high' || br === 'ilim')) return false;
+    if (el.style.display === 'none') return false;
+  }
+  if (window.__btFlowMode === 'trip' && el.classList.contains('qt-hide-in-trip')) return false;
+  const section = el.closest('.section');
+  if (section && section.classList.contains('flow-hidden')) return false;
+  // Discover: skip blocks that live only inside trip hero search when not in panel
+  return true;
+}
+
+function rebuildConvSteps() {
+  const root = convStepRoot();
+  if (!root) {
+    window.__btConv.steps = [];
+    return;
+  }
+  const nodes = [...root.querySelectorAll('.qblock')].filter(convIsStepCandidate);
+  // Preserve order in DOM
+  window.__btConv.steps = nodes;
+}
+
+function convPrimaryKeys(block) {
+  if (!block) return [];
+  const keys = new Set();
+  block.querySelectorAll('[data-q]').forEach((el) => {
+    if (el.closest('#museumTypePanel') && !el.closest('#museumTypePanel')?.classList.contains('show')) return;
+    if (el.closest('#misionSportDetail') && el.closest('#misionSportDetail')?.style.display === 'none') return;
+    if (el.closest('#activityThisTripPanel') && !el.closest('#activityThisTripPanel')?.innerHTML?.trim()) return;
+    if (el.closest('#sportThisTripPanel') && !el.closest('#sportThisTripPanel')?.innerHTML?.trim()) return;
+    keys.add(el.dataset.q);
+  });
+  return [...keys];
+}
+
+function convHasValue(q) {
+  if (q === 'energy') return answers.energy != null;
+  if (q === 'mision_focus') return (misionViaje.focus || []).length > 0;
+  if (q === 'mision_sport') return !!misionViaje.sport_mode;
+  if (q === 'mision_sports') return (misionViaje.sports || []).length > 0;
+  if (q === 'mision_luxury') return !!misionViaje.luxury_style;
+  if (q === 'museum_type') return (misionViaje.museum_type || []).length > 0;
+  const v = answers[q];
+  if (Array.isArray(v)) return v.length > 0;
+  return v !== undefined && v !== null && v !== '';
+}
+
+function convIsBlockAnswered(block) {
+  if (!block) return false;
+  if (block.id === 'datesBlock') {
+    return !!(answers.dur || (answers.dateFrom && answers.dateTo) || answers.duration_days);
+  }
+  if (block.id === 'originBlock') {
+    return typeof selectedOrigin !== 'undefined' && selectedOrigin.length > 0;
+  }
+  if (block.id === 'tripTypeBlock') {
+    const tt = answers.trip_type;
+    if (!tt) return false;
+    if (tt === 'sorpresa') return true;
+    if (tt === 'nomada') return !!answers.nomada_dur;
+    if (tt === 'zona') return Array.isArray(answers.zona) && answers.zona.length > 0;
+    if (tt === 'destino') {
+      return (typeof selectedDest !== 'undefined' && selectedDest.length > 0) || !!answers.dest;
+    }
+    return true;
+  }
+  if (block.id === 'budgetBlock') {
+    if (answers.trip_type === 'nomada') {
+      return !!(answers.budget_monthly_r || answers.budgetMonthly || document.getElementById('budgetMax')?.value);
+    }
+    return !!(answers.budget_r || answers.budgetMax || document.getElementById('budgetMax')?.value);
+  }
+  if (block.id === 'misionSportBlock') {
+    if (!misionViaje.sport_mode) return false;
+    if (misionViaje.sport_mode === 'no') return true;
+    if (!(misionViaje.sports || []).length) return false;
+    return true;
+  }
+  if (block.querySelector('#energySlider')) {
+    if (answers.energy == null) {
+      answers.energy = parseInt(document.getElementById('energySlider').value, 10) || 3;
+    }
+    return true;
+  }
+  const keys = convPrimaryKeys(block).filter((k) => {
+    // Nested optional follow-ups
+    if (k === 'museum_type') return false;
+    if (k === 'mision_sports') return false;
+    if (k === 'zona' || k === 'nomada_dur') return false;
+    if (k === 'dur') return false;
+    if (k === 'budget_r' || k === 'budget_monthly_r') return false;
+    return true;
+  });
+  if (!keys.length) {
+    // Fallback: any selected control in block
+    return !!block.querySelector('.sel');
+  }
+  // Multi-question blocks (e.g. trip type) already handled; for normal blocks require all primary keys
+  return keys.every((k) => convHasValue(k));
+}
+
+function convShowStep(i) {
+  rebuildConvSteps();
+  const steps = window.__btConv.steps;
+  if (!steps.length) return;
+  window.__btConv.index = Math.max(0, Math.min(i, steps.length - 1));
+  document.querySelectorAll('.qblock.conv-current').forEach((el) => el.classList.remove('conv-current'));
+  document.querySelectorAll('.section.conv-section-active').forEach((el) => el.classList.remove('conv-section-active'));
+  const block = steps[window.__btConv.index];
+  if (!block) return;
+  block.classList.add('conv-current');
+  const section = block.closest('.section');
+  if (section) section.classList.add('conv-section-active');
+  const back = document.getElementById('convBackBtn');
+  const next = document.getElementById('convNextBtn');
+  const hint = document.getElementById('convNavHint');
+  const c = convCopy();
+  if (back) back.disabled = window.__btConv.index <= 0;
+  if (next) {
+    const last = window.__btConv.index >= steps.length - 1;
+    next.textContent = last ? (c.finish || c.next || 'Siguiente') : (c.next || 'Siguiente');
+  }
+  if (hint) hint.textContent = '';
+  try {
+    block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) { /* ignore */ }
+  updateProgress();
+}
+
+function startConversationalFlow(opts = {}) {
+  if (document.body.classList.contains('itinerary-ready')) return;
+  window.__btConv.active = true;
+  window.__btConv.closing = false;
+  document.body.classList.add('conv-active');
+  document.body.classList.remove('conv-closing');
+  const closing = document.getElementById('convClosingScreen');
+  if (closing) closing.hidden = true;
+  const nav = document.getElementById('convNav');
+  if (nav) nav.hidden = false;
+  convApplyLabels();
+  rebuildConvSteps();
+  if (opts.reset || window.__btConv.index == null) window.__btConv.index = 0;
+  // Clamp index after rebuild
+  if (window.__btConv.index >= window.__btConv.steps.length) {
+    window.__btConv.index = Math.max(0, window.__btConv.steps.length - 1);
+  }
+  convShowStep(window.__btConv.index);
+}
+
+function convNext() {
+  if (!window.__btConv.active || window.__btConv.closing) return;
+  rebuildConvSteps();
+  const steps = window.__btConv.steps;
+  const block = steps[window.__btConv.index];
+  const hint = document.getElementById('convNavHint');
+  if (!convIsBlockAnswered(block)) {
+    if (hint) hint.textContent = convCopy().needAnswer || 'Elige una opción para continuar';
+    return;
+  }
+  if (hint) hint.textContent = '';
+  // Luxury block may appear after budget — rebuild before advancing
+  rebuildConvSteps();
+  const nextIdx = window.__btConv.index + 1;
+  if (nextIdx >= window.__btConv.steps.length) {
+    convEnterClosing();
+    return;
+  }
+  convShowStep(nextIdx);
+}
+
+function convBack() {
+  if (!window.__btConv.active) return;
+  if (window.__btConv.closing) {
+    convExitClosing();
+    return;
+  }
+  if (window.__btConv.index <= 0) return;
+  convShowStep(window.__btConv.index - 1);
+}
+
+function convEnterClosing() {
+  window.__btConv.closing = true;
+  document.body.classList.add('conv-active', 'conv-closing');
+  const closing = document.getElementById('convClosingScreen');
+  if (closing) closing.hidden = false;
+  const nav = document.getElementById('convNav');
+  if (nav) nav.hidden = true;
+  convApplyLabels();
+  const pFill = document.getElementById('pFill');
+  const pLabel = document.getElementById('pLabel');
+  if (pFill) pFill.style.width = '100%';
+  if (pLabel) {
+    pLabel.textContent = convCopy().ready || getProgressLabel(100);
+    pLabel.dataset.i18nState = 'ready';
+  }
+  try {
+    closing?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) { /* ignore */ }
+}
+
+function convExitClosing() {
+  window.__btConv.closing = false;
+  document.body.classList.remove('conv-closing');
+  const closing = document.getElementById('convClosingScreen');
+  if (closing) closing.hidden = true;
+  const nav = document.getElementById('convNav');
+  if (nav) nav.hidden = false;
+  rebuildConvSteps();
+  const last = Math.max(0, window.__btConv.steps.length - 1);
+  convShowStep(last);
+}
+
+function stopConversationalFlow() {
+  window.__btConv.active = false;
+  window.__btConv.closing = false;
+  document.body.classList.remove('conv-active', 'conv-closing');
+  document.querySelectorAll('.qblock.conv-current').forEach((el) => el.classList.remove('conv-current'));
+  document.querySelectorAll('.section.conv-section-active').forEach((el) => el.classList.remove('conv-section-active'));
+  const closing = document.getElementById('convClosingScreen');
+  if (closing) closing.hidden = true;
+  const nav = document.getElementById('convNav');
+  if (nav) nav.hidden = true;
+}
+
 try {
   const dateFrom = document.getElementById('dateFrom');
   if (dateFrom) dateFrom.min = new Date().toISOString().split('T')[0];
@@ -5376,7 +6165,11 @@ try {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      try { LANG.set(btn.dataset.lang); } catch (err) { console.error('BeTacora lang switch error:', err); }
+      try {
+        LANG.set(btn.dataset.lang);
+        if (typeof convApplyLabels === 'function') convApplyLabels();
+        if (window.__btConv?.active) updateProgress();
+      } catch (err) { console.error('BeTacora lang switch error:', err); }
     });
   });
 
@@ -5392,7 +6185,16 @@ try {
   if (typeof wireResultsToolbar === 'function') wireResultsToolbar();
   updateSlider();
   updateProgress();
-  initFlowMode();
+  initFlowMode().then(() => {
+    // Discover: start conversational immediately. Trip: wait until panel opens.
+    if (window.__btFlowMode !== 'trip' && !document.body.classList.contains('itinerary-ready')) {
+      startConversationalFlow({ reset: true });
+    }
+  }).catch(() => {
+    if (!document.body.classList.contains('qt-active') && !document.body.classList.contains('itinerary-ready')) {
+      startConversationalFlow({ reset: true });
+    }
+  });
 } catch (e) {
   console.error('BeTacora init error:', e);
 }

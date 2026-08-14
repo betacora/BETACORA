@@ -81,22 +81,28 @@ const QV_ICONS = {
   "cultura:improv": "compass",
   "act:trekking": "footprints",
   "act:buceo": "fish",
-  "act:surf": "wind",
+  "act:surf": "waves",
+  "act:kitesurf": "wind-arrow-down",
+  "act:kayak": "kayak",
   "act:escalada": "mountain",
   "act:ciclismo": "bike",
-  "act:kayak": "sailboat",
+  "act:running": "sport-shoe",
+  "act:esqui": "snowflake",
+  "act:golf": "flag",
+  "act:tennis": "volleyball",
+  "act:padel": "square-activity",
+  "act:parapente": "bird",
+  "act:caballo": "chess-knight",
   "act:yoga": "flower-2",
   "act:gym": "dumbbell",
   "act:safari": "binoculars",
-  "act:esqui": "snowflake",
-  "act:parapente": "parachute",
   "act:playa": "umbrella",
   "act:globo": "balloon",
-  "act:caballo": "horse",
   "act:foto_t": "camera",
   "act:cocina_c": "chef-hat",
   "act:urbano": "building-2",
   "act:nightlife": "moon",
+  "act:otro": "sparkles",
   "museum_type:arte": "palette",
   "museum_type:historia": "scroll",
   "museum_type:contemporaneo": "shapes",
@@ -104,7 +110,7 @@ const QV_ICONS = {
   "museum_type:cultural": "globe",
   "museum_type:bellas_artes": "frame",
   "mision_focus:urbano": "building-2",
-  "mision_focus:naturaleza": "mountains",
+  "mision_focus:naturaleza": "mountain",
   "mision_focus:cultura": "palette",
   "mision_focus:gastro": "utensils",
   "mision_focus:playa": "umbrella",
@@ -113,17 +119,18 @@ const QV_ICONS = {
   "mision_focus:unico": "sparkles",
   "mision_sport:no": "ban",
   "mision_sport:yes": "target",
-  "mision_sports:surf": "wind",
-  "mision_sports:kitesurf": "wind",
+  "mision_sports:surf": "waves",
+  "mision_sports:golf": "flag",
+  "mision_sports:tennis": "volleyball",
+  "mision_sports:padel": "square-activity",
+  "mision_sports:kitesurf": "wind-arrow-down",
   "mision_sports:buceo": "fish",
   "mision_sports:trekking": "footprints",
   "mision_sports:escalada": "mountain",
   "mision_sports:esqui": "snowflake",
   "mision_sports:ciclismo": "bike",
-  "mision_sports:running": "person-standing",
+  "mision_sports:running": "sport-shoe",
   "mision_sports:otro": "sparkles",
-  "mision_sport_intent:competir": "flag",
-  "mision_sport_intent:placer": "waves",
   "mision_luxury:comodidad": "bed-double",
   "mision_luxury:discretas": "wine",
   "mision_luxury:reconocidos": "camera",
@@ -176,26 +183,72 @@ const QV_ICONS = {
   "splurge:optimizo": "puzzle",
 };
 
-function iconForElement(span) {
-  const parent = span.closest("[data-q][data-v]");
-  if (parent) {
-    const key = `${parent.dataset.q}:${parent.dataset.v}`;
-    if (QV_ICONS[key]) return QV_ICONS[key];
+function toPascalCaseIcon(name) {
+  return String(name || "")
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+}
+
+/** Resolve a Lucide kebab name that exists in the loaded bundle; never return empty. */
+function resolveLucideIconName(preferred, fallbacks) {
+  const candidates = [preferred, ...(fallbacks || []), "sparkles", "circle"];
+  const icons = window.lucide && window.lucide.icons;
+  for (const name of candidates) {
+    if (!name) continue;
+    if (!icons) return name;
+    if (icons[toPascalCaseIcon(name)]) return name;
   }
   return "circle";
 }
 
+function iconForElement(span) {
+  const parent = span.closest("[data-q][data-v]");
+  if (parent) {
+    const key = `${parent.dataset.q}:${parent.dataset.v}`;
+    if (QV_ICONS[key]) {
+      return resolveLucideIconName(QV_ICONS[key], ["sparkles"]);
+    }
+  }
+  return resolveLucideIconName("sparkles");
+}
+
+function paintIconSpan(span) {
+  const name = iconForElement(span);
+  span.className = span.classList.contains("search-icon")
+    ? "search-icon q-icon"
+    : "q-icon";
+  span.removeAttribute("data-lucide");
+  span.innerHTML = `<i data-lucide="${name}"></i>`;
+}
+
 function initQuestionnaireIcons(root) {
   const scope = root || document;
-  scope.querySelectorAll(".em, .em2").forEach((span) => {
-    const name = iconForElement(span);
-    span.className = "q-icon";
-    span.removeAttribute("data-lucide");
-    span.innerHTML = `<i data-lucide="${name}"></i>`;
+  // Re-paint both first-run emoji shells and already-converted .q-icon spans
+  scope.querySelectorAll(".em, .em2, .q-icon").forEach((span) => {
+    if (span.classList.contains("search-icon")) return;
+    paintIconSpan(span);
   });
   scope.querySelectorAll(".search-icon").forEach((el) => {
     el.className = "search-icon q-icon";
-    el.innerHTML = '<i data-lucide="search"></i>';
+    el.innerHTML = `<i data-lucide="${resolveLucideIconName("search")}"></i>`;
+  });
+  if (window.lucide && typeof window.lucide.createIcons === "function") {
+    window.lucide.createIcons({ attrs: { "stroke-width": 1.5 } });
+  }
+  // Safety: any act option still missing an SVG gets a sparkles icon
+  scope.querySelectorAll('#actOptionsGrid [data-q="act"]').forEach((btn) => {
+    if (btn.querySelector("svg")) return;
+    let span = btn.querySelector(".q-icon, .em");
+    if (!span) {
+      span = document.createElement("span");
+      span.className = "q-icon";
+      btn.prepend(span);
+    }
+    const key = `act:${btn.dataset.v}`;
+    const name = resolveLucideIconName(QV_ICONS[key] || "sparkles");
+    span.className = "q-icon";
+    span.innerHTML = `<i data-lucide="${name}"></i>`;
   });
   if (window.lucide && typeof window.lucide.createIcons === "function") {
     window.lucide.createIcons({ attrs: { "stroke-width": 1.5 } });

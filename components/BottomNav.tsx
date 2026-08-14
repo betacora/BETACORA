@@ -2,41 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Compass, Home, Map, UserRound, BookOpen } from "lucide-react";
-import { NAV_COPY, type AppLang, type NavTabId } from "@/lib/lang";
-
-const TABS: {
-  id: NavTabId;
-  href: string;
-  Icon: typeof Home;
-}[] = [
-  { id: "inicio", href: "/inicio", Icon: Home },
-  { id: "explorar", href: "/explorar", Icon: Compass },
-  { id: "guia", href: "/guia", Icon: BookOpen },
-  { id: "viajes", href: "/viajes", Icon: Map },
-  { id: "perfil", href: "/perfil", Icon: UserRound },
-];
+import { APP_NAV_TABS, isAppNavActive } from "@/components/appNav";
+import { NAV_COPY, type AppLang } from "@/lib/lang";
 
 type Props = {
   lang: AppLang;
 };
 
+/** Mobile-only bottom tabs. Hidden from md (768px) upward — desktop uses AppSidebar. */
 export function BottomNav({ lang }: Props) {
   const pathname = usePathname() || "";
   const copy = NAV_COPY[lang];
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-50 border-t border-[#E5E5E5] bg-[#FFFFFF]/80 backdrop-blur-md"
+      className="fixed bottom-0 inset-x-0 z-50 border-t border-[#E5E5E5] bg-[#FFFFFF]/80 backdrop-blur-md md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Main"
     >
       <ul className="mx-auto flex max-w-lg items-stretch justify-between px-1 pt-1.5 pb-1">
-        {TABS.map(({ id, href, Icon }) => {
-          const active =
-            pathname === href ||
-            pathname.startsWith(`${href}/`) ||
-            (id === "explorar" && pathname.startsWith("/questionnaire"));
+        {APP_NAV_TABS.map(({ id, href, Icon }) => {
+          const active = isAppNavActive(pathname, id, href);
           return (
             <li key={id} className="flex-1 min-w-0">
               <Link

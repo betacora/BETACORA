@@ -1,21 +1,33 @@
 /**
- * Google Places API (Legacy) — Text Search (server-only).
+ * Google Places — Text Search (server-only).
  *
- * Uses the classic Places Text Search endpoint so it works with API keys that
- * are restricted to "Places API" (not only "Places API (New)").
+ * Tries Places API (New) `places:searchText` first, then Legacy Text Search if
+ * Google rejects the key for New. That covers keys restricted to either
+ * "Places API (New)" or classic "Places API".
  *
- * Auth: `key` query param on the *outbound server* request only — never sent
- * to the browser. Errors are scrubbed before returning JSON to the client.
- *
- * Docs: https://developers.google.com/maps/documentation/places/web-service/search-text
+ * The API key is used only on outbound server requests (header for New, query
+ * param for Legacy) and is scrubbed from any client-facing JSON.
  *
  * Prefer Text Search over Autocomplete for Descubre: one call returns places with
  * name/address/rating/coords; Autocomplete only yields predictions and needs a
  * second Place Details round-trip for the same data.
  */
 
-const TEXT_SEARCH_URL =
+const SEARCH_TEXT_NEW_URL =
+  "https://places.googleapis.com/v1/places:searchText";
+const SEARCH_TEXT_LEGACY_URL =
   "https://maps.googleapis.com/maps/api/place/textsearch/json";
+
+const SEARCH_FIELD_MASK = [
+  "places.id",
+  "places.displayName",
+  "places.formattedAddress",
+  "places.location",
+  "places.rating",
+  "places.userRatingCount",
+  "places.types",
+  "places.googleMapsUri",
+].join(",");
 
 const DEFAULT_LIMIT = 8;
 const MAX_LIMIT = 15;
@@ -23,7 +35,7 @@ const QUERY_MAX_LEN = 200;
 
 export type PlacesSearchInput = {
   query: string;
-  /** Places `language` param, e.g. "es", "en", "fr" */
+  /** BCP-47 / Places language code, e.g. "es", "en", "fr" */
   language?: string | null;
   /** Cap results (default 8, max 15) */
   limit?: number;
@@ -46,6 +58,8 @@ export type PlacesSearchResponse = {
   language: string | null;
   count: number;
   places: PlaceSearchResult[];
+  /** Which Google endpoint produced the results */
+  provider: "places_new" | "places_legacy";
 };
 
 export class PlacesConfigError extends Error {
@@ -102,26 +116,8 @@ function clampLimit(raw: number | undefined): number {
   return Math.min(MAX_LIMIT, Math.max(1, Math.floor(raw)));
 }
 
-type GoogleLegacyPlace = {
-  place_id?: string;
-  name?: string;
-  formatted_address?: string;
-  geometry?: { location?: { lat?: number; lng?: number } };
-  rating?: number;
-  user_ratings_total?: number;
-  types?: string[];
-};
-
-type GoogleLegacyTextSearchResponse = {
-  status?: string;
-  error_message?: string;
-  results?: GoogleLegacyPlace[];
-};
-
 /**
  * Strip anything that could echo the API key from upstream error text.
- * Legacy Text Search puts `key=` in the request URL; Google error bodies must
- * never be forwarded raw to the browser.
  */
 export function scrubSecrets(text: string, apiKey?: string): string {
   let out = text;
@@ -137,9 +133,16 @@ export function scrubSecrets(text: string, apiKey?: string): string {
   return out;
 }
 
-function mapsUrlForPlace(placeId: string | null, name: string): string | null {
+function isAuthRejection(message: string): boolean {
+  return /not authorized|blocked|REQUEST_DENIED|API_KEY_HTTP_REFERRER_BLOCKED|API key/i.test(
+    message,
+  );
+}
+
+function mapsUrlForPlaceId(placeId: string | null, name: string): string | null {
   if (placeId) {
-    return `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`;
+    const id = placeId.replace(/^places\//, "");
+    return `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(id)}`;
   }
   if (name) {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
@@ -147,7 +150,66 @@ function mapsUrlForPlace(placeId: string | null, name: string): string | null {
   return null;
 }
 
-function mapPlace(raw: GoogleLegacyPlace): PlaceSearchResult | null {
+type NewPlace = {
+  id?: string;
+  name?: string;
+  displayName?: { text?: string };
+  formattedAddress?: string;
+  location?: { latitude?: number; longitude?: number };
+  rating?: number;
+  userRatingCount?: number;
+  types?: string[];
+  googleMapsUri?: string;
+};
+
+type LegacyPlace = {
+  place_id?: string;
+  name?: string;
+  formatted_address?: string;
+  geometry?: { location?: { lat?: number; lng?: number } };
+  rating?: number;
+  user_ratings_total?: number;
+  types?: string[];
+};
+
+function mapNewPlace(raw: NewPlace): PlaceSearchResult | null {
+  const id = typeof raw.id === "string" && raw.id.trim() ? raw.id.trim() : "";
+  const name =
+    (typeof raw.displayName?.text === "string" && raw.displayName.text.trim()) ||
+    (typeof raw.name === "string" && raw.name.trim()) ||
+    "";
+  if (!id && !name) return null;
+  const lat = raw.location?.latitude;
+  const lng = raw.location?.longitude;
+  return {
+    id: id || name,
+    name: name || id,
+    address:
+      typeof raw.formattedAddress === "string" && raw.formattedAddress.trim()
+        ? raw.formattedAddress.trim()
+        : null,
+    lat: typeof lat === "number" && Number.isFinite(lat) ? lat : null,
+    lng: typeof lng === "number" && Number.isFinite(lng) ? lng : null,
+    rating:
+      typeof raw.rating === "number" && Number.isFinite(raw.rating)
+        ? raw.rating
+        : null,
+    ratingCount:
+      typeof raw.userRatingCount === "number" &&
+      Number.isFinite(raw.userRatingCount)
+        ? raw.userRatingCount
+        : null,
+    types: Array.isArray(raw.types)
+      ? raw.types.filter((t): t is string => typeof t === "string").slice(0, 8)
+      : [],
+    mapsUrl:
+      typeof raw.googleMapsUri === "string" && raw.googleMapsUri.trim()
+        ? raw.googleMapsUri.trim()
+        : mapsUrlForPlaceId(id || null, name),
+  };
+}
+
+function mapLegacyPlace(raw: LegacyPlace): PlaceSearchResult | null {
   const id =
     typeof raw.place_id === "string" && raw.place_id.trim()
       ? raw.place_id.trim()
@@ -155,10 +217,8 @@ function mapPlace(raw: GoogleLegacyPlace): PlaceSearchResult | null {
   const name =
     typeof raw.name === "string" && raw.name.trim() ? raw.name.trim() : "";
   if (!id && !name) return null;
-
   const lat = raw.geometry?.location?.lat;
   const lng = raw.geometry?.location?.lng;
-
   return {
     id: id || name,
     name: name || id,
@@ -180,26 +240,83 @@ function mapPlace(raw: GoogleLegacyPlace): PlaceSearchResult | null {
     types: Array.isArray(raw.types)
       ? raw.types.filter((t): t is string => typeof t === "string").slice(0, 8)
       : [],
-    mapsUrl: mapsUrlForPlace(id || null, name),
+    mapsUrl: mapsUrlForPlaceId(id || null, name),
   };
 }
 
-/**
- * Text Search (Legacy). API key is used only on the outbound server request.
- * Returned objects are a sanitized subset — never include the raw Google payload.
- */
-export async function searchPlacesText(
-  input: PlacesSearchInput,
-): Promise<PlacesSearchResponse> {
-  const apiKey = requireApiKey();
-  const query = normalizeQuery(input.query);
-  const limit = clampLimit(input.limit);
-  const language =
-    typeof input.language === "string" && input.language.trim()
-      ? input.language.trim().slice(0, 16)
-      : null;
+async function searchNew(
+  apiKey: string,
+  query: string,
+  language: string | null,
+  limit: number,
+): Promise<PlaceSearchResult[]> {
+  const body: Record<string, unknown> = {
+    textQuery: query,
+    pageSize: limit,
+  };
+  if (language) body.languageCode = language;
 
-  const url = new URL(TEXT_SEARCH_URL);
+  let res: Response;
+  try {
+    res = await fetch(SEARCH_TEXT_NEW_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": SEARCH_FIELD_MASK,
+      },
+      body: JSON.stringify(body),
+      cache: "no-store",
+    });
+  } catch (err) {
+    throw new PlacesUpstreamError(
+      scrubSecrets(
+        err instanceof Error ? err.message : "Places network error",
+        apiKey,
+      ),
+      502,
+    );
+  }
+
+  const rawText = await res.text();
+  let data: {
+    places?: NewPlace[];
+    error?: { message?: string };
+  } = {};
+  try {
+    data = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    throw new PlacesUpstreamError(
+      `Places API (New) returned non-JSON (HTTP ${res.status})`,
+      502,
+    );
+  }
+
+  if (!res.ok) {
+    throw new PlacesUpstreamError(
+      scrubSecrets(
+        data.error?.message ||
+          rawText.slice(0, 240) ||
+          `Places API (New) HTTP ${res.status}`,
+        apiKey,
+      ),
+      502,
+    );
+  }
+
+  return (Array.isArray(data.places) ? data.places : [])
+    .map(mapNewPlace)
+    .filter((p): p is PlaceSearchResult => p !== null)
+    .slice(0, limit);
+}
+
+async function searchLegacy(
+  apiKey: string,
+  query: string,
+  language: string | null,
+  limit: number,
+): Promise<PlaceSearchResult[]> {
+  const url = new URL(SEARCH_TEXT_LEGACY_URL);
   url.searchParams.set("query", query);
   url.searchParams.set("key", apiKey);
   if (language) url.searchParams.set("language", language);
@@ -212,30 +329,36 @@ export async function searchPlacesText(
       cache: "no-store",
     });
   } catch (err) {
-    const msg = scrubSecrets(
-      err instanceof Error ? err.message : "Places network error",
-      apiKey,
+    throw new PlacesUpstreamError(
+      scrubSecrets(
+        err instanceof Error ? err.message : "Places network error",
+        apiKey,
+      ),
+      502,
     );
-    throw new PlacesUpstreamError(msg, 502);
   }
 
   const rawText = await res.text();
-  const safeText = scrubSecrets(rawText, apiKey);
-
-  let data: GoogleLegacyTextSearchResponse = {};
+  let data: {
+    status?: string;
+    error_message?: string;
+    results?: LegacyPlace[];
+  } = {};
   try {
-    data = rawText ? (JSON.parse(rawText) as GoogleLegacyTextSearchResponse) : {};
+    data = rawText ? JSON.parse(rawText) : {};
   } catch {
     throw new PlacesUpstreamError(
-      `Places API returned non-JSON (HTTP ${res.status})`,
-      res.status || 502,
+      `Places API (Legacy) returned non-JSON (HTTP ${res.status})`,
+      502,
     );
   }
 
   if (!res.ok) {
     throw new PlacesUpstreamError(
       scrubSecrets(
-        data.error_message || safeText.slice(0, 240) || `Places API HTTP ${res.status}`,
+        data.error_message ||
+          rawText.slice(0, 240) ||
+          `Places API (Legacy) HTTP ${res.status}`,
         apiKey,
       ),
       502,
@@ -244,22 +367,59 @@ export async function searchPlacesText(
 
   const status = (data.status || "").toUpperCase();
   if (status && status !== "OK" && status !== "ZERO_RESULTS") {
-    const upstreamMsg = scrubSecrets(
-      data.error_message || `Places API status: ${status}`,
-      apiKey,
+    throw new PlacesUpstreamError(
+      scrubSecrets(
+        data.error_message || `Places API (Legacy) status: ${status}`,
+        apiKey,
+      ),
+      502,
     );
-    throw new PlacesUpstreamError(upstreamMsg, 502);
   }
 
-  const places = (Array.isArray(data.results) ? data.results : [])
-    .map(mapPlace)
+  return (Array.isArray(data.results) ? data.results : [])
+    .map(mapLegacyPlace)
     .filter((p): p is PlaceSearchResult => p !== null)
     .slice(0, limit);
+}
 
+/**
+ * Text Search with New→Legacy fallback. API key never leaves the server.
+ */
+export async function searchPlacesText(
+  input: PlacesSearchInput,
+): Promise<PlacesSearchResponse> {
+  const apiKey = requireApiKey();
+  const query = normalizeQuery(input.query);
+  const limit = clampLimit(input.limit);
+  const language =
+    typeof input.language === "string" && input.language.trim()
+      ? input.language.trim().slice(0, 16)
+      : null;
+
+  try {
+    const places = await searchNew(apiKey, query, language, limit);
+    return {
+      query,
+      language,
+      count: places.length,
+      places,
+      provider: "places_new",
+    };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!isAuthRejection(msg)) throw err;
+    console.warn(
+      "[places] New Text Search rejected by key restrictions — trying Legacy",
+      scrubSecrets(msg, apiKey).slice(0, 160),
+    );
+  }
+
+  const places = await searchLegacy(apiKey, query, language, limit);
   return {
     query,
     language,
     count: places.length,
     places,
+    provider: "places_legacy",
   };
 }

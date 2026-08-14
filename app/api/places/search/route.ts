@@ -89,9 +89,10 @@ export async function GET(req: NextRequest) {
 
     const payload = {
       ok: true as const,
-      note: "Places Text Search (Legacy) — server proxy only. Attribution required when shown in UI (Piece 2+).",
+      note: "Places Text Search — server proxy only (New, with Legacy fallback). Attribution required when shown in UI (Piece 2+).",
       query: result.query,
       language: result.language,
+      provider: result.provider,
       count: result.count,
       places: result.places,
     };
@@ -135,7 +136,7 @@ function errorResponse(error: unknown) {
         error: message,
         code: "places_upstream",
         hint: unauthorized
-          ? "GOOGLE_PLACES_API_KEY está configurada, pero Google rechaza la llamada. En Cloud Console: (1) habilita «Places API» (Legacy) en el proyecto; (2) en la clave, API restrictions debe incluir «Places API»; (3) Application restrictions no puede ser HTTP referrers — para uso server-side en Vercel usa None o IPs."
+          ? "GOOGLE_PLACES_API_KEY está configurada, pero Google rechaza New y Legacy. En Cloud Console: (1) habilita «Places API (New)» y/o «Places API»; (2) API restrictions de la clave debe incluir al menos una; (3) Application restrictions no puede ser HTTP referrers — para Vercel (server) usa None o IPs."
           : undefined,
       },
       { status: 502, headers: { "Cache-Control": "no-store" } },

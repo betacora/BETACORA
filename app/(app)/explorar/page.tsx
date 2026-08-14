@@ -71,7 +71,7 @@ function ExplorarInner() {
   if (authLoading || !ready) {
     return (
       <main
-        className="bg-[#FFFFFF] flex items-center justify-center"
+        className="bg-[#F9FAFB] flex items-center justify-center"
         style={{
           position: "fixed",
           top: 0,
@@ -81,14 +81,14 @@ function ExplorarInner() {
         }}
         aria-busy="true"
       >
-        <p className="text-sm text-[#6B6B6B] m-0">…</p>
+        <p className="text-sm text-[#6B7280] m-0">…</p>
       </main>
     );
   }
 
   return (
     <main
-      className="bg-[#FFFFFF]"
+      className="bg-[#F9FAFB]"
       style={{
         position: "fixed",
         top: 0,
@@ -117,7 +117,7 @@ export default function ExplorarPage() {
     <Suspense
       fallback={
         <main
-          className="bg-[#FFFFFF]"
+          className="bg-[#F9FAFB]"
           style={{
             position: "fixed",
             top: 0,

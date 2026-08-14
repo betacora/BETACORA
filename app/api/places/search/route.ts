@@ -127,8 +127,17 @@ function errorResponse(error: unknown) {
   }
 
   if (error instanceof PlacesUpstreamError) {
+    const unauthorized =
+      /not authorized|blocked|REQUEST_DENIED|API key/i.test(message);
     return NextResponse.json(
-      { ok: false, error: message, code: "places_upstream" },
+      {
+        ok: false,
+        error: message,
+        code: "places_upstream",
+        hint: unauthorized
+          ? "GOOGLE_PLACES_API_KEY está configurada, pero Google rechaza la llamada. En Cloud Console: (1) habilita «Places API» (Legacy) en el proyecto; (2) en la clave, API restrictions debe incluir «Places API»; (3) Application restrictions no puede ser HTTP referrers — para uso server-side en Vercel usa None o IPs."
+          : undefined,
+      },
       { status: 502, headers: { "Cache-Control": "no-store" } },
     );
   }

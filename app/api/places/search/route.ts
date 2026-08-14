@@ -31,11 +31,12 @@ function missingKeyResponse(): NextResponse {
 /**
  * GET /api/places/search?q=...&lang=es&limit=8
  *
- * Server-only Google Places Text Search (New).
+ * Server-only Google Places Text Search (Legacy — matches keys restricted to
+ * "Places API", not only "Places API (New)").
  * Rate limits are fail-closed (same pattern as generate-itinerary / assistant-chat):
  * if Upstash is missing or errors, the request is blocked — never burn Places quota.
  *
- * GOOGLE_PLACES_API_KEY is read only on the server (outbound header to Google) and
+ * GOOGLE_PLACES_API_KEY is read only on the server (outbound request to Google) and
  * never included in the JSON body returned to the browser.
  */
 export async function GET(req: NextRequest) {
@@ -88,7 +89,7 @@ export async function GET(req: NextRequest) {
 
     const payload = {
       ok: true as const,
-      note: "Places Text Search (New) — server proxy only. Attribution required when shown in UI (Piece 2+).",
+      note: "Places Text Search (Legacy) — server proxy only. Attribution required when shown in UI (Piece 2+).",
       query: result.query,
       language: result.language,
       count: result.count,

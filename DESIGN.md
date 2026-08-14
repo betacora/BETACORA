@@ -164,8 +164,14 @@ Avoid multi-layer shadows and brand-tinted radial washes on Explorar.
 
 ---
 
-## 9. Agent prompt guide
+## 9. Surfaces covered
+
+- Explorar: conversational questionnaire + DNA result (`public/questionnaire.html`)
+- Mis Viajes: archive layout (`app/(app)/viajes`) — featured latest trip, memory grid, new-logbook CTA. No invented stats/wishlist/photos; adapt mockup structure to real itinerary rows.
+
+## 10. Agent prompt guide
 
 - “Redesign Explorar using this DESIGN.md; keep one-question conversational behavior.”
 - “Primary CTA and selected borders = coral `#E8634A`; focus rings = teal `#2D7B7B`.”
 - “Surfaces stay `#F9FAFB` / white with `#E5E7EB` 1px borders.”
+- “Mis Viajes follows the archive mockup structure but only with real saved itineraries.”

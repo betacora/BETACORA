@@ -225,6 +225,15 @@ export const NAV_COPY: Record<
     };
     viajes: {
       title: string;
+      eyebrow: string;
+      subtitle: string;
+      tabJournals: string;
+      sortRecent: string;
+      inProgress: string;
+      recentMemories: string;
+      latestBadge: string;
+      newJournalTitle: string;
+      newJournalBody: string;
       emptyTitle: string;
       emptyBody: string;
       emptyCta: string;
@@ -356,6 +365,16 @@ export const NAV_COPY: Record<
     },
     viajes: {
       title: "Mis Viajes",
+      eyebrow: "Archivo personal",
+      subtitle:
+        "Tu colección de bitácoras: viajes guardados y los que aún quieres documentar.",
+      tabJournals: "Mis Bitácoras",
+      sortRecent: "Recientes",
+      inProgress: "Más reciente",
+      recentMemories: "Memorias recientes",
+      latestBadge: "Reciente",
+      newJournalTitle: "Nueva Bitácora",
+      newJournalBody: "Empieza a documentar una nueva experiencia.",
       emptyTitle: "Aún no tienes viajes guardados",
       emptyBody: "Explora y genera tu primera bitácora inteligente.",
       emptyCta: "Explorar",
@@ -496,6 +515,16 @@ assistant: {
     },
     viajes: {
       title: "My Trips",
+      eyebrow: "Personal archives",
+      subtitle:
+        "A curated collection of your logbooks — saved journeys and the ones still waiting to be written.",
+      tabJournals: "My Logbooks",
+      sortRecent: "Recent",
+      inProgress: "Latest",
+      recentMemories: "Recent memories",
+      latestBadge: "Latest",
+      newJournalTitle: "New Logbook",
+      newJournalBody: "Start documenting a new experience.",
       emptyTitle: "No saved trips yet",
       emptyBody: "Explore and generate your first smart itinerary.",
       emptyCta: "Explore",
@@ -635,6 +664,16 @@ assistant: {
     },
     viajes: {
       title: "Mes Voyages",
+      eyebrow: "Archives personnelles",
+      subtitle:
+        "Votre collection de carnets : voyages enregistrés et ceux qui attendent d'être écrits.",
+      tabJournals: "Mes Carnets",
+      sortRecent: "Récents",
+      inProgress: "Plus récent",
+      recentMemories: "Souvenirs récents",
+      latestBadge: "Récent",
+      newJournalTitle: "Nouveau Carnet",
+      newJournalBody: "Commencez à documenter une nouvelle expérience.",
       emptyTitle: "Aucun voyage enregistré",
       emptyBody: "Explorez et générez votre premier itinéraire intelligent.",
       emptyCta: "Explorer",

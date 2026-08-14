@@ -33,12 +33,12 @@ export function AppSidebar({ lang }: Props) {
 
   return (
     <aside
-      className="hidden md:flex sticky top-0 h-screen w-[4.5rem] shrink-0 flex-col items-center border-r border-[#E5E5E5] bg-[#FFFFFF] z-50"
+      className="hidden md:flex sticky top-0 h-screen w-[4.5rem] shrink-0 flex-col items-center border-r border-[#E5E7EB] bg-[#FFFFFF] z-50"
       aria-label={copy.sidebar.navLabel}
     >
       <Link
         href="/inicio"
-        className="mt-4 mb-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] no-underline overflow-hidden border border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#D4D4D4] transition-colors"
+        className="mt-4 mb-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] no-underline overflow-hidden border border-[#E5E7EB] bg-[#FFFFFF] hover:border-[#D1D5DB] transition-colors"
         aria-label="BeTacora"
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- small brand mark; avoids next/image SSR size quirks in the rail */}
@@ -66,8 +66,8 @@ export function AppSidebar({ lang }: Props) {
                   title={copy.tabs[id]}
                   className={`group flex flex-col items-center justify-center gap-0.5 w-full rounded-[8px] py-2 no-underline transition-colors duration-200 ${
                     active
-                      ? "bg-[#F5F5F5] text-[#E8634A]"
-                      : "text-[#6B6B6B] hover:bg-[#FAFAFA] hover:text-[#1A1A1A]"
+                      ? "bg-[#F3F4F6] text-[#2D7B7B]"
+                      : "text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#111827]"
                   }`}
                   aria-current={active ? "page" : undefined}
                   aria-label={copy.tabs[id]}
@@ -95,7 +95,7 @@ export function AppSidebar({ lang }: Props) {
             href={APP_NEW_TRIP_HREF}
             title={copy.sidebar.newTrip}
             aria-label={copy.sidebar.newTrip}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8634A] text-white no-underline shadow-sm hover:opacity-90 transition-opacity"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2D7B7B] text-white no-underline shadow-none hover:opacity-90 transition-opacity"
           >
             <Plus size={22} strokeWidth={2.25} aria-hidden />
           </Link>

@@ -89,11 +89,12 @@ Base **4px**. Scale: `4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48`.
 
 ### Buttons
 
-- **Primary (marketing / Plan Trip):** teal fill, white text, radius 8–999 (pill OK on marketing nav only).
+- **Primary (marketing / Plan Trip / LoginPrompt / sidebar +):** teal fill, white text, radius 8–999 (pill OK on marketing nav only).
 - **Ink CTA (questionnaire Continuar):** `ink-cta` fill, white text, radius 8px.
 - **Secondary / ghost:** white + 1px `outline`.
 - **Exit / Salir:** transparent + 1px **coral** outline, coral text.
 - No heavy shadow.
+- **Nav active (sidebar / bottom):** teal text (not coral).
 
 ### Option chips & cards (questionnaire)
 

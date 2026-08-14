@@ -40,6 +40,9 @@ yarn-error.log*
 *client_secret*.json
 *credentials*.json
 
+# Local brand/asset scratch — may contain console exports; never commit
+LOGO\ TEST\ /
+
 # vercel
 .vercel
 

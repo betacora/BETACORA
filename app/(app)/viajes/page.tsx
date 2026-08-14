@@ -85,7 +85,7 @@ function FeaturedTrip({
       </div>
       <div className="mt-3.5 flex flex-col gap-1.5 px-0.5 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div className="min-w-0">
-          <h3 className="m-0 text-[1.15rem] font-semibold tracking-tight text-[#111827] leading-snug group-hover:text-[#E8634A] transition-colors">
+          <h3 className="m-0 text-[1.15rem] font-semibold tracking-tight text-[#111827] leading-snug group-hover:text-[#2D7B7B] transition-colors">
             {title}
           </h3>
           {trip.profile_type ? (
@@ -133,7 +133,7 @@ function MemoryCard({
           {formatMonthYear(trip.created_at, lang)}
         </span>
       </div>
-      <h3 className="mt-3 m-0 text-[0.98rem] font-medium tracking-tight text-[#111827] leading-snug group-hover:text-[#E8634A] transition-colors line-clamp-2">
+      <h3 className="mt-3 m-0 text-[0.98rem] font-medium tracking-tight text-[#111827] leading-snug group-hover:text-[#2D7B7B] transition-colors line-clamp-2">
         {title}
       </h3>
       <p className="mt-1.5 m-0 text-xs text-[#6B7280]">
@@ -147,7 +147,7 @@ function NewJournalCard({ copy }: { copy: ViajesCopy }) {
   return (
     <Link
       href="/explorar"
-      className="flex min-h-[11.5rem] flex-col items-center justify-center gap-2.5 rounded-[10px] border border-dashed border-[#D1D5DB] bg-[#F9FAFB] px-4 py-6 text-center no-underline transition-colors hover:border-[#E8634A]/50 hover:bg-white"
+      className="flex min-h-[11.5rem] flex-col items-center justify-center gap-2.5 rounded-[10px] border border-dashed border-[#D1D5DB] bg-[#F9FAFB] px-4 py-6 text-center no-underline transition-colors hover:border-[#2D7B7B]/45 hover:bg-white"
     >
       <span className="inline-flex h-10 w-10 items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-[#6B7280]">
         <BookPlus className="h-5 w-5" strokeWidth={1.75} aria-hidden />
@@ -246,7 +246,7 @@ export default function ViajesPage() {
               <div className="mt-6 flex items-center gap-5 border-b border-[#E5E7EB]">
                 <span className="relative pb-2.5 text-sm font-medium text-[#111827]">
                   {copy.tabJournals}
-                  <span className="absolute inset-x-0 -bottom-px h-px bg-[#E8634A]" />
+                  <span className="absolute inset-x-0 -bottom-px h-px bg-[#2D7B7B]" />
                 </span>
               </div>
 
@@ -263,7 +263,7 @@ export default function ViajesPage() {
                     </div>
                     <Link
                       href="/explorar"
-                      className="mt-5 sm:mt-0 inline-flex shrink-0 justify-center px-6 py-3 rounded-[8px] bg-[#E8634A] text-white font-medium text-sm no-underline hover:opacity-90"
+                      className="mt-5 sm:mt-0 inline-flex shrink-0 justify-center px-6 py-3 rounded-[8px] bg-[#2D7B7B] text-white font-medium text-sm no-underline hover:opacity-90"
                     >
                       {copy.emptyCta}
                     </Link>

@@ -55,8 +55,6 @@ export function LandingPage() {
     }
   }, []);
 
-  // If Site URL still points at `/`, Supabase drops hash tokens on the landing
-  // page. Forward them to the auth callback so the user gets logged in + success UI.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hash = window.location.hash;
@@ -102,24 +100,27 @@ export function LandingPage() {
   }
 
   const copy = LANDING_COPY[lang];
-  const ctaHref = !isLoggedIn
+  const primaryHref = !isLoggedIn
     ? "/auth?next=/explorar"
     : hasProfile
       ? "/explorar?mode=trip"
       : "/explorar?mode=discover";
-  const ctaLabel = hasProfile && isLoggedIn ? copy.ctaReturning : copy.cta;
+  const primaryLabel = hasProfile && isLoggedIn ? copy.ctaReturning : copy.cta;
+  const secondaryHref = isLoggedIn ? "/viajes" : "/auth?next=/viajes";
+  const inventoryHref = isLoggedIn ? "/perfil" : "/auth?next=/perfil";
+  const ready = !(authLoading || !profileReady);
 
   return (
-    <main className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#1A1A1A]">
-      <header className="w-full px-4 py-4 sm:px-8 md:px-12 md:py-7 flex items-center justify-between gap-2 sm:gap-4 border-b border-[#E5E5E5]">
+    <main className="min-h-screen flex flex-col bg-[#F9FAFB] text-[#111827]">
+      <header className="sticky top-0 z-40 w-full px-4 py-4 sm:px-8 md:px-12 flex items-center justify-between gap-2 sm:gap-4 border-b border-[#E5E7EB] bg-white/90 backdrop-blur-md">
         <Link
           href="/"
-          className="flex items-center gap-2 sm:gap-2.5 no-underline text-[#1A1A1A] min-w-0"
+          className="flex items-center gap-2 sm:gap-2.5 no-underline text-[#111827] min-w-0"
           aria-label="BeTacora"
         >
           <img
             src="/icon-512.png?v=4"
-            alt="BeTacora — bitácora inteligente de viajes"
+            alt=""
             width={36}
             height={36}
             className="h-8 w-8 sm:h-9 sm:w-9 rounded-[7px] object-contain shrink-0"
@@ -135,10 +136,10 @@ export function LandingPage() {
                 key={code}
                 type="button"
                 onClick={() => switchLang(code)}
-                className={`text-[0.7rem] sm:text-xs tracking-wide px-1.5 sm:px-2.5 py-1.5 border-0 border-b-[1.5px] bg-transparent cursor-pointer transition-colors font-normal ${
+                className={`text-[0.7rem] sm:text-xs tracking-wide px-1.5 sm:px-2.5 py-1.5 border-0 border-b bg-transparent cursor-pointer transition-colors font-normal ${
                   lang === code
-                    ? "text-[#1A1A1A] border-[#E8634A]"
-                    : "text-[#6B6B6B] border-transparent hover:text-[#1A1A1A]"
+                    ? "text-[#111827] border-[#2D7B7B]"
+                    : "text-[#6B7280] border-transparent hover:text-[#111827]"
                 }`}
                 aria-pressed={lang === code}
               >
@@ -149,77 +150,198 @@ export function LandingPage() {
         </div>
       </header>
 
-      <section className="flex-1 flex flex-col items-center justify-center px-6 pb-24 sm:px-8 md:px-12 text-center">
-        {accountDeleted ? (
-          <p
-            role="status"
-            className="mb-8 max-w-sm text-sm text-[#2D7B7B] leading-relaxed m-0 px-4 py-3 rounded-[7px] border border-[#E5E5E5] bg-[#FAFAFA]"
-          >
-            {copy.accountDeleted}
-          </p>
-        ) : null}
-        <img
-          src="/icon-512.png?v=4"
-          alt="BeTacora — bitácora inteligente de viajes"
-          width={72}
-          height={72}
-          className="h-16 w-16 sm:h-[72px] sm:w-[72px] rounded-[8px] object-contain mb-10 sm:mb-12"
+      {/* Hero — full-bleed atmospheric plane */}
+      <section className="relative isolate overflow-hidden border-b border-[#E5E7EB]">
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(249,250,251,0.55) 0%, rgba(249,250,251,0.82) 55%, #F9FAFB 100%), radial-gradient(ellipse 90% 70% at 70% 20%, rgba(45,123,123,0.12), transparent 55%), radial-gradient(ellipse 70% 50% at 15% 80%, rgba(17,24,39,0.06), transparent 50%), linear-gradient(160deg, #E8EEF0 0%, #F3F4F6 45%, #ECE7E2 100%)",
+          }}
+          aria-hidden
         />
-
-        <h1 className="text-[1.75rem] sm:text-[2rem] md:text-[2.35rem] font-medium text-[#1A1A1A] max-w-md leading-[1.25] tracking-tight">
-          {copy.tagline}
-        </h1>
-
-        <p className="mt-5 text-[0.9375rem] sm:text-base text-[#6B6B6B] max-w-sm leading-[1.65] font-normal">
-          {copy.sub}
-        </p>
-
-        <div className="mt-12 sm:mt-14 flex flex-col items-center gap-3.5 w-full max-w-xs">
-          <Link
-            href={authLoading || !profileReady ? "/auth?next=/explorar" : ctaHref}
-            onClick={() =>
-              trackFunnel(FunnelEvent.QuestionnaireStarted, {
-                source: "landing_cta",
-                lang,
-                gated: !isLoggedIn,
-                returning: hasProfile,
-              })
-            }
-            className="w-full px-8 py-3.5 sm:px-10 sm:py-4 rounded-[7px] bg-[#E8634A] text-white font-medium text-base no-underline hover:opacity-90 transition-opacity duration-200 text-center"
-          >
-            {authLoading || !profileReady ? copy.cta : ctaLabel}
-          </Link>
-          <InstallAppButton lang={lang} variant="hero" />
+        <div className="mx-auto flex max-w-3xl flex-col items-center px-6 py-16 text-center sm:px-8 sm:py-24 md:py-28">
+          {accountDeleted ? (
+            <p
+              role="status"
+              className="mb-8 max-w-sm text-sm text-[#2D7B7B] leading-relaxed m-0 px-4 py-3 rounded-[8px] border border-[#E5E7EB] bg-white"
+            >
+              {copy.accountDeleted}
+            </p>
+          ) : null}
+          <p className="m-0 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-[#6B7280]">
+            {copy.eyebrow}
+          </p>
+          <h1 className="mt-4 m-0 text-[1.85rem] sm:text-[2.35rem] md:text-[2.75rem] font-semibold text-[#111827] max-w-2xl leading-[1.15] tracking-tight">
+            {copy.tagline}
+          </h1>
+          <p className="mt-5 text-[0.95rem] sm:text-base text-[#6B7280] max-w-lg leading-[1.65] font-normal">
+            {copy.sub}
+          </p>
+          <div className="mt-10 flex w-full max-w-md flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href={ready ? primaryHref : "/auth?next=/explorar"}
+              onClick={() =>
+                trackFunnel(FunnelEvent.QuestionnaireStarted, {
+                  source: "landing_cta",
+                  lang,
+                  gated: !isLoggedIn,
+                  returning: hasProfile,
+                })
+              }
+              className="inline-flex flex-1 items-center justify-center px-6 py-3.5 rounded-[8px] bg-[#2D7B7B] text-white font-medium text-[0.95rem] no-underline hover:opacity-92 transition-opacity duration-200 text-center"
+            >
+              {ready ? primaryLabel : copy.cta}
+            </Link>
+            <Link
+              href={secondaryHref}
+              className="inline-flex flex-1 items-center justify-center px-6 py-3.5 rounded-[8px] border border-[#E5E7EB] bg-white text-[#111827] font-medium text-[0.95rem] no-underline hover:border-[#D1D5DB] transition-colors duration-200 text-center"
+            >
+              {copy.ctaSecondary}
+            </Link>
+          </div>
+          <div className="mt-4">
+            <InstallAppButton lang={lang} variant="hero" />
+          </div>
         </div>
       </section>
 
-      <footer className="w-full px-6 py-8 sm:px-8 md:px-12 border-t border-[#E5E5E5] text-center">
-        <p className="text-sm text-[#6B6B6B] leading-relaxed flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-          <Link
-            href={ABOUT_PATH[lang]}
-            className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
-          >
-            {copy.about}
-          </Link>
-          <span className="text-[#E5E5E5]" aria-hidden="true">
-            ·
-          </span>
-          <Link
-            href={PRIVACY_PATH}
-            className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
-          >
-            {copy.privacy}
-          </Link>
-          <span className="text-[#E5E5E5]" aria-hidden="true">
-            ·
-          </span>
-          <Link
-            href={TERMS_PATH}
-            className="text-[#2D7B7B] no-underline hover:opacity-80 transition-opacity"
-          >
-            {copy.terms}
-          </Link>
-        </p>
+      {/* Prepare next trip */}
+      <section className="mx-auto w-full max-w-5xl px-6 py-14 sm:px-8 sm:py-16">
+        <div className="mx-auto max-w-xl text-center">
+          <h2 className="m-0 text-[1.45rem] sm:text-[1.65rem] font-semibold tracking-tight text-[#111827]">
+            {copy.prepTitle}
+          </h2>
+          <p className="mt-3 m-0 text-sm text-[#6B7280] leading-relaxed">
+            {copy.prepSub}
+          </p>
+        </div>
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <article className="flex flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-5 sm:p-6">
+            <p className="m-0 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-[#E8634A]">
+              {copy.logisticsLabel}
+            </p>
+            <h3 className="mt-2 m-0 text-[1.2rem] font-semibold tracking-tight text-[#111827]">
+              {copy.logisticsTitle}
+            </h3>
+            <p className="mt-2.5 m-0 flex-1 text-sm text-[#6B7280] leading-relaxed">
+              {copy.logisticsBody}
+            </p>
+            <div
+              className="mt-5 h-28 rounded-[8px] border border-[#E5E7EB]"
+              style={{
+                background:
+                  "linear-gradient(135deg, #E8DFD6 0%, #C4A484 48%, #8B6B4A 100%)",
+              }}
+              aria-hidden
+            />
+            <Link
+              href={ready ? primaryHref : "/auth?next=/explorar"}
+              className="mt-4 inline-flex text-sm font-medium text-[#2D7B7B] no-underline hover:opacity-80"
+            >
+              {copy.logisticsCta} →
+            </Link>
+          </article>
+
+          <article className="flex flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-5 sm:p-6">
+            <p className="m-0 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-[#2D7B7B]">
+              {copy.inventoryLabel}
+            </p>
+            <h3 className="mt-2 m-0 text-[1.2rem] font-semibold tracking-tight text-[#111827]">
+              {copy.inventoryTitle}
+            </h3>
+            <p className="mt-2.5 m-0 flex-1 text-sm text-[#6B7280] leading-relaxed">
+              {copy.inventoryBody}
+            </p>
+            <div
+              className="mt-5 h-28 rounded-[8px] border border-[#E5E7EB] bg-[#F3F4F6]"
+              style={{
+                background:
+                  "radial-gradient(circle at 30% 40%, #E8F2F2, #F3F4F6 55%, #E5E7EB)",
+              }}
+              aria-hidden
+            />
+            <Link
+              href={inventoryHref}
+              className="mt-4 inline-flex text-sm font-medium text-[#2D7B7B] no-underline hover:opacity-80"
+            >
+              {copy.inventoryCta} →
+            </Link>
+          </article>
+        </div>
+      </section>
+
+      {/* Dark archetype band */}
+      <section className="border-y border-[#E5E7EB] bg-[#111827] text-[#F9FAFB]">
+        <div className="mx-auto grid max-w-5xl gap-8 px-6 py-14 sm:px-8 sm:py-16 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+          <div>
+            <p className="m-0 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-[#2D7B7B]">
+              {copy.archetypeEyebrow}
+            </p>
+            <h2 className="mt-3 m-0 text-[1.55rem] sm:text-[1.85rem] font-semibold tracking-tight leading-snug">
+              {copy.archetypeTitle}
+            </h2>
+            <p className="mt-3 m-0 max-w-md text-sm text-[#9CA3AF] leading-relaxed">
+              {copy.archetypeBody}
+            </p>
+            <Link
+              href={
+                isLoggedIn
+                  ? "/explorar?mode=discover"
+                  : "/auth?next=/explorar?mode=discover"
+              }
+              onClick={() =>
+                trackFunnel(FunnelEvent.QuestionnaireStarted, {
+                  source: "landing_archetype",
+                  lang,
+                  gated: !isLoggedIn,
+                })
+              }
+              className="mt-7 inline-flex items-center justify-center px-6 py-3.5 rounded-[8px] bg-[#2D7B7B] text-white font-medium text-sm no-underline hover:opacity-92 transition-opacity"
+            >
+              {copy.archetypeCta}
+            </Link>
+          </div>
+          <div
+            className="aspect-[4/5] max-h-[22rem] w-full justify-self-stretch rounded-[10px] border border-white/10 md:max-h-none"
+            style={{
+              background:
+                "linear-gradient(165deg, #1F2937 0%, #111827 40%, #0B1220 100%), radial-gradient(ellipse at 60% 30%, rgba(45,123,123,0.35), transparent 50%)",
+            }}
+            aria-hidden
+          />
+        </div>
+      </section>
+
+      <footer className="w-full px-6 py-10 sm:px-8 md:px-12 bg-[#F3F4F6] border-t border-[#E5E7EB]">
+        <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <BrandWordmark className="text-base font-medium tracking-tight" />
+            <p className="mt-1.5 m-0 text-xs text-[#6B7280]">
+              © {new Date().getFullYear()} BeTacora. {copy.footerNote}
+            </p>
+          </div>
+          <p className="m-0 text-sm text-[#6B7280] leading-relaxed flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Link
+              href={ABOUT_PATH[lang]}
+              className="text-[#6B7280] no-underline hover:text-[#111827] transition-colors"
+            >
+              {copy.about}
+            </Link>
+            <Link
+              href={PRIVACY_PATH}
+              className="text-[#6B7280] no-underline hover:text-[#111827] transition-colors"
+            >
+              {copy.privacy}
+            </Link>
+            <Link
+              href={TERMS_PATH}
+              className="text-[#6B7280] no-underline hover:text-[#111827] transition-colors"
+            >
+              {copy.terms}
+            </Link>
+          </p>
+        </div>
       </footer>
     </main>
   );

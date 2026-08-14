@@ -222,6 +222,16 @@ export const NAV_COPY: Record<
       openTrip: string;
       untitled: string;
       archetypeFallback: string;
+      placesSearch: {
+        title: string;
+        placeholder: string;
+        submit: string;
+        loading: string;
+        empty: string;
+        error: string;
+        attribution: string;
+        ratingLabel: string;
+      };
     };
     viajes: {
       title: string;
@@ -362,6 +372,16 @@ export const NAV_COPY: Record<
       openTrip: "Ver viaje",
       untitled: "Viaje BeTacora",
       archetypeFallback: "Perfil viajero",
+      placesSearch: {
+        title: "Buscar un lugar",
+        placeholder: "Museo, barrio, restaurante…",
+        submit: "Buscar",
+        loading: "Buscando lugares…",
+        empty: "No encontramos lugares para esa búsqueda.",
+        error: "No pudimos buscar lugares. Inténtalo de nuevo.",
+        attribution: "Powered by Google",
+        ratingLabel: "Valoración",
+      },
     },
     viajes: {
       title: "Mis Viajes",
@@ -512,6 +532,16 @@ assistant: {
       openTrip: "View trip",
       untitled: "BeTacora trip",
       archetypeFallback: "Traveler profile",
+      placesSearch: {
+        title: "Search a place",
+        placeholder: "Museum, neighborhood, restaurant…",
+        submit: "Search",
+        loading: "Searching places…",
+        empty: "No places found for that search.",
+        error: "We couldn't search places. Try again.",
+        attribution: "Powered by Google",
+        ratingLabel: "Rating",
+      },
     },
     viajes: {
       title: "My Trips",
@@ -661,6 +691,16 @@ assistant: {
       openTrip: "Voir le voyage",
       untitled: "Voyage BeTacora",
       archetypeFallback: "Profil voyageur",
+      placesSearch: {
+        title: "Chercher un lieu",
+        placeholder: "Musée, quartier, restaurant…",
+        submit: "Chercher",
+        loading: "Recherche de lieux…",
+        empty: "Aucun lieu trouvé pour cette recherche.",
+        error: "Impossible de chercher des lieux. Réessaie.",
+        attribution: "Powered by Google",
+        ratingLabel: "Note",
+      },
     },
     viajes: {
       title: "Mes Voyages",

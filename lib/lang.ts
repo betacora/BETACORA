@@ -222,6 +222,20 @@ export const NAV_COPY: Record<
       openTrip: string;
       untitled: string;
       archetypeFallback: string;
+      placesSearch: {
+        title: string;
+        subtitle: string;
+        placeholder: string;
+        submit: string;
+        loading: string;
+        empty: string;
+        error: string;
+        rateLimited: string;
+        attribution: string;
+        ratingLabel: string;
+        reviewsLabel: string;
+        openMaps: string;
+      };
     };
     viajes: {
       title: string;
@@ -362,6 +376,21 @@ export const NAV_COPY: Record<
       openTrip: "Ver viaje",
       untitled: "Viaje BeTacora",
       archetypeFallback: "Perfil viajero",
+      placesSearch: {
+        title: "Buscar lugares",
+        subtitle: "Encuentra sitios reales por nombre o ciudad.",
+        placeholder: "Ej. Museo del Prado, café en Lisboa…",
+        submit: "Buscar",
+        loading: "Buscando…",
+        empty: "No encontramos lugares para esa búsqueda.",
+        error: "No pudimos buscar lugares. Inténtalo de nuevo.",
+        rateLimited:
+          "Has alcanzado el límite de búsquedas. Prueba en unos minutos.",
+        attribution: "Powered by Google",
+        ratingLabel: "Valoración",
+        reviewsLabel: "{n} reseñas",
+        openMaps: "Abrir en Google Maps",
+      },
     },
     viajes: {
       title: "Mis Viajes",
@@ -512,6 +541,21 @@ assistant: {
       openTrip: "View trip",
       untitled: "BeTacora trip",
       archetypeFallback: "Traveler profile",
+      placesSearch: {
+        title: "Search places",
+        subtitle: "Find real places by name or city.",
+        placeholder: "E.g. Prado Museum, café in Lisbon…",
+        submit: "Search",
+        loading: "Searching…",
+        empty: "No places matched that search.",
+        error: "We couldn't search places. Please try again.",
+        rateLimited:
+          "You've hit the search limit. Try again in a few minutes.",
+        attribution: "Powered by Google",
+        ratingLabel: "Rating",
+        reviewsLabel: "{n} reviews",
+        openMaps: "Open in Google Maps",
+      },
     },
     viajes: {
       title: "My Trips",
@@ -661,6 +705,21 @@ assistant: {
       openTrip: "Voir le voyage",
       untitled: "Voyage BeTacora",
       archetypeFallback: "Profil voyageur",
+      placesSearch: {
+        title: "Rechercher des lieux",
+        subtitle: "Trouvez des lieux réels par nom ou ville.",
+        placeholder: "Ex. Musée du Prado, café à Lisbonne…",
+        submit: "Rechercher",
+        loading: "Recherche…",
+        empty: "Aucun lieu pour cette recherche.",
+        error: "Impossible de rechercher des lieux. Réessayez.",
+        rateLimited:
+          "Limite de recherches atteinte. Réessayez dans quelques minutes.",
+        attribution: "Powered by Google",
+        ratingLabel: "Note",
+        reviewsLabel: "{n} avis",
+        openMaps: "Ouvrir dans Google Maps",
+      },
     },
     viajes: {
       title: "Mes Voyages",

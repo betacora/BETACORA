@@ -5230,9 +5230,29 @@ async function handleGenerate() {
   const err = L().ui.errors;
 
   try {
+    // Server requires Supabase JWT (requireSupabaseUser). Omitting Bearer → 401.
+    const token =
+      window.btAuth && typeof window.btAuth.getAccessToken === 'function'
+        ? await window.btAuth.getAccessToken()
+        : null;
+    if (!token) {
+      stopItineraryLoadingTicker();
+      const section = document.getElementById('itinerarySection');
+      if (section) {
+        section.innerHTML = '';
+        section.classList.remove('show', 'is-loading');
+      }
+      showLimitBanner('not_logged_in');
+      resetGenerateButtons();
+      return;
+    }
+
     const res = await fetch('/api/generate-itinerary', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(collectAllAnswers()),
     });
     const data = await res.json();

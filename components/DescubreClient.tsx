@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
+import { DescubrePlacesSearch } from "@/components/DescubrePlacesSearch";
 import type { FeedTripCard, FeedTripPlace } from "@/lib/shared-trips-feed";
 import { detectLang, NAV_COPY, type AppLang } from "@/lib/lang";
 
@@ -127,6 +128,8 @@ export function DescubreClient({ trips }: { trips: FeedTripCard[] }) {
             {copy.privacyNote}
           </p>
         </header>
+
+        <DescubrePlacesSearch lang={lang} copy={copy.placesSearch} />
 
         {trips.length === 0 ? (
           <div className="rounded-[10px] border border-[#E5E5E5] bg-white px-5 py-12 text-center">

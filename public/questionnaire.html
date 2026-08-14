@@ -5917,6 +5917,13 @@ async function initFlowMode() {
   const mode = getQuestionnaireMode();
   window.__btFlowMode = mode === 'trip' ? 'trip' : 'discover';
 
+  // Explicit DNA redo (/explorar?mode=discover, "Actualizar mi perfil"):
+  // clear draft markers BEFORE restore so we never show "Formulario bloqueado"
+  // over the questionnaire the user asked to retake.
+  if (mode === 'discover' && typeof clearItineraryDraft === 'function') {
+    clearItineraryDraft();
+  }
+
   if (!window.btAuth) {
     if (mode === 'trip') {
       document.querySelectorAll('[data-flow="personality"]').forEach((el) => {
@@ -5940,7 +5947,8 @@ async function initFlowMode() {
         }
         return;
       }
-      // Guests: still restore in-tab draft after refresh (no DB persistence)
+      // Guests on discover: draft already cleared above (redo intent).
+      // Guests never hit trip restore without auth gate from Explorar.
       await restoreSavedItineraryResult();
       return;
     }
@@ -5957,7 +5965,8 @@ async function initFlowMode() {
       }
     }
 
-    // Re-show last generated result after refresh (draft / active id / DB)
+    // Trip: re-show last generated result after refresh (draft / active id / DB).
+    // Discover: draft was cleared above — restore is a no-op; questionnaire runs.
     await restoreSavedItineraryResult();
   } catch (e) {
     console.warn('[BeTacora] flow mode init skipped:', e);

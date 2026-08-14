@@ -49,6 +49,18 @@ export async function GET(req: NextRequest) {
     const limitRaw = req.nextUrl.searchParams.get("limit");
     const limit = limitRaw ? Number(limitRaw) : undefined;
 
+    // Validate before spending rate-limit budget or calling Google
+    if (!q.replace(/\s+/g, " ").trim()) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "q is required (non-empty search text)",
+          code: "validation_error",
+        },
+        { status: 400, headers: { "Cache-Control": "no-store" } },
+      );
+    }
+
     // Clear config error before rate-limit gate so missing key is never masked
     // by rate_limit_unavailable when Upstash is down.
     if (!process.env.GOOGLE_PLACES_API_KEY?.trim()) {

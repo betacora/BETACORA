@@ -1,7 +1,7 @@
 # BeTacora — DESIGN.md
 
 > Stitch-compatible design system guided by the Ultra-Neutral Premium mockups
-> (landing, Mis Viajes, Explorar sensaciones, Cuestionario inteligente).
+> (Mis Viajes, Cuestionario inteligente; public landing owned by PR #4).
 >
 > Brand hex (replacing Stitch defaults): coral `#E8634A` (was `#FF7F50`),
 > teal `#2D7B7B` (was `#008080`).
@@ -123,12 +123,9 @@ Base **4px**. Scale: `4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48`.
 - Soft coral-tint callout only for real product prompts (not invented companions).
 - No fake wishlist/stats/photos.
 
-### Landing
+### Public landing
 
-- Full-bleed atmospheric hero, one primary teal CTA + ghost secondary.
-- Prep cards with rare coral/teal category labels.
-- Optional dark archetype band with teal CTA.
-- Keep real product links only.
+**Out of scope on this branch.** Public landing stays with the warm Mindtrip-style work (PR #4). Do not edit `app/landing-page.tsx` or `LANDING_COPY` here.
 
 ---
 
@@ -145,8 +142,17 @@ Elevation = **border, not shadow**. Sticky chrome: white + 1px outline (± light
 
 ---
 
-## 8. Agent prompt guide
+## 8. Surfaces covered (this branch)
+
+- Explorar questionnaire + DNA (`public/questionnaire.html`)
+- Mis Viajes archive (`app/(app)/viajes`)
+- App chrome: LoginPrompt, sidebar/bottom nav active, new-trip FAB → teal
+
+---
+
+## 9. Agent prompt guide
 
 - Teal `#2D7B7B` = interactive primary; coral `#E8634A` = rare accent; Continuar = ink.
 - Surfaces `#F9FAFB` / white; borders `#E5E7EB` 1px.
 - Selected options = teal border + `#E8F2F2` fill.
+- Do not edit public landing on this branch.

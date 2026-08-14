@@ -28,122 +28,45 @@ export function persistLang(lang: AppLang): void {
 export const LANDING_COPY: Record<
   AppLang,
   {
-    eyebrow: string;
     tagline: string;
     sub: string;
     cta: string;
-    ctaSecondary: string;
     ctaReturning: string;
-    prepTitle: string;
-    prepSub: string;
-    logisticsLabel: string;
-    logisticsTitle: string;
-    logisticsBody: string;
-    logisticsCta: string;
-    inventoryLabel: string;
-    inventoryTitle: string;
-    inventoryBody: string;
-    inventoryCta: string;
-    archetypeEyebrow: string;
-    archetypeTitle: string;
-    archetypeBody: string;
-    archetypeCta: string;
     about: string;
     privacy: string;
     terms: string;
     accountDeleted: string;
-    footerNote: string;
   }
 > = {
   es: {
-    eyebrow: "Bitácora digital & planner",
-    tagline: "Tu próximo capítulo comienza aquí",
-    sub: "Un santuario digital para viajeros conscientes: perfil real, bitácora inteligente e itinerarios a tu medida.",
-    cta: "Descubrir perfil viajero",
-    ctaSecondary: "Explorar",
-    ctaReturning: "Planificar viaje",
-    prepTitle: "Prepara tu próximo viaje",
-    prepSub: "Empieza por conocerte — o retoma una bitácora ya guardada.",
-    logisticsLabel: "Logística",
-    logisticsTitle: "Trazar ruta",
-    logisticsBody:
-      "Genera un itinerario a partir de cómo viajas de verdad, no de listas genéricas.",
-    logisticsCta: "Comenzar trazado",
-    inventoryLabel: "Perfil",
-    inventoryTitle: "Tu Travel DNA",
-    inventoryBody:
-      "Descubre tu arquetipo viajero y úsalo como brújula en cada bitácora.",
-    inventoryCta: "Ver mi perfil",
-    archetypeEyebrow: "Nuevo arquetipo",
-    archetypeTitle: "Descubre cómo viajas",
-    archetypeBody:
-      "Un cuestionario conversacional que traduce tu ritmo, motivaciones y estilo en un perfil accionable.",
-    archetypeCta: "Realizar test de arquetipo",
+    tagline: "Tu bitácora inteligente de viajes",
+    sub: "Itinerarios a tu medida a partir de cómo viajas de verdad. Todo queda en tu bitácora.",
+    cta: "Descubre tu perfil viajero",
+    ctaReturning: "Empezar nuevo viaje",
     about: "Sobre nosotros",
     privacy: "Privacidad",
     terms: "Términos",
     accountDeleted: "Tu cuenta se ha eliminado correctamente.",
-    footerNote: "Tu viaje, documentado.",
   },
   en: {
-    eyebrow: "Digital journal & planner",
-    tagline: "Your next chapter starts here",
-    sub: "A digital sanctuary for conscious travelers: a real profile, a smart logbook, and itineraries built around you.",
-    cta: "Discover traveler profile",
-    ctaSecondary: "Explore",
-    ctaReturning: "Plan trip",
-    prepTitle: "Prepare your next trip",
-    prepSub: "Start by knowing yourself — or reopen a saved logbook.",
-    logisticsLabel: "Logistics",
-    logisticsTitle: "Trace a route",
-    logisticsBody:
-      "Generate an itinerary from how you actually travel, not generic lists.",
-    logisticsCta: "Start tracing",
-    inventoryLabel: "Profile",
-    inventoryTitle: "Your Travel DNA",
-    inventoryBody:
-      "Discover your traveler archetype and use it as a compass for every logbook.",
-    inventoryCta: "View my profile",
-    archetypeEyebrow: "New archetype",
-    archetypeTitle: "Discover how you travel",
-    archetypeBody:
-      "A conversational questionnaire that turns your pace, motives, and style into an actionable profile.",
-    archetypeCta: "Take the archetype test",
+    tagline: "Your smart travel logbook",
+    sub: "Itineraries shaped by how you actually travel — kept in one place.",
+    cta: "Discover your traveler profile",
+    ctaReturning: "Start a new trip",
     about: "About",
     privacy: "Privacy",
     terms: "Terms",
     accountDeleted: "Your account has been deleted successfully.",
-    footerNote: "Your journey, documented.",
   },
   fr: {
-    eyebrow: "Carnet numérique & planner",
-    tagline: "Votre prochain chapitre commence ici",
-    sub: "Un sanctuaire numérique pour voyageurs conscients : profil réel, carnet intelligent et itinéraires sur mesure.",
-    cta: "Découvrir le profil voyageur",
-    ctaSecondary: "Explorer",
-    ctaReturning: "Planifier un voyage",
-    prepTitle: "Préparez votre prochain voyage",
-    prepSub: "Commencez par vous connaître — ou rouvrez un carnet déjà enregistré.",
-    logisticsLabel: "Logistique",
-    logisticsTitle: "Tracer l'itinéraire",
-    logisticsBody:
-      "Générez un itinéraire fidèle à votre façon de voyager, pas des listes génériques.",
-    logisticsCta: "Commencer le tracé",
-    inventoryLabel: "Profil",
-    inventoryTitle: "Votre Travel DNA",
-    inventoryBody:
-      "Découvrez votre archétype voyageur et utilisez-le comme boussole pour chaque carnet.",
-    inventoryCta: "Voir mon profil",
-    archetypeEyebrow: "Nouvel archétype",
-    archetypeTitle: "Découvrez comment vous voyagez",
-    archetypeBody:
-      "Un questionnaire conversationnel qui transforme rythme, motivations et style en profil actionnable.",
-    archetypeCta: "Passer le test d'archétype",
+    tagline: "Votre carnet de voyage intelligent",
+    sub: "Des itinéraires fidèles à votre façon de voyager, réunis au même endroit.",
+    cta: "Découvrez votre profil voyageur",
+    ctaReturning: "Commencer un nouveau voyage",
     about: "À propos",
     privacy: "Confidentialité",
     terms: "Conditions",
     accountDeleted: "Votre compte a bien été supprimé.",
-    footerNote: "Votre voyage, documenté.",
   },
 };
 

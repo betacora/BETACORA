@@ -4483,9 +4483,19 @@ async function fillFlightOffersHost(host, params) {
   }
 
   try {
+    const headers = { 'Content-Type': 'application/json' };
+    try {
+      const token =
+        window.btAuth && typeof window.btAuth.getAccessToken === 'function'
+          ? await window.btAuth.getAccessToken()
+          : typeof window.BTAuth?.getAccessToken === 'function'
+            ? await window.BTAuth.getAccessToken()
+            : null;
+      if (token) headers.Authorization = `Bearer ${token}`;
+    } catch (_) { /* search without session → API 401 */ }
     const res = await fetch('/api/duffel/search-offers', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         origin: params.origin,
         destination: params.destination,

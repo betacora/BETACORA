@@ -2,7 +2,9 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ExplorarTripPanel } from "@/components/ExplorarTripPanel";
 import { FunnelEvent, trackFunnel } from "@/lib/analytics";
+import { detectLang, NAV_COPY, type AppLang } from "@/lib/lang";
 import { useAuth } from "@/lib/useAuth";
 import { getTravelerProfile } from "@/lib/travelerProfile";
 import { supabase } from "@/lib/supabase";
@@ -24,10 +26,17 @@ function ExplorarInner() {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<FlowMode>("discover");
+  const [lang, setLang] = useState<AppLang>("es");
+  const [profileType, setProfileType] = useState("");
+  const [profileEssence, setProfileEssence] = useState<string | null>(null);
 
   const requestedMode = searchParams.get("mode");
   const forceUpdate =
     searchParams.get("force") === "1" || requestedMode === "discover";
+
+  useEffect(() => {
+    setLang(detectLang("es"));
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -50,6 +59,8 @@ function ExplorarInner() {
         hasProfile,
       );
       setMode(nextMode);
+      setProfileType(profile?.profile_type?.trim() || "");
+      setProfileEssence(profile?.profile_essence ?? null);
       setReady(true);
       trackFunnel(FunnelEvent.QuestionnaireStarted, {
         source: "explorar",
@@ -68,17 +79,21 @@ function ExplorarInner() {
     [mode],
   );
 
+  const shellStyle = {
+    position: "fixed" as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: "calc(3.75rem + env(safe-area-inset-bottom, 0px))",
+    margin: 0,
+    padding: 0,
+  };
+
   if (authLoading || !ready) {
     return (
       <main
         className="bg-[#F9FAFB] flex items-center justify-center"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: "calc(3.75rem + env(safe-area-inset-bottom, 0px))",
-        }}
+        style={shellStyle}
         aria-busy="true"
       >
         <p className="text-sm text-[#6B7280] m-0">…</p>
@@ -86,19 +101,26 @@ function ExplorarInner() {
     );
   }
 
+  // Trip mode (DNA already exists): interactive panel piece 1 — city + visit picks.
+  // Discover mode: full questionnaire iframe for DNA.
+  if (mode === "trip" && profileType) {
+    return (
+      <main
+        className="bg-[#F9FAFB] overflow-y-auto"
+        style={shellStyle}
+      >
+        <ExplorarTripPanel
+          lang={lang}
+          copy={NAV_COPY[lang].explorarTrip}
+          profileType={profileType}
+          profileEssence={profileEssence}
+        />
+      </main>
+    );
+  }
+
   return (
-    <main
-      className="bg-[#F9FAFB]"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: "calc(3.75rem + env(safe-area-inset-bottom, 0px))",
-        margin: 0,
-        padding: 0,
-      }}
-    >
+    <main className="bg-[#F9FAFB]" style={shellStyle}>
       <iframe
         src={iframeSrc}
         title="BeTacora Explore"
@@ -111,7 +133,7 @@ function ExplorarInner() {
   );
 }
 
-/** Questionnaire under Explorar — auth-gated; trip mode if profile exists. */
+/** Questionnaire under Explorar — auth-gated; trip panel if profile exists. */
 export default function ExplorarPage() {
   return (
     <Suspense

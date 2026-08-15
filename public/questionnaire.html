@@ -265,6 +265,9 @@ body.itinerary-ready .container > .section,
 body.itinerary-ready .qt-hero {
   display: none !important;
 }
+body.itinerary-ready .bt-visit-panel {
+  display: none !important;
+}
 body.itinerary-ready .results-toolbar {
   display: flex;
 }
@@ -335,6 +338,72 @@ body.qt-active.itinerary-ready .container { padding-top: 0.5rem; }
   font-size: 1.05rem; font-weight: 500; padding: 0.65rem 0.25rem;
 }
 .qt-hero .tags-wrap { margin-top: 0.5rem; }
+
+/* Visit panel (piece 1) — places city + suggestion cards */
+.bt-visit-panel { margin-top: 0.25rem; margin-bottom: 1.25rem; }
+.bt-visit-search { margin-bottom: 0.75rem; }
+.bt-visit-city-input {
+  width: 100%; border: 0; background: transparent; outline: none;
+  font-family: var(--font); font-size: 1.05rem; font-weight: 500;
+  color: var(--on-surface); padding: 0.65rem 0.25rem;
+}
+.bt-visit-selected {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  margin: 0 0 1rem; padding: 0.7rem 0.9rem;
+  border: 1px solid var(--outline); border-radius: var(--radius-md);
+  background: var(--surface-container-lowest);
+}
+.bt-visit-selected-label {
+  font-size: 0.875rem; font-weight: 500; color: var(--on-surface); line-height: 1.35;
+}
+.bt-visit-clear {
+  appearance: none; border: 1px solid var(--outline); background: var(--surface-container-lowest);
+  color: var(--on-surface-variant); font-family: var(--font); font-size: 0.75rem; font-weight: 500;
+  padding: 0.35rem 0.7rem; border-radius: var(--radius-sm); cursor: pointer; flex-shrink: 0;
+}
+.bt-visit-clear:hover { border-color: var(--outline-variant); color: var(--on-surface); }
+.bt-visit-status {
+  margin: 0 0 0.85rem; font-size: 0.8125rem; color: var(--muted); line-height: 1.45;
+}
+.bt-visit-status.is-err { color: var(--accent); }
+.bt-visit-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem;
+}
+@media (max-width: 560px) {
+  .bt-visit-grid { grid-template-columns: 1fr; }
+}
+.bt-visit-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem;
+  text-align: left; width: 100%; box-sizing: border-box;
+  padding: 0.95rem 1rem; min-height: 7.5rem;
+  background: var(--surface-container-lowest); border: 1px solid var(--outline);
+  border-radius: var(--radius-md); cursor: pointer;
+  font-family: var(--font); color: var(--on-surface);
+  transition: border-color 0.15s, background 0.15s;
+  box-shadow: none;
+}
+.bt-visit-card:hover { border-color: var(--outline-variant); }
+.bt-visit-card.sel {
+  border-color: var(--primary); background: var(--primary-container); color: var(--on-surface);
+}
+.bt-visit-card-cat {
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--on-surface-variant); line-height: 1.2;
+}
+.bt-visit-card.sel .bt-visit-card-cat { color: var(--primary); }
+.bt-visit-card-title {
+  font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3;
+  color: var(--on-surface);
+}
+.bt-visit-card-summary {
+  font-size: 0.78rem; font-weight: 400; color: var(--on-surface-variant); line-height: 1.45;
+  margin: 0;
+}
+.bt-visit-card-toggle {
+  margin-top: auto; padding-top: 0.45rem;
+  font-size: 0.72rem; font-weight: 500; color: var(--on-surface-variant); letter-spacing: 0.02em;
+}
+.bt-visit-card.sel .bt-visit-card-toggle { color: var(--primary); }
 
 /* Trip panel: side sheet desktop / bottom sheet mobile */
 .qt-overlay {
@@ -549,6 +618,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
 .search-dropdown.show { display: block; }
 .search-item { padding: 0.7rem 1rem; cursor: pointer; font-size: 0.875rem; display: flex; align-items: center; gap: 0.6rem; border-bottom: 1px solid var(--outline); font-weight: 400; }
 .search-item:hover { background: var(--surface); color: var(--on-surface); }
+button.search-item {
+  width: 100%; appearance: none; background: transparent; border: 0;
+  text-align: left; font-family: var(--font); color: inherit;
+  flex-direction: column; align-items: flex-start; gap: 0.15rem;
+}
+button.search-item span { font-size: 0.75rem; color: var(--on-surface-variant); font-weight: 400; }
 .search-item .flag { font-size: 1rem; }
 .search-item .city-name { font-weight: 500; }
 .search-item .country-name { font-size: 0.75rem; color: var(--on-surface-variant); }
@@ -1400,7 +1475,31 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px;
   <div class="qt-hero-kicker" id="qtHeroKicker">Nuevo viaje</div>
   <h2 class="qt-hero-title" id="qtHeroTitle">¿A dónde quieres ir?</h2>
   <p class="qt-hero-sub" id="qtHeroSub">Tu perfil viajero ya está listo. Elige un destino para este viaje.</p>
-  <div id="qtSearchSlot"></div>
+  <!-- Piece 1: city via /api/places/search + visit suggestion cards (in-memory only) -->
+  <div class="bt-visit-panel" id="btVisitPanel" hidden>
+    <div class="bt-visit-search search-wrap">
+      <div class="search-input-wrap">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input
+          type="text"
+          id="btVisitCityInput"
+          class="bt-visit-city-input"
+          placeholder="Escribe una ciudad — Lisboa, Tokio, Ciudad de México…"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-controls="btVisitCityResults"
+        >
+      </div>
+      <div class="search-dropdown" id="btVisitCityResults" role="listbox"></div>
+    </div>
+    <div class="bt-visit-selected" id="btVisitSelected" hidden>
+      <span class="bt-visit-selected-label" id="btVisitSelectedLabel"></span>
+      <button type="button" class="bt-visit-clear" id="btVisitClear">Cambiar</button>
+    </div>
+    <p class="bt-visit-status" id="btVisitStatus" hidden></p>
+    <div class="bt-visit-grid" id="btVisitGrid" role="group" aria-label="Sugerencias de visita"></div>
+  </div>
+  <div id="qtSearchSlot" hidden></div>
 </div>
 
 <div class="container">
@@ -5586,6 +5685,21 @@ function qtCopy() {
       close: 'Cerrar',
       updateProfile: '¿Cambió algo de ti? Actualiza tu perfil completo',
       headerTag: 'Nuevo viaje',
+      visit: {
+        placeholder: 'Escribe una ciudad — Lisboa, Tokio, Ciudad de México…',
+        clear: 'Cambiar',
+        searching: 'Buscando ciudades…',
+        emptyPlaces: 'No encontramos esa ciudad. Prueba otro nombre.',
+        placesError: 'No pudimos buscar ciudades ahora. Inténtalo de nuevo.',
+        rateLimited: 'Has alcanzado el límite de búsquedas. Espera un momento.',
+        loadingSuggestions: 'Buscando qué visitar…',
+        suggestionsError: 'No pudimos cargar sugerencias. Inténtalo de nuevo.',
+        suggestionsEmpty: 'No hay sugerencias para esta ciudad todavía.',
+        loginRequired: 'Inicia sesión para ver sugerencias de visita.',
+        select: 'Seleccionar',
+        selected: 'Seleccionado',
+        gridLabel: 'Sugerencias de visita',
+      },
     },
     en: {
       kicker: 'New trip',
@@ -5596,6 +5710,21 @@ function qtCopy() {
       close: 'Close',
       updateProfile: 'Something changed about you? Update your full profile',
       headerTag: 'New trip',
+      visit: {
+        placeholder: 'Type a city — Lisbon, Tokyo, Mexico City…',
+        clear: 'Change',
+        searching: 'Searching cities…',
+        emptyPlaces: 'No city found. Try another name.',
+        placesError: 'Could not search cities right now. Try again.',
+        rateLimited: 'Search limit reached. Wait a moment.',
+        loadingSuggestions: 'Finding places to visit…',
+        suggestionsError: 'Could not load suggestions. Try again.',
+        suggestionsEmpty: 'No suggestions for this city yet.',
+        loginRequired: 'Sign in to see visit suggestions.',
+        select: 'Select',
+        selected: 'Selected',
+        gridLabel: 'Visit suggestions',
+      },
     },
     fr: {
       kicker: 'Nouveau voyage',
@@ -5606,6 +5735,21 @@ function qtCopy() {
       close: 'Fermer',
       updateProfile: 'Quelque chose a changé ? Mets à jour ton profil complet',
       headerTag: 'Nouveau voyage',
+      visit: {
+        placeholder: 'Écris une ville — Lisbonne, Tokyo, Mexico…',
+        clear: 'Changer',
+        searching: 'Recherche de villes…',
+        emptyPlaces: 'Ville introuvable. Essaie un autre nom.',
+        placesError: 'Impossible de chercher des villes. Réessaie.',
+        rateLimited: 'Limite de recherches atteinte. Attends un moment.',
+        loadingSuggestions: 'Recherche de lieux à visiter…',
+        suggestionsError: 'Impossible de charger les suggestions. Réessaie.',
+        suggestionsEmpty: 'Pas encore de suggestions pour cette ville.',
+        loginRequired: 'Connecte-toi pour voir les suggestions.',
+        select: 'Sélectionner',
+        selected: 'Sélectionné',
+        gridLabel: 'Suggestions de visite',
+      },
     },
   };
   return { ...(fallback[lang] || fallback.es), ...ui };
@@ -5637,6 +5781,7 @@ function applyQuickTripLabels() {
   if (qtSubmit && !qtSubmit.disabled) {
     qtSubmit.textContent = L().ui.submit.btn;
   }
+  applyVisitPanelLabels();
 }
 
 function rememberHome(el) {
@@ -5848,7 +5993,357 @@ function closeTripPanel() {
 function onQuickTripDestSelected() {
   if (!quickTripActive) return;
   if (document.body.classList.contains('itinerary-ready')) return;
+  // Piece 1: city + visit suggestions stay in the hero — do not open dates panel yet.
+  if (document.getElementById('btVisitPanel') && !document.getElementById('btVisitPanel').hidden) {
+    return;
+  }
   if (selectedDest.length > 0) openTripPanel();
+}
+
+/** In-memory visit panel state (no DB persistence yet). */
+const btVisitPanelState = {
+  city: null,
+  place: null,
+  suggestions: [],
+  selectedIds: [],
+};
+window.__btVisitPanelState = btVisitPanelState;
+
+function visitCopy() {
+  const qt = qtCopy();
+  return (qt && qt.visit) || {};
+}
+
+function resetVisitPanelState() {
+  btVisitPanelState.city = null;
+  btVisitPanelState.place = null;
+  btVisitPanelState.suggestions = [];
+  btVisitPanelState.selectedIds = [];
+}
+
+function setVisitStatus(text, isErr) {
+  const el = document.getElementById('btVisitStatus');
+  if (!el) return;
+  if (!text) {
+    el.hidden = true;
+    el.textContent = '';
+    el.classList.remove('is-err');
+    return;
+  }
+  el.hidden = false;
+  el.textContent = text;
+  el.classList.toggle('is-err', !!isErr);
+}
+
+function escapeVisitHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderVisitCards() {
+  const grid = document.getElementById('btVisitGrid');
+  const copy = visitCopy();
+  if (!grid) return;
+  grid.setAttribute('aria-label', copy.gridLabel || 'Visit suggestions');
+  const selected = new Set(btVisitPanelState.selectedIds);
+  const cats = copy.categories || {};
+  grid.innerHTML = (btVisitPanelState.suggestions || [])
+    .map((s) => {
+      const isSel = selected.has(s.id);
+      const catLabel = s.category && cats[s.category] ? cats[s.category] : '';
+      return `<button type="button" class="bt-visit-card${isSel ? ' sel' : ''}" data-visit-id="${escapeVisitHtml(s.id)}" aria-pressed="${isSel ? 'true' : 'false'}">
+        ${catLabel ? `<span class="bt-visit-card-cat">${escapeVisitHtml(catLabel)}</span>` : ''}
+        <span class="bt-visit-card-title">${escapeVisitHtml(s.title)}</span>
+        <p class="bt-visit-card-summary">${escapeVisitHtml(s.summary)}</p>
+        <span class="bt-visit-card-toggle">${escapeVisitHtml(isSel ? (copy.selected || '') : (copy.select || ''))}</span>
+      </button>`;
+    })
+    .join('');
+
+  grid.querySelectorAll('.bt-visit-card').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-visit-id');
+      if (!id) return;
+      const idx = btVisitPanelState.selectedIds.indexOf(id);
+      if (idx >= 0) btVisitPanelState.selectedIds.splice(idx, 1);
+      else btVisitPanelState.selectedIds.push(id);
+      renderVisitCards();
+    });
+  });
+}
+
+async function fetchVisitSuggestionsForCity(place) {
+  const copy = visitCopy();
+  const city =
+    (place && (place.name || place.city)) ||
+    btVisitPanelState.city ||
+    '';
+  if (!city) return;
+
+  setVisitStatus(copy.loadingSuggestions || '…', false);
+  const grid = document.getElementById('btVisitGrid');
+  if (grid) grid.innerHTML = '';
+  btVisitPanelState.suggestions = [];
+  btVisitPanelState.selectedIds = [];
+
+  try {
+    const token =
+      window.btAuth && typeof window.btAuth.getAccessToken === 'function'
+        ? await window.btAuth.getAccessToken()
+        : null;
+    if (!token) {
+      setVisitStatus(copy.loginRequired || '', true);
+      return;
+    }
+
+    const profile =
+      (savedTravelerProfile && {
+        profile_type: savedTravelerProfile.profile_type,
+        profile_essence: savedTravelerProfile.profile_essence,
+        traveler_answers: savedTravelerProfile.traveler_answers,
+      }) ||
+      null;
+
+    const res = await fetch('/api/visit-suggestions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        city,
+        place: place
+          ? {
+              name: place.name || place.city || city,
+              address: place.address || '',
+              lat: place.lat,
+              lng: place.lng,
+            }
+          : undefined,
+        profile: profile || undefined,
+        ui_lang: LANG.current || 'es',
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      if (res.status === 401) {
+        setVisitStatus(copy.loginRequired || '', true);
+      } else if (res.status === 429) {
+        setVisitStatus(copy.rateLimited || data.error || '', true);
+      } else {
+        setVisitStatus(data.error || copy.suggestionsError || '', true);
+      }
+      return;
+    }
+
+    btVisitPanelState.city = data.city || city;
+    btVisitPanelState.suggestions = Array.isArray(data.suggestions)
+      ? data.suggestions
+      : [];
+    btVisitPanelState.selectedIds = [];
+    if (!btVisitPanelState.suggestions.length) {
+      setVisitStatus(copy.suggestionsEmpty || '', true);
+      return;
+    }
+    setVisitStatus('', false);
+    renderVisitCards();
+  } catch (err) {
+    console.warn('[BeTacora] visit suggestions failed:', err);
+    setVisitStatus(copy.suggestionsError || '', true);
+  }
+}
+
+function showVisitCitySelected(place) {
+  const searchWrap = document.querySelector('#btVisitPanel .bt-visit-search');
+  const selectedEl = document.getElementById('btVisitSelected');
+  const labelEl = document.getElementById('btVisitSelectedLabel');
+  const input = document.getElementById('btVisitCityInput');
+  const results = document.getElementById('btVisitCityResults');
+  if (searchWrap) searchWrap.hidden = true;
+  if (selectedEl) selectedEl.hidden = false;
+  if (labelEl) {
+    const addr = place.address ? ` · ${place.address}` : '';
+    labelEl.textContent = `${place.name || place.city || ''}${addr}`;
+  }
+  if (input) input.value = '';
+  if (results) {
+    results.classList.remove('show');
+    results.innerHTML = '';
+  }
+}
+
+function clearVisitCitySelection() {
+  const copy = visitCopy();
+  resetVisitPanelState();
+  const searchWrap = document.querySelector('#btVisitPanel .bt-visit-search');
+  const selectedEl = document.getElementById('btVisitSelected');
+  const grid = document.getElementById('btVisitGrid');
+  if (searchWrap) searchWrap.hidden = false;
+  if (selectedEl) selectedEl.hidden = true;
+  if (grid) grid.innerHTML = '';
+  setVisitStatus('', false);
+  const input = document.getElementById('btVisitCityInput');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+}
+
+function selectVisitPlace(place) {
+  if (!place || !place.name) return;
+  btVisitPanelState.city = place.name;
+  btVisitPanelState.place = place;
+  btVisitPanelState.suggestions = [];
+  btVisitPanelState.selectedIds = [];
+
+  // Keep destinations in memory for later pieces (no trip panel / dates yet).
+  selectedDest.length = 0;
+  selectedDest.push({
+    kind: 'city',
+    city: place.name,
+    country: '',
+    flag: '',
+    city_es: place.name,
+    country_es: '',
+    address: place.address || '',
+    lat: place.lat,
+    lng: place.lng,
+    place_id: place.id || '',
+  });
+  if (typeof syncDestAnswers === 'function') syncDestAnswers();
+  answers.dest_city = place.name;
+  if (place.address) answers.dest_address = place.address;
+
+  showVisitCitySelected(place);
+  fetchVisitSuggestionsForCity(place);
+}
+
+let visitPlacesSeq = 0;
+let visitPlacesTimer = null;
+let visitPanelWired = false;
+
+async function runVisitPlacesSearch(query) {
+  const copy = visitCopy();
+  const results = document.getElementById('btVisitCityResults');
+  if (!results) return;
+  const q = String(query || '').replace(/\s+/g, ' ').trim();
+  if (q.length < 2) {
+    results.classList.remove('show');
+    results.innerHTML = '';
+    return;
+  }
+
+  const seq = ++visitPlacesSeq;
+  setVisitStatus(copy.searching || '', false);
+  try {
+    const params = new URLSearchParams({
+      q,
+      lang: LANG.current || 'es',
+      limit: '8',
+    });
+    const res = await fetch(`/api/places/search?${params.toString()}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    });
+    const data = await res.json().catch(() => ({}));
+    if (seq !== visitPlacesSeq) return;
+
+    if (!res.ok || data.ok !== true) {
+      results.classList.remove('show');
+      results.innerHTML = '';
+      if (res.status === 429 || data.code === 'rate_limited' || data.code === 'rate_limit_unavailable') {
+        setVisitStatus(copy.rateLimited || '', true);
+      } else {
+        setVisitStatus(data.error || copy.placesError || '', true);
+      }
+      return;
+    }
+
+    const places = Array.isArray(data.places) ? data.places : [];
+    if (!places.length) {
+      results.classList.remove('show');
+      results.innerHTML = '';
+      setVisitStatus(copy.emptyPlaces || '', true);
+      return;
+    }
+
+    setVisitStatus('', false);
+    results.innerHTML = places
+      .map((p, idx) => {
+        const name = escapeVisitHtml(p.name || '');
+        const addr = escapeVisitHtml(p.address || '');
+        return `<button type="button" class="search-item" data-place-idx="${idx}" role="option">
+          <strong>${name}</strong>${addr ? `<span>${addr}</span>` : ''}
+        </button>`;
+      })
+      .join('');
+    results.classList.add('show');
+    results.querySelectorAll('[data-place-idx]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-place-idx'));
+        const place = places[idx];
+        if (place) selectVisitPlace(place);
+      });
+    });
+  } catch (err) {
+    if (seq !== visitPlacesSeq) return;
+    console.warn('[BeTacora] places search failed:', err);
+    results.classList.remove('show');
+    setVisitStatus(copy.placesError || '', true);
+  }
+}
+
+function wireVisitPanel() {
+  if (visitPanelWired) return;
+  visitPanelWired = true;
+  const input = document.getElementById('btVisitCityInput');
+  const clearBtn = document.getElementById('btVisitClear');
+  if (input) {
+    input.addEventListener('input', () => {
+      const q = input.value;
+      clearTimeout(visitPlacesTimer);
+      visitPlacesTimer = setTimeout(() => runVisitPlacesSearch(q), 280);
+    });
+    input.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') {
+        const results = document.getElementById('btVisitCityResults');
+        if (results) results.classList.remove('show');
+      }
+    });
+  }
+  if (clearBtn) clearBtn.addEventListener('click', clearVisitCitySelection);
+  document.addEventListener('click', (ev) => {
+    const panel = document.getElementById('btVisitPanel');
+    const results = document.getElementById('btVisitCityResults');
+    if (!panel || !results || panel.hidden) return;
+    if (!panel.contains(ev.target)) results.classList.remove('show');
+  });
+}
+
+function applyVisitPanelLabels() {
+  const copy = visitCopy();
+  const input = document.getElementById('btVisitCityInput');
+  const clearBtn = document.getElementById('btVisitClear');
+  const grid = document.getElementById('btVisitGrid');
+  if (input && copy.placeholder) input.placeholder = copy.placeholder;
+  if (clearBtn && copy.clear) clearBtn.textContent = copy.clear;
+  if (grid && copy.gridLabel) grid.setAttribute('aria-label', copy.gridLabel);
+  if (btVisitPanelState.suggestions.length) renderVisitCards();
+}
+
+function initVisitPanel() {
+  const panel = document.getElementById('btVisitPanel');
+  if (!panel) return;
+  panel.hidden = false;
+  wireVisitPanel();
+  applyVisitPanelLabels();
+  if (!btVisitPanelState.city) {
+    clearVisitCitySelection();
+  }
 }
 
 function exitQuickTripToFullProfile(e) {
@@ -5899,19 +6394,14 @@ function enterTripMode(profile) {
   applyTripDefaults(profile);
 
   const hero = document.getElementById('qtHero');
-  const slot = document.getElementById('qtSearchSlot');
-  const destSearch = document.getElementById('destCitySearch');
   if (hero) hero.hidden = false;
-  if (slot && destSearch) moveTo(destSearch, slot);
-  // Show destination search as primary (not optional)
-  const destHint = destSearch?.querySelector('.qhint');
-  if (destHint) destHint.style.display = 'none';
-  const destLabel = destSearch?.querySelector('.qlabel');
-  if (destLabel) destLabel.style.display = 'none';
 
-  // Ensure trip step 2 / dest search is visible for the moved control
+  // Piece 1: places city search + visit suggestion cards (in-memory).
+  // Keep destCitySearch in #tripSection for later pieces — do not open dates panel yet.
+  initVisitPanel();
+
   answers.trip_type = 'destino';
-  showTripType('destino');
+  if (typeof showTripType === 'function') showTripType('destino');
 
   applyQuickTripLabels();
   wireQuickTripChrome();

@@ -4483,9 +4483,18 @@ async function fillFlightOffersHost(host, params) {
   }
 
   try {
+    // Server requires Supabase JWT (requireSupabaseUser). Omitting Bearer → 401.
+    // Same pattern as generate-itinerary / flights/select.
+    const token =
+      window.btAuth && typeof window.btAuth.getAccessToken === 'function'
+        ? await window.btAuth.getAccessToken()
+        : null;
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = `Bearer ${token}`;
+
     const res = await fetch('/api/duffel/search-offers', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         origin: params.origin,
         destination: params.destination,

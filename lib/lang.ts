@@ -397,6 +397,37 @@ export const NAV_COPY: Record<
       statEnergy: string;
       statPace: string;
     };
+    /** Interactive trip panel in Explorar (after DNA) — piece 1: city + visit picks */
+    explorarTrip: {
+      kicker: string;
+      title: string;
+      subtitle: string;
+      dnaReady: string;
+      updateDna: string;
+      city: {
+        title: string;
+        subtitle: string;
+        placeholder: string;
+        submit: string;
+        loading: string;
+        empty: string;
+        error: string;
+        rateLimited: string;
+        attribution: string;
+        selectedLabel: string;
+        changeCity: string;
+      };
+      cards: {
+        title: string;
+        subtitle: string;
+        selectedCount: string;
+        hint: string;
+      };
+      loadingSuggestions: string;
+      suggestionsError: string;
+      suggestionsAuth: string;
+      nextPieceNote: string;
+    };
   }
 > = {
   es: {
@@ -563,6 +594,39 @@ assistant: {
       statEnergy: "Energía",
       statPace: "Ritmo",
     },
+    explorarTrip: {
+      kicker: "Nuevo viaje",
+      title: "¿A dónde quieres ir?",
+      subtitle:
+        "Tu perfil viajero ya está listo. Elige un destino y marca qué te apetece visitar.",
+      dnaReady: "Tu DNA viajero",
+      updateDna: "Actualizar perfil",
+      city: {
+        title: "Destino",
+        subtitle: "Busca una ciudad o lugar concreto.",
+        placeholder: "Lisboa, Kioto, Oaxaca…",
+        submit: "Buscar",
+        loading: "Buscando…",
+        empty: "No encontramos resultados. Prueba con otro nombre.",
+        error: "No se pudo buscar ahora. Inténtalo de nuevo.",
+        rateLimited: "Demasiadas búsquedas por ahora. Espera un minuto.",
+        attribution: "Powered by Google",
+        selectedLabel: "Destino elegido",
+        changeCity: "Cambiar",
+      },
+      cards: {
+        title: "Qué visitar en {city}",
+        subtitle: "Toca para añadir o quitar. Nada viene preseleccionado.",
+        selectedCount: "{n} elegidos",
+        hint: "Solo selección en este dispositivo por ahora — guardar el viaje llega en la siguiente pieza.",
+      },
+      loadingSuggestions: "Preparando sugerencias para tu destino…",
+      suggestionsError:
+        "No se pudieron generar sugerencias. Inténtalo de nuevo.",
+      suggestionsAuth: "Tu sesión expiró. Vuelve a iniciar sesión.",
+      nextPieceNote:
+        "Próximamente: guardar en BeTacora, fechas, vuelos y alojamiento.",
+    },
   },
   en: {
     tabs: {
@@ -726,6 +790,38 @@ assistant: {
       statMotiv: "Motivation",
       statEnergy: "Energy",
       statPace: "Pace",
+    },
+    explorarTrip: {
+      kicker: "New trip",
+      title: "Where do you want to go?",
+      subtitle:
+        "Your traveler profile is ready. Pick a destination and mark what you’d like to visit.",
+      dnaReady: "Your travel DNA",
+      updateDna: "Update profile",
+      city: {
+        title: "Destination",
+        subtitle: "Search for a city or specific place.",
+        placeholder: "Lisbon, Kyoto, Oaxaca…",
+        submit: "Search",
+        loading: "Searching…",
+        empty: "No results. Try another name.",
+        error: "Search failed. Please try again.",
+        rateLimited: "Too many searches right now. Wait a minute.",
+        attribution: "Powered by Google",
+        selectedLabel: "Selected destination",
+        changeCity: "Change",
+      },
+      cards: {
+        title: "What to visit in {city}",
+        subtitle: "Tap to add or remove. Nothing is pre-selected.",
+        selectedCount: "{n} selected",
+        hint: "Selection stays on this device for now — saving the trip comes next.",
+      },
+      loadingSuggestions: "Preparing suggestions for your destination…",
+      suggestionsError: "Couldn’t generate suggestions. Please try again.",
+      suggestionsAuth: "Your session expired. Please sign in again.",
+      nextPieceNote:
+        "Coming next: save to BeTacora, dates, flights, and lodging.",
     },
   },
   fr: {
@@ -891,6 +987,38 @@ assistant: {
       statMotiv: "Motivation",
       statEnergy: "Énergie",
       statPace: "Rythme",
+    },
+    explorarTrip: {
+      kicker: "Nouveau voyage",
+      title: "Où veux-tu aller ?",
+      subtitle:
+        "Ton profil voyageur est prêt. Choisis une destination et coche ce que tu veux visiter.",
+      dnaReady: "Ton ADN voyageur",
+      updateDna: "Mettre à jour le profil",
+      city: {
+        title: "Destination",
+        subtitle: "Cherche une ville ou un lieu précis.",
+        placeholder: "Lisbonne, Kyoto, Oaxaca…",
+        submit: "Chercher",
+        loading: "Recherche…",
+        empty: "Aucun résultat. Essaie un autre nom.",
+        error: "Recherche impossible. Réessaie.",
+        rateLimited: "Trop de recherches pour le moment. Attends une minute.",
+        attribution: "Powered by Google",
+        selectedLabel: "Destination choisie",
+        changeCity: "Changer",
+      },
+      cards: {
+        title: "Que visiter à {city}",
+        subtitle: "Touche pour ajouter ou retirer. Rien n’est présélectionné.",
+        selectedCount: "{n} choisis",
+        hint: "Sélection locale pour l’instant — l’enregistrement du voyage vient ensuite.",
+      },
+      loadingSuggestions: "Préparation des suggestions pour ta destination…",
+      suggestionsError: "Impossible de générer des suggestions. Réessaie.",
+      suggestionsAuth: "Session expirée. Reconnecte-toi.",
+      nextPieceNote:
+        "Bientôt : enregistrer dans BeTacora, dates, vols et hébergement.",
     },
   },
 };
